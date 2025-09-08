@@ -22,21 +22,23 @@
   tr.tomorrow { border:3px solid #ffd1d1; }
   .label {
     position: absolute;
-    top:2px;
+    top:5px;
     right:5px;
     font-size:0.75rem;
     font-weight:bold;
     color:#fff;
     padding:2px 5px;
     border-radius:4px;
+    z-index:1;
   }
   .label.today { background:#4a90e2; }
   .label.tomorrow { background:#ff6b6b; }
+  /* Large iOS-style toggle */
   .toggle {
     position: relative;
     display: inline-block;
-    width: 50px;
-    height: 28px;
+    width: 60px;
+    height: 34px;
   }
   .toggle input {
     opacity: 0;
@@ -52,15 +54,15 @@
     bottom:0;
     background-color: #ccc;
     transition: .4s;
-    border-radius: 28px;
+    border-radius: 34px;
   }
   .slider:before {
     position: absolute;
     content: "";
-    height: 22px;
-    width: 22px;
-    left: 3px;
-    bottom: 3px;
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
     background-color: white;
     transition: .4s;
     border-radius: 50%;
@@ -69,7 +71,7 @@
     background-color: #4cd964;
   }
   input:checked + .slider:before {
-    transform: translateX(22px);
+    transform: translateX(26px);
   }
   @media(max-width:600px) {
     table, tbody, td, tr { display:block; }
@@ -88,7 +90,7 @@
 <footer>Baked salmon available every Friday as an alternative. Data last updated per Swansea Council 2025.</footer>
 
 <script>
-// Menus (update each term)
+// Menus
 const MENUS = {
   Monday: "Oven baked sausages / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
   Tuesday: "BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments\nFruit yoghurt / Fresh fruit",
@@ -97,7 +99,7 @@ const MENUS = {
   Friday: "Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"
 };
 
-// Determine today and tomorrow
+// Today & tomorrow
 let today = new Date();
 const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const todayName = weekdays[today.getDay()];
@@ -122,7 +124,7 @@ const tbody = document.querySelector("#menuTable tbody");
   const tdMenu = document.createElement("td");
   tdMenu.textContent = MENUS[day] || "No data";
 
-  // Add Today/Tomorrow label
+  // Today/Tomorrow label
   const labelSpan = document.createElement("span");
   if(day === todayName){
     labelSpan.textContent = "Today";
@@ -149,7 +151,7 @@ const tbody = document.querySelector("#menuTable tbody");
   tr.appendChild(tdMenu);
   tr.appendChild(tdToggle);
 
-  // Background colors
+  // Apply background colors
   if(packedLunch[day]){
     tr.classList.add("packed");
   } else {
@@ -162,24 +164,23 @@ const tbody = document.querySelector("#menuTable tbody");
   }
 
   // Toggle confirmation
-  input.addEventListener("click", e => {
-    e.preventDefault();
-    const isPacked = tr.classList.contains("packed");
-    const action = isPacked ? "remove packed lunch for" : "add packed lunch for";
-    if(confirm(`Are you sure you want to ${action} ${day}?`)){
-      if(isPacked){
-        tr.classList.remove("packed");
-        tr.classList.add("other-day");
-        delete packedLunch[day];
-        input.checked = false;
-      } else {
-        tr.classList.remove("other-day");
-        tr.classList.add("packed");
-        packedLunch[day] = true;
-        input.checked = true;
-      }
-      localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+  input.addEventListener("change", e => {
+    const isChecked = input.checked;
+    const action = isChecked ? "add packed lunch for" : "remove packed lunch for";
+    if(!confirm(`Are you sure you want to ${action} ${day}?`)){
+      input.checked = !isChecked; // revert if cancelled
+      return;
     }
+    if(input.checked){
+      tr.classList.remove("other-day");
+      tr.classList.add("packed");
+      packedLunch[day] = true;
+    } else {
+      tr.classList.remove("packed");
+      tr.classList.add("other-day");
+      delete packedLunch[day];
+    }
+    localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
   });
 
   tbody.appendChild(tr);
