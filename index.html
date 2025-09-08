@@ -76,7 +76,7 @@
     color:#333;
   }
 
-  /* Label for Today/Tomorrow */
+  /* Label for Today/Tomorrow/Menu Ends */
   .label {
     position:absolute;
     top:12px;
@@ -91,6 +91,7 @@
   }
   .label.today { background:#007aff; }
   .label.tomorrow { background:#ff3b30; }
+  .label.menu-end { background:#8e8e93; animation:none; }
 
   /* Label pulse animation */
   @keyframes labelPulse {
@@ -191,6 +192,10 @@ let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 
 const container = document.querySelector("#menuCards");
 
+// Final week of term
+const menuEndWeekStart = new Date("2025-12-15"); // Monday 15 Dec
+const menuEndWeekEnd = new Date("2025-12-20");   // Friday 20 Dec
+
 ["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach((day,i) => {
   const card = document.createElement("div");
   card.classList.add("card");
@@ -216,7 +221,13 @@ const container = document.querySelector("#menuCards");
   menu.classList.add("menu");
   menu.textContent = MENUS[day] || "No data";
 
-  // Label for Today/Tomorrow
+  // Compute the date for this day in the current week
+  const currentWeekDate = new Date(today);
+  const dayIndex = weekdays.indexOf(day);
+  const diff = dayIndex - currentWeekDate.getDay();
+  currentWeekDate.setDate(currentWeekDate.getDate() + diff);
+
+  // Label for Today/Tomorrow/Menu Ends Week
   const labelSpan = document.createElement("span");
   if(day === todayName){
     labelSpan.textContent = "Today";
@@ -224,7 +235,11 @@ const container = document.querySelector("#menuCards");
   } else if(day === tomorrowName){
     labelSpan.textContent = "Tomorrow";
     labelSpan.classList.add("label","tomorrow");
+  } else if(currentWeekDate >= menuEndWeekStart && currentWeekDate <= menuEndWeekEnd){
+    labelSpan.textContent = "Menu Ends";
+    labelSpan.classList.add("label","menu-end");
   }
+
   menu.appendChild(labelSpan);
   card.appendChild(menu);
 
