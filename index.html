@@ -15,16 +15,67 @@
   }
   td {
     padding:12px; border:1px solid #ddd; text-align:left; vertical-align:top;
+    position: relative;
   }
-  td.other-day { background:#dfffe0; }
-  td.packed { background:#fff4b2; }
-  td.tomorrow { border:3px solid #ffd1d1; }
-  .checkbox { margin-top:5px; }
+  tr.other-day td { background:#dfffe0; }
+  tr.packed td { background:#fff4b2; }
+  tr.tomorrow { border:3px solid #ffd1d1; }
+  .label {
+    position: absolute;
+    top:2px;
+    right:5px;
+    font-size:0.75rem;
+    font-weight:bold;
+    color:#fff;
+    padding:2px 5px;
+    border-radius:4px;
+  }
+  .label.today { background:#4a90e2; }
+  .label.tomorrow { background:#ff6b6b; }
+  .toggle {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+  }
+  .toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 28px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: #4cd964;
+  }
+  input:checked + .slider:before {
+    transform: translateX(22px);
+  }
   @media(max-width:600px) {
     table, tbody, td, tr { display:block; }
     tr { margin-bottom:10px; border-bottom:2px solid #ccc; }
     td { border:none; padding:8px 4px; }
-    td.tomorrow { border:3px solid #ffd1d1; }
+    tr.tomorrow { border:3px solid #ffd1d1; padding:2px; }
   }
   footer { margin-top:20px; text-align:center; font-size:.85rem; color:#555; }
 </style>
@@ -37,7 +88,7 @@
 <footer>Baked salmon available every Friday as an alternative. Data last updated per Swansea Council 2025.</footer>
 
 <script>
-// Hard-coded menus (update each term)
+// Menus (update each term)
 const MENUS = {
   Monday: "Oven baked sausages / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
   Tuesday: "BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments\nFruit yoghurt / Fresh fruit",
@@ -46,80 +97,93 @@ const MENUS = {
   Friday: "Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"
 };
 
-// Determine tomorrow, skip weekends
+// Determine today and tomorrow
+let today = new Date();
+const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const todayName = weekdays[today.getDay()];
+
 let tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate()+1);
-if(tomorrow.getDay()===6) tomorrow.setDate(tomorrow.getDate()+2); // Sat -> Mon
-if(tomorrow.getDay()===0) tomorrow.setDate(tomorrow.getDate()+1); // Sun -> Mon
-
-const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+if(tomorrow.getDay()===6) tomorrow.setDate(tomorrow.getDate()+2);
+if(tomorrow.getDay()===0) tomorrow.setDate(tomorrow.getDate()+1);
 const tomorrowName = weekdays[tomorrow.getDay()];
 
-// Load saved packed lunch selections from localStorage
+// Load saved packed lunch selections
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 
 const tbody = document.querySelector("#menuTable tbody");
-for(const day of ["Monday","Tuesday","Wednesday","Thursday","Friday"]){
+
+["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach(day => {
   const tr = document.createElement("tr");
-  
+
   const tdDay = document.createElement("td");
   tdDay.textContent = day;
-  
+
   const tdMenu = document.createElement("td");
   tdMenu.textContent = MENUS[day] || "No data";
 
-  // Pink border for tomorrow (applied only to menu cell)
-  if(day===tomorrowName){
-    tdMenu.classList.add("tomorrow");
+  // Add Today/Tomorrow label
+  const labelSpan = document.createElement("span");
+  if(day === todayName){
+    labelSpan.textContent = "Today";
+    labelSpan.classList.add("label","today");
+  } else if(day === tomorrowName){
+    labelSpan.textContent = "Tomorrow";
+    labelSpan.classList.add("label","tomorrow");
   }
+  tdMenu.appendChild(labelSpan);
 
-  // Set default colors or packed lunch
+  const tdToggle = document.createElement("td");
+  const label = document.createElement("label");
+  label.classList.add("toggle");
+  const input = document.createElement("input");
+  input.type = "checkbox";
+  input.checked = !!packedLunch[day];
+  const slider = document.createElement("span");
+  slider.classList.add("slider");
+  label.appendChild(input);
+  label.appendChild(slider);
+  tdToggle.appendChild(label);
+
+  tr.appendChild(tdDay);
+  tr.appendChild(tdMenu);
+  tr.appendChild(tdToggle);
+
+  // Background colors
   if(packedLunch[day]){
-    tdDay.classList.add("packed");
-    tdMenu.classList.add("packed");
-  } else if(day!==tomorrowName){
-    tdDay.classList.add("other-day");
-    tdMenu.classList.add("other-day");
+    tr.classList.add("packed");
+  } else {
+    tr.classList.add("other-day");
   }
 
-  // Checkbox with confirmation
-  const tdCheck = document.createElement("td");
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.classList.add("checkbox");
-  checkbox.checked = !!packedLunch[day];
-  checkbox.addEventListener("click", (e)=>{
-    e.preventDefault(); // prevent instant toggle
-    const action = checkbox.checked ? "remove packed lunch for" : "add packed lunch for";
+  // Pink border for tomorrow
+  if(day === tomorrowName){
+    tr.classList.add("tomorrow");
+  }
+
+  // Toggle confirmation
+  input.addEventListener("click", e => {
+    e.preventDefault();
+    const isPacked = tr.classList.contains("packed");
+    const action = isPacked ? "remove packed lunch for" : "add packed lunch for";
     if(confirm(`Are you sure you want to ${action} ${day}?`)){
-      checkbox.checked = !checkbox.checked; // toggle after confirmation
-      if(checkbox.checked){
-        tdDay.classList.remove("other-day");
-        tdMenu.classList.remove("other-day");
-        tdDay.classList.add("packed");
-        tdMenu.classList.add("packed");
-        packedLunch[day]=true;
-      } else {
-        tdDay.classList.remove("packed");
-        tdMenu.classList.remove("packed");
-        tdDay.classList.add("other-day");
-        tdMenu.classList.add("other-day");
+      if(isPacked){
+        tr.classList.remove("packed");
+        tr.classList.add("other-day");
         delete packedLunch[day];
-      }
-      // Ensure tomorrow keeps pink border
-      if(day===tomorrowName){
-        tdMenu.classList.add("tomorrow");
+        input.checked = false;
+      } else {
+        tr.classList.remove("other-day");
+        tr.classList.add("packed");
+        packedLunch[day] = true;
+        input.checked = true;
       }
       localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
     }
   });
-  tdCheck.appendChild(checkbox);
 
-  tr.appendChild(tdDay);
-  tr.appendChild(tdMenu);
-  tr.appendChild(tdCheck);
   tbody.appendChild(tr);
-}
+});
 </script>
 </body>
 </html>
