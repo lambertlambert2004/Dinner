@@ -41,7 +41,7 @@ h1{margin:0;font-size:1.6rem;}
 .slider:before{content:"";position:absolute;left:4px;bottom:4px;width:24px;height:24px;background:#fff;border-radius:50%;transition:.3s;}
 input:checked + .slider{background:#34c759;}
 input:checked + .slider:before{transform:translateX(24px);}
-.controls{display:flex;justify-content:center;gap:12px;position:fixed;bottom:70px;width:100%;z-index:20;}
+.controls{display:flex;justify-content:center;gap:12px;position:fixed;bottom:40px;width:100%;z-index:20;}
 .controls button{padding:10px 16px;border:none;border-radius:10px;background:#007bff;color:#fff;font-weight:700;cursor:pointer;box-shadow:0 6px 14px rgba(0,123,255,0.2);}
 .controls button:active{transform:scale(.98);}
 footer{margin-top:20px;text-align:center;font-size:.85rem;color:#555;}
@@ -59,95 +59,93 @@ footer{margin-top:20px;text-align:center;font-size:.85rem;color:#555;}
 </div>
 <footer>Baked salmon available every Friday as an alternative. Data last updated per Swansea Council 2025.</footer>
 <script>
-// === MENU DATA
+// MENU DATA
 const MENUS={
-1:{
-Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments of the day\nFruit / Biscuit",
+1:{Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments of the day\nFruit / Biscuit",
 Tuesday:"BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments of the day\nFruit yoghurt / Fresh fruit",
 Wednesday:"Cheesy beany jacket / Breaded chicken steak\nAccompaniments of the day\nPancake and fruit",
 Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments of the day\nCookie / Fresh fruit",
-Friday:"Baked fish / Cheese wrap\nAccompaniments of the day\nJam split and fruit wedge"
-},
-2:{
-Monday:"Breaded chicken steak / Vegetable cheese bake\nAccompaniments of the day\nFruit yoghurt pot / Fresh fruit",
+Friday:"Baked fish / Cheese wrap\nAccompaniments of the day\nJam split and fruit wedge"},
+2:{Monday:"Breaded chicken steak / Vegetable cheese bake\nAccompaniments of the day\nFruit yoghurt pot / Fresh fruit",
 Tuesday:"Pasta bolognese / Vegetarian hotdog\nAccompaniments of the day\nFruit muffin / Fresh fruit",
 Wednesday:"Roast turkey / Vegetarian sausage\nAccompaniments of the day\nIce cream / Fresh fruit",
 Thursday:"Chicken curry / Macaroni cheese\nAccompaniments of the day\nCookie / Fresh fruit",
-Friday:"Fish fingers / Cheese and tomato pizza\nAccompaniments of the day\nFruit wedge / Shortbread"
-},
-3:{
-Monday:"Cheese and tomato pizza / Chicken curry\nAccompaniments of the day\nChocolate sponge and custard / Fresh fruit",
+Friday:"Fish fingers / Cheese and tomato pizza\nAccompaniments of the day\nFruit wedge / Shortbread"},
+3:{Monday:"Cheese and tomato pizza / Chicken curry\nAccompaniments of the day\nChocolate sponge and custard / Fresh fruit",
 Tuesday:"Chicken curry / Vegetarian hotdog\nAccompaniments of the day\nFruit yoghurt pot / Fresh fruit",
 Wednesday:"Roast chicken / Quorn fillet\nAccompaniments of the day\nFruit / Flapjack",
 Thursday:"Beef burger / Vegetarian lasagne\nAccompaniments of the day\nCookie / Fresh fruit",
-Friday:"Fish cake / Vegetable nuggets\nAccompaniments of the day\nFruit jelly / Fresh fruit"
-}
+Friday:"Fish cake / Vegetable nuggets\nAccompaniments of the day\nFruit jelly / Fresh fruit"}
 };
-const weekMap=[
-{week:1,start:"2025-09-01"},
-{week:2,start:"2025-09-08"},
-{week:3,start:"2025-09-15"}
-];
+const weekMap=[{week:1,start:"2025-09-01"},{week:2,start:"2025-09-08"},{week:3,start:"2025-09-15"}];
 const weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-function getWeekNum(date){
-let d=new Date(date);
-for(let i=weekMap.length-1;i>=0;i--){
-if(d>=new Date(weekMap[i].start)) return weekMap[i].week;
-}
-return 1;
-}
+function getWeekNum(date){let d=new Date(date);for(let i=weekMap.length-1;i>=0;i--){if(d>=new Date(weekMap[i].start)) return weekMap[i].week;}return 1;}
 function getNextWeekNum(w){return w%3+1;}
-function getCurrentAndTomorrow(){
-let t=new Date(); let tn=weekdays[t.getDay()];
-let tm=new Date(t); tm.setDate(tm.getDate()+1);
-if(tm.getDay()===6) tm.setDate(tm.getDate()+2);
-if(tm.getDay()===0) tm.setDate(tm.getDate()+1);
-return {today:tn,tomorrow:weekdays[tm.getDay()]};
-}
-// === STATE
-let showWeek=getWeekNum(new Date());
+function getCurrentAndTomorrow(){let t=new Date(); let tn=weekdays[t.getDay()]; let tm=new Date(t); tm.setDate(tm.getDate()+1); if(tm.getDay()===6) tm.setDate(tm.getDate()+2); if(tm.getDay()===0) tm.setDate(tm.getDate()+1); return {today:tn,tomorrow:weekdays[tm.getDay()]};}
+
+let currentWeek=getWeekNum(new Date());
+let viewedWeek=currentWeek;
 let today=new Date();
-let currentWeek=showWeek;
-// === RENDER
 const menuContainer=document.getElementById("menuContainer");
 function renderWeek(w){
-menuContainer.innerHTML="";
-const {today:todayName,tomorrow:tomName}=getCurrentAndTomorrow();
-const packed=JSON.parse(localStorage.getItem("packedLunch")||"{}");
-["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach(day=>{
-let tr=document.createElement("div"); tr.classList.add("card");
-if(packed[w]&&packed[w][day]) tr.classList.add("packed"); else tr.classList.add("other-day");
-let dn=document.createElement("div"); dn.className="day-name"; dn.textContent=day;
-let meals=document.createElement("div"); meals.className="meals"; meals.textContent=MENUS[w][day]||"No data";
-let labelSpan=document.createElement("span");
-if(day===todayName){labelSpan.textContent="Today"; labelSpan.classList.add("label","today");}
-else if(day===tomName){labelSpan.textContent="Tomorrow"; labelSpan.classList.add("label","tomorrow");}
-if(labelSpan.textContent) meals.appendChild(labelSpan);
-let tdToggle=document.createElement("label"); tdToggle.className="toggle";
-let input=document.createElement("input"); input.type="checkbox"; input.checked=!!(packed[w]&&packed[w][day]);
-let slider=document.createElement("span"); slider.className="slider";
-tdToggle.appendChild(input); tdToggle.appendChild(slider);
-input.addEventListener("change",()=>{let confirmText=input.checked?"add":"remove"; if(!confirm(`Are you sure you want to ${confirmText} packed lunch for ${day}?`)){input.checked=!input.checked;return;} if(!packed[w]) packed[w]={}; if(input.checked){packed[w][day]=true;tr.classList.remove("other-day");tr.classList.add("packed");} else {delete packed[w][day];tr.classList.remove("packed");tr.classList.add("other-day");} localStorage.setItem("packedLunch",JSON.stringify(packed));updateBadge();});
-tr.appendChild(dn); tr.appendChild(meals); tr.appendChild(tdToggle); menuContainer.appendChild(tr);
-});
-// Week commencing
-let firstDayOfWeek=new Date(today); firstDayOfWeek.setDate(firstDayOfWeek.getDate()-(firstDayOfWeek.getDay()-1)); if(showWeek!==currentWeek){firstDayOfWeek.setDate(firstDayOfWeek.getDate()+7*(showWeek-currentWeek));}
-document.getElementById("weekInfo").textContent=`Week ${showWeek} (Commencing: ${firstDayOfWeek.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})})`;
-updateBadge();
+  menuContainer.innerHTML="";
+  const {today:todayName,tomorrow:tomName}=getCurrentAndTomorrow();
+  const packed=JSON.parse(localStorage.getItem("packedLunch")||"{}");
+  ["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach((day,i)=>{
+    let tr=document.createElement("div"); tr.classList.add("card");
+    if(packed[w]&&packed[w][day]) tr.classList.add("packed"); else tr.classList.add("other-day");
+    let dn=document.createElement("div"); dn.className="day-name"; dn.textContent=day;
+    let meals=document.createElement("div"); meals.className="meals"; meals.textContent=MENUS[w][day]||"No data";
+
+    if(w===currentWeek){
+      if(day===todayName){let tLabel=document.createElement("span"); tLabel.className="label today"; tLabel.textContent="Today"; meals.appendChild(tLabel);}
+      if(day===tomName){let tLabel=document.createElement("span"); tLabel.className="label tomorrow"; tLabel.textContent="Tomorrow"; meals.appendChild(tLabel);}
+    }
+
+    let tdToggle=document.createElement("label"); tdToggle.className="toggle";
+    let input=document.createElement("input"); input.type="checkbox"; input.checked=!!(packed[w]&&packed[w][day]);
+    let slider=document.createElement("span"); slider.className="slider";
+    tdToggle.appendChild(input); tdToggle.appendChild(slider);
+    input.addEventListener("change",()=>{
+      const action=input.checked?"add":"remove";
+      if(!confirm(`Are you sure you want to ${action} packed lunch for ${day}?`)){input.checked=!input.checked; return;}
+      if(!packed[w]) packed[w]={};
+      if(input.checked){packed[w][day]=true; tr.classList.remove("other-day"); tr.classList.add("packed");}
+      else {delete packed[w][day]; tr.classList.remove("packed"); tr.classList.add("other-day");}
+      localStorage.setItem("packedLunch",JSON.stringify(packed));
+      updateBadge();
+    });
+
+    tr.appendChild(dn); tr.appendChild(meals); tr.appendChild(tdToggle);
+    menuContainer.appendChild(tr);
+  });
+
+  let firstDayOfWeek=new Date(today);
+  firstDayOfWeek.setDate(firstDayOfWeek.getDate()-(firstDayOfWeek.getDay()-1));
+  if(w!==currentWeek){firstDayOfWeek.setDate(firstDayOfWeek.getDate()+7*(w-currentWeek));}
+  document.getElementById("weekInfo").textContent=`Week ${w}`;
+  updateBadge();
 }
+
 function updateBadge(){
-if("setAppBadge" in navigator){
-let count=0; const packed=JSON.parse(localStorage.getItem("packedLunch")||"{}");
-if(packed[currentWeek]) Object.values(packed[currentWeek]).forEach(v=>{if(v) count++;});
-navigator.setAppBadge(count).catch(()=>{});
+  const packed=JSON.parse(localStorage.getItem("packedLunch")||"{}");
+  let count=0;
+  if(packed[viewedWeek]) count=Object.keys(packed[viewedWeek]).length;
+  if('setAppBadge' in navigator){navigator.setAppBadge(count).catch(()=>{});}
 }
-}
-// === NAVIGATION
-const toggleBtn=document.getElementById("toggleWeekBtn");
-const returnBtn=document.getElementById("returnWeekBtn");
-toggleBtn.addEventListener("click",()=>{showWeek=getNextWeekNum(currentWeek);renderWeek(showWeek);toggleBtn.style.display="none";returnBtn.style.display="inline-block";});
-returnBtn.addEventListener("click",()=>{showWeek=currentWeek;renderWeek(showWeek);returnBtn.style.display="none";toggleBtn.style.display="inline-block";});
-renderWeek(showWeek);
+
+document.getElementById("toggleWeekBtn").addEventListener("click",()=>{
+  viewedWeek=getNextWeekNum(viewedWeek);
+  renderWeek(viewedWeek);
+  document.getElementById("returnWeekBtn").style.display="inline-block";
+});
+document.getElementById("returnWeekBtn").addEventListener("click",()=>{
+  viewedWeek=currentWeek;
+  renderWeek(viewedWeek);
+  document.getElementById("returnWeekBtn").style.display="none";
+});
+
+renderWeek(currentWeek);
 </script>
 </body>
 </html>
