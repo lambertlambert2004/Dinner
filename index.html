@@ -31,13 +31,17 @@ h1::after{content:"";display:block;margin:8px auto 0;width:60px;height:2px;backg
 .day-name{font-weight:700;font-size:1.05rem;margin-bottom:8px;color:var(--text);}
 .meals{white-space:pre-line;font-size:.96rem;color:#333;line-height:1.5;margin-bottom:6px;}
 .label{position:absolute;top:12px;right:12px;font-weight:700;font-size:.73rem;color:#fff;padding:6px 9px;border-radius:11px;display:flex;align-items:center;z-index:2;}
-.label.today, .label.tomorrow{animation:glowSync 2s ease-in-out infinite alternate;}
-.label.today{background:#007aff;}
-.label.tomorrow{background:#ff9500;}
-@keyframes glowSync {
+.label.today{background:#007aff;animation:glowToday 2s ease-in-out infinite alternate;}
+.label.tomorrow{background:#ff9500;animation:glowTomorrow 3s ease-in-out infinite alternate;}
+@keyframes glowToday {
   0% { box-shadow:0 0 6px 2px rgba(0,122,255,0.4); }
   50% { box-shadow:0 0 14px 4px rgba(0,122,255,0.5); }
   100% { box-shadow:0 0 6px 2px rgba(0,122,255,0.4); }
+}
+@keyframes glowTomorrow {
+  0% { box-shadow:0 0 6px 2px rgba(255,149,0,0.4); }
+  50% { box-shadow:0 0 14px 4px rgba(255,149,0,0.5); }
+  100% { box-shadow:0 0 6px 2px rgba(255,149,0,0.4); }
 }
 
 .toggle{display:inline-block;width:56px;height:32px;position:relative;margin-top:6px;}
@@ -53,7 +57,7 @@ input:checked + .slider::before{transform:translateX(24px);}
   justify-content:center;
   gap:12px;
   position: sticky;
-  bottom: 16px; /* stays above iOS search bar */
+  bottom: 16px;
   background: transparent;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -116,6 +120,8 @@ function getCurrentWeek(){
   return weekMap[0].week;
 }
 function formatWeekStart(weekNum){return weekMap.find(w=>w.week===weekNum).start;}
+function getPackedCount(week){return Object.keys(packedLunch[week]||{}).length;}
+function updatePackedCountBadge(){const count=getPackedCount(currentWeek);document.title=count>0?`(${count}) School Dinner Menu`:"School Dinner Menu";}
 
 // RENDER
 const menuContainer=document.getElementById('menuContainer');
@@ -124,9 +130,7 @@ const weekDates=document.getElementById('weekDates');
 const toggleWeekBtn=document.getElementById('toggleWeekBtn');
 const returnWeekBtn=document.getElementById('returnWeekBtn');
 
-function updateReturnButton() {
-  returnWeekBtn.style.display = showingWeek === currentWeek ? 'none' : 'inline-block';
-}
+function updateReturnButton(){returnWeekBtn.style.display=showingWeek===currentWeek?'none':'inline-block';}
 
 function renderMenu(week){
   menuContainer.innerHTML="";
@@ -140,33 +144,30 @@ function renderMenu(week){
 
   weekdays.forEach((day,idx)=>{
     const card=document.createElement('div'); card.classList.add('card');
-    const dayName=document.createElement('div'); dayName.textContent=day; dayName.classList.add('day-name');
-    const meals=document.createElement('div'); meals.classList.add('meals'); meals.textContent=MENUS[week][day]||"No data";
-
-    const dayDate=new Date(startDate); dayDate.setDate(startDate.getDate()+idx);
+    const dayName=document.createElement('div'); dayName.className='day-name'; dayName.textContent=day;
+    const meals=document.createElement('div'); meals.className='meals'; meals.textContent=MENUS[week][day]||"No data";
 
     const label=document.createElement('span'); label.classList.add('label');
-    if(todayObj.toDateString()===dayDate.toDateString()){label.textContent="Today"; label.classList.add('today');}
-    else if(tomorrowObj.toDateString()===dayDate.toDateString()){label.textContent="Tomorrow"; label.classList.add('tomorrow');}
-
-    meals.appendChild(label);
+    const thisDate=new Date(startDate); thisDate.setDate(thisDate.getDate()+idx);
+    if(thisDate.toDateString()===todayObj.toDateString()){label.textContent="Today"; label.classList.add('today');}
+    else if(thisDate.toDateString()===tomorrowObj.toDateString()){label.textContent="Tomorrow"; label.classList.add('tomorrow');}
+    if(label.textContent){meals.appendChild(label);}
 
     const toggleDiv=document.createElement('div'); const toggleLabel=document.createElement('label'); toggleLabel.classList.add('toggle');
-    const input=document.createElement('input'); input.type="checkbox"; input.checked=!!(packedLunch[week]&&packedLunch[week][day]);
+    const input=document.createElement('input'); input.type='checkbox'; input.checked=(packedLunch[week]||{})[day]||false;
     const slider=document.createElement('span'); slider.classList.add('slider');
     toggleLabel.appendChild(input); toggleLabel.appendChild(slider); toggleDiv.appendChild(toggleLabel);
 
     input.addEventListener('change',()=>{
       const action=input.checked?"add packed lunch for":"remove packed lunch for";
       if(!confirm(`Are you sure you want to ${action} ${day}?`)){
-        input.checked = !input.checked; // revert
-        return;
+        input.checked=!input.checked; return;
       }
       if(!packedLunch[week]) packedLunch[week]={};
       if(input.checked){packedLunch[week][day]=true; card.classList.add('packed'); card.classList.remove('other-day');}
       else{delete packedLunch[week][day]; card.classList.remove('packed'); card.classList.add('other-day');}
       localStorage.setItem('packedLunch',JSON.stringify(packedLunch));
-      if(navigator.vibrate){navigator.vibrate(20);}
+      updatePackedCountBadge();
     });
 
     card.appendChild(dayName); card.appendChild(meals); card.appendChild(toggleDiv);
@@ -179,13 +180,20 @@ function renderMenu(week){
 }
 
 // CONTROLS
-toggleWeekBtn.addEventListener('click',()=>{showingWeek=(showingWeek%3)+1; renderMenu(showingWeek);});
+toggleWeekBtn.addEventListener('click',()=>{
+  showingWeek=(showingWeek%3)+1; renderMenu(showingWeek);
+});
 returnWeekBtn.addEventListener('click',()=>{showingWeek=currentWeek; renderMenu(showingWeek);});
 
-// INIT
+// AUTO WEEK UPDATE
 currentWeek=getCurrentWeek();
 showingWeek=currentWeek;
 renderMenu(showingWeek);
+updatePackedCountBadge();
+setInterval(()=>{
+  const newWeek=getCurrentWeek();
+  if(newWeek!==currentWeek){currentWeek=newWeek; updatePackedCountBadge(); if(showingWeek===currentWeek) renderMenu(currentWeek);}
+},60000);
 </script>
 </body>
 </html>
