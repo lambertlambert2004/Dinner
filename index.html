@@ -1,294 +1,395 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>School Dinner Menu</title>
-<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  body {
-    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    margin:0; padding:20px; background:#f7f7f7;
-    color:#222;
+  /* --- Premium iOS-like styling (clean colour scheme restored) --- */
+  :root{
+    --bg:#f7f7f7;
+    --card:#ffffff;
+    --muted:#888;
+    --text:#222;
+    --accent:#007aff; /* iOS blue */
+    --accent-dark:#0062cc;
+    --warm:#ff9500;   /* orange for 'tomorrow' */
+    --packed-bg:#fffbe6;
   }
-  h1 {
+  html,body{height:100%;margin:0;padding:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);}
+  .app {
+    max-width:820px;
+    margin:0 auto;
+    padding:20px;
+  }
+
+  h1{margin:0; text-align:center; font-weight:800; font-size:1.6rem; letter-spacing:0.2px;}
+  h1::after{content:"";display:block;margin:8px auto 0;width:60px;height:2px;background:#e3e4e8;border-radius:2px}
+
+  .meta {
     text-align:center;
-    margin-bottom:5px;
-    font-weight:700;
-    font-size:1.6rem;
+    margin-top:10px;
+    margin-bottom:14px;
   }
-  .week-label {
-    text-align:center;
-    font-size:1rem;
-    font-weight:600;
-    color:#444;
-  }
-  .week-dates {
-    text-align:center;
-    font-size:0.9rem;
-    color:#888;
-    margin-bottom:20px;
-  }
-  .card {
-    background:#fff;
-    border-radius:16px;
-    padding:16px;
-    margin-bottom:16px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    position:relative;
-    transition:transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .card:hover {
-    transform:translateY(-2px);
-    box-shadow:0 6px 16px rgba(0,0,0,0.1);
-  }
-  .day-name {
-    font-size:1.1rem;
-    font-weight:600;
-    margin-bottom:8px;
-  }
-  .meals {
-    white-space:pre-line;
-    color:#333;
-    margin-bottom:12px;
-    font-size:0.95rem;
-  }
-  .label {
-    position:absolute;
-    top:12px;
-    right:12px;
-    font-size:0.75rem;
-    font-weight:bold;
-    color:#fff;
-    padding:4px 8px;
+  .week-label { font-weight:700; font-size:1rem; color:var(--text); }
+  .week-dates { font-size:.9rem; color:var(--muted); margin-top:6px; }
+
+  /* sticky banner for non-current view */
+  .view-banner {
+    position:sticky;
+    top:84px; /* sits under header */
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin:12px 0;
+    background:rgba(255,255,255,0.98);
+    padding:10px 14px;
     border-radius:12px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+    box-shadow:0 8px 20px rgba(0,0,0,0.06);
+    border:1px solid rgba(0,0,0,0.04);
   }
-  .label.today { background:#007aff; }
-  .label.tomorrow { background:#ff9500; }
-  .toggle {
-    position:relative; display:inline-block; width:50px; height:28px;
-  }
-  .toggle input { opacity:0; width:0; height:0; }
-  .slider {
-    position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0;
-    background-color:#ccc; transition:.4s; border-radius:28px;
-  }
-  .slider:before {
-    position:absolute; content:""; height:22px; width:22px; left:3px; bottom:3px;
-    background-color:white; transition:.4s; border-radius:50%;
-  }
-  input:checked + .slider { background-color:#4cd964; }
-  input:checked + .slider:before { transform:translateX(22px); }
-  .packed { background:#fffbe6; }
-  .today-card {
-    border:2px solid #007aff;
-    animation: glowPulseBlue 4s ease-in-out infinite;
-  }
-  @keyframes glowPulseBlue {
-    0%,100% { box-shadow:0 0 12px 2px #007aff; }
-    50% { box-shadow:0 0 20px 3px #007aff; }
-  }
-  .week-toggle {
-    display:block;
-    margin:20px auto;
-    padding:12px 22px;
-    background:#007aff;
+  .view-banner .text { font-weight:600; color:var(--accent); }
+  .view-banner .sub { color:var(--muted); font-weight:500; font-size:.95rem; margin-left:6px; }
+
+  .banner-actions { display:flex; gap:8px; align-items:center; }
+  .banner-btn {
+    background:var(--accent);
     color:#fff;
-    font-weight:600;
-    font-size:1rem;
     border:none;
+    padding:8px 12px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 6px 14px rgba(0,122,255,0.18);
+  }
+  .banner-btn:active{transform:scale(.98); background:var(--accent-dark);}
+
+  /* menu container & cards */
+  #menuContainer { margin-top:8px; display:flex; flex-direction:column; gap:14px; padding-bottom:18px; }
+  .card {
+    background:var(--card);
+    border-radius:14px;
+    padding:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    position:relative;
+    transition:transform .18s ease, box-shadow .18s ease;
+    touch-action:pan-y; /* allow vertical scroll, custom horizontal detection */
+  }
+  .card:active { transform:scale(1.02) translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,0.09); }
+  .card.packed { background:var(--packed-bg); }
+
+  .day-name { font-weight:700; font-size:1.05rem; margin-bottom:8px; color:var(--text);}
+  .meals { white-space:pre-line; font-size:0.96rem; color:#333; line-height:1.5; margin-bottom:10px;}
+
+  .label {
+    position:absolute; top:12px; right:12px;
+    font-weight:700; font-size:.73rem; color:#fff; padding:6px 9px; border-radius:11px;
+    box-shadow:0 6px 14px rgba(0,0,0,0.08);
+  }
+  .label.today { background:var(--accent); }
+  .label.tomorrow { background:var(--warm); }
+
+  /* toggle */
+  .toggle { display:inline-block; width:56px; height:32px; position:relative; }
+  .toggle input{opacity:0;width:0;height:0;}
+  .slider{position:absolute;inset:0;border-radius:32px;background:#ddd;transition:background .22s,border-color .22s;}
+  .slider::before{content:"";position:absolute;left:4px;bottom:4px;width:24px;height:24px;background:#fff;border-radius:50%;transition:transform .18s, box-shadow .18s;}
+  input:checked + .slider{background:#34c759;}
+  input:checked + .slider::before{transform:translateX(24px); box-shadow:0 6px 18px rgba(0,0,0,0.12);}
+
+  /* bottom week toggle */
+  .controls { display:flex; justify-content:center; margin-top:12px; }
+  .week-toggle {
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    padding:12px 18px;
     border-radius:12px;
     cursor:pointer;
-    text-align:center;
-    box-shadow:0 4px 10px rgba(0,122,255,0.25);
-    transition:background 0.2s ease, transform 0.1s ease;
+    font-weight:700;
+    box-shadow:0 8px 22px rgba(0,122,255,0.18);
   }
-  .week-toggle:active {
-    background:#0062cc;
-    transform:scale(0.98);
+  .week-toggle:active { transform:scale(.99); background:var(--accent-dark); }
+
+  /* Today pulse (soft) */
+  @keyframes glowPulseBlue {
+    0%,100%{box-shadow:0 0 12px 2px rgba(0,122,255,0.14);}
+    50%{box-shadow:0 0 18px 4px rgba(0,122,255,0.16);}
   }
-  footer {
-    margin-top:20px;
-    text-align:center;
-    font-size:.85rem;
-    color:#555;
+  .today-card { border:1px solid rgba(0,122,255,0.12); animation:glowPulseBlue 3s ease-in-out infinite; }
+
+  /* small responsive tweak */
+  @media (max-width:420px){
+    .app{padding:14px;}
+    h1{font-size:1.35rem;}
+    .banner-btn{padding:8px 10px;}
   }
 </style>
 </head>
 <body>
-<h1>School Dinner Menu</h1>
-<div class="week-label" id="weekLabel"></div>
-<div class="week-dates" id="weekDates"></div>
-<div id="menuContainer"></div>
-<button id="toggleWeekBtn" class="week-toggle"></button>
-<footer>Baked salmon available every Friday as an alternative. Data last updated per Swansea Council 2025.</footer>
+  <div class="app">
+    <h1>School Dinner Menu</h1>
+
+    <div class="meta">
+      <div class="week-label" id="weekLabel">Week</div>
+      <div class="week-dates" id="weekDates"></div>
+    </div>
+
+    <!-- Banner: only visible when viewing a different week than current. Sticky under header. -->
+    <div id="viewBanner" class="view-banner" style="display:none;">
+      <div class="text">
+        Viewing Week <span id="bannerWeek">1</span>
+        <span class="sub"> — Not current</span>
+      </div>
+      <div class="banner-actions">
+        <button id="bannerBackBtn" class="banner-btn">Back to current week</button>
+      </div>
+    </div>
+
+    <!-- Menu area: swipe left/right here -->
+    <div id="menuWrapper">
+      <div id="menuContainer" aria-live="polite"></div>
+    </div>
+
+    <div class="controls">
+      <button id="toggleWeekBtn" class="week-toggle" aria-pressed="false">View Next Week</button>
+    </div>
+
+    <footer style="margin-top:18px;text-align:center;color:#666;font-size:.88rem;">
+      Baked salmon available every Friday as an alternative. Data last updated per Swansea Council 2025.
+    </footer>
+  </div>
 
 <script>
-// Week mapping
+/* -------- Data & helpers ---------- */
 const weekMap = [
   { week:1, dates:["2025-09-01","2025-09-22","2025-10-13","2025-11-10","2025-12-01"] },
   { week:2, dates:["2025-09-08","2025-09-29","2025-10-20","2025-11-17","2025-12-08"] },
   { week:3, dates:["2025-09-15","2025-10-06","2025-11-03","2025-11-24","2025-12-15"] }
 ];
 
-// Menus
 const MENUS = {
-  1: {
-    Monday: "Oven baked sausages / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
-    Tuesday: "BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments\nFruit yoghurt / Fresh fruit",
-    Wednesday: "Cheesy beany jacket / Breaded chicken steak\nAccompaniments\nPancake and fruit",
-    Thursday: "Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / Fresh fruit",
-    Friday: "Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"
-  },
-  2: {
-    Monday: "Chicken burger in a bun / Cheese and tomato pizza\nAccompaniments\nFruit or cookie",
-    Tuesday: "Pasta bolognese / Vegetarian hotdog\nAccompaniments\nFruit yoghurt / Fresh fruit",
-    Wednesday: "Roast chicken / Quorn fillet\nAccompaniments\nFruit crumble",
-    Thursday: "Sausage and mash / Vegetable curry\nAccompaniments\nFruit / Jelly",
-    Friday: "Fish fingers / Omelette\nAccompaniments\nChocolate sponge"
-  },
-  3: {
-    Monday: "Beef burger / Veggie burger\nAccompaniments\nFruit or muffin",
-    Tuesday: "Chicken curry / Macaroni cheese\nAccompaniments\nFruit yoghurt / Fresh fruit",
-    Wednesday: "Roast pork / Quorn roast\nAccompaniments\nFruit pie",
-    Thursday: "Lasagne / Vegetable chilli\nAccompaniments\nFruit / Ice cream",
-    Friday: "Battered fish / Cheese wrap\nAccompaniments\nCupcake"
-  }
+  1:{ Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments\nFruit / Biscuit", Tuesday:"BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments\nFruit yoghurt / Fresh fruit", Wednesday:"Cheesy beany jacket / Breaded chicken steak\nAccompaniments\nPancake and fruit", Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / Fresh fruit", Friday:"Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge" },
+  2:{ Monday:"Chicken burger in a bun / Cheese and tomato pizza\nAccompaniments\nFruit or cookie", Tuesday:"Pasta bolognese / Vegetarian hotdog\nAccompaniments\nFruit yoghurt / Fresh fruit", Wednesday:"Roast chicken / Quorn fillet\nAccompaniments\nFruit crumble", Thursday:"Sausage and mash / Vegetable curry\nAccompaniments\nFruit / Jelly", Friday:"Fish fingers / Omelette\nAccompaniments\nChocolate sponge" },
+  3:{ Monday:"Beef burger / Veggie burger\nAccompaniments\nFruit or muffin", Tuesday:"Chicken curry / Macaroni cheese\nAccompaniments\nFruit yoghurt / Fresh fruit", Wednesday:"Roast pork / Quorn roast\nAccompaniments\nFruit pie", Thursday:"Lasagne / Vegetable chilli\nAccompaniments\nFruit / Ice cream", Friday:"Battered fish / Cheese wrap\nAccompaniments\nCupcake" }
 };
 
 const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
-// Helpers
-function formatDateRange(startStr) {
+function formatDateRange(startStr){
   const start = new Date(startStr);
-  const end = new Date(start);
-  end.setDate(end.getDate() + 4); // Monday–Friday
+  const end = new Date(start); end.setDate(end.getDate()+4);
   const opts = { day:"numeric", month:"short" };
-  return `${start.toLocaleDateString("en-GB", opts)} – ${end.toLocaleDateString("en-GB", opts)}`;
+  return `${start.toLocaleDateString("en-GB",opts)} – ${end.toLocaleDateString("en-GB",opts)}`;
 }
 
-function getCurrentWeek() {
+/* ---------- week calculation with Sat/Sun rules ---------- */
+function getCurrentWeek(){
   const today = new Date();
   const day = today.getDay();
   const adjusted = new Date(today);
-
-  if (day === 6) adjusted.setDate(adjusted.getDate() - 1); // Saturday
-  else if (day === 0) adjusted.setDate(adjusted.getDate() + 1); // Sunday
-
-  for (const w of weekMap) {
-    for (const d of w.dates) {
+  if(day === 6) adjusted.setDate(adjusted.getDate() - 1); // Saturday -> use Friday's week
+  else if(day === 0) adjusted.setDate(adjusted.getDate() + 1); // Sunday -> next week (Monday)
+  for(const w of weekMap){
+    for(const d of w.dates){
       const start = new Date(d);
-      const end = new Date(start); end.setDate(end.getDate() + 6);
-      if (adjusted >= start && adjusted <= end) return w.week;
+      const end = new Date(start); end.setDate(end.getDate()+6);
+      if(adjusted >= start && adjusted <= end) return w.week;
     }
   }
   return 1;
 }
 
-// State
+/* ---------- App state ---------- */
 let currentWeek = getCurrentWeek();
 let showingWeek = currentWeek;
 
-// Day logic
-let today = new Date();
-let todayName = weekdays[today.getDay()];
-let tomorrow = new Date();
-tomorrow.setDate(today.getDate()+1);
-if(tomorrow.getDay()===6){ tomorrow.setDate(tomorrow.getDate()+2); }
-if(tomorrow.getDay()===0){ tomorrow.setDate(tomorrow.getDate()+1); }
+/* day labels relative to real 'today' */
+let realToday = new Date();
+let todayName = weekdays[realToday.getDay()];
+let tomorrow = new Date(realToday); tomorrow.setDate(realToday.getDate()+1);
+if(tomorrow.getDay() === 6) tomorrow.setDate(tomorrow.getDate()+2);
+if(tomorrow.getDay() === 0) tomorrow.setDate(tomorrow.getDate()+1);
 let tomorrowName = weekdays[tomorrow.getDay()];
 
-// Storage
+/* packed lunch persistence per week */
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 
-// Render
-function renderMenu(week) {
-  const container = document.getElementById("menuContainer");
-  container.innerHTML = "";
-  document.getElementById("weekLabel").textContent = "Week " + week;
+/* ---------- Rendering ---------- */
+const menuContainer = document.getElementById('menuContainer');
+const weekLabelEl = document.getElementById('weekLabel');
+const weekDatesEl = document.getElementById('weekDates');
+const banner = document.getElementById('viewBanner');
+const bannerWeek = document.getElementById('bannerWeek');
+const bannerBackBtn = document.getElementById('bannerBackBtn');
+const toggleBtn = document.getElementById('toggleWeekBtn');
 
-  // Show correct date range
-  let dateStr = "";
-  for (const w of weekMap) {
-    if (w.week === week) {
-      dateStr = formatDateRange(w.dates[0]); // pick first valid start
-      break;
-    }
+function updateBanner(){
+  if(showingWeek !== currentWeek){
+    banner.style.display = "flex";
+    bannerWeek.textContent = showingWeek;
+  } else {
+    banner.style.display = "none";
   }
-  document.getElementById("weekDates").textContent = dateStr;
+}
 
-  ["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach(day => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    if (packedLunch[week]?.[day]) card.classList.add("packed");
-    if (week === currentWeek && day === todayName) card.classList.add("today-card");
+function renderMenu(week){
+  // header
+  weekLabelEl.textContent = `Week ${week}`;
+  // date range - pick first valid date for that week from map
+  const wmap = weekMap.find(w=>w.week===week);
+  weekDatesEl.textContent = wmap ? formatDateRange(wmap.dates[0]) : "";
 
-    const dayName = document.createElement("div");
-    dayName.classList.add("day-name");
+  // clear
+  menuContainer.innerHTML = "";
+
+  const days = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
+  days.forEach((day, idx)=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    if(packedLunch[week] && packedLunch[week][day]) card.classList.add('packed');
+    // today pulse only when viewing the real current week
+    if(week === currentWeek && day === todayName) card.classList.add('today-card');
+
+    const dayName = document.createElement('div');
+    dayName.className = 'day-name';
     dayName.textContent = day;
 
-    const meals = document.createElement("div");
-    meals.classList.add("meals");
+    const meals = document.createElement('div');
+    meals.className = 'meals';
     meals.textContent = MENUS[week][day] || "No data";
 
-    const toggle = document.createElement("label");
-    toggle.classList.add("toggle");
-    const input = document.createElement("input");
-    input.type = "checkbox";
-    input.checked = !!(packedLunch[week]?.[day]);
-    const slider = document.createElement("span");
-    slider.classList.add("slider");
-    toggle.appendChild(input);
-    toggle.appendChild(slider);
+    const toggle = document.createElement('label');
+    toggle.className = 'toggle';
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.checked = !!(packedLunch[week] && packedLunch[week][day]);
+    const slider = document.createElement('span'); slider.className = 'slider';
+    toggle.appendChild(input); toggle.appendChild(slider);
 
-    const labelSpan = document.createElement("span");
-    if (week === currentWeek) {
-      if (day === todayName) { labelSpan.textContent = "Today"; labelSpan.classList.add("label","today"); }
-      else if (day === tomorrowName) { labelSpan.textContent = "Tomorrow"; labelSpan.classList.add("label","tomorrow"); }
+    const labelSpan = document.createElement('span');
+    if(week === currentWeek){
+      if(day === todayName){ labelSpan.textContent = "Today"; labelSpan.className = 'label today'; }
+      else if(day === tomorrowName){ labelSpan.textContent = "Tomorrow"; labelSpan.className = 'label tomorrow'; }
     }
 
-    input.addEventListener("change", () => {
-      if (input.checked) {
-        card.classList.add("packed");
-        packedLunch[week] = packedLunch[week] || {};
-        packedLunch[week][day] = true;
-      } else {
-        card.classList.remove("packed");
-        if (packedLunch[week]) delete packedLunch[week][day];
-      }
+    input.addEventListener('change', ()=>{
+      packedLunch[week] = packedLunch[week] || {};
+      if(input.checked) packedLunch[week][day] = true;
+      else { delete packedLunch[week][day]; }
       localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+      if(input.checked) card.classList.add('packed'); else card.classList.remove('packed');
     });
 
     card.appendChild(dayName);
     card.appendChild(meals);
     card.appendChild(toggle);
-    card.appendChild(labelSpan);
-    container.appendChild(card);
+    if(labelSpan.textContent) card.appendChild(labelSpan);
+    menuContainer.appendChild(card);
+
+    // slight staggered reveal
+    setTimeout(()=>{ card.style.opacity = 1; card.style.transform = 'translateY(0)'; }, idx*120 + 80);
   });
 
-  // Update toggle button
-  const btn = document.getElementById("toggleWeekBtn");
-  if (week === currentWeek) {
-    const nextWeek = currentWeek % 3 + 1;
-    btn.textContent = "View Next Week (Week " + nextWeek + ")";
+  // update bottom button text
+  if(week === currentWeek){
+    const nextW = currentWeek % 3 + 1;
+    toggleBtn.textContent = `View Next Week (Week ${nextW})`;
+    toggleBtn.setAttribute('aria-pressed','false');
   } else {
-    btn.textContent = "Back to Current Week (Week " + currentWeek + ")";
+    toggleBtn.textContent = `Back to Current Week (Week ${currentWeek})`;
+    toggleBtn.setAttribute('aria-pressed','true');
   }
+
+  updateBanner();
 }
 
-// Toggle button
-document.getElementById("toggleWeekBtn").addEventListener("click", () => {
-  if (showingWeek === currentWeek) {
-    showingWeek = currentWeek % 3 + 1;
-  } else {
-    showingWeek = currentWeek;
-  }
+/* ---------- Week switching helpers ---------- */
+function goToNextWeek(){
+  showingWeek = showingWeek % 3 + 1;
+  renderMenu(showingWeek);
+}
+function goToPrevWeek(){
+  showingWeek = (showingWeek + 1) % 3 + 1; // equivalent to -1 mod 3 but keeps 1..3
+  // simpler: prev = (showingWeek + 1) % 3 + 1 gives previous in cycle? Let's compute safe:
+  // Implement proper prev:
+  showingWeek = showingWeek === 1 ? 3 : showingWeek - 1;
+  renderMenu(showingWeek);
+}
+function backToCurrent(){
+  showingWeek = currentWeek;
+  renderMenu(showingWeek);
+}
+
+/* ---------- Buttons ---------- */
+toggleBtn.addEventListener('click', ()=>{
+  if(showingWeek === currentWeek) showingWeek = currentWeek % 3 + 1;
+  else showingWeek = currentWeek;
   renderMenu(showingWeek);
 });
+bannerBackBtn.addEventListener('click', backToCurrent);
 
-// First render
+/* ---------- Swipe gestures for #menuContainer ---------- */
+let touchStartX = 0;
+let touchStartY = 0;
+let touchStartTime = 0;
+
+const swipeThreshold = 50; // px
+const verticalLimit = 100; // px
+
+const menuWrapper = document.getElementById('menuWrapper');
+
+menuWrapper.addEventListener('touchstart', (e)=>{
+  if(e.touches && e.touches.length === 1){
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartTime = Date.now();
+  }
+}, {passive:true});
+
+menuWrapper.addEventListener('touchend', (e)=>{
+  // If touchend has changedTouches not available, get from changedTouches
+  const touch = e.changedTouches ? e.changedTouches[0] : null;
+  if(!touch) return;
+  const dx = touch.clientX - touchStartX;
+  const dy = touch.clientY - touchStartY;
+  const dt = Date.now() - touchStartTime;
+  if(Math.abs(dy) > verticalLimit) return; // not a horizontal swipe
+  if(Math.abs(dx) < swipeThreshold) return; // too small
+
+  if(dx < 0){
+    // swipe left -> next week
+    if(showingWeek === currentWeek) {
+      showingWeek = currentWeek % 3 + 1;
+    } else {
+      // if not current, go next in cycle
+      showingWeek = showingWeek === 3 ? 1 : showingWeek + 1;
+    }
+    renderMenu(showingWeek);
+  } else {
+    // swipe right -> previous week
+    if(showingWeek === currentWeek){
+      // go to previous week in cycle
+      showingWeek = showingWeek === 1 ? 3 : showingWeek - 1;
+    } else {
+      showingWeek = showingWeek === 1 ? 3 : showingWeek - 1;
+    }
+    renderMenu(showingWeek);
+  }
+}, {passive:true});
+
+/* allow keyboard arrows for desktop (nice-to-have) */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'ArrowLeft') { goToPrevWeek(); }
+  if(e.key === 'ArrowRight') { goToNextWeek(); }
+  if(e.key === 'Escape') { backToCurrent(); }
+});
+
+/* ---------- initial render ---------- */
 renderMenu(currentWeek);
+
 </script>
 </body>
 </html>
