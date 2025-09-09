@@ -39,14 +39,22 @@ h1 { text-align:center; margin-bottom:5px; font-weight:700; color:#333; }
 }
 .label.today {
   background:#4a90e2;
-  animation: glowPulse 2s infinite alternate;
+  animation: glowPulseBlue 2s infinite alternate;
 }
-.label.tomorrow { background:#ff9500; }
+.label.tomorrow {
+  background:#ff9500;
+  animation: glowPulseOrange 2s infinite alternate;
+}
 
-@keyframes glowPulse {
-  0% { box-shadow:0 0 5px #4a90e2; transform:scale(1); }
-  50% { box-shadow:0 0 25px #4a90e2; transform:scale(1.05); }
-  100% { box-shadow:0 0 10px #4a90e2; transform:scale(1); }
+@keyframes glowPulseBlue {
+  0% { box-shadow:0 0 10px #4a90e2; transform:scale(1); }
+  50% { box-shadow:0 0 30px #4a90e2; transform:scale(1.06); }
+  100% { box-shadow:0 0 15px #4a90e2; transform:scale(1); }
+}
+@keyframes glowPulseOrange {
+  0% { box-shadow:0 0 5px #ff9500; transform:scale(1); }
+  50% { box-shadow:0 0 15px #ff9500; transform:scale(1.03); }
+  100% { box-shadow:0 0 8px #ff9500; transform:scale(1); }
 }
 
 .toggle { position:relative; display:inline-block; width:50px; height:28px; margin-top:10px; }
@@ -70,7 +78,7 @@ input:checked + .slider:before { transform:translateX(22px); }
 #returnWeekBtn { display:none; background:#ff6b6b; }
 
 #viewingWeekIndicator {
-  position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
+  position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
   background:#ff6b6b; color:#fff; padding:8px 14px; border-radius:12px;
   font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.2); display:none; z-index:1000;
   animation: pulse 2s infinite;
@@ -204,7 +212,6 @@ function updateBadge(){
   if('setAppBadge' in navigator) navigator.setAppBadge(count).catch(()=>{});
 }
 
-// Auto-update week on Sunday
 setInterval(()=>{
   const newWeek=getWeekNum(new Date());
   if(newWeek!==currentWeek){
