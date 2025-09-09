@@ -24,7 +24,7 @@ h1::after{content:"";display:block;margin:8px auto 0;width:60px;height:2px;backg
 .meta{text-align:center;margin-bottom:14px;}
 .week-label{font-weight:700;font-size:1rem;}
 .week-dates{font-size:.9rem;color:var(--muted);margin-top:6px;}
-#menuContainer{display:flex;flex-direction:column;gap:14px;position:relative;overflow-y:auto;max-height:75vh;padding-bottom:20px;}
+#menuContainer{display:flex;flex-direction:column;gap:14px;position:relative;overflow-y:auto;max-height:70vh;padding-bottom:20px;}
 .card{background:var(--card);border-radius:14px;padding:14px;position:relative;opacity:0;transform:translateY(12px) scale(0.98);transition:transform .35s ease,opacity .3s ease, box-shadow .3s ease;}
 .card.other-day{background:linear-gradient(145deg,var(--other-bg-start),var(--other-bg-end));}
 .card.packed{background:linear-gradient(145deg,var(--packed-bg),#fff4b2);}
@@ -47,15 +47,17 @@ h1::after{content:"";display:block;margin:8px auto 0;width:60px;height:2px;backg
 input:checked + .slider{background:#34c759;}
 input:checked + .slider::before{transform:translateX(24px);}
 
-/* Controls moved higher to avoid iOS bottom bar */
+/* Sticky controls at bottom for iOS */
 .controls {
   display:flex;
   justify-content:center;
   gap:12px;
-  margin-top:12px;
-  margin-bottom:36px;
-  position: relative;
-  z-index:2;
+  position: sticky;
+  bottom: 16px; /* stays above iOS search bar */
+  background: transparent;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  z-index: 10;
 }
 .week-toggle{background:#007aff;color:#fff;border:none;padding:12px 18px;border-radius:12px;cursor:pointer;font-weight:700;box-shadow:0 8px 22px rgba(0,122,255,0.18);}
 .week-toggle:active{transform:scale(.99);background:#0062cc;}
@@ -160,7 +162,6 @@ function renderMenu(week){
         input.checked = !input.checked; // revert
         return;
       }
-
       if(!packedLunch[week]) packedLunch[week]={};
       if(input.checked){packedLunch[week][day]=true; card.classList.add('packed'); card.classList.remove('other-day');}
       else{delete packedLunch[week][day]; card.classList.remove('packed'); card.classList.add('other-day');}
