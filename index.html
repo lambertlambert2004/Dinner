@@ -13,7 +13,9 @@
     --accent:#007aff; /* iOS blue */
     --accent-dark:#0062cc;
     --warm:#ff9500;   /* orange for 'tomorrow' */
-    --packed-bg:#fffbe6;
+    --packed-bg:#fff9d6; /* pale packed yellow */
+    --other-bg-start:#f0fff6; /* pastel green start */
+    --other-bg-end:#e6fff2;   /* pastel green end */
   }
 
   html,body{height:100%;margin:0;padding:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);}
@@ -71,9 +73,19 @@
     touch-action:pan-y;
     opacity:0;
     transform: translateY(8px);
+    border: 1px solid rgba(0,0,0,0.04);
   }
   .card:active { transform:scale(1.02) translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,0.09); }
-  .card.packed { background:var(--packed-bg); }
+
+  /* pastel other-day background */
+  .card.other-day {
+    background: linear-gradient(145deg, var(--other-bg-start), var(--other-bg-end));
+  }
+
+  /* packed pale yellow */
+  .card.packed {
+    background: linear-gradient(145deg, #fff9d6, #fff4b2);
+  }
 
   .day-name { font-weight:700; font-size:1.05rem; margin-bottom:8px; color:var(--text); }
   .meals { white-space:pre-line; font-size:0.96rem; color:#333; line-height:1.5; margin-bottom:10px; }
@@ -83,12 +95,10 @@
     font-weight:700; font-size:.73rem; color:#fff; padding:6px 9px; border-radius:11px;
     box-shadow:0 6px 14px rgba(0,0,0,0.08);
   }
-
-  /* ensure label colours are prominent */
   .label.today { background:var(--accent); }
   .label.tomorrow { background:var(--warm); }
 
-  /* Today's card pulse: stronger and reliable */
+  /* Today's card pulse */
   @keyframes glowPulseBlue {
     0% { box-shadow: 0 0 10px 2px rgba(0,122,255,0.12); border-color: rgba(0,122,255,0.08); }
     50% { box-shadow: 0 0 20px 4px rgba(0,122,255,0.16); border-color: rgba(0,122,255,0.12); }
@@ -99,7 +109,7 @@
     animation: glowPulseBlue 3s ease-in-out infinite;
   }
 
-  /* Tomorrow card subtle orange outline (no heavy animation) */
+  /* Tomorrow subtle orange hint */
   @keyframes glowWarm {
     0% { box-shadow: 0 0 0 rgba(255,149,0,0); border-color: rgba(255,149,0,0.06); }
     50% { box-shadow: 0 0 8px rgba(255,149,0,0.06); border-color: rgba(255,149,0,0.09); }
@@ -192,12 +202,22 @@ function formatDateRange(startStr){
 }
 
 /* Week calculation with Sat/Sun rules */
+function getAdjustedDateForLabels(){
+  // returns adjusted date used for labeling "Today"/"Tomorrow"
+  const today = new Date();
+  const day = today.getDay();
+  const adjusted = new Date(today);
+  if(day === 6) adjusted.setDate(adjusted.getDate() - 1); // Saturday -> Friday
+  else if(day === 0) adjusted.setDate(adjusted.getDate() + 1); // Sunday -> Monday (next week)
+  return adjusted;
+}
+
 function getCurrentWeek(){
   const today = new Date();
   const day = today.getDay();
   const adjusted = new Date(today);
-  if(day === 6) adjusted.setDate(adjusted.getDate() - 1); // Saturday -> use Friday's week
-  else if(day === 0) adjusted.setDate(adjusted.getDate() + 1); // Sunday -> next week (Monday)
+  if(day === 6) adjusted.setDate(adjusted.getDate() - 1); // Saturday -> Friday
+  else if(day === 0) adjusted.setDate(adjusted.getDate() + 1); // Sunday -> Monday (next week)
   for(const w of weekMap){
     for(const d of w.dates){
       const start = new Date(d);
@@ -212,13 +232,15 @@ function getCurrentWeek(){
 let currentWeek = getCurrentWeek();
 let showingWeek = currentWeek;
 
-/* day labels relative to real 'today' */
-let realToday = new Date();
-let todayName = weekdays[realToday.getDay()];
-let tomorrow = new Date(realToday); tomorrow.setDate(realToday.getDate()+1);
-if(tomorrow.getDay() === 6) tomorrow.setDate(tomorrow.getDate()+2);
-if(tomorrow.getDay() === 0) tomorrow.setDate(tomorrow.getDate()+1);
-let tomorrowName = weekdays[tomorrow.getDay()];
+/* compute label day names according to adjusted date */
+const adjustedToday = getAdjustedDateForLabels();
+let todayName = weekdays[adjustedToday.getDay()];
+let tomorrowAdj = new Date(adjustedToday);
+tomorrowAdj.setDate(tomorrowAdj.getDate()+1);
+// if tomorrow falls on weekend, move to next school day
+if(tomorrowAdj.getDay() === 6) tomorrowAdj.setDate(tomorrowAdj.getDate() + 2);
+if(tomorrowAdj.getDay() === 0) tomorrowAdj.setDate(tomorrowAdj.getDate() + 1);
+let tomorrowName = weekdays[tomorrowAdj.getDay()];
 
 /* persistence */
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
@@ -232,10 +254,8 @@ const bannerWeek = document.getElementById('bannerWeek');
 const bannerBackBtn = document.getElementById('bannerBackBtn');
 const toggleBtn = document.getElementById('toggleWeekBtn');
 
-/* Banner update */
 function updateBanner(){ if(showingWeek !== currentWeek){ banner.style.display = "flex"; bannerWeek.textContent = showingWeek; } else { banner.style.display = "none"; } }
 
-/* Render */
 function renderMenu(week){
   weekLabelEl.textContent = `Week ${week}`;
   const wmap = weekMap.find(w=>w.week===week);
@@ -245,11 +265,19 @@ function renderMenu(week){
   const days = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
   days.forEach((day, idx)=>{
     const card = document.createElement('div'); card.className = 'card';
+    // other-day pastel by default
+    card.classList.add('other-day');
+
     // apply packed background
-    if(packedLunch[week] && packedLunch[week][day]) card.classList.add('packed');
+    if(packedLunch[week] && packedLunch[week][day]) {
+      card.classList.remove('other-day');
+      card.classList.add('packed');
+    }
+
     // today's pulse only if viewing the actual current week
     if(week === currentWeek && day === todayName) card.classList.add('today-card');
-    // tomorrow outline only when viewing current week
+
+    // tomorrow hint only when viewing current week
     if(week === currentWeek && day === tomorrowName) card.classList.add('tomorrow-card');
 
     const dayName = document.createElement('div'); dayName.className = 'day-name'; dayName.textContent = day;
@@ -272,7 +300,8 @@ function renderMenu(week){
       if(input.checked) packedLunch[week][day] = true;
       else delete packedLunch[week][day];
       localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
-      if(input.checked) card.classList.add('packed'); else card.classList.remove('packed');
+      if(input.checked){ card.classList.remove('other-day'); card.classList.add('packed'); }
+      else { card.classList.remove('packed'); card.classList.add('other-day'); }
     });
 
     card.appendChild(dayName);
@@ -312,11 +341,11 @@ toggleBtn.addEventListener('click', ()=>{
 bannerBackBtn.addEventListener('click', backToCurrent);
 
 /* Swipe gestures */
-let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+let touchStartX = 0, touchStartY = 0;
 const swipeThreshold = 50, verticalLimit = 120;
 const menuWrapper = document.getElementById('menuWrapper');
 
-menuWrapper.addEventListener('touchstart', (e)=>{ if(e.touches && e.touches.length===1){ touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; touchStartTime = Date.now(); } }, {passive:true});
+menuWrapper.addEventListener('touchstart', (e)=>{ if(e.touches && e.touches.length===1){ touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; } }, {passive:true});
 menuWrapper.addEventListener('touchend', (e)=>{
   const touch = e.changedTouches ? e.changedTouches[0] : null;
   if(!touch) return;
@@ -324,13 +353,7 @@ menuWrapper.addEventListener('touchend', (e)=>{
   const dy = touch.clientY - touchStartY;
   if(Math.abs(dy) > verticalLimit) return;
   if(Math.abs(dx) < swipeThreshold) return;
-  if(dx < 0){
-    // swipe left -> next
-    goToNextWeek();
-  } else {
-    // swipe right -> prev
-    goToPrevWeek();
-  }
+  if(dx < 0) goToNextWeek(); else goToPrevWeek();
 }, {passive:true});
 
 /* keyboard */
