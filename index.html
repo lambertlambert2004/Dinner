@@ -31,9 +31,13 @@ h1::after{content:"";display:block;margin:8px auto 0;width:60px;height:2px;backg
 .day-name{font-weight:700;font-size:1.05rem;margin-bottom:8px;color:var(--text);}
 .meals{white-space:pre-line;font-size:.96rem;color:#333;line-height:1.5;margin-bottom:6px;}
 .label{position:absolute;top:12px;right:12px;font-weight:700;font-size:.73rem;color:#fff;padding:6px 9px;border-radius:11px;display:flex;align-items:center;z-index:2;}
-.label.today{background:#007aff;animation:glowBlue 2.5s ease-in-out infinite alternate;}
+.label.today{background:#007aff;animation:glowBluePremium 1.8s ease-in-out infinite alternate;}
 .label.tomorrow{background:#ff9500;animation:glowOrange 2.5s ease-in-out infinite alternate;}
-@keyframes glowBlue{0%{box-shadow:0 0 6px 2px rgba(0,122,255,0.4);}50%{box-shadow:0 0 16px 6px rgba(0,122,255,0.5);}100%{box-shadow:0 0 6px 2px rgba(0,122,255,0.4);}}
+@keyframes glowBluePremium {
+  0% { box-shadow: 0 0 8px 3px rgba(0,122,255,0.5); }
+  50% { box-shadow: 0 0 20px 8px rgba(0,122,255,0.6); }
+  100% { box-shadow: 0 0 8px 3px rgba(0,122,255,0.5); }
+}
 @keyframes glowOrange{0%{box-shadow:0 0 6px 2px rgba(255,149,0,0.4);}50%{box-shadow:0 0 16px 6px rgba(255,149,0,0.5);}100%{box-shadow:0 0 6px 2px rgba(255,149,0,0.4);}}
 
 .toggle{display:inline-block;width:56px;height:32px;position:relative;margin-top:6px;}
@@ -42,7 +46,17 @@ h1::after{content:"";display:block;margin:8px auto 0;width:60px;height:2px;backg
 .slider::before{content:"";position:absolute;left:4px;bottom:4px;width:24px;height:24px;background:#fff;border-radius:50%;transition:transform .18s, box-shadow .18s;}
 input:checked + .slider{background:#34c759;}
 input:checked + .slider::before{transform:translateX(24px);}
-.controls{display:flex;justify-content:center;gap:12px;margin-top:12px;}
+
+/* Controls moved up to avoid iOS search bar */
+.controls {
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:12px;
+  margin-bottom:20px;
+  position: relative;
+  z-index:2;
+}
 .week-toggle{background:#007aff;color:#fff;border:none;padding:12px 18px;border-radius:12px;cursor:pointer;font-weight:700;box-shadow:0 8px 22px rgba(0,122,255,0.18);}
 .week-toggle:active{transform:scale(.99);background:#0062cc;}
 @media(max-width:420px){.app{padding:14px;} h1{font-size:1.35rem;} .week-toggle{padding:10px 14px;}}
@@ -60,7 +74,7 @@ input:checked + .slider::before{transform:translateX(24px);}
 
 <div class="controls">
   <button id="toggleWeekBtn" class="week-toggle">View Next Week</button>
-  <button id="returnWeekBtn" class="week-toggle">Return to Current Week</button>
+  <button id="returnWeekBtn" class="week-toggle" style="display:none;">Return to Current Week</button>
 </div>
 
 <footer style="margin-top:18px;text-align:center;color:#666;font-size:.88rem;">
@@ -108,6 +122,10 @@ const weekDates=document.getElementById('weekDates');
 const toggleWeekBtn=document.getElementById('toggleWeekBtn');
 const returnWeekBtn=document.getElementById('returnWeekBtn');
 
+function updateReturnButton() {
+  returnWeekBtn.style.display = showingWeek === currentWeek ? 'none' : 'inline-block';
+}
+
 function renderMenu(week){
   menuContainer.innerHTML="";
   weekLabel.textContent="Week "+week;
@@ -149,6 +167,8 @@ function renderMenu(week){
     menuContainer.appendChild(card);
     setTimeout(()=>{card.style.opacity=1; card.style.transform="translateY(0) scale(1)";},50);
   });
+
+  updateReturnButton();
 }
 
 // CONTROLS
