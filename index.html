@@ -41,7 +41,7 @@ h1{margin:0;font-size:1.6rem;}
 .slider:before{content:"";position:absolute;left:4px;bottom:4px;width:24px;height:24px;background:#fff;border-radius:50%;transition:.3s;}
 input:checked + .slider{background:#34c759;}
 input:checked + .slider:before{transform:translateX(24px);}
-.controls{display:flex;justify-content:center;gap:12px;position:fixed;bottom:40px;width:100%;z-index:20;}
+.controls{display:flex;justify-content:center;gap:12px;position:fixed;bottom:50px;width:100%;z-index:20;}
 .controls button{padding:10px 16px;border:none;border-radius:10px;background:#007bff;color:#fff;font-weight:700;cursor:pointer;box-shadow:0 6px 14px rgba(0,123,255,0.2);}
 .controls button:active{transform:scale(.98);}
 footer{margin-top:20px;text-align:center;font-size:.85rem;color:#555;}
@@ -59,26 +59,39 @@ footer{margin-top:20px;text-align:center;font-size:.85rem;color:#555;}
 </div>
 <footer>Baked salmon available every Friday as an alternative. Data last updated per Swansea Council 2025.</footer>
 <script>
-// MENU DATA
+// Correct MENU DATA from Swansea Council 2025
 const MENUS={
-1:{Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments of the day\nFruit / Biscuit",
-Tuesday:"BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments of the day\nFruit yoghurt / Fresh fruit",
-Wednesday:"Cheesy beany jacket / Breaded chicken steak\nAccompaniments of the day\nPancake and fruit",
-Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments of the day\nCookie / Fresh fruit",
-Friday:"Baked fish / Cheese wrap\nAccompaniments of the day\nJam split and fruit wedge"},
-2:{Monday:"Breaded chicken steak / Vegetable cheese bake\nAccompaniments of the day\nFruit yoghurt pot / Fresh fruit",
-Tuesday:"Pasta bolognese / Vegetarian hotdog\nAccompaniments of the day\nFruit muffin / Fresh fruit",
+1:{
+Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments of the day\nHomemade biscuit and peach slices / fresh fruit",
+Tuesday:"BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments of the day\nFruit yoghurt pot / fresh fruit",
+Wednesday:"Chicken curry / Vegetable curry\nAccompaniments of the day\nFruit yoghurt pot / fresh fruit",
+Thursday:"Fish fingers / Vegetarian nuggets\nAccompaniments of the day\nFruit yoghurt pot / fresh fruit",
+Friday:"Cheese and tomato pizza / Vegetable pizza\nAccompaniments of the day\nFruit yoghurt pot / fresh fruit"
+},
+2:{
+Monday:"Breaded chicken steak / Vegetable cheese bake\nAccompaniments of the day\nFruit yoghurt pot / fresh fruit",
+Tuesday:"Pasta bolognese / Omelette\nAccompaniments of the day\nJelly and mandarins / fresh fruit",
 Wednesday:"Roast turkey / Vegetarian sausage\nAccompaniments of the day\nIce cream / Fresh fruit",
 Thursday:"Chicken curry / Macaroni cheese\nAccompaniments of the day\nCookie / Fresh fruit",
-Friday:"Fish fingers / Cheese and tomato pizza\nAccompaniments of the day\nFruit wedge / Shortbread"},
-3:{Monday:"Cheese and tomato pizza / Chicken curry\nAccompaniments of the day\nChocolate sponge and custard / Fresh fruit",
-Tuesday:"Chicken curry / Vegetarian hotdog\nAccompaniments of the day\nFruit yoghurt pot / Fresh fruit",
+Friday:"Fish fingers / Cheese and tomato pizza\nAccompaniments of the day\nFruit wedge / Shortbread"
+},
+3:{
+Monday:"Meatballs / Tomato pasta bake\nAccompaniments of the day\nJam split and fruit wedge / fresh fruit",
+Tuesday:"Chicken curry / Margherita pizza\nAccompaniments of the day\nFruit yoghurt pot / fresh fruit",
 Wednesday:"Roast chicken / Quorn fillet\nAccompaniments of the day\nFruit / Flapjack",
 Thursday:"Beef burger / Vegetarian lasagne\nAccompaniments of the day\nCookie / Fresh fruit",
-Friday:"Fish cake / Vegetable nuggets\nAccompaniments of the day\nFruit jelly / Fresh fruit"}
+Friday:"Fish cake / Vegetable nuggets\nAccompaniments of the day\nFruit jelly / Fresh fruit"
+}
 };
-const weekMap=[{week:1,start:"2025-09-01"},{week:2,start:"2025-09-08"},{week:3,start:"2025-09-15"}];
+
+const weekMap=[
+{week:1,start:"2025-09-01"},
+{week:2,start:"2025-09-08"},
+{week:3,start:"2025-09-15"}
+];
+
 const weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
 function getWeekNum(date){let d=new Date(date);for(let i=weekMap.length-1;i>=0;i--){if(d>=new Date(weekMap[i].start)) return weekMap[i].week;}return 1;}
 function getNextWeekNum(w){return w%3+1;}
 function getCurrentAndTomorrow(){let t=new Date(); let tn=weekdays[t.getDay()]; let tm=new Date(t); tm.setDate(tm.getDate()+1); if(tm.getDay()===6) tm.setDate(tm.getDate()+2); if(tm.getDay()===0) tm.setDate(tm.getDate()+1); return {today:tn,tomorrow:weekdays[tm.getDay()]};}
@@ -87,13 +100,15 @@ let currentWeek=getWeekNum(new Date());
 let viewedWeek=currentWeek;
 let today=new Date();
 const menuContainer=document.getElementById("menuContainer");
+
 function renderWeek(w){
   menuContainer.innerHTML="";
   const {today:todayName,tomorrow:tomName}=getCurrentAndTomorrow();
   const packed=JSON.parse(localStorage.getItem("packedLunch")||"{}");
-  ["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach((day,i)=>{
-    let tr=document.createElement("div"); tr.classList.add("card");
-    if(packed[w]&&packed[w][day]) tr.classList.add("packed"); else tr.classList.add("other-day");
+  ["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach(day=>{
+    let card=document.createElement("div"); 
+    card.classList.add("card");
+    if(packed[w]&&packed[w][day]) card.classList.add("packed"); else card.classList.add("other-day");
     let dn=document.createElement("div"); dn.className="day-name"; dn.textContent=day;
     let meals=document.createElement("div"); meals.className="meals"; meals.textContent=MENUS[w][day]||"No data";
 
@@ -110,19 +125,16 @@ function renderWeek(w){
       const action=input.checked?"add":"remove";
       if(!confirm(`Are you sure you want to ${action} packed lunch for ${day}?`)){input.checked=!input.checked; return;}
       if(!packed[w]) packed[w]={};
-      if(input.checked){packed[w][day]=true; tr.classList.remove("other-day"); tr.classList.add("packed");}
-      else {delete packed[w][day]; tr.classList.remove("packed"); tr.classList.add("other-day");}
+      if(input.checked){packed[w][day]=true; card.classList.remove("other-day"); card.classList.add("packed");}
+      else {delete packed[w][day]; card.classList.remove("packed"); card.classList.add("other-day");}
       localStorage.setItem("packedLunch",JSON.stringify(packed));
       updateBadge();
     });
 
-    tr.appendChild(dn); tr.appendChild(meals); tr.appendChild(tdToggle);
-    menuContainer.appendChild(tr);
+    card.appendChild(dn); card.appendChild(meals); card.appendChild(tdToggle);
+    menuContainer.appendChild(card);
   });
 
-  let firstDayOfWeek=new Date(today);
-  firstDayOfWeek.setDate(firstDayOfWeek.getDate()-(firstDayOfWeek.getDay()-1));
-  if(w!==currentWeek){firstDayOfWeek.setDate(firstDayOfWeek.getDate()+7*(w-currentWeek));}
   document.getElementById("weekInfo").textContent=`Week ${w}`;
   updateBadge();
 }
@@ -131,17 +143,17 @@ function updateBadge(){
   const packed=JSON.parse(localStorage.getItem("packedLunch")||"{}");
   let count=0;
   if(packed[viewedWeek]) count=Object.keys(packed[viewedWeek]).length;
-  if('setAppBadge' in navigator){navigator.setAppBadge(count).catch(()=>{});}
+  if('setAppBadge' in navigator) navigator.setAppBadge(count).catch(()=>{});
 }
 
 document.getElementById("toggleWeekBtn").addEventListener("click",()=>{
   viewedWeek=getNextWeekNum(viewedWeek);
   renderWeek(viewedWeek);
-  document.getElementById("returnWeekBtn").style.display="inline-block";
+  if(viewedWeek!==currentWeek) document.getElementById("returnWeekBtn").style.display="inline-block";
 });
 document.getElementById("returnWeekBtn").addEventListener("click",()=>{
   viewedWeek=currentWeek;
-  renderWeek(viewedWeek);
+  renderWeek(currentWeek);
   document.getElementById("returnWeekBtn").style.display="none";
 });
 
