@@ -4,8 +4,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>School Dinner Menu</title>
-
-<!-- Apple Touch Icon -->
 <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/lambertlambert2004/Dinner/main/icon-180.PNG">
 
 <style>
@@ -54,8 +52,6 @@ input:checked + .slider::before{transform:translateX(24px);}
 .controls{display:flex;justify-content:center;margin-top:12px;}
 .week-toggle{background:var(--accent);color:#fff;border:none;padding:12px 18px;border-radius:12px;cursor:pointer;font-weight:700;box-shadow:0 8px 22px rgba(0,122,255,0.18);}
 .week-toggle:active{transform:scale(.99);background:var(--accent-dark);}
-.fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;box-shadow:0 8px 22px rgba(0,122,255,0.22);cursor:pointer;z-index:999;}
-.fab:active{transform:scale(.95);background:var(--accent-dark);}
 .today-card::after,.tomorrow-card::after{content:"";position:absolute;inset:0;border-radius:14px;z-index:-1;}
 .today-card::after{animation:glowPulseBlue 3s ease-in-out infinite;}
 .tomorrow-card::after{animation:glowWarm 4s ease-in-out infinite;}
@@ -82,8 +78,6 @@ input:checked + .slider::before{transform:translateX(24px);}
 <div class="controls">
   <button id="toggleWeekBtn" class="week-toggle">View Next Week</button>
 </div>
-<div class="fab" id="fabWeekToggle">⇄</div>
-<audio id="toggleSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
 
 <footer style="margin-top:18px;text-align:center;color:#666;font-size:.88rem;">
 Baked salmon available every Friday as an alternative. Data last updated per Swansea Council 2025.
@@ -117,18 +111,18 @@ const viewBanner=document.getElementById('viewBanner');
 const bannerWeek=document.getElementById('bannerWeek');
 const bannerBackBtn=document.getElementById('bannerBackBtn');
 const toggleWeekBtn=document.getElementById('toggleWeekBtn');
-const fabWeekToggle=document.getElementById('fabWeekToggle');
-const toggleSound=document.getElementById('toggleSound');
 
-// FUNCTIONS
+// HELPER
 function formatWeekDates(w){return weekMap.find(x=>x.week===w).dates.map(d=>new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})).join(", ");}
 
 function nextWeek(w){return w===3?1:w+1;}
 
+// RENDER
 function renderMenu(week){
   menuContainer.innerHTML="";
   weekLabel.textContent="Week "+week;
   weekDates.textContent="Week commencing: "+formatWeekDates(week);
+
   const weekdays=["Monday","Tuesday","Wednesday","Thursday","Friday"];
   const todayObj=new Date();
   const tomorrowObj=new Date(); tomorrowObj.setDate(todayObj.getDate()+1);
@@ -160,6 +154,7 @@ function renderMenu(week){
     const input=document.createElement('input'); input.type="checkbox"; input.checked=!!packedLunch[week]?.[day];
     const slider=document.createElement('span'); slider.classList.add('slider');
     toggleLabel.appendChild(input); toggleLabel.appendChild(slider); toggleDiv.appendChild(toggleLabel);
+
     input.addEventListener('change',()=>{
       if(!packedLunch[week]) packedLunch[week]={};
       if(input.checked){packedLunch[week][day]=true; card.classList.add('packed');}
@@ -177,10 +172,10 @@ function renderMenu(week){
 }
 
 // CONTROLS
-toggleWeekBtn.addEventListener('click',()=>{showingWeek=nextWeek(currentWeek); renderMenu(showingWeek); toggleSound.play();});
-fabWeekToggle.addEventListener('click',()=>{showingWeek=nextWeek(currentWeek); renderMenu(showingWeek); toggleSound.play();});
+toggleWeekBtn.addEventListener('click',()=>{showingWeek=nextWeek(currentWeek); renderMenu(showingWeek);});
 bannerBackBtn.addEventListener('click',()=>{showingWeek=currentWeek; renderMenu(showingWeek);});
 
+// INITIAL RENDER
 renderMenu(showingWeek);
 </script>
 </body>
