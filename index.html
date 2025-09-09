@@ -18,35 +18,61 @@ h1 { text-align:center; margin-bottom:5px; font-weight:700; color:#333; }
   background:#dfffe0;
   border-radius:12px;
   box-shadow:0 2px 10px rgba(0,0,0,0.08);
-  padding:15px; margin-bottom:15px; position:relative; transition: transform 0.2s, background 0.3s;
+  padding:15px;
+  margin-bottom:15px;
+  position:relative;
+  transition: transform 0.2s, background 0.3s;
 }
 .card.packed { background:#fff4b2; }
 .day-name { font-weight:600; font-size:1.15rem; margin-bottom:8px; color:#333; }
 .meals { white-space:pre-line; line-height:1.4; color:#444; }
 .label {
-  position:absolute; top:10px; right:10px; font-size:0.75rem; font-weight:bold;
-  color:#fff; padding:3px 6px; border-radius:6px; z-index:2;
+  position:absolute;
+  top:10px;
+  right:10px;
+  font-size:0.75rem;
+  font-weight:bold;
+  color:#fff;
+  padding:3px 6px;
+  border-radius:6px;
+  z-index:2;
 }
-.label.today { background:#4a90e2; animation: glow 2s infinite alternate; }
+.label.today {
+  background:#4a90e2;
+  animation: glowPulse 2s infinite alternate;
+}
 .label.tomorrow { background:#ff9500; }
-@keyframes glow { 0%{box-shadow:0 0 5px #4a90e2}100%{box-shadow:0 0 20px #4a90e2} }
+
+@keyframes glowPulse {
+  0% { box-shadow:0 0 5px #4a90e2; transform:scale(1); }
+  50% { box-shadow:0 0 25px #4a90e2; transform:scale(1.05); }
+  100% { box-shadow:0 0 10px #4a90e2; transform:scale(1); }
+}
+
 .toggle { position:relative; display:inline-block; width:50px; height:28px; margin-top:10px; }
 .toggle input { opacity:0; width:0; height:0; }
 .slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; transition:.4s; border-radius:28px; }
 .slider:before { position:absolute; content:""; height:22px; width:22px; left:3px; bottom:3px; background-color:white; transition:.4s; border-radius:50%; }
 input:checked + .slider { background-color:#4cd964; }
 input:checked + .slider:before { transform:translateX(22px); }
+
 #controls { text-align:center; margin-top:10px; }
 #toggleWeekBtn, #returnWeekBtn {
-  background:#4a90e2; color:#fff; border:none; padding:8px 14px; border-radius:8px;
-  margin:4px; cursor:pointer; font-weight:bold;
+  background:#4a90e2;
+  color:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:8px;
+  margin:4px;
+  cursor:pointer;
+  font-weight:bold;
 }
 #returnWeekBtn { display:none; background:#ff6b6b; }
-/* Floating viewing week indicator with pulse animation */
+
 #viewingWeekIndicator {
-  position:fixed; bottom:70px; left:50%; transform:translateX(-50%);
-  background:#ff6b6b; color:#fff; padding:8px 14px; border-radius:12px; font-weight:bold;
-  box-shadow:0 2px 6px rgba(0,0,0,0.2); display:none; z-index:1000;
+  position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
+  background:#ff6b6b; color:#fff; padding:8px 14px; border-radius:12px;
+  font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.2); display:none; z-index:1000;
   animation: pulse 2s infinite;
 }
 @keyframes pulse {
@@ -54,11 +80,11 @@ input:checked + .slider:before { transform:translateX(22px); }
   50% { transform:translateX(-50%) scale(1.05); opacity:1; }
   100% { transform:translateX(-50%) scale(1); opacity:0.9; }
 }
-/* Packed meals badge */
+
 #packedBadge {
   position:fixed; top:15px; right:15px; background:#4cd964; color:#fff;
-  font-weight:bold; padding:6px 10px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.2); z-index:1000;
-  font-size:0.85rem;
+  font-weight:bold; padding:6px 10px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.2);
+  z-index:1000; font-size:0.85rem;
 }
 </style>
 </head>
@@ -74,7 +100,6 @@ input:checked + .slider:before { transform:translateX(22px); }
 <div id="packedBadge"></div>
 
 <script>
-// Verified Swansea Council 2025 menus
 const MENUS = {
   1: { Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments of the day\nHomemade biscuit and peach slices / fresh fruit",
        Tuesday:"BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments of the day\nFruit yoghurt pot / fresh fruit",
@@ -106,7 +131,6 @@ function getWeekNum(date){
   for(let i=weekMap.length-1;i>=0;i--){
     if(d >= new Date(weekMap[i].start) && d <= new Date(weekMap[i].end)) return weekMap[i].week;
   }
-  // Default to first week if not matched
   return 1;
 }
 
