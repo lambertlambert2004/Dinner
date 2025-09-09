@@ -8,31 +8,50 @@
 
 <style>
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text","Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   margin:0; padding:20px; background:#f2f2f7; color:#1c1c1e;
 }
 h1 { 
-  text-align:center; font-weight:700; font-size:1.9rem; margin:0 0 8px;
+  text-align:center; font-weight:800; font-size:2rem; margin:0 0 4px;
+  letter-spacing:0.5px;
 }
+h1::after {
+  content:""; display:block; margin:8px auto 0; width:60px; height:2px; background:#d1d1d6; border-radius:1px;
+}
+
+/* Week label with shimmering gradient */
 .week-label { 
-  text-align:center; font-size:0.85rem; color:#6e6e73; margin-bottom:20px; 
+  text-align:center; 
+  font-size:0.85rem; 
+  color:#1c1c1e;
+  margin-bottom:20px; 
+  letter-spacing:0.5px;
+  font-weight:600;
+  background: linear-gradient(90deg, rgba(0,122,255,0.15), rgba(142,142,147,0.15), rgba(0,122,255,0.15));
+  padding:4px 12px; 
+  border-radius:12px;
+  display:inline-block;
+  background-size:200% 100%;
+  animation: shimmer 4s linear infinite;
 }
+@keyframes shimmer {
+  0% { background-position:200% 0; }
+  100% { background-position:-200% 0; }
+}
+
 #menuCards { display:flex; flex-direction:column; gap:18px; }
 .card {
   background:linear-gradient(145deg,#ffffff,#f9f9f9);
   padding:18px 22px; border-radius:20px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
   position:relative; display:flex; flex-direction:column;
-  transition:all 0.3s ease, transform 0.3s ease;
   opacity:0; transform:translateY(20px) scale(0.98);
-  animation:slideIn 0.5s forwards;
+  transition:all 0.3s ease, transform 0.3s ease, opacity 0.5s ease;
 }
 .card.packed { background:linear-gradient(145deg,#fff9d6,#fff4b2); }
 .card.other-day { background:linear-gradient(145deg,#e6fff2,#dfffe0); }
 .card.tomorrow { border:3px solid #ffb3b3; }
 .card:hover, .card:active { transform: scale(1.02); box-shadow:0 6px 16px rgba(0,0,0,0.12); }
-
-@keyframes slideIn { to { opacity:1; transform:translateY(0) scale(1);} }
 
 .card h2 { margin:0 0 12px; font-size:1.4rem; font-weight:600; }
 .menu { white-space:pre-line; margin-bottom:15px; font-size:1rem; line-height:1.6; color:#333; }
@@ -47,16 +66,13 @@ h1 {
 .slider:before { position:absolute; content:""; height:26px; width:26px; left:4px; bottom:4px; background-color:white; transition:.2s; border-radius:50%; }
 input:checked + .slider { background-color:#34c759; }
 input:checked + .slider:before { transform:translateX(26px); }
-#resetPacked { display:block; margin:20px auto 10px; padding:8px 16px; border:none;
-  border-radius:12px; background:#ff3b30; color:#fff; font-weight:600; cursor:pointer; transition:background 0.3s; }
-#resetPacked:hover { background:#ff453a; }
+
 footer { margin-top:28px; text-align:center; font-size:.85rem; color:#8e8e93; }
 </style>
 </head>
 <body>
 <h1>School Dinner Menu</h1>
 <div class="week-label" id="weekLabel"></div>
-<button id="resetPacked">Reset Packed Lunches</button>
 <div id="menuCards"></div>
 <footer>Baked salmon available every Friday as an alternative. Data last updated per Swansea Council 2025.</footer>
 
@@ -106,7 +122,7 @@ let packedLunch=allPackedLunch[currentWeek];
 const container=document.getElementById("menuCards");
 const MENUS=MENUS_BY_WEEK[currentWeek];
 
-["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach(day=>{
+["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach((day,index)=>{
   const card=document.createElement("div");
   card.classList.add("card", packedLunch[day]?"packed":"other-day");
   if(day===tomorrowName) card.classList.add("tomorrow");
@@ -141,6 +157,9 @@ const MENUS=MENUS_BY_WEEK[currentWeek];
 
   container.appendChild(card);
 
+  // Staggered fade-in animation
+  setTimeout(()=>{ card.style.opacity=1; card.style.transform="translateY(0) scale(1)"; }, index*150);
+
   // Highlight today card
   if(day===todayName){ card.style.transition="0.5s"; card.style.boxShadow="0 0 24px 3px #007aff"; setTimeout(()=>{card.style.boxShadow="0 4px 12px rgba(0,0,0,0.08)";},1500); }
 });
@@ -148,11 +167,6 @@ const MENUS=MENUS_BY_WEEK[currentWeek];
 // Scroll to today
 const todayCard=Array.from(document.querySelectorAll(".card")).find(c=>c.querySelector(".label.today"));
 if(todayCard) todayCard.scrollIntoView({behavior:"smooth", block:"center"});
-
-// Reset button
-document.getElementById("resetPacked").addEventListener("click",()=>{ 
-  if(confirm("Reset all packed lunches?")){ localStorage.removeItem('packedLunch'); location.reload(); } 
-});
 </script>
 </body>
 </html>
