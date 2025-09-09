@@ -75,7 +75,6 @@ input:checked + .slider::before{transform:translateX(24px);}
 .fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;box-shadow:0 8px 22px rgba(0,122,255,0.22);cursor:pointer;z-index:999;}
 .fab:active{transform:scale(.95);background:var(--accent-dark);}
 
-/* Glows using pseudo-element */
 .today-card::after,.tomorrow-card::after{
   content:"";position:absolute;inset:0;border-radius:14px;z-index:-1;
 }
@@ -92,7 +91,6 @@ input:checked + .slider::before{transform:translateX(24px);}
   100%{box-shadow:0 0 8px 1px rgba(255,149,0,0.12);}
 }
 
-/* Responsive */
 @media(max-width:420px){.app{padding:14px;} h1{font-size:1.35rem;} .banner-btn{padding:8px 10px;}}
 </style>
 </head>
@@ -128,10 +126,25 @@ Baked salmon available every Friday as an alternative. Data last updated per Swa
 <script>
 // Week & Menu data
 const weekMap=[{week:1,dates:["2025-09-01","2025-09-22","2025-10-13","2025-11-10","2025-12-01"]},{week:2,dates:["2025-09-08","2025-09-29","2025-10-20","2025-11-17","2025-12-08"]},{week:3,dates:["2025-09-15","2025-10-06","2025-11-03","2025-11-24","2025-12-15"]}];
-const MENUS={
-1:{Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",Tuesday:"BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments\nFruit yoghurt / Fresh fruit",Wednesday:"Cheesy beany jacket / Breaded chicken steak\nAccompaniments\nPancake and fruit",Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / Fresh fruit",Friday:"Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"},
-2:{Monday:"Chicken burger / Cheese and tomato pizza",Tuesday:"Pasta bolognese / Vegetarian hotdog",Wednesday:"Roast chicken / Quorn fillet",Thursday:"Sausage and mash / Vegetable curry",Friday:"Fish fingers / Omelette"},
-3:{Monday:"Beef burger / Veggie burger",Tuesday:"Chicken curry / Macaroni cheese",Wednesday:"Roast pork / Quorn roast",Thursday:"Lasagne / Vegetable chilli",Friday:"Battered fish / Cheese wrap"}};
+
+const MENUS = {
+1:{Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
+Tuesday:"BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments\nFruit yoghurt / Fresh fruit",
+Wednesday:"Cheesy beany jacket / Breaded chicken steak\nAccompaniments\nPancake and fruit",
+Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / Fresh fruit",
+Friday:"Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"},
+2:{Monday:"Chicken burger / Cheese and tomato pizza\nAccompaniments\nFruit / Biscuit",
+Tuesday:"Pasta bolognese / Vegetarian hotdog\nAccompaniments\nFruit / Yoghurt",
+Wednesday:"Roast chicken / Quorn fillet\nAccompaniments\nPotatoes / Vegetables / Pudding",
+Thursday:"Sausage and mash / Vegetable curry\nAccompaniments\nFruit / Cake",
+Friday:"Fish fingers / Omelette\nAccompaniments\nJam split / Fruit wedge"},
+3:{Monday:"Beef burger / Veggie burger\nAccompaniments\nChips / Salad / Fruit",
+Tuesday:"Chicken curry / Macaroni cheese\nAccompaniments\nRice / Naan / Fruit",
+Wednesday:"Roast pork / Quorn roast\nAccompaniments\nPotatoes / Veg / Pudding",
+Thursday:"Lasagne / Vegetable chilli\nAccompaniments\nGarlic bread / Fruit",
+Friday:"Battered fish / Cheese wrap\nAccompaniments\nJam split / Fruit wedge"}
+};
+
 const weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
 function formatDateRange(startStr){const start=new Date(startStr);const end=new Date(start);end.setDate(end.getDate()+4);const opts={day:"numeric",month:"short"};return`${start.toLocaleDateString("en-GB",opts)} – ${end.toLocaleDateString("en-GB",opts)}`;}
@@ -237,13 +250,20 @@ function updateCountdown() {
 setInterval(updateCountdown,60000);
 
 toggleBtn.addEventListener('click',()=>{
-  if(showingWeek===currentWeek) showingWeek=currentWeek%3+1; else showingWeek=currentWeek;
+  if(showingWeek===currentWeek){showingWeek=currentWeek%3+1;} else{showingWeek=currentWeek;}
   renderMenu(showingWeek);
 });
-fabWeek.addEventListener('click',()=>{toggleBtn.click();});
-bannerBackBtn.addEventListener('click',()=>{showingWeek=currentWeek;renderMenu(currentWeek);});
 
-renderMenu(currentWeek);
+fabWeek.addEventListener('click',()=>{
+  if(showingWeek===currentWeek){showingWeek=currentWeek%3+1;} else{showingWeek=currentWeek;}
+  renderMenu(showingWeek);
+});
+
+bannerBackBtn.addEventListener('click',()=>{
+  showingWeek=currentWeek; renderMenu(showingWeek);
+});
+
+renderMenu(showingWeek);
 </script>
 </body>
 </html>
