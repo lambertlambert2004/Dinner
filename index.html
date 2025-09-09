@@ -12,9 +12,7 @@ body {
   margin:0; padding:20px; background:#f2f2f7; color:#1c1c1e;
 }
 h1 { 
-  position: sticky; top:0; background:#f2f2f7; z-index:10;
-  padding:20px 0 4px; text-align:center; font-weight:700; font-size:1.9rem;
-  box-shadow:0 2px 6px rgba(0,0,0,0.08); margin:0;
+  text-align:center; font-weight:700; font-size:1.9rem; margin:0 0 8px;
 }
 .week-label { 
   text-align:center; font-size:0.85rem; color:#6e6e73; margin-bottom:20px; 
@@ -32,7 +30,6 @@ h1 {
 .card.packed { background:linear-gradient(145deg,#fff9d6,#fff4b2); }
 .card.other-day { background:linear-gradient(145deg,#e6fff2,#dfffe0); }
 .card.tomorrow { border:3px solid #ffb3b3; }
-.card.special { border:3px solid #ff9f0a; box-shadow:0 4px 12px rgba(255,159,10,0.4); }
 .card:hover, .card:active { transform: scale(1.02); box-shadow:0 6px 16px rgba(0,0,0,0.12); }
 
 @keyframes slideIn { to { opacity:1; transform:translateY(0) scale(1);} }
@@ -44,7 +41,6 @@ h1 {
 .label.today { background:#007aff; }
 .label.tomorrow { background:#ff3b30; }
 .label.menu-end { background:#8e8e93; }
-.label.special { background:#ff9f0a; }
 .toggle { position:relative; display:inline-block; width:60px; height:34px; margin-top:auto; }
 .toggle input { opacity:0; width:0; height:0; }
 .slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; transition:.4s; border-radius:34px; }
@@ -55,18 +51,6 @@ input:checked + .slider:before { transform:translateX(26px); }
   border-radius:12px; background:#ff3b30; color:#fff; font-weight:600; cursor:pointer; transition:background 0.3s; }
 #resetPacked:hover { background:#ff453a; }
 footer { margin-top:28px; text-align:center; font-size:.85rem; color:#8e8e93; }
-@media (prefers-color-scheme: dark) {
-  body { background:#1c1c1e; color:#f2f2f7; }
-  h1 { background:#1c1c1e; color:#f2f2f7; box-shadow:0 2px 6px rgba(0,0,0,0.4);}
-  .week-label { color:#a1a1a1; }
-  .card.other-day { background:#2c2c2e; }
-  .card.packed { background:#3a3a3c; }
-  .menu { color:#f2f2f7; }
-  .label.today { background:#0a84ff; }
-  .label.tomorrow { background:#ff453a; }
-  .label.menu-end { background:#636366; }
-  .label.special { background:#ff9f0a; }
-}
 </style>
 </head>
 <body>
@@ -126,7 +110,6 @@ const MENUS=MENUS_BY_WEEK[currentWeek];
   const card=document.createElement("div");
   card.classList.add("card", packedLunch[day]?"packed":"other-day");
   if(day===tomorrowName) card.classList.add("tomorrow");
-  if(day==="Friday") card.classList.add("special");
 
   const h2=document.createElement("h2"); h2.textContent=day; card.appendChild(h2);
 
