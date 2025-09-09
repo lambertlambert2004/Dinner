@@ -99,22 +99,26 @@ const MENUS={
 };
 
 // STATE
-let currentWeek=1;
-let showingWeek=currentWeek;
 let packedLunch=JSON.parse(localStorage.getItem('packedLunch')||"{}");
-
-// DOM
-const menuContainer=document.getElementById('menuContainer');
-const weekLabel=document.getElementById('weekLabel');
-const weekDates=document.getElementById('weekDates');
-const viewBanner=document.getElementById('viewBanner');
-const bannerWeek=document.getElementById('bannerWeek');
-const bannerBackBtn=document.getElementById('bannerBackBtn');
-const toggleWeekBtn=document.getElementById('toggleWeekBtn');
+let currentWeek, showingWeek;
 
 // HELPER
-function formatWeekDates(w){return weekMap.find(x=>x.week===w).dates.map(d=>new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})).join(", ");}
-
+function parseDate(str){return new Date(str+"T00:00:00");}
+function getCurrentWeek(){
+  const today=new Date();
+  const todayDay=today.getDay();
+  for(let w of weekMap){
+    for(let d of w.dates){
+      const date=parseDate(d);
+      if(todayDay===0){ // Sunday
+        if(date>today) return w.week;
+      } else if(date.toDateString()===today.toDateString()){return w.week;}
+      else if(date>today) return w.week;
+    }
+  }
+  return 1;
+}
+function formatWeekDates(w){return weekMap.find(x=>x.week===w).dates[0];}
 function nextWeek(w){return w===3?1:w+1;}
 
 // RENDER
@@ -172,11 +176,13 @@ function renderMenu(week){
 }
 
 // CONTROLS
+const viewBanner=document.getElementById('viewBanner'); const bannerWeek=document.getElementById('bannerWeek'); const bannerBackBtn=document.getElementById('bannerBackBtn'); const toggleWeekBtn=document.getElementById('toggleWeekBtn');
+
 toggleWeekBtn.addEventListener('click',()=>{showingWeek=nextWeek(currentWeek); renderMenu(showingWeek);});
 bannerBackBtn.addEventListener('click',()=>{showingWeek=currentWeek; renderMenu(showingWeek);});
 
-// INITIAL RENDER
-renderMenu(showingWeek);
+// INITIAL
+currentWeek=getCurrentWeek(); showingWeek=currentWeek; renderMenu(showingWeek);
 </script>
 </body>
 </html>
