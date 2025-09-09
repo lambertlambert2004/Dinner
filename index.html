@@ -31,14 +31,14 @@ h1::after{content:"";display:block;margin:8px auto 0;width:60px;height:2px;backg
 .day-name{font-weight:700;font-size:1.05rem;margin-bottom:8px;color:var(--text);}
 .meals{white-space:pre-line;font-size:.96rem;color:#333;line-height:1.5;margin-bottom:6px;}
 .label{position:absolute;top:12px;right:12px;font-weight:700;font-size:.73rem;color:#fff;padding:6px 9px;border-radius:11px;display:flex;align-items:center;z-index:2;}
-.label.today{background:#007aff;animation:glowBluePremium 1.8s ease-in-out infinite alternate;}
-.label.tomorrow{background:#ff9500;animation:glowOrange 2.5s ease-in-out infinite alternate;}
-@keyframes glowBluePremium {
-  0% { box-shadow: 0 0 8px 3px rgba(0,122,255,0.5); }
-  50% { box-shadow: 0 0 20px 8px rgba(0,122,255,0.6); }
-  100% { box-shadow: 0 0 8px 3px rgba(0,122,255,0.5); }
+.label.today, .label.tomorrow{animation:glowSync 2s ease-in-out infinite alternate;}
+.label.today{background:#007aff;}
+.label.tomorrow{background:#ff9500;}
+@keyframes glowSync {
+  0% { box-shadow:0 0 6px 2px rgba(0,122,255,0.4); }
+  50% { box-shadow:0 0 14px 4px rgba(0,122,255,0.5); }
+  100% { box-shadow:0 0 6px 2px rgba(0,122,255,0.4); }
 }
-@keyframes glowOrange{0%{box-shadow:0 0 6px 2px rgba(255,149,0,0.4);}50%{box-shadow:0 0 16px 6px rgba(255,149,0,0.5);}100%{box-shadow:0 0 6px 2px rgba(255,149,0,0.4);}}
 
 .toggle{display:inline-block;width:56px;height:32px;position:relative;margin-top:6px;}
 .toggle input{opacity:0;width:0;height:0;}
@@ -47,13 +47,13 @@ h1::after{content:"";display:block;margin:8px auto 0;width:60px;height:2px;backg
 input:checked + .slider{background:#34c759;}
 input:checked + .slider::before{transform:translateX(24px);}
 
-/* Controls moved up to avoid iOS search bar */
+/* Controls moved higher to avoid iOS bottom bar */
 .controls {
   display:flex;
   justify-content:center;
   gap:12px;
   margin-top:12px;
-  margin-bottom:20px;
+  margin-bottom:36px;
   position: relative;
   z-index:2;
 }
@@ -155,6 +155,12 @@ function renderMenu(week){
     toggleLabel.appendChild(input); toggleLabel.appendChild(slider); toggleDiv.appendChild(toggleLabel);
 
     input.addEventListener('change',()=>{
+      const action=input.checked?"add packed lunch for":"remove packed lunch for";
+      if(!confirm(`Are you sure you want to ${action} ${day}?`)){
+        input.checked = !input.checked; // revert
+        return;
+      }
+
       if(!packedLunch[week]) packedLunch[week]={};
       if(input.checked){packedLunch[week][day]=true; card.classList.add('packed'); card.classList.remove('other-day');}
       else{delete packedLunch[week][day]; card.classList.remove('packed'); card.classList.add('other-day');}
