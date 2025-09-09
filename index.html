@@ -4,120 +4,171 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>School Dinner Menu — Swansea 2025</title>
-
-<!-- iOS Home Screen Icon using GitHub Pages URL -->
 <link rel="apple-touch-icon" sizes="180x180" href="https://lambertlambert2004.github.io/Dinner/icon-180.PNG">
 
 <style>
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    margin:0; padding:20px; background:#f2f2f7; color:#1c1c1e;
-  }
-  h1 { text-align:center; margin-bottom:25px; font-weight:600; font-size:1.8rem; }
-  #menuCards { display:flex; flex-direction:column; gap:18px; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin:0; padding:20px; background:#f2f2f7; color:#1c1c1e;
+}
+h1 { 
+  position: sticky; top:0; background:#f2f2f7; z-index:10;
+  padding:20px 0 4px; text-align:center; font-weight:700; font-size:1.9rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08); margin:0;
+}
+.week-label { 
+  text-align:center; font-size:0.85rem; color:#6e6e73; margin-bottom:20px; 
+}
+#menuCards { display:flex; flex-direction:column; gap:18px; }
+.card {
+  background:linear-gradient(145deg,#ffffff,#f9f9f9);
+  padding:18px 22px; border-radius:20px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  position:relative; display:flex; flex-direction:column;
+  transition:all 0.3s ease, transform 0.3s ease;
+  opacity:0; transform:translateY(20px) scale(0.98);
+  animation:slideIn 0.5s forwards;
+}
+.card.packed { background:linear-gradient(145deg,#fff9d6,#fff4b2); }
+.card.other-day { background:linear-gradient(145deg,#e6fff2,#dfffe0); }
+.card.tomorrow { border:3px solid #ffb3b3; }
+.card.special { border:3px solid #ff9f0a; box-shadow:0 4px 12px rgba(255,159,10,0.4); }
+.card:hover, .card:active { transform: scale(1.02); box-shadow:0 6px 16px rgba(0,0,0,0.12); }
 
-  .card {
-    background:linear-gradient(145deg,#ffffff,#f9f9f9);
-    padding:18px 22px; border-radius:20px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    position:relative; display:flex; flex-direction:column;
-    transition:all 0.3s ease, transform 0.3s ease;
-    opacity:0; transform:translateY(20px) scale(0.98);
-    animation:slideIn 0.5s forwards;
-  }
-  .card.packed { background:linear-gradient(145deg,#fff9d6,#fff4b2); }
-  .card.other-day { background:linear-gradient(145deg,#e6fff2,#dfffe0); }
-  .card.tomorrow { border:3px solid #ffb3b3; }
+@keyframes slideIn { to { opacity:1; transform:translateY(0) scale(1);} }
 
-  @keyframes slideIn { to { opacity:1; transform:translateY(0) scale(1);} }
-
-  .card h2 { margin:0 0 12px; font-size:1.4rem; font-weight:600; }
-  .menu { white-space:pre-line; margin-bottom:15px; font-size:1rem; line-height:1.5; color:#333; }
-
-  .label {
-    position:absolute; top:12px; right:18px; font-size:0.75rem; font-weight:600;
-    color:#fff; padding:4px 8px; border-radius:12px; z-index:1;
-  }
-  .label.today { background:#007aff; }
-  .label.tomorrow { background:#ff3b30; }
-  .label.menu-end { background:#8e8e93; }
-
-  .toggle { position:relative; display:inline-block; width:60px; height:34px; margin-top:auto; }
-  .toggle input { opacity:0; width:0; height:0; }
-  .slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; transition:.4s; border-radius:34px; }
-  .slider:before {
-    position:absolute; content:""; height:26px; width:26px; left:4px; bottom:4px;
-    background-color:white; transition:.2s; border-radius:50%;
-  }
-  input:checked + .slider { background-color:#34c759; }
-  input:checked + .slider:before { transform:translateX(26px); }
-
-  footer { margin-top:28px; text-align:center; font-size:.85rem; color:#8e8e93; }
+.card h2 { margin:0 0 12px; font-size:1.4rem; font-weight:600; }
+.menu { white-space:pre-line; margin-bottom:15px; font-size:1rem; line-height:1.6; color:#333; }
+.label { position:absolute; top:12px; right:18px; font-size:0.75rem; font-weight:600;
+  color:#fff; padding:4px 8px; border-radius:12px; z-index:1; }
+.label.today { background:#007aff; }
+.label.tomorrow { background:#ff3b30; }
+.label.menu-end { background:#8e8e93; }
+.label.special { background:#ff9f0a; }
+.toggle { position:relative; display:inline-block; width:60px; height:34px; margin-top:auto; }
+.toggle input { opacity:0; width:0; height:0; }
+.slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; transition:.4s; border-radius:34px; }
+.slider:before { position:absolute; content:""; height:26px; width:26px; left:4px; bottom:4px; background-color:white; transition:.2s; border-radius:50%; }
+input:checked + .slider { background-color:#34c759; }
+input:checked + .slider:before { transform:translateX(26px); }
+#resetPacked { display:block; margin:20px auto 10px; padding:8px 16px; border:none;
+  border-radius:12px; background:#ff3b30; color:#fff; font-weight:600; cursor:pointer; transition:background 0.3s; }
+#resetPacked:hover { background:#ff453a; }
+footer { margin-top:28px; text-align:center; font-size:.85rem; color:#8e8e93; }
+@media (prefers-color-scheme: dark) {
+  body { background:#1c1c1e; color:#f2f2f7; }
+  h1 { background:#1c1c1e; color:#f2f2f7; box-shadow:0 2px 6px rgba(0,0,0,0.4);}
+  .week-label { color:#a1a1a1; }
+  .card.other-day { background:#2c2c2e; }
+  .card.packed { background:#3a3a3c; }
+  .menu { color:#f2f2f7; }
+  .label.today { background:#0a84ff; }
+  .label.tomorrow { background:#ff453a; }
+  .label.menu-end { background:#636366; }
+  .label.special { background:#ff9f0a; }
+}
 </style>
 </head>
 <body>
 <h1>School Dinner Menu</h1>
+<div class="week-label" id="weekLabel"></div>
+<button id="resetPacked">Reset Packed Lunches</button>
 <div id="menuCards"></div>
 <footer>Baked salmon available every Friday as an alternative. Data last updated per Swansea Council 2025.</footer>
 
 <script>
-const MENUS = {
-  Monday: "Oven baked sausages / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
-  Tuesday: "BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments\nFruit yoghurt / Fresh fruit",
-  Wednesday: "Cheesy beany jacket / Breaded chicken steak\nAccompaniments\nPancake and fruit",
-  Thursday: "Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / Fresh fruit",
-  Friday: "Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"
+// Week definitions
+const weekMap = [
+  { week: 1, dates: ['2025-09-01','2025-09-22','2025-10-13','2025-11-10','2025-12-01'] },
+  { week: 2, dates: ['2025-09-08','2025-09-29','2025-10-20','2025-11-17','2025-12-08'] },
+  { week: 3, dates: ['2025-09-15','2025-10-06','2025-11-03','2025-11-24','2025-12-15'] }
+];
+
+// Menus
+const MENUS_BY_WEEK = {
+  1: { Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments\nBiscuit / fruit", Tuesday:"BBQ chicken wrap / Cheese pizza\nAccompaniments\nYoghurt / fruit", Wednesday:"Cheesy beany jacket / Breaded chicken\nAccompaniments\nPancake / fruit", Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / fruit", Friday:"Baked fish / Cheese wrap\nAccompaniments\nJam split / fruit" },
+  2: { Monday:"Breaded chicken / Veg cheese bake\nAccompaniments\nYoghurt / fruit", Tuesday:"Pasta bolognese / Omelette\nAccompaniments\nJelly / fruit", Wednesday:"Chicken curry / Cheese pizza\nAccompaniments\nMuffin / fruit", Thursday:"Roast chicken / Pasta Napolitana\nAccompaniments\nCookie / fruit", Friday:"Fish fingers / Cheese wrap\nAccompaniments\nWelsh cake / fruit" },
+  3: { Monday:"Meatballs / Tomato pasta bake\nAccompaniments\nJam split / fruit", Tuesday:"Chicken curry / Margherita pizza\nAccompaniments\nYoghurt / fruit", Wednesday:"Cheese calzone / Breaded chicken\nAccompaniments\nJelly / fruit", Thursday:"Roast turkey / Macaroni cheese\nAccompaniments\nCookie / fruit", Friday:"Baked fish / Cheese wrap\nAccompaniments\nMuffin / fruit" }
 };
 
-let today = new Date();
-const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-const todayName = weekdays[today.getDay()];
-let tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+// Determine current week
+function getCurrentWeek() {
+  const today = new Date();
+  for (const w of weekMap) {
+    for (const d of w.dates) {
+      const start = new Date(d);
+      const end = new Date(start); end.setDate(end.getDate()+6);
+      if(today>=start && today<=end) return w.week;
+    }
+  }
+  return 1;
+}
+const currentWeek=getCurrentWeek();
+document.getElementById("weekLabel").textContent=`Week ${currentWeek}`;
+
+// Today & Tomorrow
+const weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const todayName=weekdays[new Date().getDay()];
+let tomorrow=new Date(); tomorrow.setDate(tomorrow.getDate()+1);
 if(tomorrow.getDay()===6) tomorrow.setDate(tomorrow.getDate()+2);
 if(tomorrow.getDay()===0) tomorrow.setDate(tomorrow.getDate()+1);
-const tomorrowName = weekdays[tomorrow.getDay()];
+const tomorrowName=weekdays[tomorrow.getDay()];
 
-let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
-const container = document.querySelector("#menuCards");
+// Load packed lunch per week
+let allPackedLunch=JSON.parse(localStorage.getItem('packedLunch')||'{}');
+if(!allPackedLunch[currentWeek]) allPackedLunch[currentWeek]={};
+let packedLunch=allPackedLunch[currentWeek];
 
-const menuEndWeekStart = new Date("2025-12-15");
-const menuEndWeekEnd = new Date("2025-12-20");
+const container=document.getElementById("menuCards");
+const MENUS=MENUS_BY_WEEK[currentWeek];
 
-["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach((day,i) => {
-  const card = document.createElement("div");
-  card.classList.add("card", packedLunch[day] ? "packed" : "other-day");
-  if(day === tomorrowName) card.classList.add("tomorrow");
+["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach(day=>{
+  const card=document.createElement("div");
+  card.classList.add("card", packedLunch[day]?"packed":"other-day");
+  if(day===tomorrowName) card.classList.add("tomorrow");
+  if(day==="Friday") card.classList.add("special");
 
-  const h2 = document.createElement("h2"); h2.textContent = day; card.appendChild(h2);
-  const menu = document.createElement("div"); menu.classList.add("menu"); menu.textContent = MENUS[day] || "No data";
+  const h2=document.createElement("h2"); h2.textContent=day; card.appendChild(h2);
 
-  const currentWeekDate = new Date(today);
-  const dayIndex = weekdays.indexOf(day);
-  currentWeekDate.setDate(currentWeekDate.getDate() + (dayIndex - currentWeekDate.getDay()));
+  const menuDiv=document.createElement("div"); menuDiv.classList.add("menu"); menuDiv.textContent=MENUS[day]||"No data";
 
-  const labelSpan = document.createElement("span");
-  if(day === todayName){ labelSpan.textContent = "Today"; labelSpan.classList.add("label","today"); }
-  else if(day === tomorrowName){ labelSpan.textContent = "Tomorrow"; labelSpan.classList.add("label","tomorrow"); }
-  else if(currentWeekDate >= menuEndWeekStart && currentWeekDate <= menuEndWeekEnd){ labelSpan.textContent = "Menu Ends"; labelSpan.classList.add("label","menu-end"); }
+  const labelSpan=document.createElement("span");
+  if(day===todayName) labelSpan.textContent="Today",labelSpan.classList.add("label","today");
+  else if(day===tomorrowName) labelSpan.textContent="Tomorrow",labelSpan.classList.add("label","tomorrow");
+  menuDiv.appendChild(labelSpan);
 
-  menu.appendChild(labelSpan);
-  card.appendChild(menu);
+  if(currentWeek===3){ const endLabel=document.createElement("span"); endLabel.textContent="Menu Ends"; endLabel.classList.add("label","menu-end"); endLabel.style.top="35px"; endLabel.style.right="18px"; card.appendChild(endLabel); }
 
-  const label = document.createElement("label"); label.classList.add("toggle");
-  const input = document.createElement("input"); input.type="checkbox"; input.checked=!!packedLunch[day];
-  const slider = document.createElement("span"); slider.classList.add("slider");
+  card.appendChild(menuDiv);
+
+  // Toggle
+  const label=document.createElement("label"); label.classList.add("toggle");
+  const input=document.createElement("input"); input.type="checkbox"; input.checked=!!packedLunch[day];
+  const slider=document.createElement("span"); slider.classList.add("slider");
   label.appendChild(input); label.appendChild(slider); card.appendChild(label);
 
-  input.addEventListener("change", e=>{
-    const isChecked = input.checked;
-    const action = isChecked ? "add packed lunch for" : "remove packed lunch for";
-    if(!confirm(`Are you sure you want to ${action} ${day}?`)){ input.checked = !isChecked; return; }
+  input.addEventListener("change",()=>{ 
+    const isChecked=input.checked;
+    if(!confirm(`Are you sure you want to ${isChecked?"add":"remove"} packed lunch for ${day}?`)){input.checked=!isChecked; return;}
     if(isChecked){ card.classList.remove("other-day"); card.classList.add("packed"); packedLunch[day]=true; }
     else { card.classList.remove("packed"); card.classList.add("other-day"); delete packedLunch[day]; }
-    localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+    allPackedLunch[currentWeek]=packedLunch;
+    localStorage.setItem('packedLunch',JSON.stringify(allPackedLunch));
   });
 
   container.appendChild(card);
+
+  // Highlight today card
+  if(day===todayName){ card.style.transition="0.5s"; card.style.boxShadow="0 0 24px 3px #007aff"; setTimeout(()=>{card.style.boxShadow="0 4px 12px rgba(0,0,0,0.08)";},1500); }
+});
+
+// Scroll to today
+const todayCard=Array.from(document.querySelectorAll(".card")).find(c=>c.querySelector(".label.today"));
+if(todayCard) todayCard.scrollIntoView({behavior:"smooth", block:"center"});
+
+// Reset button
+document.getElementById("resetPacked").addEventListener("click",()=>{ 
+  if(confirm("Reset all packed lunches?")){ localStorage.removeItem('packedLunch'); location.reload(); } 
 });
 </script>
 </body>
