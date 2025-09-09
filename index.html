@@ -46,12 +46,19 @@ h1::after {
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
   position:relative; display:flex; flex-direction:column;
   opacity:0; transform:translateY(20px) scale(0.98);
-  transition:all 0.3s ease, transform 0.3s ease, opacity 0.5s ease;
+  transition: all 0.3s ease, transform 0.2s ease;
+  will-change: transform;
 }
 .card.packed { background:linear-gradient(145deg,#fff9d6,#fff4b2); }
 .card.other-day { background:linear-gradient(145deg,#e6fff2,#dfffe0); }
 .card.tomorrow { border:3px solid #ffb3b3; }
-.card:hover, .card:active { transform: scale(1.02); box-shadow:0 6px 16px rgba(0,0,0,0.12); }
+.card:hover { transform: scale(1.02); box-shadow:0 6px 16px rgba(0,0,0,0.12); }
+
+/* Card lift on tap for iPhone */
+.card:active {
+  transform: scale(1.03) translateY(-2px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
 
 .card h2 { margin:0 0 12px; font-size:1.4rem; font-weight:600; }
 .menu { white-space:pre-line; margin-bottom:15px; font-size:1rem; line-height:1.6; color:#333; }
@@ -59,13 +66,30 @@ h1::after {
   color:#fff; padding:4px 8px; border-radius:12px; z-index:1; }
 .label.today { background:#007aff; }
 .label.tomorrow { background:#ff3b30; }
-.label.menu-end { background:#8e8e93; }
+
+/* Toggle with subtle bounce */
 .toggle { position:relative; display:inline-block; width:60px; height:34px; margin-top:auto; }
 .toggle input { opacity:0; width:0; height:0; }
 .slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; transition:.4s; border-radius:34px; }
 .slider:before { position:absolute; content:""; height:26px; width:26px; left:4px; bottom:4px; background-color:white; transition:.2s; border-radius:50%; }
 input:checked + .slider { background-color:#34c759; }
-input:checked + .slider:before { transform:translateX(26px); }
+input:checked + .slider:before {
+  transform: translateX(26px);
+  animation: toggleBounce 0.2s;
+}
+@keyframes toggleBounce {
+  0% { transform: translateX(26px) scale(1); }
+  50% { transform: translateX(26px) scale(1.15); }
+  100% { transform: translateX(26px) scale(1); }
+}
+input:not(:checked) + .slider:before {
+  animation: toggleBounceOff 0.2s;
+}
+@keyframes toggleBounceOff {
+  0% { transform: translateX(0) scale(1); }
+  50% { transform: translateX(0) scale(1.15); }
+  100% { transform: translateX(0) scale(1); }
+}
 
 footer { margin-top:28px; text-align:center; font-size:.85rem; color:#8e8e93; }
 </style>
@@ -135,8 +159,6 @@ const MENUS=MENUS_BY_WEEK[currentWeek];
   if(day===todayName) labelSpan.textContent="Today",labelSpan.classList.add("label","today");
   else if(day===tomorrowName) labelSpan.textContent="Tomorrow",labelSpan.classList.add("label","tomorrow");
   menuDiv.appendChild(labelSpan);
-
-  if(currentWeek===3){ const endLabel=document.createElement("span"); endLabel.textContent="Menu Ends"; endLabel.classList.add("label","menu-end"); endLabel.style.top="35px"; endLabel.style.right="18px"; card.appendChild(endLabel); }
 
   card.appendChild(menuDiv);
 
