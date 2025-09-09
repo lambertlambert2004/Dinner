@@ -39,6 +39,12 @@ h1::after {
   100% { background-position:-200% 0; }
 }
 
+/* Softer glow pulse animation for Today card */
+@keyframes glowPulseBlue {
+  0%, 100% { box-shadow: 0 0 12px 2px #007aff; }
+  50% { box-shadow: 0 0 20px 3px #007aff; }
+}
+
 #menuCards { display:flex; flex-direction:column; gap:18px; }
 .card {
   background:linear-gradient(145deg,#ffffff,#f9f9f9);
@@ -54,7 +60,7 @@ h1::after {
 .card.tomorrow { border:3px solid #ffb3b3; }
 .card:hover { transform: scale(1.02); box-shadow:0 6px 16px rgba(0,0,0,0.12); }
 
-/* Card lift on tap for iPhone */
+/* Card lift effect on tap */
 .card:active {
   transform: scale(1.03) translateY(-2px);
   box-shadow:0 8px 20px rgba(0,0,0,0.15);
@@ -182,8 +188,10 @@ const MENUS=MENUS_BY_WEEK[currentWeek];
   // Staggered fade-in animation
   setTimeout(()=>{ card.style.opacity=1; card.style.transform="translateY(0) scale(1)"; }, index*150);
 
-  // Highlight today card
-  if(day===todayName){ card.style.transition="0.5s"; card.style.boxShadow="0 0 24px 3px #007aff"; setTimeout(()=>{card.style.boxShadow="0 4px 12px rgba(0,0,0,0.08)";},1500); }
+  // Today soft glow pulse
+  if(day===todayName){
+    card.style.animation = "glowPulseBlue 2s infinite ease-in-out";
+  }
 });
 
 // Scroll to today
