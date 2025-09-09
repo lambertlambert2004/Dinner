@@ -36,7 +36,7 @@
 </div>
 
 <script>
-// Correct menus verified against Swansea Council 2025
+// Verified menus against Swansea Council 2025
 const MENUS = {
   1: {
     Monday: "Oven baked sausages / Vegetarian sausage\nAccompaniments of the day\nHomemade biscuit and peach slices / fresh fruit",
@@ -135,6 +135,7 @@ function renderWeek(w){
 
   document.getElementById("weekInfo").textContent=`Week ${w} (Week commencing: ${weekMap[w-1].start})`;
   updateBadge();
+  if(viewedWeek===currentWeek) document.getElementById("returnWeekBtn").style.display="none";
 }
 
 function updateBadge(){
@@ -151,7 +152,6 @@ document.getElementById("toggleWeekBtn").addEventListener("click",()=>{
 document.getElementById("returnWeekBtn").addEventListener("click",()=>{
   viewedWeek=currentWeek;
   renderWeek(currentWeek);
-  document.getElementById("returnWeekBtn").style.display="none";
 });
 
 renderWeek(currentWeek);
