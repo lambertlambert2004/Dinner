@@ -4,154 +4,60 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>School Dinner Menu — Swansea 2025</title>
+
+<!-- Custom iOS Home Screen Icon -->
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+
 <style>
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    margin:0; padding:20px; background:#f2f2f7;
-    color:#1c1c1e;
+    margin:0; padding:20px; background:#f2f2f7; color:#1c1c1e;
   }
+  h1 { text-align:center; margin-bottom:25px; font-weight:600; font-size:1.8rem; }
+  #menuCards { display:flex; flex-direction:column; gap:18px; }
 
-  h1 {
-    text-align:center;
-    margin-bottom:25px;
-    font-weight:600;
-    font-size:1.8rem;
-  }
-
-  /* Card container */
-  #menuCards {
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-  }
-
-  /* Card style */
   .card {
     background:linear-gradient(145deg,#ffffff,#f9f9f9);
-    padding:18px 22px;
-    border-radius:20px;
+    padding:18px 22px; border-radius:20px;
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    position:relative;
-    display:flex;
-    flex-direction:column;
+    position:relative; display:flex; flex-direction:column;
     transition:all 0.3s ease, transform 0.3s ease;
-    opacity:0;
-    transform:translateY(20px) scale(0.98);
+    opacity:0; transform:translateY(20px) scale(0.98);
     animation:slideIn 0.5s forwards;
   }
-  /* Hover lift effect */
-  .card:hover {
-    transform:translateY(-4px) scale(1.02);
-    box-shadow:0 12px 24px rgba(0,0,0,0.15), 0 0 12px rgba(0,0,0,0.05) inset;
-  }
-
-  .card.packed { background:linear-gradient(145deg,#fff9d6,#fff4b2);}
-  .card.other-day { background:linear-gradient(145deg,#e6fff2,#dfffe0);}
+  .card:hover { transform:translateY(-4px) scale(1.02); box-shadow:0 12px 24px rgba(0,0,0,0.15); }
+  .card.packed { background:linear-gradient(145deg,#fff9d6,#fff4b2); }
+  .card.other-day { background:linear-gradient(145deg,#e6fff2,#dfffe0); }
   .card.tomorrow { border:3px solid #ffb3b3; }
+  .card.highlight { box-shadow:0 0 35px rgba(255,99,71,0.6); transition:box-shadow 2.5s ease-out; }
 
-  /* Highlight for Today/Tomorrow cards */
-  .card.highlight {
-    box-shadow:0 0 35px rgba(255,99,71,0.6);
-    transition:box-shadow 2.5s ease-out;
-  }
+  @keyframes slideIn { to { opacity:1; transform:translateY(0) scale(1);} }
 
-  /* Slide-in animation */
-  @keyframes slideIn {
-    to { opacity:1; transform:translateY(0) scale(1);}
-  }
+  .card h2 { margin:0 0 12px; font-size:1.4rem; font-weight:600; }
+  .menu { white-space:pre-line; margin-bottom:15px; font-size:1rem; line-height:1.5; color:#333; }
 
-  /* Day heading */
-  .card h2 {
-    margin:0 0 12px;
-    font-size:1.4rem;
-    font-weight:600;
-  }
-
-  /* Menu text */
-  .menu {
-    white-space:pre-line;
-    margin-bottom:15px;
-    font-size:1rem;
-    line-height:1.5;
-    color:#333;
-  }
-
-  /* Label for Today/Tomorrow/Menu Ends */
   .label {
-    position:absolute;
-    top:12px;
-    right:18px;
-    font-size:0.75rem;
-    font-weight:600;
-    color:#fff;
-    padding:4px 8px;
-    border-radius:12px;
-    z-index:1;
+    position:absolute; top:12px; right:18px; font-size:0.75rem; font-weight:600;
+    color:#fff; padding:4px 8px; border-radius:12px; z-index:1;
     animation:labelPulse 1.2s ease-in-out infinite alternate;
   }
   .label.today { background:#007aff; }
   .label.tomorrow { background:#ff3b30; }
   .label.menu-end { background:#8e8e93; animation:none; }
+  @keyframes labelPulse { 0% { transform:scale(1);} 100% { transform:scale(1.1);} }
 
-  /* Label pulse animation */
-  @keyframes labelPulse {
-    0% { transform:scale(1);}
-    100% { transform:scale(1.1);}
-  }
-
-  /* Toggle switch */
-  .toggle {
-    position:relative;
-    display:inline-block;
-    width:60px;
-    height:34px;
-    margin-top:auto;
-  }
-  .toggle input {
-    opacity:0;
-    width:0;
-    height:0;
-  }
-  .slider {
-    position:absolute;
-    cursor:pointer;
-    top:0; left:0; right:0; bottom:0;
-    background-color:#ccc;
-    transition:.4s;
-    border-radius:34px;
-  }
+  .toggle { position:relative; display:inline-block; width:60px; height:34px; margin-top:auto; }
+  .toggle input { opacity:0; width:0; height:0; }
+  .slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; transition:.4s; border-radius:34px; }
   .slider:before {
-    position:absolute;
-    content:"";
-    height:26px;
-    width:26px;
-    left:4px;
-    bottom:4px;
-    background-color:white;
-    transition:.2s cubic-bezier(.34,1.56,.64,1);
-    border-radius:50%;
+    position:absolute; content:""; height:26px; width:26px; left:4px; bottom:4px;
+    background-color:white; transition:.2s cubic-bezier(.34,1.56,.64,1); border-radius:50%;
   }
-  input:checked + .slider {
-    background-color:#34c759;
-  }
-  input:checked + .slider:before {
-    transform:translateX(26px);
-    animation:toggleBounce 0.25s;
-  }
+  input:checked + .slider { background-color:#34c759; }
+  input:checked + .slider:before { transform:translateX(26px); animation:toggleBounce 0.25s; }
+  @keyframes toggleBounce { 0% { transform:translateX(26px) scale(1);} 50% { transform:translateX(26px) scale(1.1);} 100% { transform:translateX(26px) scale(1);} }
 
-  /* Toggle bounce animation */
-  @keyframes toggleBounce {
-    0% { transform:translateX(26px) scale(1);}
-    50% { transform:translateX(26px) scale(1.1);}
-    100% { transform:translateX(26px) scale(1);}
-  }
-
-  footer {
-    margin-top:28px;
-    text-align:center;
-    font-size:.85rem;
-    color:#8e8e93;
-  }
+  footer { margin-top:28px; text-align:center; font-size:.85rem; color:#8e8e93; }
 
   @media(max-width:500px){
     .card { padding:15px 18px; border-radius:16px; }
@@ -180,14 +86,12 @@ const MENUS = {
 let today = new Date();
 const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const todayName = weekdays[today.getDay()];
-
-let tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate()+1);
+let tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
 if(tomorrow.getDay()===6) tomorrow.setDate(tomorrow.getDate()+2);
 if(tomorrow.getDay()===0) tomorrow.setDate(tomorrow.getDate()+1);
 const tomorrowName = weekdays[tomorrow.getDay()];
 
-// Load saved packed lunch selections
+// Packed lunch storage
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 
 const container = document.querySelector("#menuCards");
@@ -198,80 +102,38 @@ const menuEndWeekEnd = new Date("2025-12-20");   // Friday 20 Dec
 
 ["Monday","Tuesday","Wednesday","Thursday","Friday"].forEach((day,i) => {
   const card = document.createElement("div");
-  card.classList.add("card");
-  card.classList.add(packedLunch[day] ? "packed" : "other-day");
+  card.classList.add("card", packedLunch[day] ? "packed" : "other-day");
   if(day === tomorrowName) card.classList.add("tomorrow");
+  if(day === todayName || day === tomorrowName) { card.classList.add("highlight"); setTimeout(()=> card.classList.remove("highlight"),2500); }
+  card.style.animationDelay = `${i*0.12}s`;
 
-  // Highlight today and tomorrow cards
-  if(day === todayName || day === tomorrowName){
-    card.classList.add("highlight");
-    setTimeout(()=> card.classList.remove("highlight"),2500);
-  }
+  const h2 = document.createElement("h2"); h2.textContent = day; card.appendChild(h2);
 
-  // Stagger animation
-  card.style.animationDelay = `${i * 0.12}s`;
+  const menu = document.createElement("div"); menu.classList.add("menu"); menu.textContent = MENUS[day] || "No data";
 
-  // Day heading
-  const h2 = document.createElement("h2");
-  h2.textContent = day;
-  card.appendChild(h2);
-
-  // Menu
-  const menu = document.createElement("div");
-  menu.classList.add("menu");
-  menu.textContent = MENUS[day] || "No data";
-
-  // Compute the date for this day in the current week
   const currentWeekDate = new Date(today);
   const dayIndex = weekdays.indexOf(day);
-  const diff = dayIndex - currentWeekDate.getDay();
-  currentWeekDate.setDate(currentWeekDate.getDate() + diff);
+  currentWeekDate.setDate(currentWeekDate.getDate() + (dayIndex - currentWeekDate.getDay()));
 
-  // Label for Today/Tomorrow/Menu Ends Week
   const labelSpan = document.createElement("span");
-  if(day === todayName){
-    labelSpan.textContent = "Today";
-    labelSpan.classList.add("label","today");
-  } else if(day === tomorrowName){
-    labelSpan.textContent = "Tomorrow";
-    labelSpan.classList.add("label","tomorrow");
-  } else if(currentWeekDate >= menuEndWeekStart && currentWeekDate <= menuEndWeekEnd){
-    labelSpan.textContent = "Menu Ends";
-    labelSpan.classList.add("label","menu-end");
-  }
+  if(day === todayName){ labelSpan.textContent = "Today"; labelSpan.classList.add("label","today"); }
+  else if(day === tomorrowName){ labelSpan.textContent = "Tomorrow"; labelSpan.classList.add("label","tomorrow"); }
+  else if(currentWeekDate >= menuEndWeekStart && currentWeekDate <= menuEndWeekEnd){ labelSpan.textContent = "Menu Ends"; labelSpan.classList.add("label","menu-end"); }
 
   menu.appendChild(labelSpan);
   card.appendChild(menu);
 
-  // Toggle
-  const label = document.createElement("label");
-  label.classList.add("toggle");
-  const input = document.createElement("input");
-  input.type = "checkbox";
-  input.checked = !!packedLunch[day];
-  const slider = document.createElement("span");
-  slider.classList.add("slider");
-  label.appendChild(input);
-  label.appendChild(slider);
-  card.appendChild(label);
+  const label = document.createElement("label"); label.classList.add("toggle");
+  const input = document.createElement("input"); input.type="checkbox"; input.checked=!!packedLunch[day];
+  const slider = document.createElement("span"); slider.classList.add("slider");
+  label.appendChild(input); label.appendChild(slider); card.appendChild(label);
 
-  // Toggle event
-  input.addEventListener("change", e => {
+  input.addEventListener("change", e=>{
     const isChecked = input.checked;
     const action = isChecked ? "add packed lunch for" : "remove packed lunch for";
-    if(!confirm(`Are you sure you want to ${action} ${day}?`)){
-      input.checked = !isChecked;
-      return;
-    }
-    if(input.checked){
-      card.classList.remove("other-day");
-      card.classList.add("packed");
-      packedLunch[day] = true;
-    } else {
-      card.classList.remove("packed");
-      card.classList.add("other-day");
-      delete packedLunch[day];
-    }
+    if(!confirm(`Are you sure you want to ${action} ${day}?`)){ input.checked = !isChecked; return; }
+    if(isChecked){ card.classList.remove("other-day"); card.classList.add("packed"); packedLunch[day]=true; }
+    else { card.classList.remove("packed"); card.classList.add("other-day"); delete packedLunch[day]; }
     localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
   });
 
