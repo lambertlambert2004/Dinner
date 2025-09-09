@@ -12,7 +12,7 @@ body {
 h1 { text-align:center; margin-bottom:5px; font-weight:700; color:#333; }
 #weekNumber { text-align:center; font-size:.9rem; color:#666; margin-bottom:15px; }
 .card {
-  background:#fefefe;
+  background:#dfffe0;
   border-radius:12px;
   box-shadow:0 2px 10px rgba(0,0,0,0.08);
   padding:15px; margin-bottom:15px; position:relative; transition: transform 0.2s, background 0.3s;
@@ -71,7 +71,7 @@ input:checked + .slider:before { transform:translateX(22px); }
 <div id="packedBadge"></div>
 
 <script>
-// Verified Swansea Council 2025 menus
+// Swansea Council 2025 verified menus
 const MENUS = {
   1: { Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments of the day\nHomemade biscuit and peach slices / fresh fruit",
        Tuesday:"BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments of the day\nFruit yoghurt pot / fresh fruit",
@@ -105,7 +105,6 @@ function getWeekNum(date){
   }
   return 1;
 }
-function getNextWeekNum(w){ return w % 3 + 1; }
 function getCurrentAndTomorrow(){
   let t=new Date();
   let todayName=weekdays[t.getDay()];
