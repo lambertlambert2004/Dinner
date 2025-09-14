@@ -227,7 +227,7 @@ body.dark-mode #weekNav {
 
 .nav-btn:hover:not(.disabled) {
     transform: translateY(-2px);
-    box-shadow: 6px 6px 14px rgba(52, 152, 219, 0.3);
+    box-shadow: 0 6px 14px rgba(52, 152, 219, 0.3);
 }
 
 #weekTitle {
@@ -323,8 +323,12 @@ const weekMap = [
 ];
 
 // --- State Management
-// Clear any old, potentially conflicting local storage data
-localStorage.removeItem('packedLunch'); 
+// This ensures that the code starts fresh and any previous conflicting data is cleared.
+try {
+    localStorage.removeItem('packedLunch'); 
+} catch(e) {
+    console.error("Local storage access denied:", e);
+}
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 let currentWeekIndex = getInitialWeekIndex();
 
@@ -342,12 +346,12 @@ function getInitialWeekIndex() {
     today.setHours(0, 0, 0, 0);
 
     let initialIndex = 0;
-    const todayUTC = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+    const todayTimestamp = today.getTime();
 
     for (let i = weekMap.length - 1; i >= 0; i--) {
         const weekStart = new Date(weekMap[i].start);
-        const weekStartUTC = Date.UTC(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate());
-        if (todayUTC >= weekStartUTC) {
+        weekStart.setHours(0, 0, 0, 0);
+        if (todayTimestamp >= weekStart.getTime()) {
             initialIndex = i;
             break;
         }
@@ -368,7 +372,15 @@ function renderMenu() {
     today.setHours(0, 0, 0, 0);
 
     const weekInfo = weekMap[currentWeekIndex];
+
+    if (!weekInfo) {
+        // Fallback or error message if weekMap data is corrupt
+        menuContainer.innerHTML = `<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>`;
+        return;
+    }
+
     const weekStartDate = new Date(weekInfo.start);
+    weekStartDate.setHours(0, 0, 0, 0);
 
     weekTitleEl.textContent = `Week ${weekInfo.week}`;
     document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
@@ -380,21 +392,19 @@ function renderMenu() {
 
         const dayDate = new Date(weekStartDate);
         dayDate.setDate(weekStartDate.getDate() + index);
+        dayDate.setHours(0, 0, 0, 0);
 
         // Add label
         const label = document.createElement("span");
-        const todayUTC = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
-        const dayDateUTC = Date.UTC(dayDate.getFullYear(), dayDate.getMonth(), dayDate.getDate());
-
-        if (dayDateUTC === todayUTC) {
+        if (dayDate.getTime() === today.getTime()) {
             label.textContent = "Today";
             label.className = "dayLabel today";
             card.appendChild(label);
-        } else if (dayDateUTC === todayUTC + 86400000) {
+        } else if (dayDate.getTime() === today.getTime() + 86400000) {
             label.textContent = "Tomorrow";
             label.className = "dayLabel tomorrow";
             card.appendChild(label);
-        } else if (dayDateUTC < todayUTC) {
+        } else if (dayDate < today) {
             label.textContent = "Past";
             label.className = "dayLabel past";
             card.appendChild(label);
