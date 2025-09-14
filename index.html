@@ -323,12 +323,8 @@ const weekMap = [
 ];
 
 // --- State Management
-// This ensures that the code starts fresh and any previous conflicting data is cleared.
-try {
-    localStorage.removeItem('packedLunch'); 
-} catch(e) {
-    console.error("Local storage access denied:", e);
-}
+// This is a temporary line to ensure a fresh start. You can remove it later.
+localStorage.clear();
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 let currentWeekIndex = getInitialWeekIndex();
 
@@ -344,25 +340,16 @@ const darkModeToggle = document.getElementById('darkModeToggle');
 function getInitialWeekIndex() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
-    let initialIndex = 0;
     const todayTimestamp = today.getTime();
 
     for (let i = weekMap.length - 1; i >= 0; i--) {
         const weekStart = new Date(weekMap[i].start);
         weekStart.setHours(0, 0, 0, 0);
         if (todayTimestamp >= weekStart.getTime()) {
-            initialIndex = i;
-            break;
+            return i;
         }
     }
-    
-    // If today is a Sunday, show the next week's menu
-    if (today.getDay() === 0) {
-        initialIndex = (initialIndex < weekMap.length - 1) ? initialIndex + 1 : initialIndex;
-    }
-
-    return initialIndex;
+    return 0;
 }
 
 function renderMenu() {
@@ -374,7 +361,6 @@ function renderMenu() {
     const weekInfo = weekMap[currentWeekIndex];
 
     if (!weekInfo) {
-        // Fallback or error message if weekMap data is corrupt
         menuContainer.innerHTML = `<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>`;
         return;
     }
@@ -394,7 +380,6 @@ function renderMenu() {
         dayDate.setDate(weekStartDate.getDate() + index);
         dayDate.setHours(0, 0, 0, 0);
 
-        // Add label
         const label = document.createElement("span");
         if (dayDate.getTime() === today.getTime()) {
             label.textContent = "Today";
@@ -404,7 +389,7 @@ function renderMenu() {
             label.textContent = "Tomorrow";
             label.className = "dayLabel tomorrow";
             card.appendChild(label);
-        } else if (dayDate < today) {
+        } else if (dayDate.getTime() < today.getTime()) {
             label.textContent = "Past";
             label.className = "dayLabel past";
             card.appendChild(label);
