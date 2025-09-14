@@ -338,8 +338,8 @@ const darkModeToggle = document.getElementById('darkModeToggle');
 function getInitialWeekIndex() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
-    // Find the current week's index based on today's date
+    
+    // Find the correct week's index based on today's date
     const todayIndex = weekMap.findIndex(w => new Date(w.start) > today) - 1;
     let initialIndex = (todayIndex < 0) ? weekMap.length - 1 : todayIndex;
 
@@ -347,6 +347,7 @@ function getInitialWeekIndex() {
     if (today.getDay() === 0) {
         initialIndex = (initialIndex < weekMap.length - 1) ? initialIndex + 1 : initialIndex;
     }
+
     return initialIndex;
 }
 
