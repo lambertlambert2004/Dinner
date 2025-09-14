@@ -264,6 +264,7 @@ body.dark-mode #darkModeToggle {
 <header>
   <h1>School Dinner Menu</h1>
   <div class="sub-header">Packed Meals This Week: <span id="packedCount">0</span></div>
+  <div id="weekInfo"></div>
 </header>
 
 <div id="weekNav">
@@ -323,8 +324,7 @@ const weekMap = [
 ];
 
 // --- State Management
-// This is a temporary line to ensure a fresh start. You can remove it later.
-localStorage.clear();
+// localStorage.clear(); // Commented out to prevent resetting packed lunch selections on reload
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 let currentWeekIndex = getInitialWeekIndex();
 
