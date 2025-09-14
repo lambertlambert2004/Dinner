@@ -227,7 +227,7 @@ body.dark-mode #weekNav {
 
 .nav-btn:hover:not(.disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(52, 152, 219, 0.3);
+    box-shadow: 6px 6px 14px rgba(52, 152, 219, 0.3);
 }
 
 #weekTitle {
@@ -323,6 +323,8 @@ const weekMap = [
 ];
 
 // --- State Management
+// Clear any old, potentially conflicting local storage data
+localStorage.removeItem('packedLunch'); 
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 let currentWeekIndex = getInitialWeekIndex();
 
@@ -340,15 +342,18 @@ function getInitialWeekIndex() {
     today.setHours(0, 0, 0, 0);
 
     let initialIndex = 0;
+    const todayUTC = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+
     for (let i = weekMap.length - 1; i >= 0; i--) {
-        const weekStart = new Date(weekMap[i].start + 'T00:00:00Z');
-        if (today.getTime() >= weekStart.getTime()) {
+        const weekStart = new Date(weekMap[i].start);
+        const weekStartUTC = Date.UTC(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate());
+        if (todayUTC >= weekStartUTC) {
             initialIndex = i;
             break;
         }
     }
     
-    // If today is a Sunday, move to the next week's menu
+    // If today is a Sunday, show the next week's menu
     if (today.getDay() === 0) {
         initialIndex = (initialIndex < weekMap.length - 1) ? initialIndex + 1 : initialIndex;
     }
@@ -363,7 +368,7 @@ function renderMenu() {
     today.setHours(0, 0, 0, 0);
 
     const weekInfo = weekMap[currentWeekIndex];
-    const weekStartDate = new Date(weekInfo.start + 'T00:00:00Z');
+    const weekStartDate = new Date(weekInfo.start);
 
     weekTitleEl.textContent = `Week ${weekInfo.week}`;
     document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
@@ -374,20 +379,22 @@ function renderMenu() {
         if (packedLunch[currentWeekIndex]?.[day]) card.classList.add("packed");
 
         const dayDate = new Date(weekStartDate);
-        dayDate.setDate(weekStartDate.getUTCDate() + index);
-        dayDate.setUTCHours(0, 0, 0, 0);
+        dayDate.setDate(weekStartDate.getDate() + index);
 
         // Add label
         const label = document.createElement("span");
-        if (dayDate.toUTCString().slice(0, 16) === today.toUTCString().slice(0, 16)) {
+        const todayUTC = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+        const dayDateUTC = Date.UTC(dayDate.getFullYear(), dayDate.getMonth(), dayDate.getDate());
+
+        if (dayDateUTC === todayUTC) {
             label.textContent = "Today";
             label.className = "dayLabel today";
             card.appendChild(label);
-        } else if (dayDate.getTime() === today.getTime() + 86400000) {
+        } else if (dayDateUTC === todayUTC + 86400000) {
             label.textContent = "Tomorrow";
             label.className = "dayLabel tomorrow";
             card.appendChild(label);
-        } else if (dayDate < today) {
+        } else if (dayDateUTC < todayUTC) {
             label.textContent = "Past";
             label.className = "dayLabel past";
             card.appendChild(label);
