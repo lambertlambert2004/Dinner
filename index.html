@@ -308,23 +308,23 @@ const weekMap = [
     { week: 1, start: "2025-09-01" },
     { week: 2, start: "2025-09-08" },
     { week: 3, start: "2025-09-15" },
-    { week: 1, start: "2025-09-22" }, // Week 1 again
-    { week: 2, start: "2025-09-29" }, // Week 2 again
-    { week: 3, start: "2025-10-06" }, // Week 3 again
-    { week: 1, start: "2025-10-13" }, // Week 1 again
-    { week: 2, start: "2025-10-20" }, // Week 2 again
-    { week: 3, start: "2025-11-03" }, // Week 3 again
-    { week: 1, start: "2025-11-10" }, // Week 1 again
-    { week: 2, start: "2025-11-17" }, // Week 2 again
-    { week: 3, start: "2025-11-24" }, // Week 3 again
-    { week: 1, start: "2025-12-01" }, // Week 1 again
-    { week: 2, start: "2025-12-08" }, // Week 2 again
-    { week: 3, start: "2025-12-15" }  // Week 3 again
+    { week: 1, start: "2025-09-22" },
+    { week: 2, start: "2025-09-29" },
+    { week: 3, start: "2025-10-06" },
+    { week: 1, start: "2025-10-13" },
+    { week: 2, start: "2025-10-20" },
+    { week: 3, start: "2025-11-03" },
+    { week: 1, start: "2025-11-10" },
+    { week: 2, start: "2025-11-17" },
+    { week: 3, start: "2025-11-24" },
+    { week: 1, start: "2025-12-01" },
+    { week: 2, start: "2025-12-08" },
+    { week: 3, start: "2025-12-15" }
 ];
 
 // --- State Management
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
-let currentWeek = getInitialWeek();
+let currentWeekIndex = getInitialWeekIndex();
 
 // --- DOM Elements
 const menuContainer = document.getElementById('menu');
@@ -335,13 +335,17 @@ const nextWeekBtn = document.getElementById('nextWeekBtn');
 const darkModeToggle = document.getElementById('darkModeToggle');
 
 // --- Functions
-function getInitialWeek() {
+function getInitialWeekIndex() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
+    // Find the current week's index based on today's date
     const todayIndex = weekMap.findIndex(w => new Date(w.start) > today) - 1;
-    let initialIndex = (todayIndex === -2) ? weekMap.length - 1 : todayIndex; // Handle past last date
+    let initialIndex = (todayIndex < 0) ? weekMap.length - 1 : todayIndex;
+
+    // If today is a Sunday, move to the next week's menu
     if (today.getDay() === 0) {
-        initialIndex = initialIndex < weekMap.length - 1 ? initialIndex + 1 : initialIndex;
+        initialIndex = (initialIndex < weekMap.length - 1) ? initialIndex + 1 : initialIndex;
     }
     return initialIndex;
 }
@@ -352,7 +356,7 @@ function renderMenu() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const weekInfo = weekMap[currentWeek];
+    const weekInfo = weekMap[currentWeekIndex];
     const weekStartDate = new Date(weekInfo.start);
 
     weekTitleEl.textContent = `Week ${weekInfo.week}`;
@@ -361,7 +365,7 @@ function renderMenu() {
     weekdays.forEach((day, index) => {
         const card = document.createElement("div");
         card.classList.add("card");
-        if (packedLunch[weekInfo.week]?.[day]) card.classList.add("packed");
+        if (packedLunch[currentWeekIndex]?.[day]) card.classList.add("packed");
 
         const dayDate = new Date(weekStartDate);
         dayDate.setDate(weekStartDate.getDate() + index);
@@ -396,7 +400,7 @@ function renderMenu() {
         toggle.className = "toggle";
         const input = document.createElement("input");
         input.type = "checkbox";
-        input.checked = !!packedLunch[weekInfo.week]?.[day];
+        input.checked = !!packedLunch[currentWeekIndex]?.[day];
         const slider = document.createElement("span");
         slider.className = "slider";
         toggle.appendChild(input);
@@ -404,9 +408,9 @@ function renderMenu() {
         card.appendChild(toggle);
 
         input.addEventListener("change", () => {
-            if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
-            if (input.checked) packedLunch[weekInfo.week][day] = true;
-            else delete packedLunch[weekInfo.week][day];
+            if (!packedLunch[currentWeekIndex]) packedLunch[currentWeekIndex] = {};
+            if (input.checked) packedLunch[currentWeekIndex][day] = true;
+            else delete packedLunch[currentWeekIndex][day];
             localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
             updatePackedCount();
             card.classList.toggle("packed", input.checked);
@@ -420,27 +424,26 @@ function renderMenu() {
 }
 
 function updatePackedCount() {
-    const weekInfo = weekMap[currentWeek];
-    const count = Object.keys(packedLunch[weekInfo.week] || {}).length;
+    const count = Object.keys(packedLunch[currentWeekIndex] || {}).length;
     packedCountEl.textContent = count;
 }
 
 function updateNavButtons() {
-    prevWeekBtn.classList.toggle("disabled", currentWeek === 0);
-    nextWeekBtn.classList.toggle("disabled", currentWeek === weekMap.length - 1);
+    prevWeekBtn.classList.toggle("disabled", currentWeekIndex === 0);
+    nextWeekBtn.classList.toggle("disabled", currentWeekIndex === weekMap.length - 1);
 }
 
 // --- Event Listeners
 prevWeekBtn.addEventListener('click', () => {
-    if (currentWeek > 0) {
-        currentWeek--;
+    if (currentWeekIndex > 0) {
+        currentWeekIndex--;
         renderMenu();
     }
 });
 
 nextWeekBtn.addEventListener('click', () => {
-    if (currentWeek < weekMap.length - 1) {
-        currentWeek++;
+    if (currentWeekIndex < weekMap.length - 1) {
+        currentWeekIndex++;
         renderMenu();
     }
 });
