@@ -3,8 +3,8 @@
   "short_name": "Dinner Menu",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#f5f7fa",
-  "theme_color": "#f5f7fa",
+  "background_color": "#fafafa",
+  "theme_color": "#fafafa",
   "icons": [
     {
       "src": "https://raw.githubusercontent.com/lambertlambert2004/Dinner/refs/heads/main/icon-180.PNG",
