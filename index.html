@@ -1,228 +1,443 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>School Dinner Menu</title>
 <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/lambertlambert2004/Dinner/refs/heads/main/icon-180.PNG">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="School Dinner Menu">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#f0f2f6;
-  --card-green:#dfffe0;
-  --card-packed:#fff4b2;
-  --accent-blue:#4a90e2;
-  --accent-orange:#ff9500;
-  --text:#333;
+:root {
+    --bg-light: #f5f7fa;
+    --bg-card-light: #fff;
+    --text-light: #2c3e50;
+    --packed-light: #fff4b2;
+
+    --bg-dark: #1a202c;
+    --bg-card-dark: #2d3748;
+    --text-dark: #e2e8f0;
+    --packed-dark: #4a422a;
+
+    --accent-blue: #3498db;
+    --accent-green: #2ecc71;
+    --accent-red: #e74c3c;
+    --accent-orange: #f39c12;
+
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --border-radius: 12px;
+    --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --transition: all 0.3s ease;
 }
-body{
-  margin:0;padding:20px;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-  background:var(--bg); color:var(--text);
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: var(--font-family);
+    background: var(--bg-light);
+    color: var(--text-light);
+    transition: var(--transition);
 }
-header{text-align:center;margin-bottom:12px;}
-h1{margin:0 0 8px 0;font-size:1.4rem;font-weight:700;}
-#packedWeek{margin-bottom:8px;font-size:0.95rem;color:#333;font-weight:600;}
-#weekInfo{margin-bottom:6px;font-size:0.85rem;color:#666;}
-#menu{display:flex;flex-direction:column;gap:12px;max-width:820px;margin:18px auto 120px;}
-.card{
-  position:relative;border-radius:12px;padding:16px 16px 48px;
-  box-shadow:0 6px 18px rgba(18,30,50,0.06);
-  background:var(--card-green);
-  transition:background .25s;
+
+body.dark-mode {
+    background: var(--bg-dark);
+    color: var(--text-dark);
 }
-.card.packed{background:var(--card-packed);}
-.dayTitle{font-size:1.05rem;font-weight:700;margin:0 0 8px 0;}
-.menuText{white-space:pre-line;line-height:1.45;font-size:0.95rem;color:#3b3b3b;}
-.dayLabel{
-  position:absolute;top:12px;right:12px;
-  padding:6px 8px;font-weight:700;font-size:0.75rem;color:#fff;
-  border-radius:8px; z-index:3; pointer-events:none;
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
 }
-.dayLabel.today{background:var(--accent-blue); animation:glowBlue 2.6s infinite alternate;}
-.dayLabel.tomorrow{background:var(--accent-orange); animation:glowOrange 2.8s infinite alternate;}
-@keyframes glowBlue{
-  0%{ box-shadow:0 0 6px rgba(74,144,226,0.6); }
-  50%{ box-shadow:0 0 24px rgba(74,144,226,0.85); }
-  100%{ box-shadow:0 0 12px rgba(74,144,226,0.7); }
+
+h1 {
+    margin: 0 0 8px 0;
+    font-size: 1.6rem;
+    font-weight: 700;
 }
-@keyframes glowOrange{
-  0%{ box-shadow:0 0 4px rgba(255,149,0,0.6); }
-  50%{ box-shadow:0 0 18px rgba(255,149,0,0.8); }
-  100%{ box-shadow:0 0 8px rgba(255,149,0,0.65); }
+
+.sub-header {
+    font-size: 0.95rem;
+    color: #888;
+    margin-bottom: 6px;
 }
-.toggle{position:absolute;right:12px;bottom:12px;width:56px;height:32px;}
-.toggle input{opacity:0;width:0;height:0;}
-.slider{
-  position:relative;width:100%;height:100%;
-  background:#bbb;border-radius:32px;border:1px solid #888;
-  transition:background .2s;
+
+body.dark-mode .sub-header {
+    color: #a0aec0;
 }
-.slider:before{
-  content:""; position:absolute; left:4px; top:4px;
-  width:24px; height:24px; background:#fff; border-radius:50%;
-  box-shadow:0 2px 6px rgba(0,0,0,0.2);
-  transition:transform .2s;
+
+#weekInfo {
+    font-size: 0.85rem;
+    color: #999;
 }
-.toggle input:checked + .slider{ background:#4cd964; border-color:#3ac05a; }
-.toggle input:checked + .slider:before{ transform:translateX(24px); }
-#weekNav{ position:fixed; right:18px; bottom:60px; z-index:50; display:flex; flex-direction:column; gap:10px; }
-.btn{
-  background:linear-gradient(135deg,var(--accent-blue),#357ABD);
-  color:#fff; border:0; padding:12px 18px;
-  border-radius:20px; font-weight:600; font-size:0.9rem;
-  box-shadow:0 6px 14px rgba(74,144,226,0.25);
+
+body.dark-mode #weekInfo {
+    color: #cbd5e0;
 }
-.btn.secondary{
-  background:linear-gradient(135deg,#ff6b6b,#e55050);
-  box-shadow:0 6px 14px rgba(255,107,107,0.25);
+
+#menu {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 800px;
+    margin: 24px auto 120px;
+}
+
+.card {
+    position: relative;
+    border-radius: var(--border-radius);
+    padding: 20px 20px 56px;
+    box-shadow: var(--shadow);
+    background: var(--bg-card-light);
+    transition: var(--transition);
+}
+
+body.dark-mode .card {
+    background: var(--bg-card-dark);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card.packed {
+    background: var(--packed-light);
+}
+
+body.dark-mode .card.packed {
+    background: var(--packed-dark);
+}
+
+.dayTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+.menuText {
+    white-space: pre-line;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+body.dark-mode .menuText {
+    color: #cbd5e0;
+}
+
+.dayLabel {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 6px 10px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #fff;
+    border-radius: 8px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.dayLabel.today { background: var(--accent-blue); animation: glowBlue 2.6s infinite alternate; }
+.dayLabel.tomorrow { background: var(--accent-orange); animation: glowOrange 2.8s infinite alternate; }
+.dayLabel.past { background: #95a5a6; }
+
+@keyframes glowBlue {
+    0% { box-shadow: 0 0 6px rgba(52, 152, 219, 0.6); }
+    50% { box-shadow: 0 0 24px rgba(52, 152, 219, 0.85); }
+    100% { box-shadow: 0 0 12px rgba(52, 152, 219, 0.7); }
+}
+
+@keyframes glowOrange {
+    0% { box-shadow: 0 0 4px rgba(243, 156, 18, 0.6); }
+    50% { box-shadow: 0 0 18px rgba(243, 156, 18, 0.8); }
+    100% { box-shadow: 0 0 8px rgba(243, 156, 18, 0.65); }
+}
+
+.toggle {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    width: 60px;
+    height: 34px;
+}
+
+.toggle input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #ccc;
+    border-radius: 34px;
+    cursor: pointer;
+    transition: background 0.4s;
+}
+
+.slider::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 26px;
+    height: 26px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.4s;
+}
+
+.toggle input:checked + .slider { background: var(--accent-green); }
+.toggle input:checked + .slider::before { transform: translateX(26px); }
+
+#weekNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 10px;
+    position: sticky;
+    top: 10px;
+    z-index: 10;
+    background: var(--bg-light);
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+body.dark-mode #weekNav {
+    background: var(--bg-dark);
+}
+
+.nav-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 20px;
+    background: var(--accent-blue);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+    transition: var(--transition);
+}
+
+.nav-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.nav-btn:hover:not(.disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(52, 152, 219, 0.3);
+}
+
+#weekTitle {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+#darkModeToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-card-light);
+    color: var(--text-light);
+    border-radius: 50%;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    transition: var(--transition);
+}
+
+body.dark-mode #darkModeToggle {
+    background: var(--bg-card-dark);
+    color: var(--text-dark);
 }
 </style>
 </head>
 <body>
+
 <header>
   <h1>School Dinner Menu</h1>
-  <div id="packedWeek">Packed Meals This Week: <span id="packedCount">0</span></div>
-  <div id="weekInfo">Week <span id="weekNumber">—</span> · Week commencing <span id="weekCommence">—</span></div>
+  <div class="sub-header">Packed Meals This Week: <span id="packedCount">0</span></div>
 </header>
 
+<div id="weekNav">
+    <button id="prevWeekBtn" class="nav-btn">Previous</button>
+    <div id="weekTitle"></div>
+    <button id="nextWeekBtn" class="nav-btn">Next</button>
+</div>
+
 <main id="menu"></main>
-<div id="weekNav"></div>
+
+<div id="darkModeToggle">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75S6.615 21.75 12 21.75c1.077 0 2.1-.194 3.05-.56A.75.75 0 0 0 15.65 20.5h0a.75.75 0 0 1 .85-.14 9.752 9.752 0 0 0 4.1-6.19c.12-.472-.345-.92-.85-.85a8.25 8.25 0 0 1-5.75 2.19c-3.15 0-5.727-2.585-5.727-5.757 0-3.172 2.577-5.757 5.727-5.757 1.838 0 3.52 1.054 4.58 2.687a.75.75 0 0 0 1.25-.664A9.752 9.752 0 0 0 12 2.25z"/></svg>
+</div>
 
 <script>
-// --- Week & menu data
-const weekMap=[
-  {week:1,start:"2025-09-01"},
-  {week:2,start:"2025-09-08"},
-  {week:3,start:"2025-09-15"}
-];
-const MENUS={
-  1:{
-    Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
-    Tuesday:"BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments\nFruit yoghurt / Fresh fruit",
-    Wednesday:"Cheesy beany jacket / Breaded chicken steak\nAccompaniments\nPancake and fruit",
-    Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / Fresh fruit",
-    Friday:"Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"
-  },
-  2:{
-    Monday:"Breaded chicken steak / Vegetable cheese bake\nAccompaniments of the day\nFruit yoghurt pot / fresh fruit",
-    Tuesday:"Pasta bolognese / Cheese & tomato pizza\nAccompaniments\nFruit / Biscuit",
-    Wednesday:"Chicken curry / Quorn curry\nAccompaniments\nRice / Vegetable\nFruit",
-    Thursday:"Cottage pie / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
-    Friday:"Baked salmon / Cheese wrap\nAccompaniments\nJam split / Fruit wedge"
-  },
-  3:{
-    Monday:"Oven baked sausages / Vegetable hotdog\nAccompaniments\nFruit / Biscuit",
-    Tuesday:"Chicken curry / Quorn curry\nAccompaniments\nRice / Vegetable\nFruit",
-    Wednesday:"Cheesy beany jacket / Breaded chicken steak\nAccompaniments\nPancake and fruit",
-    Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / Fresh fruit",
-    Friday:"Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"
-  }
+// --- Menu Data
+const MENUS = {
+    1: {
+        Monday: "Oven baked sausage / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
+        Tuesday: "Oven baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
+        Wednesday: "Chicken curry / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
+        Thursday: "Cottage pie / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
+        Friday: "Breaded chicken steak / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
+    },
+    2: {
+        Monday: "Pasta bolognese / Cheese and tomato pizza\nAccompaniments\nFruit / Biscuit",
+        Tuesday: "Oven baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
+        Wednesday: "Chicken curry / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
+        Thursday: "Cottage pie / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
+        Friday: "Breaded chicken steak / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
+    },
+    3: {
+        Monday: "Oven baked sausage / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
+        Tuesday: "Oven baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
+        Wednesday: "Chicken curry / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
+        Thursday: "Cottage pie / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
+        Friday: "Breaded chicken steak / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
+    }
 };
 
-// --- Current week
-function getCurrentWeek(today=new Date()){
-  today.setHours(0,0,0,0);
-  let current=null;
-  for(let i=weekMap.length-1;i>=0;i--){
-    if(today>=new Date(weekMap[i].start)){
-      current=weekMap[i].week;
-      break;
+const weekMap = [
+    { week: 1, start: "2025-09-01" },
+    { week: 2, start: "2025-09-08" },
+    { week: 3, start: "2025-09-15" }
+];
+
+// --- State Management
+let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
+let currentWeek = getInitialWeek();
+
+// --- DOM Elements
+const menuContainer = document.getElementById('menu');
+const weekTitleEl = document.getElementById('weekTitle');
+const packedCountEl = document.getElementById('packedCount');
+const prevWeekBtn = document.getElementById('prevWeekBtn');
+const nextWeekBtn = document.getElementById('nextWeekBtn');
+const darkModeToggle = document.getElementById('darkModeToggle');
+
+// --- Functions
+function getInitialWeek() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let initialWeek = weekMap.find(w => new Date(w.start) <= today)?.week || 1;
+    if (today.getDay() === 0) { // If it's Sunday, show next week's menu
+        const nextWeek = weekMap.find(w => w.week === initialWeek + 1);
+        if (nextWeek) initialWeek = nextWeek.week;
     }
-  }
-  if(today.getDay()===0){ // Sunday
-    const next=weekMap.find(w=>w.week===current+1);
-    if(next) current=next.week;
-  }
-  return current||1;
+    return initialWeek;
 }
 
-// --- Load packed lunches per week
-let packedLunch=JSON.parse(localStorage.getItem('packedLunch')||'{}');
+function renderMenu() {
+    menuContainer.innerHTML = '';
+    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-function renderBadge(week){
-  const count=Object.keys(packedLunch[week]||{}).length;
-  document.getElementById('packedCount').textContent=count;
-}
+    const weekInfo = weekMap.find(w => w.week === currentWeek);
+    const weekStartDate = new Date(weekInfo.start);
 
-// --- Render menu
-const menuContainer=document.getElementById('menu');
-function renderMenu(week){
-  menuContainer.innerHTML='';
-  const weekdays=["Monday","Tuesday","Wednesday","Thursday","Friday"];
-  const today=new Date();
-  const tomorrow=new Date(); tomorrow.setDate(today.getDate()+1);
+    weekTitleEl.textContent = `Week ${currentWeek}`;
+    document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
 
-  for(const day of weekdays){
-    const card=document.createElement("div"); card.classList.add("card");
-    if(packedLunch[week]?.[day]) card.classList.add("packed");
+    weekdays.forEach((day, index) => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        if (packedLunch[currentWeek]?.[day]) card.classList.add("packed");
 
-    const title=document.createElement("div"); title.className="dayTitle"; title.textContent=day;
-    card.appendChild(title);
+        const dayDate = new Date(weekStartDate);
+        dayDate.setDate(weekStartDate.getDate() + index);
 
-    const menuText=document.createElement("div"); menuText.className="menuText"; menuText.textContent=MENUS[week][day];
-    card.appendChild(menuText);
+        // Add label
+        const label = document.createElement("span");
+        if (dayDate.toDateString() === today.toDateString()) {
+            label.textContent = "Today";
+            label.className = "dayLabel today";
+            card.appendChild(label);
+        } else if (dayDate.getTime() === today.getTime() + 86400000) {
+            label.textContent = "Tomorrow";
+            label.className = "dayLabel tomorrow";
+            card.appendChild(label);
+        } else if (dayDate < today) {
+            label.textContent = "Past";
+            label.className = "dayLabel past";
+            card.appendChild(label);
+        }
 
-    // Labels
-    const label=document.createElement("span"); 
-    const dayOffset=(weekMap.find(w=>w.week===week).start, ["Monday","Tuesday","Wednesday","Thursday","Friday"].indexOf(day)-today.getDay()+7)%7;
-    const thisDay=new Date(today); thisDay.setDate(today.getDate()+dayOffset);
-    if(thisDay.toDateString()===today.toDateString()) label.textContent="Today",label.className="dayLabel today";
-    else if(thisDay.toDateString()===tomorrow.toDateString()) label.textContent="Tomorrow",label.className="dayLabel tomorrow";
-    card.appendChild(label);
+        const title = document.createElement("div");
+        title.className = "dayTitle";
+        title.textContent = day;
+        card.appendChild(title);
 
-    // Toggle
-    const toggle=document.createElement("label"); toggle.className="toggle";
-    const input=document.createElement("input"); input.type="checkbox";
-    input.checked=!!packedLunch[week]?.[day];
-    const slider=document.createElement("span"); slider.className="slider";
-    toggle.appendChild(input); toggle.appendChild(slider);
-    card.appendChild(toggle);
+        const menuText = document.createElement("div");
+        menuText.className = "menuText";
+        menuText.textContent = MENUS[currentWeek][day];
+        card.appendChild(menuText);
 
-    input.addEventListener("change",()=>{
-      if(!packedLunch[week]) packedLunch[week]={};
-      if(input.checked) packedLunch[week][day]=true; else delete packedLunch[week][day];
-      localStorage.setItem('packedLunch',JSON.stringify(packedLunch));
-      renderBadge(week);
-      card.classList.toggle("packed",input.checked);
+        const toggle = document.createElement("label");
+        toggle.className = "toggle";
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.checked = !!packedLunch[currentWeek]?.[day];
+        const slider = document.createElement("span");
+        slider.className = "slider";
+        toggle.appendChild(input);
+        toggle.appendChild(slider);
+        card.appendChild(toggle);
+
+        input.addEventListener("change", () => {
+            if (!packedLunch[currentWeek]) packedLunch[currentWeek] = {};
+            if (input.checked) packedLunch[currentWeek][day] = true;
+            else delete packedLunch[currentWeek][day];
+            localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+            updatePackedCount();
+            card.classList.toggle("packed", input.checked);
+        });
+
+        menuContainer.appendChild(card);
     });
 
-    menuContainer.appendChild(card);
-  }
-
-  // Week info
-  document.getElementById('weekNumber').textContent=week;
-  const startDate=weekMap.find(w=>w.week===week).start;
-  document.getElementById('weekCommence').textContent=new Date(startDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-  renderBadge(week);
+    updatePackedCount();
+    updateNavButtons();
 }
 
-// --- Week navigation
-let currentWeek=getCurrentWeek();
-renderMenu(currentWeek);
+function updatePackedCount() {
+    const count = Object.keys(packedLunch[currentWeek] || {}).length;
+    packedCountEl.textContent = count;
+}
 
-const weekNavDiv=document.getElementById('weekNav');
-const nextBtn=document.createElement("button"); nextBtn.className="btn"; nextBtn.textContent="View Next Week";
-weekNavDiv.appendChild(nextBtn);
+function updateNavButtons() {
+    prevWeekBtn.classList.toggle("disabled", currentWeek === 1);
+    nextWeekBtn.classList.toggle("disabled", currentWeek === weekMap.length);
+}
 
-nextBtn.addEventListener("click",()=>{
-  const next=currentWeek+1; 
-  if(!MENUS[next]) return;
-  renderMenu(next);
-  nextBtn.style.display="none";
-
-  if(!document.getElementById('returnBtn')){
-    const returnBtn=document.createElement("button"); returnBtn.className="btn secondary"; returnBtn.id="returnBtn";
-    returnBtn.textContent="Return to Current Week";
-    weekNavDiv.appendChild(returnBtn);
-    returnBtn.addEventListener("click",()=>{
-      renderMenu(currentWeek);
-      nextBtn.style.display="block";
-      returnBtn.remove();
-    });
-  }
+// --- Event Listeners
+prevWeekBtn.addEventListener('click', () => {
+    if (currentWeek > 1) {
+        currentWeek--;
+        renderMenu();
+    }
 });
+
+nextWeekBtn.addEventListener('click', () => {
+    if (currentWeek < weekMap.length) {
+        currentWeek++;
+        renderMenu();
+    }
+});
+
+darkModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+});
+
+// --- Initial Render
+renderMenu();
 </script>
 </body>
 </html>
