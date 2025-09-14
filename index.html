@@ -74,11 +74,30 @@ h1{margin:0 0 12px 0;font-size:1.4rem;font-weight:700;}
 }
 .toggle input:checked + .slider{ background:#4cd964; border-color:#3ac05a; }
 .toggle input:checked + .slider:before{ transform:translateX(24px); }
-#weekNav{ position:fixed; right:18px; bottom:50px; z-index:50; display:flex;flex-direction:column; gap:8px; }
+
+#weekNav{
+  position:fixed;
+  bottom:28px;
+  right:18px;
+  z-index:50;
+  display:flex; flex-direction:column; gap:8px;
+}
 .btn{
-  background:linear-gradient(135deg,var(--accent-blue),#357ABD);
-  color:#fff; border:0; padding:12px 18px;
-  border-radius:20px; font-weight:600; font-size:0.9rem;
+  border:0; padding:14px 22px; border-radius:28px;
+  font-weight:600; font-size:0.95rem; cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  transition:transform 0.25s, box-shadow 0.25s;
+  color:#fff;
+}
+.btn.floating{
+  background:linear-gradient(135deg,#4a90e2,#357ABD);
+}
+.btn.floating:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 24px rgba(74,144,226,0.35);
+}
+.btn.floating:active{
+  transform:translateY(0);
   box-shadow:0 6px 14px rgba(74,144,226,0.25);
 }
 .btn.secondary{
@@ -96,7 +115,9 @@ h1{margin:0 0 12px 0;font-size:1.4rem;font-weight:700;}
 </header>
 
 <main id="menu"></main>
-<div id="weekNav"></div>
+<div id="weekNav">
+  <button id="nextWeekBtn" class="btn floating">Next Week (Week <span id="nextWeekNum">—</span>)</button>
+</div>
 
 <script>
 // WEEK DATA
@@ -106,55 +127,32 @@ const weekMap=[
   {week:3,start:"2025-09-15"}
 ];
 
-const MENUS={
-  1:{
-    Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
-    Tuesday:"BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments\nFruit yoghurt / Fresh fruit",
-    Wednesday:"Cheesy beany jacket / Breaded chicken steak\nAccompaniments\nPancake and fruit",
-    Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / Fresh fruit",
-    Friday:"Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"
-  },
-  2:{
-    Monday:"Breaded chicken steak / Vegetable cheese bake\nAccompaniments of the day\nFruit yoghurt pot / fresh fruit",
-    Tuesday:"Pasta bolognese / Cheese & tomato pizza\nAccompaniments\nFruit / Biscuit",
-    Wednesday:"Chicken curry / Quorn curry\nAccompaniments\nRice / Vegetable\nFruit",
-    Thursday:"Cottage pie / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
-    Friday:"Baked salmon / Cheese wrap\nAccompaniments\nJam split / Fruit wedge"
-  },
-  3:{
-    Monday:"Oven baked sausages / Vegetable hotdog\nAccompaniments\nFruit / Biscuit",
-    Tuesday:"Chicken curry / Quorn curry\nAccompaniments\nRice / Vegetable\nFruit",
-    Wednesday:"Cheesy beany jacket / Breaded chicken steak\nAccompaniments\nPancake and fruit",
-    Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / Fresh fruit",
-    Friday:"Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"
-  }
-};
+// MENUS placeholder (leave meals as they are)
+const MENUS={1:{Monday:"",Tuesday:"",Wednesday:"",Thursday:"",Friday:""},2:{Monday:"",Tuesday:"",Wednesday:"",Thursday:"",Friday:""},3:{Monday:"",Tuesday:"",Wednesday:"",Thursday:"",Friday:""}};
 
-// Determine current week
+// Packed lunches
+let packedLunch=JSON.parse(localStorage.getItem('packedLunch')||'{}');
+
+// Get current week
 function getCurrentWeek(today=new Date()){
   today.setHours(0,0,0,0);
   let current=null;
   for(let i=weekMap.length-1;i>=0;i--){
-    let startDate=new Date(weekMap[i].start);
+    const startDate=new Date(weekMap[i].start);
     if(today>=startDate){ current=weekMap[i].week; break; }
   }
-  if(today.getDay()===0){ // Sunday shows next week
+  if(today.getDay()===0){
     const nextWeek=weekMap.find(w=>w.week===current+1);
-    if(nextWeek)current=nextWeek.week;
+    if(nextWeek) current=nextWeek.week;
   }
   return current || 1;
 }
-
-// Load packed lunches
-let packedLunch=JSON.parse(localStorage.getItem('packedLunch')||'{}');
 
 // Render badge
 function renderBadge(week){
   const badge=document.getElementById('packedBadge');
   let count=0;
-  for(const day in packedLunch){
-    if(MENUS[week][day]) count++;
-  }
+  for(const day in packedLunch) if(MENUS[week][day]) count++;
   badge.textContent="Packed Meals: "+count;
 }
 
@@ -163,11 +161,11 @@ const menuContainer=document.getElementById('menu');
 function renderMenu(week){
   menuContainer.innerHTML='';
   const weekdays=["Monday","Tuesday","Wednesday","Thursday","Friday"];
-  const today=new Date();
-  const tomorrow=new Date(today); tomorrow.setDate(today.getDate()+1);
+  const todayDate=new Date(); todayDate.setHours(0,0,0,0);
+  const tomorrowDate=new Date(todayDate); tomorrowDate.setDate(todayDate.getDate()+1);
 
   const weekMenus=MENUS[week];
-  for(const day of weekdays){
+  weekdays.forEach((day,i)=>{
     const card=document.createElement("div"); card.className="card";
     if(packedLunch[day]) card.classList.add("packed");
 
@@ -177,15 +175,13 @@ function renderMenu(week){
     const menuText=document.createElement("div"); menuText.className="menuText"; menuText.textContent=weekMenus[day];
     card.appendChild(menuText);
 
-    // Label
     const label=document.createElement("span"); label.className="dayLabel";
-    const dayOffset=weekMenus[day]?0:0;
-    const dayDate=new Date(); dayDate.setDate(today.getDate()+dayOffset);
-    if(dayDate.toDateString()===today.toDateString()) label.textContent="Today", label.classList.add("today");
-    else if(dayDate.toDateString()===tomorrow.toDateString()) label.textContent="Tomorrow", label.classList.add("tomorrow");
+    const mondayDate=new Date(todayDate); mondayDate.setDate(todayDate.getDate() - todayDate.getDay() +1);
+    const dayDate=new Date(mondayDate); dayDate.setDate(mondayDate.getDate()+i);
+    if(dayDate.toDateString()===todayDate.toDateString()) label.textContent="Today", label.classList.add("today");
+    else if(dayDate.toDateString()===tomorrowDate.toDateString()) label.textContent="Tomorrow", label.classList.add("tomorrow");
     card.appendChild(label);
 
-    // Toggle
     const toggle=document.createElement("label"); toggle.className="toggle";
     const input=document.createElement("input"); input.type="checkbox"; input.checked=!!packedLunch[day];
     const slider=document.createElement("span"); slider.className="slider";
@@ -200,14 +196,11 @@ function renderMenu(week){
     });
 
     menuContainer.appendChild(card);
-  }
+  });
 
-  // Week info
-  const weekNumber=document.getElementById('weekNumber'); weekNumber.textContent=week;
-  const weekCommence=document.getElementById('weekCommence');
+  document.getElementById('weekNumber').textContent=week;
   const startDate=weekMap.find(w=>w.week===week).start;
-  weekCommence.textContent=new Date(startDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-
+  document.getElementById('weekCommence').textContent=new Date(startDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
   renderBadge(week);
 }
 
@@ -215,20 +208,24 @@ function renderMenu(week){
 let currentWeek=getCurrentWeek();
 renderMenu(currentWeek);
 
-// Week navigation
-const weekNavDiv=document.getElementById('weekNav');
-const nextWeekBtn=document.createElement("button"); nextWeekBtn.className="btn"; nextWeekBtn.textContent="View Next Week";
-weekNavDiv.appendChild(nextWeekBtn);
+// Week navigation buttons
+const nextWeekBtn=document.getElementById("nextWeekBtn");
+const nextWeekNum=document.getElementById("nextWeekNum");
+nextWeekNum.textContent = currentWeek+1 <= weekMap.length ? currentWeek+1 : "-";
 
 nextWeekBtn.addEventListener("click",()=>{
   const nextWeek=currentWeek+1;
   if(!MENUS[nextWeek]) return;
   renderMenu(nextWeek);
   nextWeekBtn.style.display="none";
+
   if(!document.getElementById('returnBtn')){
-    const returnBtn=document.createElement("button"); returnBtn.className="btn secondary"; returnBtn.id="returnBtn";
+    const returnBtn=document.createElement("button");
+    returnBtn.id="returnBtn";
+    returnBtn.className="btn secondary floating";
     returnBtn.textContent="Return to Current Week";
-    weekNavDiv.appendChild(returnBtn);
+    document.getElementById('weekNav').appendChild(returnBtn);
+
     returnBtn.addEventListener("click",()=>{
       renderMenu(currentWeek);
       nextWeekBtn.style.display="block";
