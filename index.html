@@ -17,7 +17,7 @@
     --bg-light: #fafafa;
     --bg-card-light: #ffffff;
     --text-light: #333333;
-    --packed-light: #fff5e0;
+    --packed-light: #ffe082; /* Brighter yellow for packed lunch */
     --accent-blue: #0066cc;
     --accent-green: #34c759;
     --accent-orange: #ff9500;
@@ -32,13 +32,13 @@ body.dark-mode {
     --bg-light: #1a202c;
     --bg-card-light: #2d3748;
     --text-light: #e2e8f0;
-    --packed-light: #4a422a;
+    --packed-light: #5a5231; /* Distinct dark mode packed color */
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 body {
     margin: 0;
-    padding: 0 16px 16px;
+    padding: env(safe-area-inset-top) 16px 16px; /* Respect notch */
     font-family: var(--font-family);
     background: var(--bg-light);
     color: var(--text-light);
@@ -52,7 +52,7 @@ header {
     padding: 16px 0;
     background: var(--bg-light);
     position: sticky;
-    top: 0;
+    top: env(safe-area-inset-top); /* Stick below notch */
     z-index: 20;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -185,7 +185,7 @@ body.dark-mode .menuText {
     position: relative;
     width: 100%;
     height: 100%;
-    background: #e5e5ea;
+    background: #d1d1d6; /* Darker off state */
     border-radius: 15px;
     cursor: pointer;
     transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -198,9 +198,9 @@ body.dark-mode .menuText {
     top: 2px;
     width: 27px;
     height: 27px;
-    background: #fff;
+    background: #ffffff;
     border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); /* Stronger shadow */
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -222,7 +222,7 @@ body.dark-mode .menuText {
     border-radius: 14px;
     box-shadow: var(--shadow);
     position: sticky;
-    top: 60px;
+    top: calc(60px + env(safe-area-inset-top));
     z-index: 10;
 }
 
@@ -285,7 +285,7 @@ body:not(.dark-mode) #weekNav {
 
 #pullToRefresh {
     position: absolute;
-    top: -50px;
+    top: calc(-50px + env(safe-area-inset-top));
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -361,6 +361,27 @@ body.dark-mode #modal p {
 
 #modal button:active {
     transform: scale(0.95);
+}
+
+.toast {
+    position: absolute;
+    bottom: 60px;
+    right: 16px;
+    background: var(--bg-card-light);
+    color: var(--text-light);
+    padding: 8px 16px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    font-size: 0.85rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 100;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 :focus {
@@ -499,15 +520,24 @@ function getInitialWeekIndex() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const todayTimestamp = today.getTime();
+    const isSunday = today.getDay() === 0; // 0 is Sunday
 
+    let index = 0;
     for (let i = weekMap.length - 1; i >= 0; i--) {
         const weekStart = new Date(weekMap[i].start);
         weekStart.setHours(0, 0, 0, 0);
         if (todayTimestamp >= weekStart.getTime()) {
-            return i;
+            index = i;
+            break;
         }
     }
-    return 0;
+
+    // On Sunday, show the next week if available
+    if (isSunday && index < weekMap.length - 1) {
+        index++;
+    }
+
+    return index;
 }
 
 function renderMenu(direction = null) {
@@ -528,11 +558,24 @@ function renderMenu(direction = null) {
     }
 }
 
+function showToast(message, card) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    card.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
+
 function renderMenuContent() {
     menuContainer.innerHTML = '';
     const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+    const isSunday = today.getDay() === 0;
 
     const weekInfo = weekMap[currentWeekIndex];
 
@@ -546,6 +589,9 @@ function renderMenuContent() {
 
     weekTitleEl.textContent = `Week ${weekInfo.week}`;
     document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+    currentWeekBtn.querySelector('svg').style.display = isSunday ? 'none' : 'inline';
+    currentWeekBtn.textContent = isSunday ? 'Next Week' : '';
+    currentWeekBtn.style.padding = isSunday ? '8px 16px' : '8px 12px';
 
     weekdays.forEach((day, index) => {
         const card = document.createElement("div");
@@ -594,8 +640,13 @@ function renderMenuContent() {
 
         input.addEventListener("change", () => {
             if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
-            if (input.checked) packedLunch[weekInfo.week][day] = true;
-            else delete packedLunch[weekInfo.week][day];
+            if (input.checked) {
+                packedLunch[weekInfo.week][day] = true;
+                showToast(`Packed lunch added for ${day}`, card);
+            } else {
+                delete packedLunch[weekInfo.week][day];
+                showToast(`Packed lunch removed for ${day}`, card);
+            }
             localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
             updatePackedCount();
             card.classList.toggle("packed", input.checked);
@@ -687,7 +738,7 @@ modalClose.addEventListener('click', () => {
     setTimeout(() => modal.style.display = "none", 300);
 });
 
-// --- Notification Placeholder (requires user permission)
+// --- Notification Placeholder
 function requestNotificationPermission() {
     if ("Notification" in window && Notification.permission !== "denied") {
         Notification.requestPermission().then(permission => {
