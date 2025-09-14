@@ -1,0 +1,15 @@
+{
+  "name": "School Dinner Menu",
+  "short_name": "Dinner Menu",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#f5f7fa",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/lambertlambert2004/Dinner/refs/heads/main/icon-180.PNG",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
