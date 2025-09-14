@@ -8,120 +8,239 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="School Dinner Menu">
 <style>
-  :root{
-    --bg:#f0f2f6;
-    --card-green:#dfffe0;
-    --card-packed:#fff4b2;
-    --accent-blue:#4a90e2;
-    --accent-orange:#ff9500;
-    --text:#333;
-  }
-
-  body{
-    margin:0; padding:20px;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-    background:var(--bg); color:var(--text);
-  }
-
-  header{ text-align:center; margin-bottom:12px; }
-  h1{ margin:0; font-size:1.4rem; font-weight:700; }
-  #weekInfo{ margin-top:6px; font-size:0.95rem; color:#666; }
-
-  #menu{ display:flex; flex-direction:column; gap:12px; max-width:820px; margin:18px auto 120px; }
-
-  .card{
-    position:relative;
-    border-radius:12px;
-    padding:16px 16px 48px;
-    box-shadow:0 6px 18px rgba(18,30,50,0.06);
-    background:var(--card-green);
-    transition:background .25s;
-  }
-  .card.packed{ background:var(--card-packed); }
-
-  .dayTitle{ font-size:1.05rem; font-weight:700; margin:0 0 8px 0; }
-  .menuText{ white-space:pre-line; line-height:1.45; font-size:0.95rem; color:#3b3b3b; }
-
-  /* Labels */
-  .dayLabel{
-    position:absolute; top:12px; right:12px;
-    padding:6px 8px; font-weight:700; font-size:0.75rem; color:#fff;
-    border-radius:8px; z-index:3; pointer-events:none;
-  }
-  .dayLabel.today{ background:var(--accent-blue); animation:glowBlue 2.6s infinite alternate; }
-  .dayLabel.tomorrow{ background:var(--accent-orange); animation:glowOrange 2.8s infinite alternate; }
-
-  @keyframes glowBlue{
-    0%{ box-shadow:0 0 6px rgba(74,144,226,0.6); }
-    50%{ box-shadow:0 0 24px rgba(74,144,226,0.85); }
-    100%{ box-shadow:0 0 12px rgba(74,144,226,0.7); }
-  }
-  @keyframes glowOrange{
-    0%{ box-shadow:0 0 4px rgba(255,149,0,0.6); }
-    50%{ box-shadow:0 0 18px rgba(255,149,0,0.8); }
-    100%{ box-shadow:0 0 8px rgba(255,149,0,0.65); }
-  }
-
-  /* Toggle */
-  .toggle{ position:absolute; right:12px; bottom:12px; width:56px; height:32px; }
-  .toggle input{ opacity:0; width:0; height:0; }
-  .slider{
-    position:relative; width:100%; height:100%;
-    background:#bbb; border-radius:32px;
-    border:1px solid #888;
-    transition:background .2s;
-  }
-  .slider:before{
-    content:""; position:absolute; left:4px; top:4px;
-    width:24px; height:24px; background:#fff; border-radius:50%;
-    box-shadow:0 2px 6px rgba(0,0,0,0.2);
-    transition:transform .2s;
-  }
-  .toggle input:checked + .slider{ background:#4cd964; border-color:#3ac05a; }
-  .toggle input:checked + .slider:before{ transform:translateX(24px); }
-
-  /* Week nav button */
-  #weekNav{ position:fixed; right:18px; bottom:90px; z-index:50; }
-  .btn{
-    background:linear-gradient(135deg,var(--accent-blue),#357ABD);
-    color:#fff; border:0; padding:12px 18px;
-    border-radius:20px; font-weight:600; font-size:0.9rem;
-    box-shadow:0 6px 14px rgba(74,144,226,0.25);
-  }
-  .btn.secondary{
-    background:linear-gradient(135deg,#ff6b6b,#e55050);
-    box-shadow:0 6px 14px rgba(255,107,107,0.25);
-  }
-
-  /* Badge */
-  #packedBadge{
-    position:fixed; top:14px; right:14px;
-    background:#4cd964; color:#fff; padding:4px 10px;
-    border-radius:16px; font-size:0.8rem; font-weight:700;
-    box-shadow:0 4px 12px rgba(76,217,100,0.3);
-    z-index:60;
-  }
+:root{
+  --bg:#f0f2f6;
+  --card-green:#dfffe0;
+  --card-packed:#fff4b2;
+  --accent-blue:#4a90e2;
+  --accent-orange:#ff9500;
+  --text:#333;
+}
+body{
+  margin:0;padding:20px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  background:var(--bg); color:var(--text);
+}
+header{text-align:center;margin-bottom:12px;}
+h1{margin:0 0 12px 0;font-size:1.4rem;font-weight:700;} /* space below title */
+#weekInfo{margin-top:6px;font-size:0.95rem;color:#666;}
+#menu{display:flex;flex-direction:column;gap:12px;max-width:820px;margin:18px auto 120px;}
+.card{
+  position:relative;border-radius:12px;padding:16px 16px 48px;
+  box-shadow:0 6px 18px rgba(18,30,50,0.06);
+  background:var(--card-green);
+  transition:background .25s;
+}
+.card.packed{background:var(--card-packed);}
+.dayTitle{font-size:1.05rem;font-weight:700;margin:0 0 8px 0;}
+.menuText{white-space:pre-line;line-height:1.45;font-size:0.95rem;color:#3b3b3b;}
+.dayLabel{
+  position:absolute;top:12px;right:12px;
+  padding:6px 8px;font-weight:700;font-size:0.75rem;color:#fff;
+  border-radius:8px; z-index:3; pointer-events:none;
+}
+.dayLabel.today{background:var(--accent-blue); animation:glowBlue 2.6s infinite alternate;}
+.dayLabel.tomorrow{background:var(--accent-orange); animation:glowOrange 2.8s infinite alternate;}
+@keyframes glowBlue{
+  0%{ box-shadow:0 0 6px rgba(74,144,226,0.6); }
+  50%{ box-shadow:0 0 24px rgba(74,144,226,0.85); }
+  100%{ box-shadow:0 0 12px rgba(74,144,226,0.7); }
+}
+@keyframes glowOrange{
+  0%{ box-shadow:0 0 4px rgba(255,149,0,0.6); }
+  50%{ box-shadow:0 0 18px rgba(255,149,0,0.8); }
+  100%{ box-shadow:0 0 8px rgba(255,149,0,0.65); }
+}
+.toggle{position:absolute;right:12px;bottom:12px;width:56px;height:32px;}
+.toggle input{opacity:0;width:0;height:0;}
+.slider{
+  position:relative;width:100%;height:100%;
+  background:#bbb;border-radius:32px;border:1px solid #888;
+  transition:background .2s;
+}
+.slider:before{
+  content:""; position:absolute; left:4px; top:4px;
+  width:24px; height:24px; background:#fff; border-radius:50%;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+  transition:transform .2s;
+}
+.toggle input:checked + .slider{ background:#4cd964; border-color:#3ac05a; }
+.toggle input:checked + .slider:before{ transform:translateX(24px); }
+#weekNav{ position:fixed; right:18px; bottom:90px; z-index:50; }
+.btn{
+  background:linear-gradient(135deg,var(--accent-blue),#357ABD);
+  color:#fff; border:0; padding:12px 18px;
+  border-radius:20px; font-weight:600; font-size:0.9rem;
+  box-shadow:0 6px 14px rgba(74,144,226,0.25);
+}
+.btn.secondary{
+  background:linear-gradient(135deg,#ff6b6b,#e55050);
+  box-shadow:0 6px 14px rgba(255,107,107,0.25);
+}
+#packedBadge{
+  position:fixed; top:14px; right:14px;
+  background:#4cd964; color:#fff; padding:4px 10px;
+  border-radius:16px; font-size:0.8rem; font-weight:700;
+  box-shadow:0 4px 12px rgba(76,217,100,0.3);
+  z-index:60;
+}
 </style>
 </head>
 <body>
-  <div id="packedBadge">Packed Meals: 0</div>
+<div id="packedBadge">Packed Meals: 0</div>
 
-  <header>
-    <h1>School Dinner Menu</h1>
-    <div id="weekInfo">Week <span id="weekNumber">—</span> · Week commencing <span id="weekCommence">—</span></div>
-  </header>
+<header>
+  <h1>School Dinner Menu</h1>
+  <div id="weekInfo">Week <span id="weekNumber">—</span> · Week commencing <span id="weekCommence">—</span></div>
+</header>
 
-  <main id="menu"></main>
-  <div id="weekNav"></div>
+<main id="menu"></main>
+<div id="weekNav"></div>
 
 <script>
-/* --- menu data (trimmed for space, keep your correct MENUS + weekMap here) --- */
-const weekMap=[{start:"2025-09-01",week:1},{start:"2025-09-08",week:2},{start:"2025-09-15",week:3}];
-const MENUS={1:{Monday:"Oven baked sausages / Vegetarian sausage"}};
-/* ... keep rest of MENUS and weekMap ... */
+// --- Define week start dates & menus
+const weekMap=[
+  {week:1,start:"2025-09-01"},
+  {week:2,start:"2025-09-08"},
+  {week:3,start:"2025-09-15"}
+];
 
-/* --- same render logic as before --- */
-/* (I didn’t change JS apart from styling — keep your last working JS) */
+// Example MENUS (replace with full verified menu data from council)
+const MENUS={
+  1:{
+    Monday:"Oven baked sausages / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
+    Tuesday:"BBQ chicken wrap / Cheese and tomato pizza\nAccompaniments\nFruit yoghurt / Fresh fruit",
+    Wednesday:"Cheesy beany jacket / Breaded chicken steak\nAccompaniments\nPancake and fruit",
+    Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / Fresh fruit",
+    Friday:"Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"
+  },
+  2:{
+    Monday:"Breaded chicken steak / Vegetable cheese bake\nAccompaniments of the day\nFruit yoghurt pot / fresh fruit",
+    Tuesday:"Pasta bolognese / Cheese & tomato pizza\nAccompaniments\nFruit / Biscuit",
+    Wednesday:"Chicken curry / Quorn curry\nAccompaniments\nRice / Vegetable\nFruit",
+    Thursday:"Cottage pie / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
+    Friday:"Baked salmon / Cheese wrap\nAccompaniments\nJam split / Fruit wedge"
+  },
+  3:{
+    Monday:"Oven baked sausages / Vegetable hotdog\nAccompaniments\nFruit / Biscuit",
+    Tuesday:"Chicken curry / Quorn curry\nAccompaniments\nRice / Vegetable\nFruit",
+    Wednesday:"Cheesy beany jacket / Breaded chicken steak\nAccompaniments\nPancake and fruit",
+    Thursday:"Cottage pie / Tomato pasta bake\nAccompaniments\nCookie / Fresh fruit",
+    Friday:"Baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge"
+  }
+};
+
+// --- Determine current week
+function getCurrentWeek(today=new Date()){
+  today.setHours(0,0,0,0);
+  let current=null;
+  for(let i=weekMap.length-1;i>=0;i--){
+    let startDate=new Date(weekMap[i].start);
+    if(today>=startDate){ current=weekMap[i].week; break; }
+  }
+  // Sunday logic: show next week
+  if(today.getDay()===0){
+    const nextWeek=weekMap.find(w=>w.week===current+1);
+    if(nextWeek)current=nextWeek.week;
+  }
+  return current || 1;
+}
+
+// --- Load packed lunches
+let packedLunch=JSON.parse(localStorage.getItem('packedLunch')||'{}');
+
+// --- Render menu
+const menuContainer=document.getElementById('menu');
+function renderMenu(week){
+  menuContainer.innerHTML='';
+  const weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const today=new Date();
+  const tomorrow=new Date(today); tomorrow.setDate(today.getDate()+1);
+
+  const weekMenus=MENUS[week];
+  for(const day of ["Monday","Tuesday","Wednesday","Thursday","Friday"]){
+    const tr=document.createElement("div");
+    tr.classList.add("card");
+    if(packedLunch[day]) tr.classList.add("packed");
+
+    const dayTitle=document.createElement("div");
+    dayTitle.className="dayTitle"; dayTitle.textContent=day;
+    tr.appendChild(dayTitle);
+
+    const menuText=document.createElement("div");
+    menuText.className="menuText"; menuText.textContent=weekMenus[day];
+    tr.appendChild(menuText);
+
+    // Labels
+    const labelSpan=document.createElement("span");
+    const dayDate=new Date();
+    let dayOffset=(["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"].indexOf(day)-dayDate.getDay()+7)%7;
+    const thisDay=new Date(dayDate); thisDay.setDate(dayDate.getDate()+dayOffset);
+    if(thisDay.toDateString()===today.toDateString()) labelSpan.textContent="Today",labelSpan.className="dayLabel today";
+    else if(thisDay.toDateString()===tomorrow.toDateString()) labelSpan.textContent="Tomorrow",labelSpan.className="dayLabel tomorrow";
+    tr.appendChild(labelSpan);
+
+    // Toggle
+    const toggleDiv=document.createElement("label");
+    toggleDiv.className="toggle";
+    const input=document.createElement("input"); input.type="checkbox";
+    input.checked=!!packedLunch[day];
+    const slider=document.createElement("span"); slider.className="slider";
+    toggleDiv.appendChild(input); toggleDiv.appendChild(slider);
+    tr.appendChild(toggleDiv);
+
+    input.addEventListener("change",()=>{
+      packedLunch[day]=input.checked?true:delete packedLunch[day];
+      localStorage.setItem('packedLunch',JSON.stringify(packedLunch));
+      renderBadge();
+      if(input.checked) tr.classList.add("packed"); else tr.classList.remove("packed");
+    });
+
+    menuContainer.appendChild(tr);
+  }
+
+  // Update week info
+  const weekNumber=document.getElementById('weekNumber'); weekNumber.textContent=week;
+  const weekCommence=document.getElementById('weekCommence');
+  const startDate=weekMap.find(w=>w.week===week).start;
+  weekCommence.textContent=new Date(startDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+function renderBadge(){
+  const badge=document.getElementById('packedBadge');
+  let count=Object.keys(packedLunch).length;
+  badge.textContent="Packed Meals: "+count;
+}
+
+// --- Initial render
+let currentWeek=getCurrentWeek();
+renderMenu(currentWeek);
+renderBadge();
+
+// --- Week navigation button
+const weekNavDiv=document.getElementById('weekNav');
+const nextWeekBtn=document.createElement("button");
+nextWeekBtn.className="btn";
+nextWeekBtn.textContent="View Next Week";
+weekNavDiv.appendChild(nextWeekBtn);
+nextWeekBtn.addEventListener("click",()=>{
+  let nextWeek=currentWeek+1;
+  if(!MENUS[nextWeek]) return;
+  renderMenu(nextWeek);
+  nextWeekBtn.style.display="none";
+  if(!document.getElementById('returnBtn')){
+    const returnBtn=document.createElement("button");
+    returnBtn.className="btn secondary";
+    returnBtn.style.marginTop="10px";
+    returnBtn.id="returnBtn";
+    returnBtn.textContent="Return to Current Week";
+    weekNavDiv.appendChild(returnBtn);
+    returnBtn.addEventListener("click",()=>{
+      renderMenu(currentWeek);
+      nextWeekBtn.style.display="block";
+      returnBtn.remove();
+    });
+  }
+});
 </script>
 </body>
 </html>
