@@ -338,11 +338,16 @@ const darkModeToggle = document.getElementById('darkModeToggle');
 function getInitialWeekIndex() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
-    // Find the correct week's index based on today's date
-    const todayIndex = weekMap.findIndex(w => new Date(w.start) > today) - 1;
-    let initialIndex = (todayIndex < 0) ? weekMap.length - 1 : todayIndex;
 
+    let initialIndex = 0;
+    for (let i = weekMap.length - 1; i >= 0; i--) {
+        const weekStart = new Date(weekMap[i].start + 'T00:00:00Z');
+        if (today.getTime() >= weekStart.getTime()) {
+            initialIndex = i;
+            break;
+        }
+    }
+    
     // If today is a Sunday, move to the next week's menu
     if (today.getDay() === 0) {
         initialIndex = (initialIndex < weekMap.length - 1) ? initialIndex + 1 : initialIndex;
@@ -358,7 +363,7 @@ function renderMenu() {
     today.setHours(0, 0, 0, 0);
 
     const weekInfo = weekMap[currentWeekIndex];
-    const weekStartDate = new Date(weekInfo.start);
+    const weekStartDate = new Date(weekInfo.start + 'T00:00:00Z');
 
     weekTitleEl.textContent = `Week ${weekInfo.week}`;
     document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
@@ -369,11 +374,12 @@ function renderMenu() {
         if (packedLunch[currentWeekIndex]?.[day]) card.classList.add("packed");
 
         const dayDate = new Date(weekStartDate);
-        dayDate.setDate(weekStartDate.getDate() + index);
+        dayDate.setDate(weekStartDate.getUTCDate() + index);
+        dayDate.setUTCHours(0, 0, 0, 0);
 
         // Add label
         const label = document.createElement("span");
-        if (dayDate.toDateString() === today.toDateString()) {
+        if (dayDate.toUTCString().slice(0, 16) === today.toUTCString().slice(0, 16)) {
             label.textContent = "Today";
             label.className = "dayLabel today";
             card.appendChild(label);
