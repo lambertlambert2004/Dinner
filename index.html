@@ -7,34 +7,33 @@
 <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/lambertlambert2004/Dinner/refs/heads/main/icon-180.PNG">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="School Dinner Menu">
-<meta name="theme-color" content="#f5f7fa">
+<meta name="theme-color" content="#fafafa">
 <link rel="manifest" href="/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg-light: #f5f7fa;
-    --bg-card-light: rgba(255, 255, 255, 0.9);
-    --text-light: #1c2526;
-    --packed-light: #fff1cc;
-    --accent-blue: #007aff;
-    --accent-green: #34c759;
-    --accent-orange: #ff9500;
-    --accent-red: #ff3b30;
-    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --bg-light: #fafafa; /* Warmer, softer background */
+    --bg-card-light: #ffffff; /* Solid white for cards */
+    --text-light: #333333; /* Warmer, darker text */
+    --packed-light: #fff5e0; /* Softer packed color */
+    --accent-blue: #0066cc; /* Softer iOS blue */
+    --accent-green: #34c759; /* iOS green */
+    --accent-orange: #ff9500; /* iOS orange */
+    --accent-red: #ff3b30; /* iOS red */
+    --shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     --border-radius: 16px;
     --font-family: -apple-system, 'SF Pro Display', 'Poppins', sans-serif;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body.dark-mode {
-    --bg-light: #000000;
-    --bg-card-light: rgba(30, 30, 30, 0.9);
-    --text-light: #ffffff;
-    --packed-light: #4a422a;
-    --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --bg-light: #1a202c; /* Previous dark theme background */
+    --bg-card-light: #2d3748; /* Previous dark card background */
+    --text-light: #e2e8f0; /* Previous dark text */
+    --packed-light: #4a422a; /* Previous packed dark */
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 body {
@@ -55,9 +54,13 @@ header {
     position: sticky;
     top: 0;
     z-index: 20;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+body:not(.dark-mode) header {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 h1 {
@@ -68,21 +71,21 @@ h1 {
 
 .sub-header {
     font-size: 0.9rem;
-    color: #6e6e73;
+    color: #666666; /* Warmer gray */
     margin: 4px 0;
 }
 
 body.dark-mode .sub-header {
-    color: #8e8e93;
+    color: #a0aec0; /* Previous dark theme color */
 }
 
 #weekInfo {
     font-size: 0.85rem;
-    color: #6e6e73;
+    color: #666666;
 }
 
 body.dark-mode #weekInfo {
-    color: #8e8e93;
+    color: #cbd5e0; /* Previous dark theme color */
 }
 
 #menu {
@@ -98,10 +101,14 @@ body.dark-mode #weekInfo {
     border-radius: var(--border-radius);
     padding: 16px;
     background: var(--bg-card-light);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     box-shadow: var(--shadow);
     transition: var(--transition);
+}
+
+body:not(.dark-mode) .card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .card.packed {
@@ -118,11 +125,11 @@ body.dark-mode #weekInfo {
     white-space: pre-line;
     line-height: 1.5;
     font-size: 0.95rem;
-    color: #3c3c43;
+    color: #444444;
 }
 
 body.dark-mode .menuText {
-    color: #d1d1d6;
+    color: #cbd5e0; /* Previous dark theme color */
 }
 
 .dayLabel {
@@ -142,9 +149,9 @@ body.dark-mode .menuText {
 .dayLabel.past { background: #8e8e93; }
 
 @keyframes glowBlue {
-    0% { box-shadow: 0 0 4px rgba(0, 122, 255, 0.5); }
-    50% { box-shadow: 0 0 12px rgba(0, 122, 255, 0.8); }
-    100% { box-shadow: 0 0 6px rgba(0, 122, 255, 0.6); }
+    0% { box-shadow: 0 0 4px rgba(0, 102, 204, 0.5); }
+    50% { box-shadow: 0 0 12px rgba(0, 102, 204, 0.8); }
+    100% { box-shadow: 0 0 6px rgba(0, 102, 204, 0.6); }
 }
 
 @keyframes glowOrange {
@@ -199,9 +206,7 @@ body.dark-mode .menuText {
     max-width: 600px;
     margin: 16px auto;
     padding: 8px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: var(--bg-card-light);
     border-radius: 14px;
     box-shadow: var(--shadow);
     position: sticky;
@@ -209,8 +214,10 @@ body.dark-mode .menuText {
     z-index: 10;
 }
 
-body.dark-mode #weekNav {
-    background: rgba(30, 30, 30, 0.9);
+body:not(.dark-mode) #weekNav {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .nav-btn {
@@ -264,10 +271,6 @@ body.dark-mode #weekNav {
     transition: var(--transition);
 }
 
-body.dark-mode #darkModeToggle {
-    background: var(--bg-card-dark);
-}
-
 #pullToRefresh {
     position: absolute;
     top: -50px;
@@ -275,9 +278,13 @@ body.dark-mode #darkModeToggle {
     transform: translateX(-50%);
     text-align: center;
     font-size: 0.85rem;
-    color: #6e6e73;
+    color: #666666;
     opacity: 0;
     transition: opacity 0.3s;
+}
+
+body.dark-mode #pullToRefresh {
+    color: #a0aec0;
 }
 
 #pullToRefresh.visible {
