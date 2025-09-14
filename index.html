@@ -192,7 +192,7 @@ body.dark-mode .menuText {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 400px;
+    max-width: 600px; /* Increased to accommodate new button */
     margin: 0 auto;
     padding: 10px;
     position: sticky;
@@ -269,6 +269,7 @@ body.dark-mode #darkModeToggle {
 
 <div id="weekNav">
     <button id="prevWeekBtn" class="nav-btn">Previous</button>
+    <button id="currentWeekBtn" class="nav-btn">Current Week</button>
     <div id="weekTitle"></div>
     <button id="nextWeekBtn" class="nav-btn">Next</button>
 </div>
@@ -324,7 +325,7 @@ const weekMap = [
 ];
 
 // --- State Management
-// localStorage.clear(); // Commented out to prevent resetting packed lunch selections on reload
+// localStorage.clear(); // Commented out to persist packed lunch selections
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 let currentWeekIndex = getInitialWeekIndex();
 
@@ -334,6 +335,7 @@ const weekTitleEl = document.getElementById('weekTitle');
 const packedCountEl = document.getElementById('packedCount');
 const prevWeekBtn = document.getElementById('prevWeekBtn');
 const nextWeekBtn = document.getElementById('nextWeekBtn');
+const currentWeekBtn = document.getElementById('currentWeekBtn');
 const darkModeToggle = document.getElementById('darkModeToggle');
 
 // --- Functions
@@ -374,7 +376,8 @@ function renderMenu() {
     weekdays.forEach((day, index) => {
         const card = document.createElement("div");
         card.classList.add("card");
-        if (packedLunch[currentWeekIndex]?.[day]) card.classList.add("packed");
+        // Use week number (1, 2, or 3) instead of weekIndex for packed lunch
+        if (packedLunch[weekInfo.week]?.[day]) card.classList.add("packed");
 
         const dayDate = new Date(weekStartDate);
         dayDate.setDate(weekStartDate.getDate() + index);
@@ -409,7 +412,7 @@ function renderMenu() {
         toggle.className = "toggle";
         const input = document.createElement("input");
         input.type = "checkbox";
-        input.checked = !!packedLunch[currentWeekIndex]?.[day];
+        input.checked = !!packedLunch[weekInfo.week]?.[day];
         const slider = document.createElement("span");
         slider.className = "slider";
         toggle.appendChild(input);
@@ -417,9 +420,9 @@ function renderMenu() {
         card.appendChild(toggle);
 
         input.addEventListener("change", () => {
-            if (!packedLunch[currentWeekIndex]) packedLunch[currentWeekIndex] = {};
-            if (input.checked) packedLunch[currentWeekIndex][day] = true;
-            else delete packedLunch[currentWeekIndex][day];
+            if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
+            if (input.checked) packedLunch[weekInfo.week][day] = true;
+            else delete packedLunch[weekInfo.week][day];
             localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
             updatePackedCount();
             card.classList.toggle("packed", input.checked);
@@ -433,7 +436,8 @@ function renderMenu() {
 }
 
 function updatePackedCount() {
-    const count = Object.keys(packedLunch[currentWeekIndex] || {}).length;
+    const weekInfo = weekMap[currentWeekIndex];
+    const count = Object.keys(packedLunch[weekInfo.week] || {}).length;
     packedCountEl.textContent = count;
 }
 
@@ -455,6 +459,11 @@ nextWeekBtn.addEventListener('click', () => {
         currentWeekIndex++;
         renderMenu();
     }
+});
+
+currentWeekBtn.addEventListener('click', () => {
+    currentWeekIndex = getInitialWeekIndex();
+    renderMenu();
 });
 
 darkModeToggle.addEventListener('click', () => {
