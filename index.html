@@ -69,6 +69,7 @@ h1 {
     font-size: 0.9rem;
     color: #666666;
     margin: 4px 0;
+    white-space: pre-line;
 }
 body.dark-mode .sub-header {
     color: #a0aec0;
@@ -323,7 +324,7 @@ body.dark-mode #pullToRefresh {
 #pullToRefresh.visible {
     opacity: 1;
 }
-#modal, #confirmToggle, #manageChildrenModal {
+#modal, #manageChildrenModal {
     position: fixed;
     top: 0;
     left: 0;
@@ -334,6 +335,18 @@ body.dark-mode #pullToRefresh {
     align-items: center;
     justify-content: center;
     z-index: 1000;
+}
+#confirmToggle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100; /* Higher z-index to appear above other modals */
 }
 #modalContent, #confirmToggleContent, #manageChildrenContent {
     background: var(--bg-card-light);
@@ -473,25 +486,25 @@ body.dark-mode #childInput {
 <script>
 const MENUS = {
     1: {
-        Monday: "Oven baked sausages 🌭 / Vegetarian sausage\nAccompaniments of the day\nHomemade biscuit, peach slices / Fresh fruit",
-        Tuesday: "BBQ chicken wrap 🌯 / Cheese and tomato pizza\nAccompaniments of the day\nFruit yoghurt pot / Fresh fruit",
-        Wednesday: "Cheesy beany jacket 🥔 / Breaded chicken steak\nAccompaniments of the day\nPancake, sliced fruit / Fresh fruit",
-        Thursday: "Cottage pie 🥧 / Tomato pasta bake\nAccompaniments of the day\nCocoa crispy bar / Fresh fruit",
-        Friday: "Baked fish 🐟 / Cheese wrap\nAccompaniments of the day\nJam split, fruit wedge / Fresh fruit"
+        Monday: "Oven baked sausages 🌭🍖 / Vegetarian sausage 🥗\nAccompaniments of the day 🥕\nHomemade biscuit 🍪, peach slices 🍑 / Fresh fruit 🍎",
+        Tuesday: "BBQ chicken wrap 🌯🍗 / Cheese and tomato pizza 🍕🧀\nAccompaniments of the day 🥔\nFruit yoghurt pot 🥛 / Fresh fruit 🍊",
+        Wednesday: "Cheesy beany jacket 🥔🧀 / Breaded chicken steak 🍗\nAccompaniments of the day 🥦\nPancake 🥞, sliced fruit 🍓 / Fresh fruit 🍇",
+        Thursday: "Cottage pie 🥧🍖 / Tomato pasta bake 🍝🥗\nAccompaniments of the day 🥒\nCocoa crispy bar 🍫 / Fresh fruit 🍉",
+        Friday: "Baked fish 🐟 / Cheese wrap 🌯🧀\nAccompaniments of the day 🥕\nJam split 🍰, fruit wedge 🍈 / Fresh fruit 🍎"
     },
     2: {
-        Monday: "Breaded chicken steak 🍗 / Vegetable cheese bake\nAccompaniments of the day\nFruit yoghurt pot / Fresh fruit",
-        Tuesday: "Pasta bolognese 🍝 / Omelette\nAccompaniments of the day\nJelly, mandarins / Fresh fruit",
-        Wednesday: "Chicken curry 🍛 / Cheese and tomato pizza\nAccompaniments of the day\nFruit muffin / Fresh fruit",
-        Thursday: "Roast chicken 🥚 / Pasta Napolitana\nAccompaniments of the day\nCookie / Fresh fruit",
-        Friday: "Fish fingers 🐟 / Cheese wrap\nAccompaniments of the day\nWelsh cake, fruit wedge / Fresh fruit"
+        Monday: "Breaded chicken steak 🍗 / Vegetable cheese bake 🥗🧀\nAccompaniments of the day 🥔\nFruit yoghurt pot 🥛 / Fresh fruit 🍊",
+        Tuesday: "Pasta bolognese 🍝🍖 / Omelette 🥚🥗\nAccompaniments of the day 🥦\nJelly 🍮, mandarins 🍊 / Fresh fruit 🍇",
+        Wednesday: "Chicken curry 🍛🍗 / Cheese and tomato pizza 🍕🧀\nAccompaniments of the day 🥒\nFruit muffin 🧁 / Fresh fruit 🍉",
+        Thursday: "Roast chicken 🍗 / Pasta Napolitana 🍝🥗\nAccompaniments of the day 🥕\nCookie 🍪 / Fresh fruit 🍎",
+        Friday: "Fish fingers 🐟 / Cheese wrap 🌯🧀\nAccompaniments of the day 🥔\nWelsh cake 🥮, fruit wedge 🍈 / Fresh fruit 🍊"
     },
     3: {
-        Monday: "Meatballs 🍲 / Tomato pasta bake\nAccompaniments of the day\nJam split, fruit wedge / Fresh fruit",
-        Tuesday: "Chicken curry 🍛 / Margherita pizza\nAccompaniments of the day\nFruit yoghurt pot / Fresh fruit",
-        Wednesday: "Cheese and tomato calzone 🍕 / Breaded chicken steak\nAccompaniments of the day\nJelly, mandarins / Fresh fruit",
-        Thursday: "Roast turkey 🦃 / Macaroni cheese\nAccompaniments of the day\nChocolate cookie / Fresh fruit",
-        Friday: "Baked fish 🐟 / Cheese wrap\nAccompaniments of the day\nFruit muffin / Fresh fruit"
+        Monday: "Meatballs 🍲🍖 / Tomato pasta bake 🍝🥗\nAccompaniments of the day 🥦\nJam split 🍰, fruit wedge 🍈 / Fresh fruit 🍎",
+        Tuesday: "Chicken curry 🍛🍗 / Margherita pizza 🍕🧀\nAccompaniments of the day 🥒\nFruit yoghurt pot 🥛 / Fresh fruit 🍊",
+        Wednesday: "Cheese and tomato calzone 🍕🧀 / Breaded chicken steak 🍗\nAccompaniments of the day 🥕\nJelly 🍮, mandarins 🍊 / Fresh fruit 🍇",
+        Thursday: "Roast turkey 🦃🍖 / Macaroni cheese 🍝🧀\nAccompaniments of the day 🥔\nChocolate cookie 🍪 / Fresh fruit 🍉",
+        Friday: "Baked fish 🐟 / Cheese wrap 🌯🧀\nAccompaniments of the day 🥦\nFruit muffin 🧁 / Fresh fruit 🍎"
     }
 };
 const MENU_DETAILS = {
@@ -606,7 +619,7 @@ function renderMenu() {
             renderMenuContent(menuContainer);
             menuContainer.classList.remove('fade');
             updateNavButtons();
-            redrawCurrentWeekBtn(); // Ensure SVG persists
+            redrawCurrentWeekBtn();
         }, 300);
     } catch (e) {
         if (menuContainer) menuContainer.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu.</div></div>';
@@ -614,7 +627,12 @@ function renderMenu() {
     }
 }
 function redrawCurrentWeekBtn() {
-    currentWeekBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>`;
+    requestAnimationFrame(() => {
+        currentWeekBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>`;
+        requestAnimationFrame(() => {
+            currentWeekBtn.style.opacity = '1';
+        });
+    });
 }
 function renderMenuContent(container) {
     try {
@@ -640,6 +658,8 @@ function renderMenuContent(container) {
         weekdays.forEach((day, index) => {
             const card = document.createElement("div");
             card.classList.add("card");
+            const hasPacked = children.some(child => packedLunch[child]?.[weekInfo.week]?.[day]);
+            if (hasPacked) card.classList.add("packed");
             const dayDate = new Date(weekStartDate);
             dayDate.setDate(weekStartDate.getDate() + index);
             dayDate.setHours(0, 0, 0, 0);
@@ -698,7 +718,7 @@ function renderMenuContent(container) {
                         else delete packedLunch[child][weekInfo.week][day];
                         localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
                         updatePackedCount();
-                        card.classList.toggle("packed", Object.keys(packedLunch).some(c => packedLunch[c][weekInfo.week]?.[day]));
+                        card.classList.toggle("packed", children.some(c => packedLunch[c]?.[weekInfo.week]?.[day]));
                         confirmToggle.classList.remove("show");
                         setTimeout(() => confirmToggle.style.display = "none", 300);
                     };
@@ -761,25 +781,30 @@ function renderChildrenList() {
         const removeBtn = document.createElement('button');
         removeBtn.textContent = 'Remove';
         removeBtn.onclick = () => {
-            confirmToggleTitle.textContent = `Remove ${child}`;
-            confirmToggleMessage.textContent = `Are you sure you want to remove ${child}?`;
-            confirmToggle.style.display = "flex";
-            setTimeout(() => confirmToggle.classList.add("show"), 10);
-            confirmToggleConfirm.onclick = () => {
-                children = children.filter(c => c !== child);
-                delete packedLunch[child];
-                localStorage.setItem('children', JSON.stringify(children));
-                localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
-                if (children.length === 0) children = ['Child 1'];
-                renderChildrenList();
-                renderMenu();
-                confirmToggle.classList.remove("show");
-                setTimeout(() => confirmToggle.style.display = "none", 300);
-            };
-            confirmToggleCancel.onclick = () => {
-                confirmToggle.classList.remove("show");
-                setTimeout(() => confirmToggle.style.display = "none", 300);
-            };
+            manageChildrenModal.classList.remove("show");
+            setTimeout(() => {
+                manageChildrenModal.style.display = "none";
+                confirmToggleTitle.textContent = `Remove ${child}`;
+                confirmToggleMessage.textContent = `Are you sure you want to remove ${child}?`;
+                confirmToggle.style.display = "flex";
+                setTimeout(() => confirmToggle.classList.add("show"), 10);
+                confirmToggleConfirm.onclick = () => {
+                    children = children.filter(c => c !== child);
+                    delete packedLunch[child];
+                    localStorage.setItem('children', JSON.stringify(children));
+                    localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+                    if (children.length === 0) children = ['Child 1'];
+                    localStorage.setItem('children', JSON.stringify(children));
+                    renderChildrenList();
+                    renderMenu();
+                    confirmToggle.classList.remove("show");
+                    setTimeout(() => confirmToggle.style.display = "none", 300);
+                };
+                confirmToggleCancel.onclick = () => {
+                    confirmToggle.classList.remove("show");
+                    setTimeout(() => confirmToggle.style.display = "none", 300);
+                };
+            }, 300);
         };
         div.appendChild(removeBtn);
         childrenList.appendChild(div);
@@ -867,13 +892,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentWeekIndex = getInitialWeekIndex();
         requestNotificationPermission();
         renderMenu();
-        requestAnimationFrame(() => {
-            currentWeekBtn.style.opacity = '0';
-            requestAnimationFrame(() => {
-                currentWeekBtn.style.opacity = '1';
-                redrawCurrentWeekBtn();
-            });
-        });
+        redrawCurrentWeekBtn();
     } catch (e) {
         if (menuContainer) menuContainer.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu.</div></div>';
     }
@@ -881,6 +900,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
         redrawCurrentWeekBtn();
+        renderMenu();
     }
 });
 </script>
