@@ -99,39 +99,22 @@ body.dark-mode #weekInfo {
     margin: 16px auto 120px;
     position: relative;
     min-height: 100%;
-    overflow: hidden;
 }
 
-.week-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+#menu.transition-left {
+    transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.week-container.prev {
-    transform: translateX(-100%);
-}
-
-.week-container.current {
-    transform: translateX(0);
-}
-
-.week-container.next {
+#menu.transition-right {
     transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#menu.swiping-left .week-container.prev {
-    transform: translateX(0);
-}
-
-#menu.swiping-right .week-container.next {
-    transform: translateX(0);
+#menu.transition-left .card,
+#menu.transition-right .card {
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
 }
 
 .card {
@@ -142,12 +125,6 @@ body.dark-mode #weekInfo {
     box-shadow: var(--shadow);
     transition: var(--transition), backdrop-filter 0.3s;
     cursor: pointer;
-}
-
-#menu.swiping-left .card,
-#menu.swiping-right .card {
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
 }
 
 body:not(.dark-mode) .card {
@@ -237,8 +214,13 @@ body.dark-mode .menuText {
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.toggle input:checked + .slider { background: var(--accent-green); }
-.toggle input:checked + .slider::before { transform: translateX(20px); }
+.toggle input:checked + .slider {
+    background: var(--accent-green);
+}
+
+.toggle input:checked + .slider::before {
+    transform: translateX(20px);
+}
 
 .toggle:active .slider::before {
     transform: scale(0.95);
@@ -294,15 +276,10 @@ body:not(.dark-mode) #weekNav {
 .nav-btn svg {
     width: 20px;
     height: 20px;
-    vertical-align: middle;
 }
 
-.nav-btn:has(svg):not(:has(text)) {
-    padding: 8px 12px;
-}
-
-.nav-btn:has(text) {
-    padding: 8px 16px;
+.nav-btn .sunday-text:not(:empty) {
+    margin-left: 8px;
 }
 
 #weekTitle {
@@ -543,7 +520,7 @@ const weekMap = [
 // --- State Management
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 let currentWeekIndex = getInitialWeekIndex();
-let weekCache = {}; // Cache for preloaded weeks
+let weekCache = {};
 const isDarkMode = localStorage.getItem('darkMode') === 'true';
 if (isDarkMode) document.body.classList.add('dark-mode');
 
@@ -554,7 +531,7 @@ const packedCountEl = document.getElementById('packedCount');
 const prevWeekBtn = document.getElementById('prevWeekBtn');
 const nextWeekBtn = document.getElementById('nextWeekBtn');
 const currentWeekBtn = document.getElementById('currentWeekBtn');
-const currentWeekText = currentWeekBtn.querySelector('.sunday-text'); // For Sunday text
+const currentWeekText = currentWeekBtn.querySelector('.sunday-text');
 const darkModeToggle = document.getElementById('darkModeToggle');
 const pullToRefresh = document.getElementById('pullToRefresh');
 const modal = document.getElementById('modal');
@@ -587,7 +564,9 @@ function getInitialWeekIndex() {
 }
 
 function generateWeekContent(index) {
-    if (!weekMap[index]) return '<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>';
+    if (!weekMap[index]) {
+        return '<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>';
+    }
 
     const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
     const today = new Date();
@@ -629,53 +608,44 @@ function generateWeekContent(index) {
 }
 
 function preloadWeeks() {
-    // Cache current, prev, next
     weekCache[currentWeekIndex] = generateWeekContent(currentWeekIndex);
-    if (currentWeekIndex > 0) weekCache[currentWeekIndex - 1] = generateWeekContent(currentWeekIndex - 1);
-    if (currentWeekIndex < weekMap.length - 1) weekCache[currentWeekIndex + 1] = generateWeekContent(currentWeekIndex + 1);
+    if (currentWeekIndex > 0) {
+        weekCache[currentWeekIndex - 1] = generateWeekContent(currentWeekIndex - 1);
+    } else {
+        weekCache[currentWeekIndex - 1] = '';
+    }
+    if (currentWeekIndex < weekMap.length - 1) {
+        weekCache[currentWeekIndex + 1] = generateWeekContent(currentWeekIndex + 1);
+    } else {
+        weekCache[currentWeekIndex + 1] = '';
+    }
 }
 
 function renderMenu(direction = null) {
-    if (!weekMap[currentWeekIndex]) return;
+    if (!weekMap[currentWeekIndex]) {
+        menuContainer.innerHTML = '<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>';
+        updateDisplay();
+        return;
+    }
 
-    const cachedContent = weekCache[currentWeekIndex] || generateWeekContent(currentWeekIndex);
-    const prevContent = weekCache[currentWeekIndex - 1] || generateWeekContent(currentWeekIndex - 1);
-    const nextContent = weekCache[currentWeekIndex + 1] || generateWeekContent(currentWeekIndex + 1);
+    // Generate or use cached content
+    const currentContent = weekCache[currentWeekIndex] || generateWeekContent(currentWeekIndex);
+    menuContainer.innerHTML = currentContent;
 
-    // Create week containers
-    const prevContainer = document.createElement('div');
-    prevContainer.className = 'week-container prev';
-    prevContainer.innerHTML = prevContent;
-
-    const currentContainer = document.createElement('div');
-    currentContainer.className = 'week-container current';
-    currentContainer.innerHTML = cachedContent;
-
-    const nextContainer = document.createElement('div');
-    nextContainer.className = 'week-container next';
-    nextContainer.innerHTML = nextContent;
-
-    menuContainer.innerHTML = '';
-    menuContainer.appendChild(prevContainer);
-    menuContainer.appendChild(currentContainer);
-    menuContainer.appendChild(nextContainer);
-
+    // Attach event listeners
     attachCardListeners();
 
-    if (direction === 'next') {
-        menuContainer.classList.add('swiping-left');
-        setTimeout(() => {
-            menuContainer.classList.remove('swiping-left');
-            updateDisplay();
-            preloadWeeks();
-        }, 300);
-    } else if (direction === 'prev') {
-        menuContainer.classList.add('swiping-right');
-        setTimeout(() => {
-            menuContainer.classList.remove('swiping-right');
-            updateDisplay();
-            preloadWeeks();
-        }, 300);
+    if (direction) {
+        menuContainer.classList.add(direction === 'next' ? 'transition-left' : 'transition-right');
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                menuContainer.classList.remove('transition-left', 'transition-right');
+                menuContainer.innerHTML = weekCache[currentWeekIndex] || generateWeekContent(currentWeekIndex);
+                attachCardListeners();
+                updateDisplay();
+                preloadWeeks();
+            }, 300);
+        });
     } else {
         updateDisplay();
         preloadWeeks();
@@ -701,7 +671,7 @@ function attachCardListeners() {
                 localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
                 updatePackedCount();
                 card.classList.toggle('packed', input.checked);
-                preloadWeeks(); // Update cache
+                preloadWeeks();
             });
         }
 
@@ -735,6 +705,9 @@ function updateDisplay() {
 
     if (!weekInfo) {
         menuContainer.innerHTML = '<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>';
+        weekTitleEl.textContent = 'No Week';
+        document.getElementById('weekInfo').textContent = '';
+        packedCountEl.textContent = '0';
         return;
     }
 
@@ -744,7 +717,6 @@ function updateDisplay() {
     weekTitleEl.textContent = `Week ${weekInfo.week}`;
     document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
     currentWeekText.textContent = isSunday ? 'Next Week' : '';
-    currentWeekBtn.style.padding = isSunday ? '8px 16px' : '8px 12px';
 
     updatePackedCount();
     updateNavButtons();
