@@ -7,18 +7,18 @@
 <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/lambertlambert2004/Dinner/refs/heads/main/icon-180.PNG">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#fafafa">
+<meta name="theme-color" content="#fefce8">
 <link rel="manifest" href="/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg-light: #fafafa;
+    --bg-light: linear-gradient(180deg, #fefce8, #f5f5f4);
     --bg-card-light: #ffffff;
     --text-light: #333333;
-    --packed-light: linear-gradient(135deg, #fff5e0 0%, #fed7aa 100%); /* Gradient for depth */
-    --accent-blue: #0066cc;
+    --packed-light: linear-gradient(135deg, #fff5e0 0%, #fed7aa 100%);
+    --accent-blue: #1d4ed8;
     --accent-green: #34c759;
     --accent-orange: #ff9500;
     --accent-red: #ff3b30;
@@ -91,22 +91,24 @@ body.dark-mode #weekInfo {
 #menuWrapper {
     position: relative;
     overflow: hidden;
+    max-width: 800px;
+    margin: 16px auto 120px;
 }
 
-#menu {
+#menu, #menu-old {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    max-width: 800px;
-    margin: 16px auto 120px;
+    position: absolute;
+    width: 100%;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#menu.slide-left {
+#menu.slide-left, #menu-old.slide-left {
     transform: translateX(-100%);
 }
 
-#menu.slide-right {
+#menu.slide-right, #menu-old.slide-right {
     transform: translateX(100%);
 }
 
@@ -126,11 +128,16 @@ body:not(.dark-mode) .card {
     -webkit-backdrop-filter: blur(8px);
 }
 
+.card:hover, .card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
 .card.packed {
     background: var(--packed-light);
-    border: 2px solid #f59e0b; /* Golden border for highlight */
-    box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.3); /* Subtle glow */
-    animation: pulse 2s infinite; /* Pulsing highlight */
+    border: 2px solid #f59e0b;
+    box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.3);
+    animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
@@ -155,6 +162,16 @@ body.dark-mode .menuText {
     color: #cbd5e0;
 }
 
+.allergens {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #666666;
+}
+
+body.dark-mode .allergens {
+    color: #a0aec0;
+}
+
 .dayLabel {
     position: absolute;
     top: 12px;
@@ -172,9 +189,9 @@ body.dark-mode .menuText {
 .dayLabel.past { background: #8e8e93; }
 
 @keyframes glowBlue {
-    0% { box-shadow: 0 0 4px rgba(0, 102, 204, 0.5); }
-    50% { box-shadow: 0 0 12px rgba(0, 102, 204, 0.8); }
-    100% { box-shadow: 0 0 6px rgba(0, 102, 204, 0.6); }
+    0% { box-shadow: 0 0 4px rgba(29, 78, 216, 0.5); }
+    50% { box-shadow: 0 0 12px rgba(29, 78, 216, 0.8); }
+    100% { box-shadow: 0 0 6px rgba(29, 78, 216, 0.6); }
 }
 
 @keyframes glowOrange {
@@ -196,14 +213,14 @@ body.dark-mode .menuText {
     position: relative;
     width: 100%;
     height: 100%;
-    background: #d1d5db; /* Light mode unchecked: soft gray */
+    background: #d1d5db;
     border-radius: 15px;
     cursor: pointer;
     transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body.dark-mode .slider {
-    background: #4b5563; /* Dark mode unchecked: muted blue-gray */
+    background: #4b5563;
 }
 
 .slider::before {
@@ -221,7 +238,7 @@ body.dark-mode .slider {
 
 .toggle input:checked + .slider { 
     background: var(--accent-green); 
-    box-shadow: 0 0 4px rgba(52, 199, 89, 0.3); /* Glow on checked */
+    box-shadow: 0 0 4px rgba(52, 199, 89, 0.3);
 }
 .toggle input:checked + .slider::before { transform: translateX(20px); }
 
@@ -248,6 +265,21 @@ body:not(.dark-mode) #weekNav {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+}
+
+.progress-bar {
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    margin: 8px auto;
+    max-width: 600px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--accent-blue);
+    border-radius: 2px;
+    transition: width 0.5s ease-in-out;
 }
 
 .nav-btn {
@@ -284,10 +316,9 @@ body:not(.dark-mode) #weekNav {
     font-size: 1rem;
 }
 
-#darkModeToggle {
+#darkModeToggle, #shoppingListBtn, #statsBtn {
     position: fixed;
     bottom: 20px;
-    right: 20px;
     width: 44px;
     height: 44px;
     background: var(--bg-card-light);
@@ -297,8 +328,15 @@ body:not(.dark-mode) #weekNav {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 100;
     transition: var(--transition);
+}
+
+#shoppingListBtn {
+    right: 80px;
+}
+
+#statsBtn {
+    right: 140px;
 }
 
 #pullToRefresh {
@@ -321,7 +359,7 @@ body.dark-mode #pullToRefresh {
     opacity: 1;
 }
 
-#modal {
+#modal, #shoppingListModal, #statsModal {
     position: fixed;
     top: 0;
     left: 0;
@@ -334,7 +372,7 @@ body.dark-mode #pullToRefresh {
     z-index: 1000;
 }
 
-#modalContent {
+#modalContent, #shoppingListContent, #statsContent {
     background: var(--bg-card-light);
     border-radius: var(--border-radius);
     padding: 20px;
@@ -346,27 +384,27 @@ body.dark-mode #pullToRefresh {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#modal.show #modalContent {
+#modal.show #modalContent, #shoppingListModal.show #shoppingListContent, #statsModal.show #statsContent {
     transform: scale(1);
 }
 
-#modal h2 {
+#modal h2, #shoppingListModal h2, #statsModal h2 {
     margin: 0 0 12px;
     font-size: 1.2rem;
     font-weight: 600;
 }
 
-#modal p {
+#modal p, #shoppingListModal p, #statsModal p {
     margin: 0 0 12px;
     font-size: 0.95rem;
     color: #444444;
 }
 
-body.dark-mode #modal p {
+body.dark-mode #modal p, body.dark-mode #shoppingListModal p, body.dark-mode #statsModal p {
     color: #cbd5e0;
 }
 
-#modal button {
+#modal button, #shoppingListModal button, #statsModal button {
     background: var(--accent-blue);
     color: #fff;
     border: none;
@@ -377,7 +415,7 @@ body.dark-mode #modal p {
     transition: var(--transition);
 }
 
-#modal button:active {
+#modal button:active, #shoppingListModal button:active, #statsModal button:active {
     transform: scale(0.95);
 }
 
@@ -409,6 +447,7 @@ body.dark-mode #modal p {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
     </button>
 </div>
+<div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
 
 <div id="menuWrapper">
     <main id="menu"></main>
@@ -422,33 +461,58 @@ body.dark-mode #modal p {
     </div>
 </div>
 
+<div id="shoppingListModal">
+    <div id="shoppingListContent">
+        <h2>Shopping List</h2>
+        <p id="shoppingListText"></p>
+        <button id="copyShoppingList">Copy to Clipboard</button>
+        <button id="shoppingListClose">Close</button>
+    </div>
+</div>
+
+<div id="statsModal">
+    <div id="statsContent">
+        <h2>My Stats</h2>
+        <p id="statsText"></p>
+        <button id="statsClose">Close</button>
+    </div>
+</div>
+
+<div id="statsBtn" aria-label="View Stats">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2V9h2v8zm3 0h-2v-4h2v4zm-6 0H9V7h2v10z"/></svg>
+</div>
+
+<div id="shoppingListBtn" aria-label="Generate Shopping List">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-8.31-5l4.59-4.59L12 7.83l-4.59 4.59L6 10.83l6-6 6 6-1.41 1.41L13 7.83v4.59c0 1.1-.9 2-2 2H9v2h2c2.21 0 4-1.79 4-4V7.83l-1.29 1.29L12 7.83l1.71-1.71L12 4.83l-4.29 4.29L9 10.83v2.17z"/></svg>
+</div>
+
 <div id="darkModeToggle" aria-label="Toggle Dark Mode">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75S6.615 21.75 12 21.75c1.077 0 2.1-.194 3.05-.56A.75.75 0 0 0 15.65 20.5h0a.75.75 0 0 1 .85-.14 9.752 9.752 0 0 0 4.1-6.19c.12-.472-.345-.92-.85-.85a8.25 8.25 0 0 1-5.75 2.19c-3.15 0-5.727-2.585-5.727-5.757 0-3.172 2.577-5.757 5.727-5.757 1.838 0 3.52 1.054 4.58 2.687a.75.75 0 0 0 1.25-.664A9.752 9.752 0 0 0 12 2.25z"/></svg>
 </div>
 
 <script>
-// --- Menu Data (unchanged)
+// --- Menu Data
 const MENUS = {
     1: {
-        Monday: "Oven baked sausage / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
-        Tuesday: "Oven baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
-        Wednesday: "Chicken curry / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
-        Thursday: "Cottage pie / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
-        Friday: "Breaded chicken steak / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
+        Monday: "Oven baked sausage 🌭 / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
+        Tuesday: "Oven baked fish 🐟 / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
+        Wednesday: "Chicken curry 🍛 / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
+        Thursday: "Cottage pie 🥧 / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
+        Friday: "Breaded chicken steak 🍗 / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
     },
     2: {
-        Monday: "Pasta bolognese / Cheese and tomato pizza\nAccompaniments\nFruit / Biscuit",
-        Tuesday: "Oven baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
-        Wednesday: "Chicken curry / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
-        Thursday: "Cottage pie / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
-        Friday: "Breaded chicken steak / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
+        Monday: "Pasta bolognese 🍝 / Cheese and tomato pizza\nAccompaniments\nFruit / Biscuit",
+        Tuesday: "Oven baked fish 🐟 / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
+        Wednesday: "Chicken curry 🍛 / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
+        Thursday: "Cottage pie 🥧 / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
+        Friday: "Breaded chicken steak 🍗 / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
     },
     3: {
-        Monday: "Oven baked sausage / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
-        Tuesday: "Oven baked fish / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
-        Wednesday: "Chicken curry / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
-        Thursday: "Cottage pie / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
-        Friday: "Breaded chicken steak / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
+        Monday: "Oven baked sausage 🌭 / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
+        Tuesday: "Oven baked fish 🐟 / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
+        Wednesday: "Chicken curry 🍛 / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
+        Thursday: "Cottage pie 🥧 / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
+        Friday: "Breaded chicken steak 🍗 / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
     }
 };
 
@@ -476,6 +540,37 @@ const MENU_DETAILS = {
     }
 };
 
+const ALLERGENS = {
+    1: {
+        Monday: ["gluten", "dairy"],
+        Tuesday: ["fish", "gluten", "dairy"],
+        Wednesday: ["gluten"],
+        Thursday: ["gluten", "dairy"],
+        Friday: ["gluten", "dairy"]
+    },
+    2: {
+        Monday: ["gluten", "dairy"],
+        Tuesday: ["fish", "gluten", "dairy"],
+        Wednesday: ["gluten"],
+        Thursday: ["gluten", "dairy"],
+        Friday: ["gluten", "dairy"]
+    },
+    3: {
+        Monday: ["gluten", "dairy"],
+        Tuesday: ["fish", "gluten", "dairy"],
+        Wednesday: ["gluten"],
+        Thursday: ["gluten", "dairy"],
+        Friday: ["gluten", "dairy"]
+    }
+};
+
+const ALLERGEN_ICONS = {
+    gluten: "🌾",
+    dairy: "🧀",
+    fish: "🐟",
+    nuts: "🥜"
+};
+
 const weekMap = [
     { week: 1, start: "2025-09-01" },
     { week: 2, start: "2025-09-08" },
@@ -497,6 +592,7 @@ const weekMap = [
 // --- State Management
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 let currentWeekIndex = getInitialWeekIndex();
+let streak = parseInt(localStorage.getItem('streak') || '0');
 const isDarkMode = localStorage.getItem('darkMode') === 'true';
 if (isDarkMode) document.body.classList.add('dark-mode');
 
@@ -508,23 +604,34 @@ const prevWeekBtn = document.getElementById('prevWeekBtn');
 const nextWeekBtn = document.getElementById('nextWeekBtn');
 const currentWeekBtn = document.getElementById('currentWeekBtn');
 const darkModeToggle = document.getElementById('darkModeToggle');
+const shoppingListBtn = document.getElementById('shoppingListBtn');
+const statsBtn = document.getElementById('statsBtn');
 const pullToRefresh = document.getElementById('pullToRefresh');
 const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modalTitle');
 const modalDescription = document.getElementById('modalDescription');
 const modalClose = document.getElementById('modalClose');
+const shoppingListModal = document.getElementById('shoppingListModal');
+const shoppingListText = document.getElementById('shoppingListText');
+const copyShoppingList = document.getElementById('copyShoppingList');
+const shoppingListClose = document.getElementById('shoppingListClose');
+const statsModal = document.getElementById('statsModal');
+const statsText = document.getElementById('statsText');
+const statsClose = document.getElementById('statsClose');
+const progressFill = document.getElementById('progressFill');
 
 // --- Functions
 function getInitialWeekIndex() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const todayTimestamp = today.getTime();
+    const isSunday = today.getDay() === 0;
 
     for (let i = weekMap.length - 1; i >= 0; i--) {
         const weekStart = new Date(weekMap[i].start);
         weekStart.setHours(0, 0, 0, 0);
         if (todayTimestamp >= weekStart.getTime()) {
-            return i;
+            return isSunday && i < weekMap.length - 1 ? i + 1 : i;
         }
     }
     return 0;
@@ -542,19 +649,20 @@ function renderMenu(direction = null) {
 
     if (direction === 'next') {
         oldMenu.classList.add('slide-left');
-        menuContainer.classList.add('slide-left');
+        menuContainer.style.transform = 'translateX(100%)';
+        setTimeout(() => menuContainer.classList.add('slide-left'), 10);
     } else if (direction === 'prev') {
         oldMenu.classList.add('slide-right');
-        menuContainer.classList.add('slide-right');
+        menuContainer.style.transform = 'translateX(-100%)';
+        setTimeout(() => menuContainer.classList.add('slide-right'), 10);
     }
 
     setTimeout(() => {
         oldMenu.remove();
-        if (direction) {
-            menuContainer.classList.remove('slide-left', 'slide-right');
-        }
+        menuContainer.style.transform = '';
+        menuContainer.classList.remove('slide-left', 'slide-right');
         renderMenuContent();
-    }, 400); // Match transition duration
+    }, 400);
 }
 
 function renderMenuContent() {
@@ -576,6 +684,8 @@ function renderMenuContent() {
     weekTitleEl.textContent = `Week ${weekInfo.week}`;
     document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
 
+    progressFill.style.width = `${((currentWeekIndex + 1) / weekMap.length) * 100}%`;
+
     weekdays.forEach((day, index) => {
         const card = document.createElement("div");
         card.classList.add("card");
@@ -587,11 +697,11 @@ function renderMenuContent() {
 
         const label = document.createElement("span");
         if (dayDate.getTime() === today.getTime()) {
-            label.textContent = "Today";
+            label.textContent = "Today ☀️";
             label.className = "dayLabel today";
             card.appendChild(label);
         } else if (dayDate.getTime() === today.getTime() + 86400000) {
-            label.textContent = "Tomorrow";
+            label.textContent = "Tomorrow 🌅";
             label.className = "dayLabel tomorrow";
             card.appendChild(label);
         } else if (dayDate.getTime() < today.getTime()) {
@@ -610,6 +720,11 @@ function renderMenuContent() {
         menuText.textContent = MENUS[weekInfo.week][day];
         card.appendChild(menuText);
 
+        const allergens = document.createElement("div");
+        allergens.className = "allergens";
+        allergens.textContent = "Allergens: " + (ALLERGENS[weekInfo.week][day].map(a => ALLERGEN_ICONS[a]).join(" "));
+        card.appendChild(allergens);
+
         const toggle = document.createElement("label");
         toggle.className = "toggle";
         const input = document.createElement("input");
@@ -623,9 +738,15 @@ function renderMenuContent() {
 
         input.addEventListener("change", () => {
             if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
-            if (input.checked) packedLunch[weekInfo.week][day] = true;
-            else delete packedLunch[weekInfo.week][day];
+            if (input.checked) {
+                packedLunch[weekInfo.week][day] = true;
+                streak++;
+            } else {
+                delete packedLunch[weekInfo.week][day];
+                streak = Math.max(0, streak - 1);
+            }
             localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+            localStorage.setItem('streak', streak);
             updatePackedCount();
             card.classList.toggle("packed", input.checked);
         });
@@ -633,7 +754,7 @@ function renderMenuContent() {
         card.addEventListener("click", (e) => {
             if (e.target.closest(".toggle")) return;
             modalTitle.textContent = `${day} - Week ${weekInfo.week}`;
-            modalDescription.textContent = MENU_DETAILS[weekInfo.week][day].description;
+            modalDescription.textContent = `${MENU_DETAILS[weekInfo.week][day].description}\n\nAllergens: ${ALLERGENS[weekInfo.week][day].map(a => ALLERGEN_ICONS[a]).join(" ")}`;
             modal.style.display = "flex";
             setTimeout(() => modal.classList.add("show"), 10);
         });
@@ -656,7 +777,26 @@ function updateNavButtons() {
     nextWeekBtn.classList.toggle("disabled", currentWeekIndex === weekMap.length - 1);
 }
 
-// --- Pull-to-Refresh Simulation (unchanged)
+function generateShoppingList() {
+    const weekInfo = weekMap[currentWeekIndex];
+    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    let list = `Shopping List for Week ${weekInfo.week} (${weekInfo.start}):\n`;
+    weekdays.forEach(day => {
+        if (!packedLunch[weekInfo.week]?.[day]) {
+            const meal = MENUS[weekInfo.week][day].split('\n')[0]; // Main dish only
+            list += `${day}: ${meal}\n`;
+        }
+    });
+    return list.trim() || "All days are packed lunches!";
+}
+
+function updateStats() {
+    const totalPacked = Object.values(packedLunch).reduce((sum, week) => sum + Object.keys(week).length, 0);
+    const badge = streak >= 5 ? "🏆 5-Day Planner" : streak >= 3 ? "🥈 3-Day Streak" : "🌟 Keep Going!";
+    statsText.textContent = `Current Streak: ${streak} day(s)\nTotal Packed Lunches: ${totalPacked}\nBadge: ${badge}`;
+}
+
+// --- Pull-to-Refresh Simulation
 let startY = 0;
 let isPulling = false;
 
@@ -716,7 +856,34 @@ modalClose.addEventListener('click', () => {
     setTimeout(() => modal.style.display = "none", 300);
 });
 
-// --- Notification Placeholder (unchanged)
+shoppingListBtn.addEventListener('click', () => {
+    shoppingListText.textContent = generateShoppingList();
+    shoppingListModal.style.display = "flex";
+    setTimeout(() => shoppingListModal.classList.add("show"), 10);
+});
+
+copyShoppingList.addEventListener('click', () => {
+    navigator.clipboard.writeText(shoppingListText.textContent);
+    alert("Shopping list copied to clipboard!");
+});
+
+shoppingListClose.addEventListener('click', () => {
+    shoppingListModal.classList.remove('show');
+    setTimeout(() => shoppingListModal.style.display = "none", 300);
+});
+
+statsBtn.addEventListener('click', () => {
+    updateStats();
+    statsModal.style.display = "flex";
+    setTimeout(() => statsModal.classList.add("show"), 10);
+});
+
+statsClose.addEventListener('click', () => {
+    statsModal.classList.remove('show');
+    setTimeout(() => statsModal.style.display = "none", 300);
+});
+
+// --- Notification Placeholder
 function requestNotificationPermission() {
     if ("Notification" in window && Notification.permission !== "denied") {
         Notification.requestPermission().then(permission => {
