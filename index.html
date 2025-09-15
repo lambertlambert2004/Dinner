@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -13,477 +13,192 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=SF+Pro+Display:wght@400;600;700&display=fallback" rel="stylesheet">
 <style>
-:root {
-    --bg-light: linear-gradient(180deg, #fefce8, #f5f5f4);
-    --bg-card-light: #ffffff;
-    --text-light: #333333;
-    --packed-light: linear-gradient(135deg, #fff5e0 0%, #fed7aa 100%);
-    --accent-blue: #1d4ed8;
-    --accent-green: #34c759;
-    --accent-orange: #ff9500;
-    --accent-red: #ff3b30;
-    --shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    --border-radius: 16px;
-    --font-family: -apple-system, 'SF Pro Display', 'Poppins', sans-serif;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-body.dark-mode {
-    --bg-light: #1a202c;
-    --bg-card-light: #2d3748;
-    --text-light: #e2e8f0;
-    --packed-light: #4a422a;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-body {
-    margin: 0;
-    padding: 0 16px 100px;
-    font-family: var(--font-family);
-    background: var(--bg-light);
-    color: var(--text-light);
-    transition: var(--transition);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.02) 1px, transparent 0);
-    background-size: 20px 20px;
-}
-header {
-    text-align: center;
-    padding: 16px 0;
-    background: var(--bg-light);
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-body:not(.dark-mode) header {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-}
-h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 600;
-}
-.sub-header {
-    font-size: 0.9rem;
-    color: #666666;
-    margin: 4px 0;
-    white-space: pre-line;
-}
-body.dark-mode .sub-header {
-    color: #a0aec0;
-}
-#weekInfo {
-    font-size: 0.85rem;
-    color: #666666;
-}
-body.dark-mode #weekInfo {
-    color: #cbd5e0;
-}
-#menu {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-width: 800px;
-    margin: 16px auto 120px;
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-#menu.fade {
-    opacity: 0;
-}
-.card {
-    position: relative;
-    border-radius: var(--border-radius);
-    padding: 16px;
-    background: var(--bg-card-light);
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    cursor: pointer;
-}
-body:not(.dark-mode) .card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-}
-.card:hover, .card:active {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-}
-.card.packed {
-    background: var(--packed-light);
-    border: 2px solid #f59e0b;
-    box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.3);
-    animation: pulse 2s infinite;
-}
-@keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.3); }
-    50% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1); }
-}
-.dayTitle {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0 0 8px 0;
-}
-.menuText {
-    white-space: pre-line;
-    line-height: 1.5;
-    font-size: 0.95rem;
-    color: #444444;
-}
-body.dark-mode .menuText {
-    color: #cbd5e0;
-}
-.allergens {
-    margin-top: 8px;
-    font-size: 0.8rem;
-    color: #666666;
-}
-body.dark-mode .allergens {
-    color: #a0aec0;
-}
-.dayLabel {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    padding: 4px 8px;
-    font-weight: 600;
-    font-size: 0.75rem;
-    color: #fff;
-    border-radius: 12px;
-    z-index: 3;
-}
-.dayLabel.today { background: var(--accent-blue); animation: glowBlue 2.6s infinite alternate; }
-.dayLabel.tomorrow { background: var(--accent-orange); animation: glowOrange 2.8s infinite alternate; }
-.dayLabel.past { background: #8e8e93; }
-@keyframes glowBlue {
-    0% { box-shadow: 0 0 4px rgba(29, 78, 216, 0.5); }
-    50% { box-shadow: 0 0 12px rgba(29, 78, 216, 0.8); }
-    100% { box-shadow: 0 0 6px rgba(29, 78, 216, 0.6); }
-}
-@keyframes glowOrange {
-    0% { box-shadow: 0 0 4px rgba(255, 149, 0, 0.5); }
-    50% { box-shadow: 0 0 12px rgba(255, 149, 0, 0.8); }
-    100% { box-shadow: 0 0 6px rgba(255, 149, 0, 0.6); }
-}
-.toggle-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    position: absolute;
-    right: 12px;
-    bottom: 12px;
-}
-.toggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.toggle input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-.toggle .slider {
-    position: relative;
-    width: 51px;
-    height: 31px;
-    background-color: #d1d5db;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-body.dark-mode .toggle .slider {
-    background-color: #4b5563;
-}
-.toggle .slider::before {
-    content: '';
-    position: absolute;
-    left: 2px;
-    top: 2px;
-    width: 27px;
-    height: 27px;
-    background-color: #ffffff;
-    border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.toggle input:checked + .slider {
-    background-color: var(--accent-green);
-    box-shadow: 0 0 6px rgba(52, 199, 89, 0.4);
-}
-.toggle input:checked + .slider::before {
-    transform: translateX(20px);
-    box-shadow: 0 1px 4px rgba(52, 199, 89, 0.3);
-}
-.toggle:active .slider::before {
-    transform: scale(0.95);
-}
-.toggle label {
-    font-size: 0.85rem;
-    color: #444444;
-}
-body.dark-mode .toggle label {
-    color: #cbd5e0;
-}
-#weekNav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 600px;
-    margin: 16px auto;
-    padding: 8px;
-    background: var(--bg-card-light);
-    border-radius: 14px;
-    box-shadow: var(--shadow);
-    position: sticky;
-    top: 60px;
-    z-index: 10;
-}
-body:not(.dark-mode) #weekNav {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-}
-.progress-bar {
-    height: 4px;
-    background: #e5e7eb;
-    border-radius: 2px;
-    margin: 8px auto;
-    max-width: 600px;
-}
-.progress-fill {
-    height: 100%;
-    background: var(--accent-blue);
-    border-radius: 2px;
-    transition: width 0.5s ease-in-out;
-}
-.nav-btn {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 12px;
-    background: var(--accent-blue);
-    color: #fff;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    min-width: 44px;
-    min-height: 44px;
-}
-.nav-btn.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-.nav-btn:active:not(.disabled) {
-    transform: scale(0.95);
-}
-.nav-btn svg {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-}
-#weekTitle {
-    font-weight: 600;
-    font-size: 1rem;
-}
-#darkModeToggle, #manageChildrenBtn {
-    position: fixed;
-    right: 20px;
-    width: 44px;
-    height: 44px;
-    background: var(--bg-card-light);
-    border-radius: 50%;
-    box-shadow: var(--shadow);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: var(--transition);
-}
-#darkModeToggle {
-    bottom: 20px;
-}
-#manageChildrenBtn {
-    bottom: 76px;
-}
-#pullToRefresh {
-    position: absolute;
-    top: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    font-size: 0.85rem;
-    color: #666666;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-body.dark-mode #pullToRefresh {
-    color: #a0aec0;
-}
-#pullToRefresh.visible {
-    opacity: 1;
-}
-#modal, #manageChildrenModal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-#confirmToggle {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1100; /* Higher z-index to appear above other modals */
-}
-#modalContent, #confirmToggleContent, #manageChildrenContent {
-    background: var(--bg-card-light);
-    border-radius: var(--border-radius);
-    padding: 20px;
-    max-width: 90%;
-    max-height: 80%;
-    overflow-y: auto;
-    box-shadow: var(--shadow);
-    transform: scale(0.7);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-#modal.show #modalContent, #confirmToggle.show #confirmToggleContent, #manageChildrenModal.show #manageChildrenContent {
-    transform: scale(1);
-}
-#modal h2, #confirmToggle h2, #manageChildrenModal h2 {
-    margin: 0 0 12px;
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-#modal p, #confirmToggle p, #manageChildrenModal p {
-    margin: 0 0 12px;
-    font-size: 0.95rem;
-    color: #444444;
-}
-body.dark-mode #modal p, body.dark-mode #confirmToggle p, body.dark-mode #manageChildrenModal p {
-    color: #cbd5e0;
-}
-#modal button, #confirmToggle button, #manageChildrenModal button {
-    background: var(--accent-blue);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    margin: 0 5px;
-}
-#modal button:active, #confirmToggle button:active, #manageChildrenModal button:active {
-    transform: scale(0.95);
-}
-#confirmToggle .button-group, #manageChildrenModal .button-group {
-    display: flex;
-    justify-content: space-between;
-}
-#childInput {
-    padding: 8px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    margin-bottom: 12px;
-    width: 100%;
-    box-sizing: border-box;
-}
-body.dark-mode #childInput {
-    border-color: #4b5563;
-    background: #2d3748;
-    color: #e2e8f0;
-}
-.children-list {
-    margin-bottom: 12px;
-}
-.children-list div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    font-size: 0.95rem;
-}
-.children-list button {
-    background: var(--accent-red);
-    padding: 6px 12px;
-    font-size: 0.85rem;
-}
-:focus {
-    outline: 2px solid var(--accent-blue);
-    outline-offset: 2px;
-}
+:root{
+  --bg-light: linear-gradient(180deg,#fefce8,#f5f5f4);
+  --bg-card-light:#ffffff;
+  --text-light:#333333;
+  --packed-light: linear-gradient(135deg,#fff5e0 0%,#fed7aa 100%);
+  --accent-blue:#1d4ed8;
+  --accent-green:#34c759;
+  --accent-orange:#ff9500;
+  --accent-red:#ff3b30;
+  --shadow: 0 2px 6px rgba(0,0,0,0.08);
+  --border-radius:16px;
+  --font-family:-apple-system,'SF Pro Display','Poppins',sans-serif;
+  --transition: all 0.28s cubic-bezier(.4,0,.2,1);
+}
+body.dark-mode{
+  --bg-light:#0f1724;
+  --bg-card-light:#1f2937;
+  --text-light:#e2e8f0;
+  --packed-light:#3b2e1a;
+  --shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;padding:0 16px 120px;
+  font-family:var(--font-family);
+  background:var(--bg-light);
+  color:var(--text-light);
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  transition:var(--transition);
+  -webkit-touch-callout:none;
+}
+header{
+  text-align:center;padding:14px 0;position:sticky;top:0;z-index:40;
+  background:var(--bg-light);
+  box-shadow:0 1px 2px rgba(0,0,0,0.06);
+}
+body:not(.dark-mode) header{ background: rgba(255,255,255,0.9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+h1{ margin:0; font-size:1.45rem; font-weight:600; }
+.sub-header{ font-size:0.9rem; color:#6b7280; margin-top:6px; white-space:pre-line; }
+#weekInfo{ margin-top:8px; font-size:0.9rem; color:#6b7280; }
+#menu{ max-width:880px; margin:16px auto 160px; display:flex; flex-direction:column; gap:12px; transition:opacity .25s; }
+#menu.fade{ opacity:0; }
+
+/* Card */
+.card{
+  position:relative;
+  border-radius:var(--border-radius);
+  padding:18px 18px 92px; /* bottom large enough to avoid toggles overlapping */
+  background:var(--bg-card-light);
+  box-shadow:var(--shadow);
+  transition:var(--transition);
+  cursor:pointer;
+}
+body:not(.dark-mode) .card{ background: rgba(255,255,255,0.95); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.card:hover{ transform:translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
+.card.packed{ background: var(--packed-light); border:1px solid rgba(245,158,11,0.2); animation:pulse 2.2s infinite; }
+@keyframes pulse{ 0%,100%{ box-shadow: 0 0 0 1px rgba(245,158,11,0.2);} 50%{ box-shadow: 0 0 0 6px rgba(245,158,11,0.08);} }
+
+.dayTitle{ font-size:1.05rem; font-weight:600; margin:0 0 8px 0; }
+.menuText{ white-space:pre-line; line-height:1.45; font-size:0.95rem; color: #374151; }
+body.dark-mode .menuText{ color:#cbd5e0; }
+.allergens{ margin-top:10px; font-size:0.82rem; color:#6b7280; }
+body.dark-mode .allergens{ color:#94a3b8; }
+
+/* Labels */
+.dayLabel{ position:absolute; top:12px; right:12px; padding:6px 10px; font-weight:700; font-size:0.78rem; color:#fff; border-radius:12px; z-index:6; pointer-events:none; }
+.dayLabel.today{ background:var(--accent-blue); animation:glowBlue 2.6s infinite alternate; }
+.dayLabel.tomorrow{ background:var(--accent-orange); animation:glowOrange 2.8s infinite alternate; }
+.dayLabel.past{ background:#8e8e93; }
+@keyframes glowBlue{ 0%{ box-shadow:0 0 6px rgba(29,78,216,0.5); } 50%{ box-shadow:0 0 18px rgba(29,78,216,0.8); } 100%{ box-shadow:0 0 10px rgba(29,78,216,0.6); } }
+@keyframes glowOrange{ 0%{ box-shadow:0 0 5px rgba(255,149,0,0.5); } 50%{ box-shadow:0 0 16px rgba(255,149,0,0.8); } 100%{ box-shadow:0 0 8px rgba(255,149,0,0.6); } }
+
+/* Toggle area (safe, bottom-right) */
+.toggle-container{ position:absolute; right:12px; bottom:12px; display:flex; flex-direction:column; gap:8px; z-index:5; }
+/* Toggle control */
+.toggle{ display:flex; align-items:center; gap:8px; user-select:none; }
+.toggle input{ opacity:0; width:0; height:0; }
+.toggle .slider{
+  width:51px; height:31px; border-radius:16px; background:#d1d5db; position:relative; transition:background .28s;
+}
+.toggle .slider::before{
+  content:''; position:absolute; left:3px; top:2px; width:27px; height:27px; border-radius:50%; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,.12); transition:transform .28s;
+}
+.toggle input:checked + .slider{ background:var(--accent-green); box-shadow:0 0 6px rgba(52,199,89,0.2); }
+.toggle input:checked + .slider::before{ transform:translateX(20px); box-shadow:0 2px 6px rgba(0,0,0,0.12); }
+.toggle label{ font-size:0.9rem; color:#374151; }
+body.dark-mode .toggle label{ color:#e2e8f0; }
+
+/* Week nav */
+#weekNav{ display:flex; justify-content:space-between; align-items:center; max-width:760px; margin:14px auto; padding:8px; border-radius:14px; background:var(--bg-card-light); box-shadow:var(--shadow); position:sticky; top:62px; z-index:30; }
+body:not(.dark-mode) #weekNav{ background: rgba(255,255,255,0.94); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.nav-btn{ border:0; background:var(--accent-blue); color:#fff; padding:10px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; cursor:pointer; transition:transform .18s; }
+.nav-btn.disabled{ opacity:.45; pointer-events:none; }
+.nav-btn:active:not(.disabled){ transform:scale(.96); }
+/* SVG explicit sizing to avoid split on first render */
+.nav-btn svg{ width:20px; height:20px; display:inline-block; vertical-align:middle; }
+
+/* progress */
+.progress-bar{ height:6px; background:#e6e6e6; border-radius:999px; margin:10px auto; max-width:760px; overflow:hidden; }
+.progress-fill{ height:100%; background:var(--accent-blue); width:0%; transition:width .45s ease; }
+
+/* modal & confirm */
+#modal,#confirmToggle,#manageChildrenModal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.45); z-index:80; }
+.modal-inner{ background:var(--bg-card-light); border-radius:14px; padding:18px; width:92%; max-width:640px; box-shadow:var(--shadow); transform:scale(.9); transition:transform .25s; }
+#modal.show,#confirmToggle.show,#manageChildrenModal.show{ display:flex; }
+#modal.show .modal-inner,#confirmToggle.show .modal-inner,#manageChildrenModal.show .modal-inner{ transform:scale(1); }
+
+/* pull to refresh */
+#pullToRefresh{ position:absolute; top:-50px; left:50%; transform:translateX(-50%); color:#6b7280; font-size:0.9rem; opacity:0; transition:opacity .2s; }
+#pullToRefresh.visible{ opacity:1; }
+
+/* small screens */
+@media (max-width:520px){
+  .card{ padding:14px 14px 110px; }
+  .toggle .slider{ width:46px; height:28px; }
+  .nav-btn{ padding:8px; min-width:40px; min-height:40px; }
+}
+:focus{ outline:2px solid var(--accent-blue); outline-offset:3px; }
 </style>
 </head>
 <body class="dark-mode">
 <div id="pullToRefresh">Pull to refresh...</div>
+
 <header>
   <h1>School Dinner Menu</h1>
   <div class="sub-header" id="packedCount">Packed Meals This Week</div>
   <div id="weekInfo"></div>
 </header>
-<div id="weekNav">
-    <button id="prevWeekBtn" class="nav-btn" aria-label="Previous Week">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
-    </button>
-    <button id="currentWeekBtn" class="nav-btn" aria-label="Current Week">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-    </button>
-    <div id="weekTitle"></div>
-    <button id="nextWeekBtn" class="nav-btn" aria-label="Next Week">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-    </button>
+
+<div id="weekNav" role="navigation" aria-label="Week navigation">
+  <button id="prevWeekBtn" class="nav-btn" aria-label="Previous week"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg></button>
+  <button id="currentWeekBtn" class="nav-btn" aria-label="Current week"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg></button>
+  <div id="weekTitle" aria-live="polite" style="font-weight:600"></div>
+  <button id="nextWeekBtn" class="nav-btn" aria-label="Next week"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></button>
 </div>
+
 <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
-<main id="menu"></main>
-<div id="modal">
-    <div id="modalContent">
-        <h2 id="modalTitle"></h2>
-        <p id="modalDescription"></p>
-        <button id="modalClose">Close</button>
+<main id="menu" aria-live="polite" role="list"></main>
+
+<!-- Modal -->
+<div id="modal" aria-hidden="true">
+  <div class="modal-inner" id="modalContent">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <div style="text-align:right;margin-top:12px;">
+      <button id="modalClose" style="background:var(--accent-blue);color:#fff;border:0;padding:10px 14px;border-radius:10px;">Close</button>
     </div>
+  </div>
 </div>
-<div id="confirmToggle">
-    <div id="confirmToggleContent">
-        <h2 id="confirmToggleTitle"></h2>
-        <p id="confirmToggleMessage"></p>
-        <div class="button-group">
-            <button id="confirmToggleCancel">Cancel</button>
-            <button id="confirmToggleConfirm">Confirm</button>
-        </div>
+
+<!-- Confirm Toggle modal -->
+<div id="confirmToggle" aria-hidden="true">
+  <div class="modal-inner" id="confirmToggleContent">
+    <h2 id="confirmToggleTitle"></h2>
+    <p id="confirmToggleMessage"></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+      <button id="confirmToggleCancel" style="background:#e5e7eb;color:#000;border:0;padding:10px 12px;border-radius:10px;">Cancel</button>
+      <button id="confirmToggleConfirm" style="background:var(--accent-blue);color:#fff;border:0;padding:10px 12px;border-radius:10px;">Confirm</button>
     </div>
+  </div>
 </div>
-<div id="manageChildrenModal">
-    <div id="manageChildrenContent">
-        <h2>Manage Children</h2>
-        <input type="text" id="childInput" placeholder="Enter child's name" />
-        <div class="button-group">
-            <button id="addChildBtn">Add Child</button>
-            <button id="manageChildrenClose">Close</button>
-        </div>
-        <div class="children-list" id="childrenList"></div>
+
+<!-- Manage children modal -->
+<div id="manageChildrenModal" aria-hidden="true">
+  <div class="modal-inner" id="manageChildrenContent">
+    <h2>Manage Children</h2>
+    <input id="childInput" placeholder="Enter child's name" style="width:100%;padding:10px;border-radius:8px;border:1px solid #d1d5db;margin-bottom:10px;">
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <button id="addChildBtn" style="background:var(--accent-blue);color:#fff;padding:8px 12px;border-radius:8px;border:0;">Add</button>
+      <button id="manageChildrenClose" style="background:#e5e7eb;color:#000;padding:8px 12px;border-radius:8px;border:0;">Close</button>
     </div>
+    <div class="children-list" id="childrenList"></div>
+  </div>
 </div>
-<div id="manageChildrenBtn" aria-label="Manage Children">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+
+<!-- Floating manage / dark buttons -->
+<div id="manageChildrenBtn" aria-hidden="false" style="position:fixed;right:18px;bottom:86px;width:48px;height:48px;background:var(--bg-card-light);border-radius:50%;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;z-index:60;">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
 </div>
-<div id="darkModeToggle" aria-label="Toggle Dark Mode">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a9.75 9.75 0 00-9.75 9.75 9.75 9.75 0 009.75 9.75c1.077 0 2.1-.194 3.05-.56a.75.75 0 00-.6-.69h0a.75.75 0 01-.85-.14 9.752 9.752 0 004.1-6.19c.12-.472-.345-.92-.85-.85a8.25 8.25 0 01-5.75 2.19c-3.15 0-5.727-2.585-5.727-5.757s2.577-5.757 5.727-5.757c1.838 0 3.52 1.054 4.58 2.687a.75.75 0 001.25-.664A9.752 9.752 0 0012 2.25z"/></svg>
+<div id="darkModeToggle" aria-hidden="false" style="position:fixed;right:18px;bottom:18px;width:48px;height:48px;background:var(--bg-card-light);border-radius:50%;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;z-index:60;">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a9.75 9.75 0 00-9.75 9.75 9.75 9.75 0 009.75 9.75c1.077 0 2.1-.194 3.05-.56a.75.75 0 00-.6-.69h0a.75.75 0 01-.85-.14 9.752 9.752 0 004.1-6.19c.12-.472-.345-.92-.85-.85a8.25 8.25 0 01-5.75 2.19c-3.15 0-5.727-2.585-5.727-5.757s2.577-5.757 5.727-5.757c1.838 0 3.52 1.054 4.58 2.687a.75.75 0 001.25-.664A9.752 9.752 0 0012 2.25z"/></svg>
 </div>
+
 <script>
+/* ====== Data (unchanged meals) ====== */
 const MENUS = {
     1: {
         Monday: "Oven baked sausages 🌭🍖 / Vegetarian sausage 🥗\nAccompaniments of the day 🥕\nHomemade biscuit 🍪, peach slices 🍑 / Fresh fruit 🍎",
@@ -507,63 +222,51 @@ const MENUS = {
         Friday: "Baked fish 🐟 / Cheese wrap 🌯🧀\nAccompaniments of the day 🥦\nFruit muffin 🧁 / Fresh fruit 🍎"
     }
 };
+
 const MENU_DETAILS = {
-    1: {
-        Monday: { description: "Oven baked sausages or vegetarian sausage with daily accompaniments. Includes homemade biscuit and peach slices or fresh fruit. Halal baked sausage or GF/DF sausage available." },
-        Tuesday: { description: "BBQ chicken wrap or cheese and tomato pizza with daily accompaniments. Served with fruit yoghurt pot or fresh fruit. Halal or GF/DF BBQ chicken wrap available." },
-        Wednesday: { description: "Cheesy beany jacket potato or breaded chicken steak with daily accompaniments. Includes pancake with sliced fruit or fresh fruit. Halal breaded chicken steak or GF/DF cheesy beany jacket available." },
-        Thursday: { description: "Traditional cottage pie or tomato pasta bake with daily accompaniments. Comes with cocoa crispy bar or fresh fruit. Halal cottage pie or GF/DF tomato pasta bake available." },
-        Friday: { description: "Baked fish or cheese wrap with daily accompaniments. Includes jam split and fruit wedge or fresh fruit. Halal baked fish, GF/DF fish fingers, or baked salmon option available." }
-    },
-    2: {
-        Monday: { description: "Breaded chicken steak or vegetable cheese bake with daily accompaniments. Includes fruit yoghurt pot or fresh fruit. Halal or GF/DF chicken steak available." },
-        Tuesday: { description: "Pasta bolognese or omelette with daily accompaniments. Served with jelly and mandarins or fresh fruit. Halal or GF/DF pasta bolognese available." },
-        Wednesday: { description: "Mild chicken curry or cheese and tomato pizza with daily accompaniments. Includes fruit muffin or fresh fruit. Halal or GF/DF chicken curry available." },
-        Thursday: { description: "Roast chicken or pasta Napolitana with daily accompaniments. Comes with a cookie or fresh fruit. Halal or GF/DF roast chicken available." },
-        Friday: { description: "Fish fingers or cheese wrap with daily accompaniments. Includes Welsh cake and fruit wedge or fresh fruit. Halal or GF/DF fish fingers or baked salmon option available." }
-    },
-    3: {
-        Monday: { description: "Meatballs or tomato pasta bake with daily accompaniments. Includes jam split and fruit wedge or fresh fruit. Halal or GF/DF meatballs available." },
-        Tuesday: { description: "Mild chicken curry or margherita pizza with daily accompaniments. Served with fruit yoghurt pot or fresh fruit. Halal or GF/DF chicken curry available." },
-        Wednesday: { description: "Cheese and tomato calzone or breaded chicken steak with daily accompaniments. Includes jelly and mandarins or fresh fruit. Halal breaded chicken steak available." },
-        Thursday: { description: "Roast turkey or macaroni cheese with daily accompaniments. Comes with chocolate cookie or fresh fruit. Halal or GF/DF roast turkey available." },
-        Friday: { description: "Baked fish or cheese wrap with daily accompaniments. Includes fruit muffin or fresh fruit. Halal baked fish, GF/DF fish fingers, or baked salmon option available." }
-    }
+  1:{ Monday:{description:"Oven baked sausages or vegetarian sausage with daily accompaniments. Includes homemade biscuit and peach slices or fresh fruit. Halal baked sausage or GF/DF sausage available."},
+      Tuesday:{description:"BBQ chicken wrap or cheese and tomato pizza with daily accompaniments. Served with fruit yoghurt pot or fresh fruit. Halal or GF/DF BBQ chicken wrap available."},
+      Wednesday:{description:"Cheesy beany jacket potato or breaded chicken steak with daily accompaniments. Includes pancake with sliced fruit or fresh fruit. Halal breaded chicken steak or GF/DF cheesy beany jacket available."},
+      Thursday:{description:"Traditional cottage pie or tomato pasta bake with daily accompaniments. Comes with cocoa crispy bar or fresh fruit. Halal cottage pie or GF/DF tomato pasta bake available."},
+      Friday:{description:"Baked fish or cheese wrap with daily accompaniments. Includes jam split and fruit wedge or fresh fruit. Halal baked fish, GF/DF fish fingers, or baked salmon option available."}
+  },
+  2:{ Monday:{description:"Breaded chicken steak or vegetable cheese bake with daily accompaniments. Includes fruit yoghurt pot or fresh fruit. Halal or GF/DF chicken steak available."},
+      Tuesday:{description:"Pasta bolognese or omelette with daily accompaniments. Served with jelly and mandarins or fresh fruit. Halal or GF/DF pasta bolognese available."},
+      Wednesday:{description:"Mild chicken curry or cheese and tomato pizza with daily accompaniments. Includes fruit muffin or fresh fruit. Halal or GF/DF chicken curry available."},
+      Thursday:{description:"Roast chicken or pasta Napolitana with daily accompaniments. Comes with a cookie or fresh fruit. Halal or GF/DF roast chicken available."},
+      Friday:{description:"Fish fingers or cheese wrap with daily accompaniments. Includes Welsh cake and fruit wedge or fresh fruit. Halal or GF/DF fish fingers or baked salmon option available."}
+  },
+  3:{ Monday:{description:"Meatballs or tomato pasta bake with daily accompaniments. Includes jam split and fruit wedge or fresh fruit. Halal or GF/DF meatballs available."},
+      Tuesday:{description:"Mild chicken curry or margherita pizza with daily accompaniments. Served with fruit yoghurt pot or fresh fruit. Halal or GF/DF chicken curry available."},
+      Wednesday:{description:"Cheese and tomato calzone or breaded chicken steak with daily accompaniments. Includes jelly and mandarins or fresh fruit. Halal breaded chicken steak available."},
+      Thursday:{description:"Roast turkey or macaroni cheese with daily accompaniments. Comes with chocolate cookie or fresh fruit. Halal or GF/DF roast turkey available."},
+      Friday:{description:"Baked fish or cheese wrap with daily accompaniments. Includes fruit muffin or fresh fruit. Halal baked fish, GF/DF fish fingers, or baked salmon option available."}
+  }
 };
+
 const ALLERGENS = {
-    1: {
-        Monday: ["gluten", "dairy"],
-        Tuesday: ["gluten", "dairy"],
-        Wednesday: ["gluten", "dairy"],
-        Thursday: ["gluten", "dairy"],
-        Friday: ["fish", "gluten", "dairy"]
-    },
-    2: {
-        Monday: ["gluten", "dairy"],
-        Tuesday: ["gluten", "dairy"],
-        Wednesday: ["gluten", "dairy"],
-        Thursday: ["gluten"],
-        Friday: ["fish", "gluten", "dairy"]
-    },
-    3: {
-        Monday: ["gluten"],
-        Tuesday: ["gluten", "dairy"],
-        Wednesday: ["gluten", "dairy"],
-        Thursday: ["gluten", "dairy"],
-        Friday: ["fish", "gluten", "dairy"]
-    }
+  1:{ Monday:["gluten","dairy"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten","dairy"], Friday:["fish","gluten","dairy"] },
+  2:{ Monday:["gluten","dairy"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten"], Friday:["fish","gluten","dairy"] },
+  3:{ Monday:["gluten"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten","dairy"], Friday:["fish","gluten","dairy"] }
 };
-const ALLERGEN_ICONS = { gluten: "🌾", dairy: "🧀", fish: "🐟", nuts: "🥜" };
+const ALLERGEN_ICONS = { gluten:"🌾", dairy:"🧀", fish:"🐟", nuts:"🥜" };
+
+/* weekMap repeats weeks across term (as previously) */
 const weekMap = [
-    { week: 1, start: "2025-09-01" }, { week: 2, start: "2025-09-08" }, { week: 3, start: "2025-09-15" },
-    { week: 1, start: "2025-09-22" }, { week: 2, start: "2025-09-29" }, { week: 3, start: "2025-10-06" },
-    { week: 1, start: "2025-10-13" }, { week: 2, start: "2025-10-20" }, { week: 3, start: "2025-11-03" },
-    { week: 1, start: "2025-11-10" }, { week: 2, start: "2025-11-17" }, { week: 3, start: "2025-11-24" },
-    { week: 1, start: "2025-12-01" }, { week: 2, start: "2025-12-08" }, { week: 3, start: "2025-12-15" }
+  { week: 1, start: "2025-09-01" }, { week: 2, start: "2025-09-08" }, { week: 3, start: "2025-09-15" },
+  { week: 1, start: "2025-09-22" }, { week: 2, start: "2025-09-29" }, { week: 3, start: "2025-10-06" },
+  { week: 1, start: "2025-10-13" }, { week: 2, start: "2025-10-20" }, { week: 3, start: "2025-11-03" },
+  { week: 1, start: "2025-11-10" }, { week: 2, start: "2025-11-17" }, { week: 3, start: "2025-11-24" },
+  { week: 1, start: "2025-12-01" }, { week: 2, start: "2025-12-08" }, { week: 3, start: "2025-12-15" }
 ];
-let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
+
+/* State (persisted) */
+let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}'); // structure: { childName: { weekNumber: { DayName: true } } }
 let children = JSON.parse(localStorage.getItem('children') || '[]');
+if (!Array.isArray(children) || children.length === 0) children = ['Child 1'];
 let currentWeekIndex = 0;
+
+/* DOM refs */
 const menuContainer = document.getElementById('menu');
 const weekTitleEl = document.getElementById('weekTitle');
 const packedCountEl = document.getElementById('packedCount');
@@ -588,320 +291,292 @@ const addChildBtn = document.getElementById('addChildBtn');
 const childInput = document.getElementById('childInput');
 const childrenList = document.getElementById('childrenList');
 const progressFill = document.getElementById('progressFill');
-if (localStorage.getItem('darkMode') !== 'false') document.body.classList.add('dark-mode');
-if (children.length === 0) children = ['Child 1'];
-function getInitialWeekIndex() {
-    try {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const todayTimestamp = today.getTime();
-        const isSunday = today.getDay() === 0;
-        if (!weekMap || !Array.isArray(weekMap) || weekMap.length === 0) return 0;
-        for (let i = weekMap.length - 1; i >= 0; i--) {
-            const weekStart = new Date(weekMap[i].start);
-            if (isNaN(weekStart.getTime())) continue;
-            weekStart.setHours(0, 0, 0, 0);
-            if (todayTimestamp >= weekStart.getTime()) {
-                return isSunday && i < weekMap.length - 1 ? i + 1 : i;
-            }
-        }
-        return 0;
-    } catch (e) {
-        return 0;
+
+/* Helpers */
+function parseDateYMD(s){ const d=new Date(s); d.setHours(0,0,0,0); return d; }
+function getInitialWeekIndex(){
+  try{
+    const today = new Date(); today.setHours(0,0,0,0);
+    const isSunday = today.getDay() === 0;
+    for(let i=weekMap.length-1;i>=0;i--){
+      const start = parseDateYMD(weekMap[i].start);
+      if (isNaN(start)) continue;
+      if (today.getTime() >= start.getTime()){
+        return (isSunday && i < weekMap.length - 1) ? i+1 : i;
+      }
     }
+    return 0;
+  }catch(e){ return 0;}
 }
-function renderMenu() {
-    try {
-        if (!menuContainer) throw new Error('Menu container missing');
-        menuContainer.classList.add('fade');
-        setTimeout(() => {
-            menuContainer.innerHTML = '';
-            renderMenuContent(menuContainer);
-            menuContainer.classList.remove('fade');
-            updateNavButtons();
-            redrawCurrentWeekBtn();
-        }, 300);
-    } catch (e) {
-        if (menuContainer) menuContainer.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu.</div></div>';
-        menuContainer.classList.remove('fade');
+
+/* SVG first-render fix */
+function svgReflowFix(){
+  // hide then show quickly to force layout/stable rendering on iOS
+  document.querySelectorAll('.nav-btn svg').forEach(svg=>{
+    svg.style.visibility='hidden';
+    requestAnimationFrame(()=>{ svg.style.visibility='visible'; });
+  });
+}
+
+/* Render functions */
+function renderMenu(){
+  try{
+    if(!menuContainer) return;
+    menuContainer.classList.add('fade');
+    setTimeout(()=>{
+      menuContainer.innerHTML='';
+      renderMenuContent();
+      menuContainer.classList.remove('fade');
+      updateNavButtons();
+      redrawCurrentWeekBtn();
+    },270);
+  }catch(e){
+    menuContainer.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu.</div></div>';
+    menuContainer.classList.remove('fade');
+  }
+}
+
+function renderMenuContent(){
+  const weekInfo = weekMap[currentWeekIndex];
+  if(!weekInfo || !MENUS[weekInfo.week]){
+    // fallback to first valid
+    currentWeekIndex = 0;
+  }
+  const activeWeekInfo = weekMap[currentWeekIndex];
+  const weekStart = parseDateYMD(activeWeekInfo.start);
+  // header / progress
+  weekTitleEl.textContent = `Week ${activeWeekInfo.week}`;
+  document.getElementById('weekInfo').textContent = `Week commencing ${weekStart.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}`;
+  progressFill.style.width = `${((currentWeekIndex+1)/weekMap.length)*100}%`;
+
+  const weekdays = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  weekdays.forEach((day, idx)=>{
+    const card = document.createElement('article');
+    card.className = 'card';
+    // Determine if any child has a packed lunch for this day/week => show packed style
+    const packedPresent = children.some(child => packedLunch[child]?.[activeWeekInfo.week]?.[day]);
+    if(packedPresent) card.classList.add('packed');
+
+    // day date
+    const dayDate = new Date(weekStart); dayDate.setDate(weekStart.getDate() + idx); dayDate.setHours(0,0,0,0);
+
+    // labels
+    if(dayDate.getTime() === today.getTime()){
+      const lbl = document.createElement('span'); lbl.className='dayLabel today'; lbl.textContent='Today';
+      card.appendChild(lbl);
+    } else if(dayDate.getTime() === today.getTime() + 86400000){
+      const lbl = document.createElement('span'); lbl.className='dayLabel tomorrow'; lbl.textContent='Tomorrow';
+      card.appendChild(lbl);
+    } else if(dayDate.getTime() < today.getTime()){
+      const lbl = document.createElement('span'); lbl.className='dayLabel past'; lbl.textContent='Past';
+      card.appendChild(lbl);
     }
-}
-function redrawCurrentWeekBtn() {
-    requestAnimationFrame(() => {
-        currentWeekBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>`;
-        requestAnimationFrame(() => {
-            currentWeekBtn.style.opacity = '1';
-        });
-    });
-}
-function renderMenuContent(container) {
-    try {
-        const weekInfo = weekMap[currentWeekIndex];
-        if (!weekInfo || !MENUS[weekInfo.week]) {
-            currentWeekIndex = 0;
-            renderMenuContent(container);
-            return;
-        }
-        container.innerHTML = '';
-        const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const weekStartDate = new Date(weekInfo.start);
-        if (isNaN(weekStartDate.getTime())) {
-            container.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Invalid date.</div></div>';
-            return;
-        }
-        weekStartDate.setHours(0, 0, 0, 0);
-        weekTitleEl.textContent = `Week ${weekInfo.week}`;
-        document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
-        progressFill.style.width = `${((currentWeekIndex + 1) / weekMap.length) * 100}%`;
-        weekdays.forEach((day, index) => {
-            const card = document.createElement("div");
-            card.classList.add("card");
-            const hasPacked = children.some(child => packedLunch[child]?.[weekInfo.week]?.[day]);
-            if (hasPacked) card.classList.add("packed");
-            const dayDate = new Date(weekStartDate);
-            dayDate.setDate(weekStartDate.getDate() + index);
-            dayDate.setHours(0, 0, 0, 0);
-            const label = document.createElement("span");
-            if (dayDate.getTime() === today.getTime()) {
-                label.textContent = "Today ☀️";
-                label.className = "dayLabel today";
-                card.appendChild(label);
-            } else if (dayDate.getTime() === today.getTime() + 86400000) {
-                label.textContent = "Tomorrow 🌅";
-                label.className = "dayLabel tomorrow";
-                card.appendChild(label);
-            } else if (dayDate.getTime() < today.getTime()) {
-                label.textContent = "Past";
-                label.className = "dayLabel past";
-                card.appendChild(label);
-            }
-            const title = document.createElement("div");
-            title.className = "dayTitle";
-            title.textContent = day;
-            card.appendChild(title);
-            const menuText = document.createElement("div");
-            menuText.className = "menuText";
-            menuText.textContent = MENUS[weekInfo.week][day] || "Menu not available";
-            card.appendChild(menuText);
-            const allergens = document.createElement("div");
-            allergens.className = "allergens";
-            allergens.textContent = "Allergens: " + (ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None");
-            card.appendChild(allergens);
-            const toggleContainer = document.createElement("div");
-            toggleContainer.className = "toggle-container";
-            children.forEach(child => {
-                const toggle = document.createElement("label");
-                toggle.className = "toggle";
-                const input = document.createElement("input");
-                input.type = "checkbox";
-                input.checked = !!packedLunch[child]?.[weekInfo.week]?.[day];
-                const slider = document.createElement("span");
-                slider.className = "slider";
-                const childLabel = document.createElement("label");
-                childLabel.textContent = child;
-                toggle.appendChild(input);
-                toggle.appendChild(slider);
-                toggle.appendChild(childLabel);
-                toggleContainer.appendChild(toggle);
-                input.addEventListener("change", (e) => {
-                    e.preventDefault();
-                    confirmToggleTitle.textContent = input.checked ? `Add Packed Lunch for ${child}` : `Remove Packed Lunch for ${child}`;
-                    confirmToggleMessage.textContent = input.checked ? `Add packed lunch for ${child} on ${day}?` : `Remove packed lunch for ${child} on ${day}?`;
-                    confirmToggle.style.display = "flex";
-                    setTimeout(() => confirmToggle.classList.add("show"), 10);
-                    confirmToggleConfirm.onclick = () => {
-                        if (!packedLunch[child]) packedLunch[child] = {};
-                        if (!packedLunch[child][weekInfo.week]) packedLunch[child][weekInfo.week] = {};
-                        if (input.checked) packedLunch[child][weekInfo.week][day] = true;
-                        else delete packedLunch[child][weekInfo.week][day];
-                        localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
-                        updatePackedCount();
-                        card.classList.toggle("packed", children.some(c => packedLunch[c]?.[weekInfo.week]?.[day]));
-                        confirmToggle.classList.remove("show");
-                        setTimeout(() => confirmToggle.style.display = "none", 300);
-                    };
-                    confirmToggleCancel.onclick = () => {
-                        input.checked = !input.checked;
-                        confirmToggle.classList.remove("show");
-                        setTimeout(() => confirmToggle.style.display = "none", 300);
-                    };
-                });
-            });
-            card.appendChild(toggleContainer);
-            card.addEventListener("click", (e) => {
-                if (e.target.closest(".toggle")) return;
-                modalTitle.textContent = `${day} - Week ${weekInfo.week}`;
-                modalDescription.textContent = `${MENU_DETAILS[weekInfo.week][day]?.description || "No description available"}\n\nAllergens: ${ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None"}`;
-                modal.style.display = "flex";
-                setTimeout(() => modal.classList.add("show"), 10);
-            });
-            container.appendChild(card);
-        });
-        updatePackedCount();
-    } catch (e) {
-        container.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load content.</div></div>';
-    }
-}
-function updatePackedCount() {
-    try {
-        const weekInfo = weekMap[currentWeekIndex];
-        if (!weekInfo) {
-            packedCountEl.textContent = "Packed Meals This Week";
-            return;
-        }
-        let text = "Packed Meals This Week";
-        if (children.length === 1) {
-            const count = Object.keys(packedLunch[children[0]]?.[weekInfo.week] || {}).length;
-            text = `Packed Meals This Week: ${count}`;
-        } else {
-            text = "Packed Meals This Week:\n";
-            children.forEach(child => {
-                const count = Object.keys(packedLunch[child]?.[weekInfo.week] || {}).length;
-                text += `${child}: ${count}\n`;
-            });
-        }
-        packedCountEl.textContent = text;
-    } catch (e) {
-        packedCountEl.textContent = "Packed Meals This Week";
-    }
-}
-function updateNavButtons() {
-    try {
-        prevWeekBtn.classList.toggle("disabled", currentWeekIndex === 0);
-        nextWeekBtn.classList.toggle("disabled", currentWeekIndex === weekMap.length - 1);
-    } catch (e) {}
-}
-function renderChildrenList() {
-    childrenList.innerHTML = '';
-    children.forEach(child => {
-        const div = document.createElement('div');
-        div.textContent = child;
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = 'Remove';
-        removeBtn.onclick = () => {
-            manageChildrenModal.classList.remove("show");
-            setTimeout(() => {
-                manageChildrenModal.style.display = "none";
-                confirmToggleTitle.textContent = `Remove ${child}`;
-                confirmToggleMessage.textContent = `Are you sure you want to remove ${child}?`;
-                confirmToggle.style.display = "flex";
-                setTimeout(() => confirmToggle.classList.add("show"), 10);
-                confirmToggleConfirm.onclick = () => {
-                    children = children.filter(c => c !== child);
-                    delete packedLunch[child];
-                    localStorage.setItem('children', JSON.stringify(children));
-                    localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
-                    if (children.length === 0) children = ['Child 1'];
-                    localStorage.setItem('children', JSON.stringify(children));
-                    renderChildrenList();
-                    renderMenu();
-                    confirmToggle.classList.remove("show");
-                    setTimeout(() => confirmToggle.style.display = "none", 300);
-                };
-                confirmToggleCancel.onclick = () => {
-                    confirmToggle.classList.remove("show");
-                    setTimeout(() => confirmToggle.style.display = "none", 300);
-                };
-            }, 300);
+
+    // title and menu
+    const title = document.createElement('div'); title.className='dayTitle'; title.textContent = day;
+    const menuText = document.createElement('div'); menuText.className='menuText'; menuText.textContent = MENUS[activeWeekInfo.week][day] || 'Menu not available';
+    const allergens = document.createElement('div'); allergens.className='allergens';
+    allergens.textContent = 'Allergens: ' + (ALLERGENS[activeWeekInfo.week][day]?.map(a=>ALLERGEN_ICONS[a]).join(' ') || 'None');
+
+    card.appendChild(title);
+    card.appendChild(menuText);
+    card.appendChild(allergens);
+
+    // toggles container (bottom-right)
+    const toggleContainer = document.createElement('div'); toggleContainer.className='toggle-container';
+    children.forEach(child=>{
+      const toggle = document.createElement('label'); toggle.className = 'toggle';
+      const input = document.createElement('input'); input.type='checkbox';
+      input.checked = !!packedLunch[child]?.[activeWeekInfo.week]?.[day];
+      const slider = document.createElement('span'); slider.className='slider';
+      const childLbl = document.createElement('label'); childLbl.textContent = child;
+      toggle.appendChild(input); toggle.appendChild(slider); toggle.appendChild(childLbl);
+      toggleContainer.appendChild(toggle);
+
+      // on change -> show confirm modal before commit
+      input.addEventListener('change',(e)=>{
+        e.preventDefault();
+        confirmToggleTitle.textContent = input.checked ? `Add packed lunch for ${child}` : `Remove packed lunch for ${child}`;
+        confirmToggleMessage.textContent = input.checked ? `Add packed lunch for ${child} on ${day}?` : `Remove packed lunch for ${child} on ${day}?`;
+        confirmToggle.style.display='flex';
+        setTimeout(()=> confirmToggle.classList.add('show'),10);
+
+        confirmToggleConfirm.onclick = () => {
+          if(!packedLunch[child]) packedLunch[child]={};
+          if(!packedLunch[child][activeWeekInfo.week]) packedLunch[child][activeWeekInfo.week]={};
+          if(input.checked) packedLunch[child][activeWeekInfo.week][day]=true;
+          else delete packedLunch[child][activeWeekInfo.week][day];
+          localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+          updatePackedCount();
+          card.classList.toggle('packed', children.some(c=> packedLunch[c]?.[activeWeekInfo.week]?.[day]));
+          confirmToggle.classList.remove('show');
+          setTimeout(()=> confirmToggle.style.display='none',300);
         };
-        div.appendChild(removeBtn);
-        childrenList.appendChild(div);
+
+        confirmToggleCancel.onclick = () => {
+          input.checked = !input.checked; // revert
+          confirmToggle.classList.remove('show');
+          setTimeout(()=> confirmToggle.style.display='none',300);
+        };
+      });
     });
+
+    card.appendChild(toggleContainer);
+
+    // clicking card opens modal, but not when clicking toggles
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.toggle') || e.target.closest('.slider') || e.target.closest('input')) return;
+      modalTitle.textContent = `${day} - Week ${activeWeekInfo.week}`;
+      const desc = MENU_DETAILS[activeWeekInfo.week][day]?.description || 'No description available';
+      const allergensList = ALLERGENS[activeWeekInfo.week][day]?.map(a=>ALLERGEN_ICONS[a]).join(' ') || 'None';
+      modalDescription.textContent = `${desc}\n\nAllergens: ${allergensList}`;
+      modal.style.display='flex';
+      setTimeout(()=> modal.classList.add('show'),10);
+    });
+
+    menuContainer.appendChild(card);
+  });
+
+  // update packed counts
+  updatePackedCount();
 }
-let startY = 0;
-let isPulling = false;
-document.addEventListener('touchstart', (e) => {
-    if (window.scrollY === 0) {
-        startY = e.touches[0].clientY;
-        isPulling = true;
-    }
-});
-document.addEventListener('touchmove', (e) => {
-    if (isPulling) {
-        const currentY = e.touches[0].clientY;
-        pullToRefresh.classList.toggle('visible', currentY - startY > 50);
-    }
-});
-document.addEventListener('touchend', () => {
-    if (isPulling && pullToRefresh.classList.contains('visible')) {
-        renderMenu();
-        pullToRefresh.classList.remove('visible');
-    }
-    isPulling = false;
-});
-prevWeekBtn.addEventListener('click', () => {
-    if (currentWeekIndex > 0) {
-        currentWeekIndex--;
-        renderMenu();
-    }
-});
-nextWeekBtn.addEventListener('click', () => {
-    if (currentWeekIndex < weekMap.length - 1) {
-        currentWeekIndex++;
-        renderMenu();
-    }
-});
-currentWeekBtn.addEventListener('click', () => {
-    const initialIndex = getInitialWeekIndex();
-    if (currentWeekIndex !== initialIndex) {
-        currentWeekIndex = initialIndex;
-        renderMenu();
-    }
-});
-darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-});
-modalClose.addEventListener('click', () => {
-    modal.classList.remove('show');
-    setTimeout(() => modal.style.display = "none", 300);
-});
-manageChildrenBtn.addEventListener('click', () => {
-    manageChildrenModal.style.display = "flex";
-    setTimeout(() => manageChildrenModal.classList.add("show"), 10);
-    renderChildrenList();
-});
-manageChildrenClose.addEventListener('click', () => {
-    manageChildrenModal.classList.remove("show");
-    setTimeout(() => manageChildrenModal.style.display = "none", 300);
-});
-addChildBtn.addEventListener('click', () => {
-    const name = childInput.value.trim();
-    if (name && !children.includes(name)) {
-        children.push(name);
-        localStorage.setItem('children', JSON.stringify(children));
-        childInput.value = '';
-        renderChildrenList();
-        renderMenu();
-    }
-});
-function requestNotificationPermission() {
-    try {
-        if ("Notification" in window && Notification.permission !== "denied") {
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") console.log("Notifications enabled");
-            });
-        }
-    } catch (e) {}
+
+/* update the top packed count display */
+function updatePackedCount(){
+  const weekInfo = weekMap[currentWeekIndex];
+  if(!weekInfo){ packedCountEl.textContent = 'Packed Meals This Week'; return; }
+  if(children.length === 1){
+    const child = children[0];
+    const count = Object.keys(packedLunch[child]?.[weekInfo.week] || {}).length;
+    packedCountEl.textContent = `Packed Meals This Week: ${count}`;
+  } else {
+    // multi-child display, show each on newline (as before)
+    let text = '';
+    children.forEach((child,idx)=>{
+      const count = Object.keys(packedLunch[child]?.[weekInfo.week] || {}).length;
+      text += `${child}: ${count}` + (idx < children.length-1 ? '\n' : '');
+    });
+    packedCountEl.textContent = `Packed Meals This Week\n${text}`;
+  }
 }
-document.addEventListener('DOMContentLoaded', () => {
-    try {
+
+/* navigation helpers */
+function updateNavButtons(){
+  prevWeekBtn.classList.toggle('disabled', currentWeekIndex === 0);
+  nextWeekBtn.classList.toggle('disabled', currentWeekIndex === weekMap.length - 1);
+}
+function redrawCurrentWeekBtn(){
+  // small pulsing effect on current-week button to indicate it's active; simple reflow
+  currentWeekBtn.style.opacity = '1';
+}
+
+/* children list management UI */
+function renderChildrenList(){
+  childrenList.innerHTML = '';
+  children.forEach(child=>{
+    const div = document.createElement('div');
+    div.style.display='flex';
+    div.style.justifyContent='space-between';
+    div.style.alignItems='center';
+    div.style.padding='8px 0';
+    div.textContent = child;
+    const remove = document.createElement('button'); remove.textContent='Remove'; remove.style.background='var(--accent-red)'; remove.style.color='#fff'; remove.style.border='0'; remove.style.padding='6px 8px'; remove.style.borderRadius='8px';
+    remove.onclick = ()=>{
+      // ask confirm
+      confirmToggleTitle.textContent = `Remove ${child}`;
+      confirmToggleMessage.textContent = `Remove ${child} and their selections?`;
+      confirmToggle.style.display='flex'; setTimeout(()=> confirmToggle.classList.add('show'),10);
+      confirmToggleConfirm.onclick = ()=>{
+        children = children.filter(c=>c!==child);
+        delete packedLunch[child];
+        if(children.length === 0) children = ['Child 1'];
         localStorage.setItem('children', JSON.stringify(children));
-        currentWeekIndex = getInitialWeekIndex();
-        requestNotificationPermission();
-        renderMenu();
-        redrawCurrentWeekBtn();
-    } catch (e) {
-        if (menuContainer) menuContainer.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu.</div></div>';
-    }
+        localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+        confirmToggle.classList.remove('show'); setTimeout(()=> confirmToggle.style.display='none',300);
+        renderChildrenList(); renderMenu();
+      };
+      confirmToggleCancel.onclick = ()=>{
+        confirmToggle.classList.remove('show'); setTimeout(()=> confirmToggle.style.display='none',300);
+      };
+    };
+    div.appendChild(remove);
+    childrenList.appendChild(div);
+  });
+}
+
+/* pull-to-refresh */
+let startY=0; let isPulling=false;
+document.addEventListener('touchstart', e=>{
+  if(window.scrollY === 0){ startY = e.touches[0].clientY; isPulling=true; }
 });
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-        redrawCurrentWeekBtn();
-        renderMenu();
-    }
+document.addEventListener('touchmove', e=>{
+  if(!isPulling) return;
+  const curr = e.touches[0].clientY;
+  document.getElementById('pullToRefresh').classList.toggle('visible', curr - startY > 50);
+});
+document.addEventListener('touchend', ()=>{
+  if(isPulling && document.getElementById('pullToRefresh').classList.contains('visible')){
+    renderMenu();
+    document.getElementById('pullToRefresh').classList.remove('visible');
+  }
+  isPulling=false;
+});
+
+/* nav events */
+prevWeekBtn.addEventListener('click', ()=>{ if(currentWeekIndex>0){ currentWeekIndex--; renderMenu(); }});
+nextWeekBtn.addEventListener('click', ()=>{ if(currentWeekIndex < weekMap.length - 1){ currentWeekIndex++; renderMenu(); }});
+currentWeekBtn.addEventListener('click', ()=>{
+  const idx = getInitialWeekIndex();
+  if(idx !== currentWeekIndex){ currentWeekIndex = idx; renderMenu(); }
+});
+
+/* dark mode toggle */
+darkModeToggle.addEventListener('click', ()=>{
+  document.body.classList.toggle('dark-mode');
+  localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+});
+
+/* modal / confirm handlers */
+modalClose.addEventListener('click', ()=>{ modal.classList.remove('show'); setTimeout(()=> modal.style.display='none',300); });
+confirmToggleCancel.addEventListener('click', ()=>{ confirmToggle.classList.remove('show'); setTimeout(()=> confirmToggle.style.display='none',300); });
+
+/* manage children UI */
+document.getElementById('manageChildrenBtn').addEventListener('click', ()=>{
+  manageChildrenModal.style.display='flex'; setTimeout(()=> manageChildrenModal.classList.add('show'),10);
+  renderChildrenList();
+});
+manageChildrenClose.addEventListener('click', ()=>{ manageChildrenModal.classList.remove('show'); setTimeout(()=> manageChildrenModal.style.display='none',300); });
+addChildBtn.addEventListener('click', ()=>{
+  const name = (childInput.value||'').trim();
+  if(!name) return;
+  if(!children.includes(name)) children.push(name);
+  localStorage.setItem('children', JSON.stringify(children));
+  childInput.value='';
+  renderChildrenList();
+  renderMenu();
+});
+
+/* initial run */
+document.addEventListener('DOMContentLoaded', ()=>{
+  svgReflowFix();
+  // restore storage
+  try{ children = JSON.parse(localStorage.getItem('children')||JSON.stringify(children)); }catch(e){}
+  try{ packedLunch = JSON.parse(localStorage.getItem('packedLunch')||'{}'); }catch(e){}
+  // initial week index
+  currentWeekIndex = getInitialWeekIndex();
+  updateNavButtons();
+  renderMenu();
+  redrawCurrentWeekBtn();
+});
+
+/* visibility change (reload / refresh) */
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState === 'visible'){
+    redrawCurrentWeekBtn();
+    renderMenu();
+  }
 });
 </script>
 </body>
