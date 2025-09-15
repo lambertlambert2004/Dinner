@@ -7,7 +7,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/lambertlambert2004/Dinner/refs/heads/main/icon-180.PNG">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#fefce8">
+<meta name="theme-color" content="#1a202c">
 <link rel="manifest" href="/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -305,7 +305,7 @@ body.dark-mode #pullToRefresh {
 #pullToRefresh.visible {
     opacity: 1;
 }
-#modal {
+#modal, #confirmToggle {
     position: fixed;
     top: 0;
     left: 0;
@@ -317,7 +317,7 @@ body.dark-mode #pullToRefresh {
     justify-content: center;
     z-index: 1000;
 }
-#modalContent {
+#modalContent, #confirmToggleContent {
     background: var(--bg-card-light);
     border-radius: var(--border-radius);
     padding: 20px;
@@ -328,23 +328,23 @@ body.dark-mode #pullToRefresh {
     transform: scale(0.7);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-#modal.show #modalContent {
+#modal.show #modalContent, #confirmToggle.show #confirmToggleContent {
     transform: scale(1);
 }
-#modal h2 {
+#modal h2, #confirmToggle h2 {
     margin: 0 0 12px;
     font-size: 1.2rem;
     font-weight: 600;
 }
-#modal p {
+#modal p, #confirmToggle p {
     margin: 0 0 12px;
     font-size: 0.95rem;
     color: #444444;
 }
-body.dark-mode #modal p {
+body.dark-mode #modal p, body.dark-mode #confirmToggle p {
     color: #cbd5e0;
 }
-#modal button {
+#modal button, #confirmToggle button {
     background: var(--accent-blue);
     color: #fff;
     border: none;
@@ -353,9 +353,14 @@ body.dark-mode #modal p {
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
+    margin: 0 5px;
 }
-#modal button:active {
+#modal button:active, #confirmToggle button:active {
     transform: scale(0.95);
+}
+#confirmToggle .button-group {
+    display: flex;
+    justify-content: space-between;
 }
 :focus {
     outline: 2px solid var(--accent-blue);
@@ -363,7 +368,7 @@ body.dark-mode #modal p {
 }
 </style>
 </head>
-<body>
+<body class="dark-mode">
 <div id="pullToRefresh">Pull to refresh...</div>
 <header>
   <h1>School Dinner Menu</h1>
@@ -389,6 +394,16 @@ body.dark-mode #modal p {
         <h2 id="modalTitle"></h2>
         <p id="modalDescription"></p>
         <button id="modalClose">Close</button>
+    </div>
+</div>
+<div id="confirmToggle">
+    <div id="confirmToggleContent">
+        <h2 id="confirmToggleTitle"></h2>
+        <p id="confirmToggleMessage"></p>
+        <div class="button-group">
+            <button id="confirmToggleCancel">Cancel</button>
+            <button id="confirmToggleConfirm">Confirm</button>
+        </div>
     </div>
 </div>
 <div id="darkModeToggle" aria-label="Toggle Dark Mode">
@@ -443,25 +458,25 @@ const MENU_DETAILS = {
 };
 const ALLERGENS = {
     1: {
-        Monday: ["gluten", "dairy"], // Sausages, biscuit
-        Tuesday: ["gluten", "dairy"], // Wrap, pizza, yoghurt
-        Wednesday: ["gluten", "dairy"], // Jacket, chicken, pancake
-        Thursday: ["gluten", "dairy"], // Cottage pie, pasta, crispy bar
-        Friday: ["fish", "gluten", "dairy"] // Fish, wrap, jam split
+        Monday: ["gluten", "dairy"],
+        Tuesday: ["gluten", "dairy"],
+        Wednesday: ["gluten", "dairy"],
+        Thursday: ["gluten", "dairy"],
+        Friday: ["fish", "gluten", "dairy"]
     },
     2: {
-        Monday: ["gluten", "dairy"], // Chicken, cheese bake, yoghurt
-        Tuesday: ["gluten", "dairy"], // Pasta, omelette
-        Wednesday: ["gluten", "dairy"], // Curry, pizza, muffin
-        Thursday: ["gluten"], // Roast chicken, pasta
-        Friday: ["fish", "gluten", "dairy"] // Fish fingers, wrap, Welsh cake
+        Monday: ["gluten", "dairy"],
+        Tuesday: ["gluten", "dairy"],
+        Wednesday: ["gluten", "dairy"],
+        Thursday: ["gluten"],
+        Friday: ["fish", "gluten", "dairy"]
     },
     3: {
-        Monday: ["gluten"], // Meatballs, pasta
-        Tuesday: ["gluten", "dairy"], // Curry, pizza, yoghurt
-        Wednesday: ["gluten", "dairy"], // Calzone, chicken
-        Thursday: ["gluten", "dairy"], // Turkey, macaroni
-        Friday: ["fish", "gluten", "dairy"] // Fish, wrap, muffin
+        Monday: ["gluten"],
+        Tuesday: ["gluten", "dairy"],
+        Wednesday: ["gluten", "dairy"],
+        Thursday: ["gluten", "dairy"],
+        Friday: ["fish", "gluten", "dairy"]
     }
 };
 const ALLERGEN_ICONS = { gluten: "🌾", dairy: "🧀", fish: "🐟", nuts: "🥜" };
@@ -486,42 +501,35 @@ const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modalTitle');
 const modalDescription = document.getElementById('modalDescription');
 const modalClose = document.getElementById('modalClose');
+const confirmToggle = document.getElementById('confirmToggle');
+const confirmToggleTitle = document.getElementById('confirmToggleTitle');
+const confirmToggleMessage = document.getElementById('confirmToggleMessage');
+const confirmToggleCancel = document.getElementById('confirmToggleCancel');
+const confirmToggleConfirm = document.getElementById('confirmToggleConfirm');
 const progressFill = document.getElementById('progressFill');
-if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
+if (localStorage.getItem('darkMode') !== 'false') document.body.classList.add('dark-mode');
 function getInitialWeekIndex() {
     try {
-        console.log('Calculating week index...');
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const todayTimestamp = today.getTime();
         const isSunday = today.getDay() === 0;
-        if (!weekMap || !Array.isArray(weekMap) || weekMap.length === 0) {
-            console.warn('Invalid weekMap, defaulting to 0');
-            return 0;
-        }
+        if (!weekMap || !Array.isArray(weekMap) || weekMap.length === 0) return 0;
         for (let i = weekMap.length - 1; i >= 0; i--) {
             const weekStart = new Date(weekMap[i].start);
-            if (isNaN(weekStart.getTime())) {
-                console.warn(`Invalid date at weekMap[${i}]: ${weekMap[i].start}`);
-                continue;
-            }
+            if (isNaN(weekStart.getTime())) continue;
             weekStart.setHours(0, 0, 0, 0);
             if (todayTimestamp >= weekStart.getTime()) {
-                const index = isSunday && i < weekMap.length - 1 ? i + 1 : i;
-                console.log('Week index:', index, 'Week:', weekMap[index]);
-                return index;
+                return isSunday && i < weekMap.length - 1 ? i + 1 : i;
             }
         }
-        console.warn('No week found, defaulting to 0');
         return 0;
     } catch (e) {
-        console.error('Error in getInitialWeekIndex:', e);
         return 0;
     }
 }
 function renderMenu() {
     try {
-        console.log('Rendering menu, index:', currentWeekIndex);
         if (!menuContainer) throw new Error('Menu container missing');
         menuContainer.classList.add('fade');
         setTimeout(() => {
@@ -531,17 +539,14 @@ function renderMenu() {
             updateNavButtons();
         }, 300);
     } catch (e) {
-        console.error('Render error:', e);
         if (menuContainer) menuContainer.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu.</div></div>';
         menuContainer.classList.remove('fade');
     }
 }
 function renderMenuContent(container) {
     try {
-        console.log('Rendering content for index:', currentWeekIndex);
         const weekInfo = weekMap[currentWeekIndex];
         if (!weekInfo || !MENUS[weekInfo.week]) {
-            console.warn('Invalid week or menu, using Week 1');
             currentWeekIndex = 0;
             renderMenuContent(container);
             return;
@@ -552,7 +557,6 @@ function renderMenuContent(container) {
         today.setHours(0, 0, 0, 0);
         const weekStartDate = new Date(weekInfo.start);
         if (isNaN(weekStartDate.getTime())) {
-            console.error('Invalid week start:', weekInfo.start);
             container.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Invalid date.</div></div>';
             return;
         }
@@ -603,17 +607,27 @@ function renderMenuContent(container) {
             toggle.appendChild(input);
             toggle.appendChild(slider);
             card.appendChild(toggle);
-            input.addEventListener("change", () => {
-                try {
+            input.addEventListener("change", (e) => {
+                e.preventDefault();
+                confirmToggleTitle.textContent = input.checked ? `Add Packed Lunch` : `Remove Packed Lunch`;
+                confirmToggleMessage.textContent = input.checked ? `Add packed lunch for ${day}?` : `Remove packed lunch for ${day}?`;
+                confirmToggle.style.display = "flex";
+                setTimeout(() => confirmToggle.classList.add("show"), 10);
+                confirmToggleConfirm.onclick = () => {
                     if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
                     if (input.checked) packedLunch[weekInfo.week][day] = true;
                     else delete packedLunch[weekInfo.week][day];
                     localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
                     updatePackedCount();
                     card.classList.toggle("packed", input.checked);
-                } catch (e) {
-                    console.error('Toggle error:', e);
-                }
+                    confirmToggle.classList.remove("show");
+                    setTimeout(() => confirmToggle.style.display = "none", 300);
+                };
+                confirmToggleCancel.onclick = () => {
+                    input.checked = !input.checked;
+                    confirmToggle.classList.remove("show");
+                    setTimeout(() => confirmToggle.style.display = "none", 300);
+                };
             });
             card.addEventListener("click", (e) => {
                 if (e.target.closest(".toggle")) return;
@@ -625,9 +639,7 @@ function renderMenuContent(container) {
             container.appendChild(card);
         });
         updatePackedCount();
-        console.log('Content rendered');
     } catch (e) {
-        console.error('Content render error:', e);
         container.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load content.</div></div>';
     }
 }
@@ -635,9 +647,7 @@ function updatePackedCount() {
     try {
         const weekInfo = weekMap[currentWeekIndex];
         packedCountEl.textContent = weekInfo ? Object.keys(packedLunch[weekInfo.week] || {}).length : '0';
-        console.log('Packed count:', packedCountEl.textContent);
     } catch (e) {
-        console.error('Packed count error:', e);
         packedCountEl.textContent = '0';
     }
 }
@@ -645,10 +655,7 @@ function updateNavButtons() {
     try {
         prevWeekBtn.classList.toggle("disabled", currentWeekIndex === 0);
         nextWeekBtn.classList.toggle("disabled", currentWeekIndex === weekMap.length - 1);
-        console.log('Nav updated. Prev:', currentWeekIndex === 0, 'Next:', currentWeekIndex === weekMap.length - 1);
-    } catch (e) {
-        console.error('Nav update error:', e);
-    }
+    } catch (e) {}
 }
 let startY = 0;
 let isPulling = false;
@@ -666,7 +673,6 @@ document.addEventListener('touchmove', (e) => {
 });
 document.addEventListener('touchend', () => {
     if (isPulling && pullToRefresh.classList.contains('visible')) {
-        console.log('Pull-to-refresh');
         renderMenu();
         pullToRefresh.classList.remove('visible');
     }
@@ -692,13 +698,8 @@ currentWeekBtn.addEventListener('click', () => {
     }
 });
 darkModeToggle.addEventListener('click', () => {
-    try {
-        document.body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-        console.log('Dark mode:', document.body.classList.contains('dark-mode'));
-    } catch (e) {
-        console.error('Dark mode error:', e);
-    }
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 });
 modalClose.addEventListener('click', () => {
     modal.classList.remove('show');
@@ -711,25 +712,18 @@ function requestNotificationPermission() {
                 if (permission === "granted") console.log("Notifications enabled");
             });
         }
-    } catch (e) {
-        console.error('Notification error:', e);
-    }
+    } catch (e) {}
 }
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        console.log('Initial render');
         currentWeekIndex = getInitialWeekIndex();
         requestNotificationPermission();
         renderMenu();
         requestAnimationFrame(() => {
             currentWeekBtn.style.opacity = '0';
-            requestAnimationFrame(() => {
-                currentWeekBtn.style.opacity = '1';
-                console.log('Render complete');
-            });
+            requestAnimationFrame(() => currentWeekBtn.style.opacity = '1');
         });
     } catch (e) {
-        console.error('Initial render error:', e);
         if (menuContainer) menuContainer.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu.</div></div>';
     }
 });
