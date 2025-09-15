@@ -27,7 +27,6 @@
     --font-family: -apple-system, 'SF Pro Display', 'Poppins', sans-serif;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 body.dark-mode {
     --bg-light: #1a202c;
     --bg-card-light: #2d3748;
@@ -35,7 +34,6 @@ body.dark-mode {
     --packed-light: #4a422a;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
-
 body {
     margin: 0;
     padding: 0 16px 16px;
@@ -48,7 +46,6 @@ body {
     background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.02) 1px, transparent 0);
     background-size: 20px 20px;
 }
-
 header {
     text-align: center;
     padding: 16px 0;
@@ -58,95 +55,42 @@ header {
     z-index: 20;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
-
 body:not(.dark-mode) header {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
-
 h1 {
     margin: 0;
     font-size: 1.5rem;
     font-weight: 600;
 }
-
 .sub-header {
     font-size: 0.9rem;
     color: #666666;
     margin: 4px 0;
 }
-
 body.dark-mode .sub-header {
     color: #a0aec0;
 }
-
 #weekInfo {
     font-size: 0.85rem;
     color: #666666;
 }
-
 body.dark-mode #weekInfo {
     color: #cbd5e0;
 }
-
-#menuWrapper {
-    position: relative;
-    overflow: hidden;
-    max-width: 800px;
-    margin: 16px auto 120px;
-    height: auto;
-}
-
-#menu, #menu-new {
+#menu {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    will-change: transform;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+    max-width: 800px;
+    margin: 16px auto 120px;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-#menu-new {
-    opacity: 0;
-    pointer-events: none;
-}
-
-#menu.slide-left {
-    transform: translateX(-100%);
+#menu.fade {
     opacity: 0;
 }
-
-#menu.slide-right {
-    transform: translateX(100%);
-    opacity: 0;
-}
-
-#menu-new.slide-in-right {
-    transform: translateX(100%);
-    opacity: 0;
-}
-
-#menu-new.slide-in-right.active {
-    transform: translateX(0);
-    opacity: 1;
-    pointer-events: auto;
-}
-
-#menu-new.slide-in-left {
-    transform: translateX(-100%);
-    opacity: 0;
-}
-
-#menu-new.slide-in-left.active {
-    transform: translateX(0);
-    opacity: 1;
-    pointer-events: auto;
-}
-
 .card {
     position: relative;
     border-radius: var(--border-radius);
@@ -156,57 +100,47 @@ body.dark-mode #weekInfo {
     transition: var(--transition);
     cursor: pointer;
 }
-
 body:not(.dark-mode) .card {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
-
 .card:hover, .card:active {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
-
 .card.packed {
     background: var(--packed-light);
     border: 2px solid #f59e0b;
     box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.3);
     animation: pulse 2s infinite;
 }
-
 @keyframes pulse {
     0%, 100% { box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.3); }
     50% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1); }
 }
-
 .dayTitle {
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0 0 8px 0;
 }
-
 .menuText {
     white-space: pre-line;
     line-height: 1.5;
     font-size: 0.95rem;
     color: #444444;
 }
-
 body.dark-mode .menuText {
     color: #cbd5e0;
 }
-
 .allergens {
     margin-top: 8px;
     font-size: 0.8rem;
     color: #666666;
 }
-
 body.dark-mode .allergens {
     color: #a0aec0;
 }
-
 .dayLabel {
     position: absolute;
     top: 12px;
@@ -218,23 +152,19 @@ body.dark-mode .allergens {
     border-radius: 12px;
     z-index: 3;
 }
-
 .dayLabel.today { background: var(--accent-blue); animation: glowBlue 2.6s infinite alternate; }
 .dayLabel.tomorrow { background: var(--accent-orange); animation: glowOrange 2.8s infinite alternate; }
 .dayLabel.past { background: #8e8e93; }
-
 @keyframes glowBlue {
     0% { box-shadow: 0 0 4px rgba(29, 78, 216, 0.5); }
     50% { box-shadow: 0 0 12px rgba(29, 78, 216, 0.8); }
     100% { box-shadow: 0 0 6px rgba(29, 78, 216, 0.6); }
 }
-
 @keyframes glowOrange {
     0% { box-shadow: 0 0 4px rgba(255, 149, 0, 0.5); }
     50% { box-shadow: 0 0 12px rgba(255, 149, 0, 0.8); }
     100% { box-shadow: 0 0 6px rgba(255, 149, 0, 0.6); }
 }
-
 .toggle {
     position: absolute;
     right: 12px;
@@ -242,13 +172,11 @@ body.dark-mode .allergens {
     width: 51px;
     height: 31px;
 }
-
 .toggle input {
     opacity: 0;
     width: 0;
     height: 0;
 }
-
 .toggle .slider {
     position: relative;
     width: 100%;
@@ -258,11 +186,9 @@ body.dark-mode .allergens {
     cursor: pointer;
     transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 body.dark-mode .toggle .slider {
     background-color: #4b5563;
 }
-
 .toggle .slider::before {
     content: '';
     position: absolute;
@@ -275,21 +201,17 @@ body.dark-mode .toggle .slider {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .toggle input:checked + .slider {
     background-color: var(--accent-green);
     box-shadow: 0 0 6px rgba(52, 199, 89, 0.4);
 }
-
 .toggle input:checked + .slider::before {
     transform: translateX(20px);
     box-shadow: 0 1px 4px rgba(52, 199, 89, 0.3);
 }
-
 .toggle:active .slider::before {
     transform: scale(0.95);
 }
-
 #weekNav {
     display: flex;
     justify-content: space-between;
@@ -304,13 +226,11 @@ body.dark-mode .toggle .slider {
     top: 60px;
     z-index: 10;
 }
-
 body:not(.dark-mode) #weekNav {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
-
 .progress-bar {
     height: 4px;
     background: #e5e7eb;
@@ -318,14 +238,12 @@ body:not(.dark-mode) #weekNav {
     margin: 8px auto;
     max-width: 600px;
 }
-
 .progress-fill {
     height: 100%;
     background: var(--accent-blue);
     border-radius: 2px;
     transition: width 0.5s ease-in-out;
 }
-
 .nav-btn {
     padding: 8px 12px;
     border: none;
@@ -338,29 +256,23 @@ body:not(.dark-mode) #weekNav {
     transition: var(--transition);
     min-width: 44px;
     min-height: 44px;
-    will-change: transform;
 }
-
 .nav-btn.disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
-
 .nav-btn:active:not(.disabled) {
     transform: scale(0.95);
 }
-
 .nav-btn svg {
     width: 20px;
     height: 20px;
     vertical-align: middle;
 }
-
 #weekTitle {
     font-weight: 600;
     font-size: 1rem;
 }
-
 #darkModeToggle {
     position: fixed;
     bottom: 20px;
@@ -376,7 +288,6 @@ body:not(.dark-mode) #weekNav {
     cursor: pointer;
     transition: var(--transition);
 }
-
 #pullToRefresh {
     position: absolute;
     top: -50px;
@@ -388,15 +299,12 @@ body:not(.dark-mode) #weekNav {
     opacity: 0;
     transition: opacity 0.3s;
 }
-
 body.dark-mode #pullToRefresh {
     color: #a0aec0;
 }
-
 #pullToRefresh.visible {
     opacity: 1;
 }
-
 #modal {
     position: fixed;
     top: 0;
@@ -409,7 +317,6 @@ body.dark-mode #pullToRefresh {
     justify-content: center;
     z-index: 1000;
 }
-
 #modalContent {
     background: var(--bg-card-light);
     border-radius: var(--border-radius);
@@ -421,27 +328,22 @@ body.dark-mode #pullToRefresh {
     transform: scale(0.7);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 #modal.show #modalContent {
     transform: scale(1);
 }
-
 #modal h2 {
     margin: 0 0 12px;
     font-size: 1.2rem;
     font-weight: 600;
 }
-
 #modal p {
     margin: 0 0 12px;
     font-size: 0.95rem;
     color: #444444;
 }
-
 body.dark-mode #modal p {
     color: #cbd5e0;
 }
-
 #modal button {
     background: var(--accent-blue);
     color: #fff;
@@ -452,11 +354,9 @@ body.dark-mode #modal p {
     cursor: pointer;
     transition: var(--transition);
 }
-
 #modal button:active {
     transform: scale(0.95);
 }
-
 :focus {
     outline: 2px solid var(--accent-blue);
     outline-offset: 2px;
@@ -464,15 +364,12 @@ body.dark-mode #modal p {
 </style>
 </head>
 <body>
-
 <div id="pullToRefresh">Pull to refresh...</div>
-
 <header>
   <h1>School Dinner Menu</h1>
   <div class="sub-header">Packed Meals This Week: <span id="packedCount">0</span></div>
   <div id="weekInfo"></div>
 </header>
-
 <div id="weekNav">
     <button id="prevWeekBtn" class="nav-btn" aria-label="Previous Week">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
@@ -486,12 +383,7 @@ body.dark-mode #modal p {
     </button>
 </div>
 <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
-
-<div id="menuWrapper">
-    <main id="menu"></main>
-    <main id="menu-new" style="display: none;"></main>
-</div>
-
+<main id="menu"></main>
 <div id="modal">
     <div id="modalContent">
         <h2 id="modalTitle"></h2>
@@ -499,13 +391,10 @@ body.dark-mode #modal p {
         <button id="modalClose">Close</button>
     </div>
 </div>
-
 <div id="darkModeToggle" aria-label="Toggle Dark Mode">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a9.75 9.75 0 00-9.75 9.75 9.75 9.75 0 009.75 9.75c1.077 0 2.1-.194 3.05-.56a.75.75 0 00-.6-.69h0a.75.75 0 01-.85-.14 9.752 9.752 0 004.1-6.19c.12-.472-.345-.92-.85-.85a8.25 8.25 0 01-5.75 2.19c-3.15 0-5.727-2.585-5.727-5.757s2.577-5.757 5.727-5.757c1.838 0 3.52 1.054 4.58 2.687a.75.75 0 001.25-.664A9.752 9.752 0 0012 2.25z"/></svg>
 </div>
-
 <script>
-// --- Menu Data
 const MENUS = {
     1: {
         Monday: "Oven baked sausage 🌭 / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
@@ -529,7 +418,6 @@ const MENUS = {
         Friday: "Breaded chicken steak 🍗 / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
     }
 };
-
 const MENU_DETAILS = {
     1: {
         Monday: { description: "Sausage or vegetarian sausage with mashed potatoes and gravy. Includes fruit or a biscuit." },
@@ -553,67 +441,22 @@ const MENU_DETAILS = {
         Friday: { description: "Breaded chicken steak or veggie hotdog with fries. Includes fruit yoghurt or fresh fruit." }
     }
 };
-
 const ALLERGENS = {
-    1: {
-        Monday: ["gluten", "dairy"],
-        Tuesday: ["fish", "gluten", "dairy"],
-        Wednesday: ["gluten"],
-        Thursday: ["gluten", "dairy"],
-        Friday: ["gluten", "dairy"]
-    },
-    2: {
-        Monday: ["gluten", "dairy"],
-        Tuesday: ["fish", "gluten", "dairy"],
-        Wednesday: ["gluten"],
-        Thursday: ["gluten", "dairy"],
-        Friday: ["gluten", "dairy"]
-    },
-    3: {
-        Monday: ["gluten", "dairy"],
-        Tuesday: ["fish", "gluten", "dairy"],
-        Wednesday: ["gluten"],
-        Thursday: ["gluten", "dairy"],
-        Friday: ["gluten", "dairy"]
-    }
+    1: { Monday: ["gluten", "dairy"], Tuesday: ["fish", "gluten", "dairy"], Wednesday: ["gluten"], Thursday: ["gluten", "dairy"], Friday: ["gluten", "dairy"] },
+    2: { Monday: ["gluten", "dairy"], Tuesday: ["fish", "gluten", "dairy"], Wednesday: ["gluten"], Thursday: ["gluten", "dairy"], Friday: ["gluten", "dairy"] },
+    3: { Monday: ["gluten", "dairy"], Tuesday: ["fish", "gluten", "dairy"], Wednesday: ["gluten"], Thursday: ["gluten", "dairy"], Friday: ["gluten", "dairy"] }
 };
-
-const ALLERGEN_ICONS = {
-    gluten: "🌾",
-    dairy: "🧀",
-    fish: "🐟",
-    nuts: "🥜"
-};
-
+const ALLERGEN_ICONS = { gluten: "🌾", dairy: "🧀", fish: "🐟", nuts: "🥜" };
 const weekMap = [
-    { week: 1, start: "2025-09-01" },
-    { week: 2, start: "2025-09-08" },
-    { week: 3, start: "2025-09-15" },
-    { week: 1, start: "2025-09-22" },
-    { week: 2, start: "2025-09-29" },
-    { week: 3, start: "2025-10-06" },
-    { week: 1, start: "2025-10-13" },
-    { week: 2, start: "2025-10-20" },
-    { week: 3, start: "2025-11-03" },
-    { week: 1, start: "2025-11-10" },
-    { week: 2, start: "2025-11-17" },
-    { week: 3, start: "2025-11-24" },
-    { week: 1, start: "2025-12-01" },
-    { week: 2, start: "2025-12-08" },
-    { week: 3, start: "2025-12-15" }
+    { week: 1, start: "2025-09-01" }, { week: 2, start: "2025-09-08" }, { week: 3, start: "2025-09-15" },
+    { week: 1, start: "2025-09-22" }, { week: 2, start: "2025-09-29" }, { week: 3, start: "2025-10-06" },
+    { week: 1, start: "2025-10-13" }, { week: 2, start: "2025-10-20" }, { week: 3, start: "2025-11-03" },
+    { week: 1, start: "2025-11-10" }, { week: 2, start: "2025-11-17" }, { week: 3, start: "2025-11-24" },
+    { week: 1, start: "2025-12-01" }, { week: 2, start: "2025-12-08" }, { week: 3, start: "2025-12-15" }
 ];
-
-// --- State Management
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
-let currentWeekIndex = getInitialWeekIndex();
-let isAnimating = false;
-const isDarkMode = localStorage.getItem('darkMode') === 'true';
-if (isDarkMode) document.body.classList.add('dark-mode');
-
-// --- DOM Elements
-const menuWrapper = document.getElementById('menuWrapper');
+let currentWeekIndex = 0;
 const menuContainer = document.getElementById('menu');
-const menuNewContainer = document.getElementById('menu-new');
 const weekTitleEl = document.getElementById('weekTitle');
 const packedCountEl = document.getElementById('packedCount');
 const prevWeekBtn = document.getElementById('prevWeekBtn');
@@ -626,120 +469,86 @@ const modalTitle = document.getElementById('modalTitle');
 const modalDescription = document.getElementById('modalDescription');
 const modalClose = document.getElementById('modalClose');
 const progressFill = document.getElementById('progressFill');
-
-// --- Functions
+if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
 function getInitialWeekIndex() {
     try {
+        console.log('Calculating week index...');
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const todayTimestamp = today.getTime();
         const isSunday = today.getDay() === 0;
-
-        console.log('Calculating initial week index. Today:', today, 'Is Sunday:', isSunday);
-
+        if (!weekMap || !Array.isArray(weekMap) || weekMap.length === 0) {
+            console.warn('Invalid weekMap, defaulting to 0');
+            return 0;
+        }
         for (let i = weekMap.length - 1; i >= 0; i--) {
             const weekStart = new Date(weekMap[i].start);
+            if (isNaN(weekStart.getTime())) {
+                console.warn(`Invalid date at weekMap[${i}]: ${weekMap[i].start}`);
+                continue;
+            }
             weekStart.setHours(0, 0, 0, 0);
             if (todayTimestamp >= weekStart.getTime()) {
                 const index = isSunday && i < weekMap.length - 1 ? i + 1 : i;
-                console.log('Selected week index:', index, 'Week:', weekMap[index]);
+                console.log('Week index:', index, 'Week:', weekMap[index]);
                 return index;
             }
         }
-        console.warn('No valid week found, defaulting to 0');
+        console.warn('No week found, defaulting to 0');
         return 0;
-    } catch (error) {
-        console.error('Error in getInitialWeekIndex:', error);
+    } catch (e) {
+        console.error('Error in getInitialWeekIndex:', e);
         return 0;
     }
 }
-
-function renderMenu(direction = null) {
-    if (isAnimating) {
-        console.log('Animation in progress, skipping render');
-        return;
-    }
-    isAnimating = true;
-
+function renderMenu() {
     try {
-        console.log('Rendering menu. Direction:', direction, 'Week index:', currentWeekIndex);
-        menuNewContainer.innerHTML = '';
-        menuNewContainer.style.display = 'flex';
-        renderMenuContent(menuNewContainer);
-
-        if (direction) {
-            const isNext = direction === 'next';
-            console.log('Animating:', isNext ? 'Next (slide left)' : 'Previous (slide right)');
-            menuContainer.classList.add(isNext ? 'slide-left' : 'slide-right');
-            menuNewContainer.classList.add(isNext ? 'slide-in-right' : 'slide-in-left');
-
-            requestAnimationFrame(() => {
-                menuNewContainer.classList.add('active');
-            });
-
-            const onTransitionEnd = () => {
-                console.log('Transition ended, swapping containers');
-                menuContainer.classList.remove('slide-left', 'slide-right');
-                menuNewContainer.classList.remove('slide-in-right', 'slide-in-left', 'active');
-                menuContainer.innerHTML = menuNewContainer.innerHTML;
-                menuNewContainer.style.display = 'none';
-                menuNewContainer.innerHTML = '';
-                isAnimating = false;
-                menuContainer.removeEventListener('transitionend', onTransitionEnd);
-            };
-
-            menuContainer.addEventListener('transitionend', onTransitionEnd);
-        } else {
-            console.log('No direction, direct render to main container');
-            menuContainer.innerHTML = menuNewContainer.innerHTML;
-            menuNewContainer.style.display = 'none';
-            menuNewContainer.innerHTML = '';
-            isAnimating = false;
-        }
-
-        updateNavButtons();
-    } catch (error) {
-        console.error('Error rendering menu:', error);
-        menuContainer.innerHTML = `<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu. Please try again.</div></div>`;
-        isAnimating = false;
+        console.log('Rendering menu, index:', currentWeekIndex);
+        if (!menuContainer) throw new Error('Menu container missing');
+        menuContainer.classList.add('fade');
+        setTimeout(() => {
+            menuContainer.innerHTML = '';
+            renderMenuContent(menuContainer);
+            menuContainer.classList.remove('fade');
+            updateNavButtons();
+        }, 300);
+    } catch (e) {
+        console.error('Render error:', e);
+        if (menuContainer) menuContainer.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu.</div></div>';
+        menuContainer.classList.remove('fade');
     }
 }
-
 function renderMenuContent(container) {
     try {
+        console.log('Rendering content for index:', currentWeekIndex);
         const weekInfo = weekMap[currentWeekIndex];
-        console.log('Rendering content for week:', weekInfo);
-
         if (!weekInfo || !MENUS[weekInfo.week]) {
-            console.warn('Invalid week info or menu data, falling back to Week 1');
-            container.innerHTML = `<div class="card"><div class="dayTitle">No menu found</div><div class="menuText">Displaying Week 1 as fallback.</div></div>`;
-            currentWeekIndex = 0; // Fallback to Week 1
-            renderMenuContent(container); // Retry with Week 1
+            console.warn('Invalid week or menu, using Week 1');
+            currentWeekIndex = 0;
+            renderMenuContent(container);
             return;
         }
-
         container.innerHTML = '';
         const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-
         const weekStartDate = new Date(weekInfo.start);
+        if (isNaN(weekStartDate.getTime())) {
+            console.error('Invalid week start:', weekInfo.start);
+            container.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Invalid date.</div></div>';
+            return;
+        }
         weekStartDate.setHours(0, 0, 0, 0);
-
         weekTitleEl.textContent = `Week ${weekInfo.week}`;
         document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
-
         progressFill.style.width = `${((currentWeekIndex + 1) / weekMap.length) * 100}%`;
-
         weekdays.forEach((day, index) => {
             const card = document.createElement("div");
             card.classList.add("card");
             if (packedLunch[weekInfo.week]?.[day]) card.classList.add("packed");
-
             const dayDate = new Date(weekStartDate);
             dayDate.setDate(weekStartDate.getDate() + index);
             dayDate.setHours(0, 0, 0, 0);
-
             const label = document.createElement("span");
             if (dayDate.getTime() === today.getTime()) {
                 label.textContent = "Today ☀️";
@@ -754,22 +563,18 @@ function renderMenuContent(container) {
                 label.className = "dayLabel past";
                 card.appendChild(label);
             }
-
             const title = document.createElement("div");
             title.className = "dayTitle";
             title.textContent = day;
             card.appendChild(title);
-
             const menuText = document.createElement("div");
             menuText.className = "menuText";
             menuText.textContent = MENUS[weekInfo.week][day] || "Menu not available";
             card.appendChild(menuText);
-
             const allergens = document.createElement("div");
             allergens.className = "allergens";
             allergens.textContent = "Allergens: " + (ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None");
             card.appendChild(allergens);
-
             const toggle = document.createElement("label");
             toggle.className = "toggle";
             const input = document.createElement("input");
@@ -780,7 +585,6 @@ function renderMenuContent(container) {
             toggle.appendChild(input);
             toggle.appendChild(slider);
             card.appendChild(toggle);
-
             input.addEventListener("change", () => {
                 try {
                     if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
@@ -789,11 +593,10 @@ function renderMenuContent(container) {
                     localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
                     updatePackedCount();
                     card.classList.toggle("packed", input.checked);
-                } catch (error) {
-                    console.error('Error saving packed lunch:', error);
+                } catch (e) {
+                    console.error('Toggle error:', e);
                 }
             });
-
             card.addEventListener("click", (e) => {
                 if (e.target.closest(".toggle")) return;
                 modalTitle.textContent = `${day} - Week ${weekInfo.week}`;
@@ -801,137 +604,117 @@ function renderMenuContent(container) {
                 modal.style.display = "flex";
                 setTimeout(() => modal.classList.add("show"), 10);
             });
-
             container.appendChild(card);
         });
-
         updatePackedCount();
-    } catch (error) {
-        console.error('Error rendering menu content:', error);
-        container.innerHTML = `<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu content. Please try again.</div></div>`;
+        console.log('Content rendered');
+    } catch (e) {
+        console.error('Content render error:', e);
+        container.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load content.</div></div>';
     }
 }
-
 function updatePackedCount() {
     try {
         const weekInfo = weekMap[currentWeekIndex];
-        const count = Object.keys(packedLunch[weekInfo.week] || {}).length;
-        packedCountEl.textContent = count;
-        console.log('Packed count updated:', count);
-    } catch (error) {
-        console.error('Error updating packed count:', error);
+        packedCountEl.textContent = weekInfo ? Object.keys(packedLunch[weekInfo.week] || {}).length : '0';
+        console.log('Packed count:', packedCountEl.textContent);
+    } catch (e) {
+        console.error('Packed count error:', e);
         packedCountEl.textContent = '0';
     }
 }
-
 function updateNavButtons() {
     try {
         prevWeekBtn.classList.toggle("disabled", currentWeekIndex === 0);
         nextWeekBtn.classList.toggle("disabled", currentWeekIndex === weekMap.length - 1);
-        console.log('Nav buttons updated. Prev disabled:', currentWeekIndex === 0, 'Next disabled:', currentWeekIndex === weekMap.length - 1);
-    } catch (error) {
-        console.error('Error updating nav buttons:', error);
+        console.log('Nav updated. Prev:', currentWeekIndex === 0, 'Next:', currentWeekIndex === weekMap.length - 1);
+    } catch (e) {
+        console.error('Nav update error:', e);
     }
 }
-
-// --- Pull-to-Refresh Simulation
 let startY = 0;
 let isPulling = false;
-
 document.addEventListener('touchstart', (e) => {
     if (window.scrollY === 0) {
         startY = e.touches[0].clientY;
         isPulling = true;
     }
 });
-
 document.addEventListener('touchmove', (e) => {
     if (isPulling) {
         const currentY = e.touches[0].clientY;
-        if (currentY - startY > 50) {
-            pullToRefresh.classList.add('visible');
-        } else {
-            pullToRefresh.classList.remove('visible');
-        }
+        pullToRefresh.classList.toggle('visible', currentY - startY > 50);
     }
 });
-
 document.addEventListener('touchend', () => {
     if (isPulling && pullToRefresh.classList.contains('visible')) {
-        console.log('Pull-to-refresh triggered');
+        console.log('Pull-to-refresh');
         renderMenu();
         pullToRefresh.classList.remove('visible');
     }
     isPulling = false;
 });
-
-// --- Event Listeners
 prevWeekBtn.addEventListener('click', () => {
-    if (currentWeekIndex > 0 && !isAnimating) {
+    if (currentWeekIndex > 0) {
         currentWeekIndex--;
-        renderMenu('prev');
+        renderMenu();
     }
 });
-
 nextWeekBtn.addEventListener('click', () => {
-    if (currentWeekIndex < weekMap.length - 1 && !isAnimating) {
+    if (currentWeekIndex < weekMap.length - 1) {
         currentWeekIndex++;
-        renderMenu('next');
+        renderMenu();
     }
 });
-
 currentWeekBtn.addEventListener('click', () => {
-    if (isAnimating) return;
     const initialIndex = getInitialWeekIndex();
     if (currentWeekIndex !== initialIndex) {
-        const direction = currentWeekIndex > initialIndex ? 'prev' : 'next';
         currentWeekIndex = initialIndex;
-        renderMenu(direction);
+        renderMenu();
     }
 });
-
 darkModeToggle.addEventListener('click', () => {
     try {
         document.body.classList.toggle('dark-mode');
         localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-        console.log('Dark mode toggled:', document.body.classList.contains('dark-mode'));
-    } catch (error) {
-        console.error('Error toggling dark mode:', error);
+        console.log('Dark mode:', document.body.classList.contains('dark-mode'));
+    } catch (e) {
+        console.error('Dark mode error:', e);
     }
 });
-
 modalClose.addEventListener('click', () => {
     modal.classList.remove('show');
     setTimeout(() => modal.style.display = "none", 300);
 });
-
-// --- Notification Placeholder
 function requestNotificationPermission() {
-    if ("Notification" in window && Notification.permission !== "denied") {
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                console.log("Notifications enabled. Add logic to schedule packed lunch reminders.");
-            }
-        });
+    try {
+        if ("Notification" in window && Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") console.log("Notifications enabled");
+            });
+        }
+    } catch (e) {
+        console.error('Notification error:', e);
     }
 }
-
-// --- Initial Render
-try {
-    console.log('Starting initial render');
-    requestNotificationPermission();
-    requestAnimationFrame(() => {
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        console.log('Initial render');
+        currentWeekIndex = getInitialWeekIndex();
+        requestNotificationPermission();
         renderMenu();
-        currentWeekBtn.style.opacity = '0';
         requestAnimationFrame(() => {
-            currentWeekBtn.style.opacity = '1';
-            console.log('Initial render complete');
+            currentWeekBtn.style.opacity = '0';
+            requestAnimationFrame(() => {
+                currentWeekBtn.style.opacity = '1';
+                console.log('Render complete');
+            });
         });
-    });
-} catch (error) {
-    console.error('Initial render failed:', error);
-    menuContainer.innerHTML = `<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu. Please try again.</div></div>`;
-}
+    } catch (e) {
+        console.error('Initial render error:', e);
+        if (menuContainer) menuContainer.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu.</div></div>';
+    }
+});
 </script>
 </body>
 </html>
