@@ -45,6 +45,8 @@ body {
     transition: var(--transition);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.02) 1px, transparent 0);
+    background-size: 20px 20px;
 }
 
 header {
@@ -88,28 +90,23 @@ body.dark-mode #weekInfo {
     color: #cbd5e0;
 }
 
-#menuWrapper {
-    position: relative;
-    overflow: hidden;
-    max-width: 800px;
-    margin: 16px auto 120px;
-}
-
-#menu, #menu-old {
+#menu {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    position: absolute;
-    width: 100%;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 800px;
+    margin: 16px auto 120px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
 }
 
-#menu.slide-left, #menu-old.slide-left {
+#menu.slide-left {
     transform: translateX(-100%);
+    opacity: 0;
 }
 
-#menu.slide-right, #menu-old.slide-right {
+#menu.slide-right {
     transform: translateX(100%);
+    opacity: 0;
 }
 
 .card {
@@ -213,14 +210,14 @@ body.dark-mode .allergens {
     position: relative;
     width: 100%;
     height: 100%;
-    background: #d1d5db;
+    background: #d1d5db !important;
     border-radius: 15px;
     cursor: pointer;
     transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body.dark-mode .slider {
-    background: #4b5563;
+    background: #4b5563 !important;
 }
 
 .slider::before {
@@ -230,14 +227,14 @@ body.dark-mode .slider {
     top: 2px;
     width: 27px;
     height: 27px;
-    background: #fff;
+    background: #fff !important;
     border-radius: 50%;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .toggle input:checked + .slider { 
-    background: var(--accent-green); 
+    background: var(--accent-green) !important; 
     box-shadow: 0 0 4px rgba(52, 199, 89, 0.3);
 }
 .toggle input:checked + .slider::before { transform: translateX(20px); }
@@ -316,9 +313,10 @@ body:not(.dark-mode) #weekNav {
     font-size: 1rem;
 }
 
-#darkModeToggle, #shoppingListBtn, #statsBtn {
+#darkModeToggle {
     position: fixed;
     bottom: 20px;
+    right: 20px;
     width: 44px;
     height: 44px;
     background: var(--bg-card-light);
@@ -329,14 +327,6 @@ body:not(.dark-mode) #weekNav {
     justify-content: center;
     cursor: pointer;
     transition: var(--transition);
-}
-
-#shoppingListBtn {
-    right: 80px;
-}
-
-#statsBtn {
-    right: 140px;
 }
 
 #pullToRefresh {
@@ -359,7 +349,7 @@ body.dark-mode #pullToRefresh {
     opacity: 1;
 }
 
-#modal, #shoppingListModal, #statsModal {
+#modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -372,7 +362,7 @@ body.dark-mode #pullToRefresh {
     z-index: 1000;
 }
 
-#modalContent, #shoppingListContent, #statsContent {
+#modalContent {
     background: var(--bg-card-light);
     border-radius: var(--border-radius);
     padding: 20px;
@@ -384,27 +374,27 @@ body.dark-mode #pullToRefresh {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#modal.show #modalContent, #shoppingListModal.show #shoppingListContent, #statsModal.show #statsContent {
+#modal.show #modalContent {
     transform: scale(1);
 }
 
-#modal h2, #shoppingListModal h2, #statsModal h2 {
+#modal h2 {
     margin: 0 0 12px;
     font-size: 1.2rem;
     font-weight: 600;
 }
 
-#modal p, #shoppingListModal p, #statsModal p {
+#modal p {
     margin: 0 0 12px;
     font-size: 0.95rem;
     color: #444444;
 }
 
-body.dark-mode #modal p, body.dark-mode #shoppingListModal p, body.dark-mode #statsModal p {
+body.dark-mode #modal p {
     color: #cbd5e0;
 }
 
-#modal button, #shoppingListModal button, #statsModal button {
+#modal button {
     background: var(--accent-blue);
     color: #fff;
     border: none;
@@ -415,7 +405,7 @@ body.dark-mode #modal p, body.dark-mode #shoppingListModal p, body.dark-mode #st
     transition: var(--transition);
 }
 
-#modal button:active, #shoppingListModal button:active, #statsModal button:active {
+#modal button:active {
     transform: scale(0.95);
 }
 
@@ -449,9 +439,7 @@ body.dark-mode #modal p, body.dark-mode #shoppingListModal p, body.dark-mode #st
 </div>
 <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
 
-<div id="menuWrapper">
-    <main id="menu"></main>
-</div>
+<main id="menu"></main>
 
 <div id="modal">
     <div id="modalContent">
@@ -459,31 +447,6 @@ body.dark-mode #modal p, body.dark-mode #shoppingListModal p, body.dark-mode #st
         <p id="modalDescription"></p>
         <button id="modalClose">Close</button>
     </div>
-</div>
-
-<div id="shoppingListModal">
-    <div id="shoppingListContent">
-        <h2>Shopping List</h2>
-        <p id="shoppingListText"></p>
-        <button id="copyShoppingList">Copy to Clipboard</button>
-        <button id="shoppingListClose">Close</button>
-    </div>
-</div>
-
-<div id="statsModal">
-    <div id="statsContent">
-        <h2>My Stats</h2>
-        <p id="statsText"></p>
-        <button id="statsClose">Close</button>
-    </div>
-</div>
-
-<div id="statsBtn" aria-label="View Stats">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2V9h2v8zm3 0h-2v-4h2v4zm-6 0H9V7h2v10z"/></svg>
-</div>
-
-<div id="shoppingListBtn" aria-label="Generate Shopping List">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-8.31-5l4.59-4.59L12 7.83l-4.59 4.59L6 10.83l6-6 6 6-1.41 1.41L13 7.83v4.59c0 1.1-.9 2-2 2H9v2h2c2.21 0 4-1.79 4-4V7.83l-1.29 1.29L12 7.83l1.71-1.71L12 4.83l-4.29 4.29L9 10.83v2.17z"/></svg>
 </div>
 
 <div id="darkModeToggle" aria-label="Toggle Dark Mode">
@@ -592,7 +555,6 @@ const weekMap = [
 // --- State Management
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 let currentWeekIndex = getInitialWeekIndex();
-let streak = parseInt(localStorage.getItem('streak') || '0');
 const isDarkMode = localStorage.getItem('darkMode') === 'true';
 if (isDarkMode) document.body.classList.add('dark-mode');
 
@@ -604,20 +566,11 @@ const prevWeekBtn = document.getElementById('prevWeekBtn');
 const nextWeekBtn = document.getElementById('nextWeekBtn');
 const currentWeekBtn = document.getElementById('currentWeekBtn');
 const darkModeToggle = document.getElementById('darkModeToggle');
-const shoppingListBtn = document.getElementById('shoppingListBtn');
-const statsBtn = document.getElementById('statsBtn');
 const pullToRefresh = document.getElementById('pullToRefresh');
 const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modalTitle');
 const modalDescription = document.getElementById('modalDescription');
 const modalClose = document.getElementById('modalClose');
-const shoppingListModal = document.getElementById('shoppingListModal');
-const shoppingListText = document.getElementById('shoppingListText');
-const copyShoppingList = document.getElementById('copyShoppingList');
-const shoppingListClose = document.getElementById('shoppingListClose');
-const statsModal = document.getElementById('statsModal');
-const statsText = document.getElementById('statsText');
-const statsClose = document.getElementById('statsClose');
 const progressFill = document.getElementById('progressFill');
 
 // --- Functions
@@ -638,31 +591,22 @@ function getInitialWeekIndex() {
 }
 
 function renderMenu(direction = null) {
-    const wrapper = document.getElementById('menuWrapper');
-    const oldMenu = menuContainer.cloneNode(true);
-    oldMenu.id = 'menu-old';
-    oldMenu.style.position = 'absolute';
-    oldMenu.style.top = '0';
-    oldMenu.style.left = '0';
-    oldMenu.style.width = '100%';
-    wrapper.appendChild(oldMenu);
+    try {
+        if (direction === 'next') {
+            menuContainer.classList.add('slide-left');
+        } else if (direction === 'prev') {
+            menuContainer.classList.add('slide-right');
+        }
 
-    if (direction === 'next') {
-        oldMenu.classList.add('slide-left');
-        menuContainer.style.transform = 'translateX(100%)';
-        setTimeout(() => menuContainer.classList.add('slide-left'), 10);
-    } else if (direction === 'prev') {
-        oldMenu.classList.add('slide-right');
-        menuContainer.style.transform = 'translateX(-100%)';
-        setTimeout(() => menuContainer.classList.add('slide-right'), 10);
+        setTimeout(() => {
+            menuContainer.classList.remove('slide-left', 'slide-right');
+            menuContainer.style.opacity = '1';
+            renderMenuContent();
+        }, 400);
+    } catch (error) {
+        console.error('Error rendering menu:', error);
+        menuContainer.innerHTML = `<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu. Please try again.</div></div>`;
     }
-
-    setTimeout(() => {
-        oldMenu.remove();
-        menuContainer.style.transform = '';
-        menuContainer.classList.remove('slide-left', 'slide-right');
-        renderMenuContent();
-    }, 400);
 }
 
 function renderMenuContent() {
@@ -673,7 +617,7 @@ function renderMenuContent() {
 
     const weekInfo = weekMap[currentWeekIndex];
 
-    if (!weekInfo) {
+    if (!weekInfo || !MENUS[weekInfo.week]) {
         menuContainer.innerHTML = `<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>`;
         return;
     }
@@ -722,7 +666,7 @@ function renderMenuContent() {
 
         const allergens = document.createElement("div");
         allergens.className = "allergens";
-        allergens.textContent = "Allergens: " + (ALLERGENS[weekInfo.week][day].map(a => ALLERGEN_ICONS[a]).join(" "));
+        allergens.textContent = "Allergens: " + (ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None");
         card.appendChild(allergens);
 
         const toggle = document.createElement("label");
@@ -737,24 +681,22 @@ function renderMenuContent() {
         card.appendChild(toggle);
 
         input.addEventListener("change", () => {
-            if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
-            if (input.checked) {
-                packedLunch[weekInfo.week][day] = true;
-                streak++;
-            } else {
-                delete packedLunch[weekInfo.week][day];
-                streak = Math.max(0, streak - 1);
+            try {
+                if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
+                if (input.checked) packedLunch[weekInfo.week][day] = true;
+                else delete packedLunch[weekInfo.week][day];
+                localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+                updatePackedCount();
+                card.classList.toggle("packed", input.checked);
+            } catch (error) {
+                console.error('Error saving packed lunch:', error);
             }
-            localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
-            localStorage.setItem('streak', streak);
-            updatePackedCount();
-            card.classList.toggle("packed", input.checked);
         });
 
         card.addEventListener("click", (e) => {
             if (e.target.closest(".toggle")) return;
             modalTitle.textContent = `${day} - Week ${weekInfo.week}`;
-            modalDescription.textContent = `${MENU_DETAILS[weekInfo.week][day].description}\n\nAllergens: ${ALLERGENS[weekInfo.week][day].map(a => ALLERGEN_ICONS[a]).join(" ")}`;
+            modalDescription.textContent = `${MENU_DETAILS[weekInfo.week][day].description}\n\nAllergens: ${ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None"}`;
             modal.style.display = "flex";
             setTimeout(() => modal.classList.add("show"), 10);
         });
@@ -767,33 +709,23 @@ function renderMenuContent() {
 }
 
 function updatePackedCount() {
-    const weekInfo = weekMap[currentWeekIndex];
-    const count = Object.keys(packedLunch[weekInfo.week] || {}).length;
-    packedCountEl.textContent = count;
+    try {
+        const weekInfo = weekMap[currentWeekIndex];
+        const count = Object.keys(packedLunch[weekInfo.week] || {}).length;
+        packedCountEl.textContent = count;
+    } catch (error) {
+        console.error('Error updating packed count:', error);
+        packedCountEl.textContent = '0';
+    }
 }
 
 function updateNavButtons() {
-    prevWeekBtn.classList.toggle("disabled", currentWeekIndex === 0);
-    nextWeekBtn.classList.toggle("disabled", currentWeekIndex === weekMap.length - 1);
-}
-
-function generateShoppingList() {
-    const weekInfo = weekMap[currentWeekIndex];
-    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-    let list = `Shopping List for Week ${weekInfo.week} (${weekInfo.start}):\n`;
-    weekdays.forEach(day => {
-        if (!packedLunch[weekInfo.week]?.[day]) {
-            const meal = MENUS[weekInfo.week][day].split('\n')[0]; // Main dish only
-            list += `${day}: ${meal}\n`;
-        }
-    });
-    return list.trim() || "All days are packed lunches!";
-}
-
-function updateStats() {
-    const totalPacked = Object.values(packedLunch).reduce((sum, week) => sum + Object.keys(week).length, 0);
-    const badge = streak >= 5 ? "🏆 5-Day Planner" : streak >= 3 ? "🥈 3-Day Streak" : "🌟 Keep Going!";
-    statsText.textContent = `Current Streak: ${streak} day(s)\nTotal Packed Lunches: ${totalPacked}\nBadge: ${badge}`;
+    try {
+        prevWeekBtn.classList.toggle("disabled", currentWeekIndex === 0);
+        nextWeekBtn.classList.toggle("disabled", currentWeekIndex === weekMap.length - 1);
+    } catch (error) {
+        console.error('Error updating nav buttons:', error);
+    }
 }
 
 // --- Pull-to-Refresh Simulation
@@ -847,40 +779,17 @@ currentWeekBtn.addEventListener('click', () => {
 });
 
 darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    try {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    } catch (error) {
+        console.error('Error toggling dark mode:', error);
+    }
 });
 
 modalClose.addEventListener('click', () => {
     modal.classList.remove('show');
     setTimeout(() => modal.style.display = "none", 300);
-});
-
-shoppingListBtn.addEventListener('click', () => {
-    shoppingListText.textContent = generateShoppingList();
-    shoppingListModal.style.display = "flex";
-    setTimeout(() => shoppingListModal.classList.add("show"), 10);
-});
-
-copyShoppingList.addEventListener('click', () => {
-    navigator.clipboard.writeText(shoppingListText.textContent);
-    alert("Shopping list copied to clipboard!");
-});
-
-shoppingListClose.addEventListener('click', () => {
-    shoppingListModal.classList.remove('show');
-    setTimeout(() => shoppingListModal.style.display = "none", 300);
-});
-
-statsBtn.addEventListener('click', () => {
-    updateStats();
-    statsModal.style.display = "flex";
-    setTimeout(() => statsModal.classList.add("show"), 10);
-});
-
-statsClose.addEventListener('click', () => {
-    statsModal.classList.remove('show');
-    setTimeout(() => statsModal.style.display = "none", 300);
 });
 
 // --- Notification Placeholder
@@ -895,8 +804,13 @@ function requestNotificationPermission() {
 }
 
 // --- Initial Render
-requestNotificationPermission();
-renderMenu();
+try {
+    requestNotificationPermission();
+    renderMenu();
+} catch (error) {
+    console.error('Initial render failed:', error);
+    menuContainer.innerHTML = `<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu. Please try again.</div></div>`;
+}
 </script>
 </body>
 </html>
