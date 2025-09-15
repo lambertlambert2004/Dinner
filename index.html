@@ -17,11 +17,12 @@
     --bg-light: #fafafa;
     --bg-card-light: #ffffff;
     --text-light: #333333;
-    --packed-light: #ffe082; /* Brighter yellow for packed lunch */
+    --packed-light: #ffca28; /* Bright yellow for packed lunch */
     --accent-blue: #0066cc;
     --accent-green: #34c759;
     --accent-orange: #ff9500;
     --accent-red: #ff3b30;
+    --toggle-off: #d1d1d6; /* Gray for toggle off */
     --shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     --border-radius: 16px;
     --font-family: -apple-system, 'SF Pro Display', 'Poppins', sans-serif;
@@ -32,18 +33,20 @@ body.dark-mode {
     --bg-light: #1a202c;
     --bg-card-light: #2d3748;
     --text-light: #e2e8f0;
-    --packed-light: #5a5231; /* Distinct dark mode packed color */
+    --packed-light: #5a5231; /* Mustard for dark mode packed */
+    --toggle-off: #4b5563; /* Darker gray for dark mode */
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 body {
     margin: 0;
-    padding: env(safe-area-inset-top) 16px 16px; /* Respect notch */
+    padding: calc(16px + env(safe-area-inset-top)) 16px 16px;
     font-family: var(--font-family);
     background: var(--bg-light);
     color: var(--text-light);
-    transition: var(--transition);
+    box-sizing: border-box;
     min-height: 100vh;
+    overflow-y: auto; /* Ensure scrolling */
     -webkit-font-smoothing: antialiased;
 }
 
@@ -52,7 +55,7 @@ header {
     padding: 16px 0;
     background: var(--bg-light);
     position: sticky;
-    top: env(safe-area-inset-top); /* Stick below notch */
+    top: env(safe-area-inset-top);
     z-index: 20;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -94,16 +97,11 @@ body.dark-mode #weekInfo {
     gap: 12px;
     max-width: 800px;
     margin: 16px auto 120px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100%; /* Ensure scrollable area */
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#menu.slide-left {
-    transform: translateX(-50px);
-    opacity: 0;
-}
-
-#menu.slide-right {
-    transform: translateX(50px);
+#menu.transition {
     opacity: 0;
 }
 
@@ -185,7 +183,7 @@ body.dark-mode .menuText {
     position: relative;
     width: 100%;
     height: 100%;
-    background: #d1d1d6; /* Darker off state */
+    background: var(--toggle-off);
     border-radius: 15px;
     cursor: pointer;
     transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -200,7 +198,7 @@ body.dark-mode .menuText {
     height: 27px;
     background: #ffffff;
     border-radius: 50%;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -520,7 +518,7 @@ function getInitialWeekIndex() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const todayTimestamp = today.getTime();
-    const isSunday = today.getDay() === 0; // 0 is Sunday
+    const isSunday = today.getDay() === 0;
 
     let index = 0;
     for (let i = weekMap.length - 1; i >= 0; i--) {
@@ -532,7 +530,6 @@ function getInitialWeekIndex() {
         }
     }
 
-    // On Sunday, show the next week if available
     if (isSunday && index < weekMap.length - 1) {
         index++;
     }
@@ -541,21 +538,11 @@ function getInitialWeekIndex() {
 }
 
 function renderMenu(direction = null) {
-    if (direction === 'next') {
-        menuContainer.classList.add('slide-left');
-        setTimeout(() => {
-            menuContainer.classList.remove('slide-left');
-            renderMenuContent();
-        }, 300);
-    } else if (direction === 'prev') {
-        menuContainer.classList.add('slide-right');
-        setTimeout(() => {
-            menuContainer.classList.remove('slide-right');
-            renderMenuContent();
-        }, 300);
-    } else {
+    menuContainer.classList.add('transition');
+    setTimeout(() => {
+        menuContainer.classList.remove('transition');
         renderMenuContent();
-    }
+    }, 300);
 }
 
 function showToast(message, card) {
@@ -653,7 +640,7 @@ function renderMenuContent() {
         });
 
         card.addEventListener("click", (e) => {
-            if (e.target.closest(".toggle")) return; // Ignore clicks on toggle
+            if (e.target.closest(".toggle")) return;
             modalTitle.textContent = `${day} - Week ${weekInfo.week}`;
             modalDescription.textContent = MENU_DETAILS[weekInfo.week][day].description;
             modal.style.display = "flex";
