@@ -90,13 +90,29 @@ body.dark-mode #weekInfo {
     color: #cbd5e0;
 }
 
-#menu {
+#menuWrapper {
+    position: relative;
+    overflow: hidden;
+    max-width: 800px;
+    margin: 16px auto 120px;
+    height: auto;
+}
+
+#menu, #menu-new {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    max-width: 800px;
-    margin: 16px auto 120px;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    will-change: transform;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+}
+
+#menu-new {
+    opacity: 0;
+    pointer-events: none;
 }
 
 #menu.slide-left {
@@ -107,6 +123,28 @@ body.dark-mode #weekInfo {
 #menu.slide-right {
     transform: translateX(100%);
     opacity: 0;
+}
+
+#menu-new.slide-in-right {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+#menu-new.slide-in-right.active {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#menu-new.slide-in-left {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+#menu-new.slide-in-left.active {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .card {
@@ -205,39 +243,48 @@ body.dark-mode .allergens {
     height: 31px;
 }
 
-.toggle input { opacity: 0; width: 0; height: 0; }
-.slider {
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle .slider {
     position: relative;
     width: 100%;
     height: 100%;
-    background: #d1d5db !important;
+    background-color: #d1d5db;
     border-radius: 15px;
     cursor: pointer;
-    transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body.dark-mode .slider {
-    background: #4b5563 !important;
+body.dark-mode .toggle .slider {
+    background-color: #4b5563;
 }
 
-.slider::before {
+.toggle .slider::before {
     content: '';
     position: absolute;
     left: 2px;
     top: 2px;
     width: 27px;
     height: 27px;
-    background: #fff !important;
+    background-color: #ffffff;
     border-radius: 50%;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.toggle input:checked + .slider { 
-    background: var(--accent-green) !important; 
-    box-shadow: 0 0 4px rgba(52, 199, 89, 0.3);
+.toggle input:checked + .slider {
+    background-color: var(--accent-green);
+    box-shadow: 0 0 6px rgba(52, 199, 89, 0.4);
 }
-.toggle input:checked + .slider::before { transform: translateX(20px); }
+
+.toggle input:checked + .slider::before {
+    transform: translateX(20px);
+    box-shadow: 0 1px 4px rgba(52, 199, 89, 0.3);
+}
 
 .toggle:active .slider::before {
     transform: scale(0.95);
@@ -291,6 +338,7 @@ body:not(.dark-mode) #weekNav {
     transition: var(--transition);
     min-width: 44px;
     min-height: 44px;
+    will-change: transform;
 }
 
 .nav-btn.disabled {
@@ -430,7 +478,7 @@ body.dark-mode #modal p {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
     </button>
     <button id="currentWeekBtn" class="nav-btn" aria-label="Current Week">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
     </button>
     <div id="weekTitle"></div>
     <button id="nextWeekBtn" class="nav-btn" aria-label="Next Week">
@@ -439,7 +487,10 @@ body.dark-mode #modal p {
 </div>
 <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
 
-<main id="menu"></main>
+<div id="menuWrapper">
+    <main id="menu"></main>
+    <main id="menu-new" style="display: none;"></main>
+</div>
 
 <div id="modal">
     <div id="modalContent">
@@ -450,7 +501,7 @@ body.dark-mode #modal p {
 </div>
 
 <div id="darkModeToggle" aria-label="Toggle Dark Mode">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75S6.615 21.75 12 21.75c1.077 0 2.1-.194 3.05-.56A.75.75 0 0 0 15.65 20.5h0a.75.75 0 0 1 .85-.14 9.752 9.752 0 0 0 4.1-6.19c.12-.472-.345-.92-.85-.85a8.25 8.25 0 0 1-5.75 2.19c-3.15 0-5.727-2.585-5.727-5.757 0-3.172 2.577-5.757 5.727-5.757 1.838 0 3.52 1.054 4.58 2.687a.75.75 0 0 0 1.25-.664A9.752 9.752 0 0 0 12 2.25z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a9.75 9.75 0 00-9.75 9.75 9.75 9.75 0 009.75 9.75c1.077 0 2.1-.194 3.05-.56a.75.75 0 00-.6-.69h0a.75.75 0 01-.85-.14 9.752 9.752 0 004.1-6.19c.12-.472-.345-.92-.85-.85a8.25 8.25 0 01-5.75 2.19c-3.15 0-5.727-2.585-5.727-5.757s2.577-5.757 5.727-5.757c1.838 0 3.52 1.054 4.58 2.687a.75.75 0 001.25-.664A9.752 9.752 0 0012 2.25z"/></svg>
 </div>
 
 <script>
@@ -555,11 +606,14 @@ const weekMap = [
 // --- State Management
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 let currentWeekIndex = getInitialWeekIndex();
+let isAnimating = false;
 const isDarkMode = localStorage.getItem('darkMode') === 'true';
 if (isDarkMode) document.body.classList.add('dark-mode');
 
 // --- DOM Elements
+const menuWrapper = document.getElementById('menuWrapper');
 const menuContainer = document.getElementById('menu');
+const menuNewContainer = document.getElementById('menu-new');
 const weekTitleEl = document.getElementById('weekTitle');
 const packedCountEl = document.getElementById('packedCount');
 const prevWeekBtn = document.getElementById('prevWeekBtn');
@@ -591,121 +645,150 @@ function getInitialWeekIndex() {
 }
 
 function renderMenu(direction = null) {
+    if (isAnimating) return;
+    isAnimating = true;
+
     try {
-        if (direction === 'next') {
-            menuContainer.classList.add('slide-left');
-        } else if (direction === 'prev') {
-            menuContainer.classList.add('slide-right');
+        menuNewContainer.innerHTML = '';
+        menuNewContainer.style.display = 'flex';
+        renderMenuContent(menuNewContainer);
+
+        if (direction) {
+            const isNext = direction === 'next';
+            menuContainer.classList.add(isNext ? 'slide-left' : 'slide-right');
+            menuNewContainer.classList.add(isNext ? 'slide-in-right' : 'slide-in-left');
+
+            requestAnimationFrame(() => {
+                menuNewContainer.classList.add('active');
+            });
+
+            const onTransitionEnd = () => {
+                menuContainer.classList.remove('slide-left', 'slide-right');
+                menuNewContainer.classList.remove('slide-in-right', 'slide-in-left', 'active');
+                menuContainer.innerHTML = menuNewContainer.innerHTML;
+                menuNewContainer.style.display = 'none';
+                menuNewContainer.innerHTML = '';
+                isAnimating = false;
+                menuContainer.removeEventListener('transitionend', onTransitionEnd);
+            };
+
+            menuContainer.addEventListener('transitionend', onTransitionEnd);
+        } else {
+            menuContainer.innerHTML = menuNewContainer.innerHTML;
+            menuNewContainer.style.display = 'none';
+            menuNewContainer.innerHTML = '';
+            isAnimating = false;
         }
 
-        setTimeout(() => {
-            menuContainer.classList.remove('slide-left', 'slide-right');
-            menuContainer.style.opacity = '1';
-            renderMenuContent();
-        }, 400);
+        updateNavButtons();
     } catch (error) {
         console.error('Error rendering menu:', error);
         menuContainer.innerHTML = `<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu. Please try again.</div></div>`;
+        isAnimating = false;
     }
 }
 
-function renderMenuContent() {
-    menuContainer.innerHTML = '';
-    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+function renderMenuContent(container) {
+    try {
+        container.innerHTML = '';
+        const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
-    const weekInfo = weekMap[currentWeekIndex];
+        const weekInfo = weekMap[currentWeekIndex];
 
-    if (!weekInfo || !MENUS[weekInfo.week]) {
-        menuContainer.innerHTML = `<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>`;
-        return;
-    }
-
-    const weekStartDate = new Date(weekInfo.start);
-    weekStartDate.setHours(0, 0, 0, 0);
-
-    weekTitleEl.textContent = `Week ${weekInfo.week}`;
-    document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
-
-    progressFill.style.width = `${((currentWeekIndex + 1) / weekMap.length) * 100}%`;
-
-    weekdays.forEach((day, index) => {
-        const card = document.createElement("div");
-        card.classList.add("card");
-        if (packedLunch[weekInfo.week]?.[day]) card.classList.add("packed");
-
-        const dayDate = new Date(weekStartDate);
-        dayDate.setDate(weekStartDate.getDate() + index);
-        dayDate.setHours(0, 0, 0, 0);
-
-        const label = document.createElement("span");
-        if (dayDate.getTime() === today.getTime()) {
-            label.textContent = "Today ☀️";
-            label.className = "dayLabel today";
-            card.appendChild(label);
-        } else if (dayDate.getTime() === today.getTime() + 86400000) {
-            label.textContent = "Tomorrow 🌅";
-            label.className = "dayLabel tomorrow";
-            card.appendChild(label);
-        } else if (dayDate.getTime() < today.getTime()) {
-            label.textContent = "Past";
-            label.className = "dayLabel past";
-            card.appendChild(label);
+        if (!weekInfo || !MENUS[weekInfo.week]) {
+            container.innerHTML = `<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>`;
+            return;
         }
 
-        const title = document.createElement("div");
-        title.className = "dayTitle";
-        title.textContent = day;
-        card.appendChild(title);
+        const weekStartDate = new Date(weekInfo.start);
+        weekStartDate.setHours(0, 0, 0, 0);
 
-        const menuText = document.createElement("div");
-        menuText.className = "menuText";
-        menuText.textContent = MENUS[weekInfo.week][day];
-        card.appendChild(menuText);
+        weekTitleEl.textContent = `Week ${weekInfo.week}`;
+        document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
 
-        const allergens = document.createElement("div");
-        allergens.className = "allergens";
-        allergens.textContent = "Allergens: " + (ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None");
-        card.appendChild(allergens);
+        progressFill.style.width = `${((currentWeekIndex + 1) / weekMap.length) * 100}%`;
 
-        const toggle = document.createElement("label");
-        toggle.className = "toggle";
-        const input = document.createElement("input");
-        input.type = "checkbox";
-        input.checked = !!packedLunch[weekInfo.week]?.[day];
-        const slider = document.createElement("span");
-        slider.className = "slider";
-        toggle.appendChild(input);
-        toggle.appendChild(slider);
-        card.appendChild(toggle);
+        weekdays.forEach((day, index) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            if (packedLunch[weekInfo.week]?.[day]) card.classList.add("packed");
 
-        input.addEventListener("change", () => {
-            try {
-                if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
-                if (input.checked) packedLunch[weekInfo.week][day] = true;
-                else delete packedLunch[weekInfo.week][day];
-                localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
-                updatePackedCount();
-                card.classList.toggle("packed", input.checked);
-            } catch (error) {
-                console.error('Error saving packed lunch:', error);
+            const dayDate = new Date(weekStartDate);
+            dayDate.setDate(weekStartDate.getDate() + index);
+            dayDate.setHours(0, 0, 0, 0);
+
+            const label = document.createElement("span");
+            if (dayDate.getTime() === today.getTime()) {
+                label.textContent = "Today ☀️";
+                label.className = "dayLabel today";
+                card.appendChild(label);
+            } else if (dayDate.getTime() === today.getTime() + 86400000) {
+                label.textContent = "Tomorrow 🌅";
+                label.className = "dayLabel tomorrow";
+                card.appendChild(label);
+            } else if (dayDate.getTime() < today.getTime()) {
+                label.textContent = "Past";
+                label.className = "dayLabel past";
+                card.appendChild(label);
             }
+
+            const title = document.createElement("div");
+            title.className = "dayTitle";
+            title.textContent = day;
+            card.appendChild(title);
+
+            const menuText = document.createElement("div");
+            menuText.className = "menuText";
+            menuText.textContent = MENUS[weekInfo.week][day];
+            card.appendChild(menuText);
+
+            const allergens = document.createElement("div");
+            allergens.className = "allergens";
+            allergens.textContent = "Allergens: " + (ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None");
+            card.appendChild(allergens);
+
+            const toggle = document.createElement("label");
+            toggle.className = "toggle";
+            const input = document.createElement("input");
+            input.type = "checkbox";
+            input.checked = !!packedLunch[weekInfo.week]?.[day];
+            const slider = document.createElement("span");
+            slider.className = "slider";
+            toggle.appendChild(input);
+            toggle.appendChild(slider);
+            card.appendChild(toggle);
+
+            input.addEventListener("change", () => {
+                try {
+                    if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
+                    if (input.checked) packedLunch[weekInfo.week][day] = true;
+                    else delete packedLunch[weekInfo.week][day];
+                    localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+                    updatePackedCount();
+                    card.classList.toggle("packed", input.checked);
+                } catch (error) {
+                    console.error('Error saving packed lunch:', error);
+                }
+            });
+
+            card.addEventListener("click", (e) => {
+                if (e.target.closest(".toggle")) return;
+                modalTitle.textContent = `${day} - Week ${weekInfo.week}`;
+                modalDescription.textContent = `${MENU_DETAILS[weekInfo.week][day].description}\n\nAllergens: ${ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None"}`;
+                modal.style.display = "flex";
+                setTimeout(() => modal.classList.add("show"), 10);
+            });
+
+            container.appendChild(card);
         });
 
-        card.addEventListener("click", (e) => {
-            if (e.target.closest(".toggle")) return;
-            modalTitle.textContent = `${day} - Week ${weekInfo.week}`;
-            modalDescription.textContent = `${MENU_DETAILS[weekInfo.week][day].description}\n\nAllergens: ${ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None"}`;
-            modal.style.display = "flex";
-            setTimeout(() => modal.classList.add("show"), 10);
-        });
-
-        menuContainer.appendChild(card);
-    });
-
-    updatePackedCount();
-    updateNavButtons();
+        updatePackedCount();
+    } catch (error) {
+        console.error('Error rendering menu content:', error);
+        container.innerHTML = `<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu. Please try again.</div></div>`;
+    }
 }
 
 function updatePackedCount() {
@@ -760,22 +843,27 @@ document.addEventListener('touchend', () => {
 
 // --- Event Listeners
 prevWeekBtn.addEventListener('click', () => {
-    if (currentWeekIndex > 0) {
+    if (currentWeekIndex > 0 && !isAnimating) {
         currentWeekIndex--;
         renderMenu('prev');
     }
 });
 
 nextWeekBtn.addEventListener('click', () => {
-    if (currentWeekIndex < weekMap.length - 1) {
+    if (currentWeekIndex < weekMap.length - 1 && !isAnimating) {
         currentWeekIndex++;
         renderMenu('next');
     }
 });
 
 currentWeekBtn.addEventListener('click', () => {
-    currentWeekIndex = getInitialWeekIndex();
-    renderMenu();
+    if (isAnimating) return;
+    const initialIndex = getInitialWeekIndex();
+    if (currentWeekIndex !== initialIndex) {
+        const direction = currentWeekIndex > initialIndex ? 'prev' : 'next';
+        currentWeekIndex = initialIndex;
+        renderMenu(direction);
+    }
 });
 
 darkModeToggle.addEventListener('click', () => {
@@ -806,7 +894,13 @@ function requestNotificationPermission() {
 // --- Initial Render
 try {
     requestNotificationPermission();
-    renderMenu();
+    requestAnimationFrame(() => {
+        renderMenu();
+        currentWeekBtn.style.opacity = '0';
+        requestAnimationFrame(() => {
+            currentWeekBtn.style.opacity = '1';
+        });
+    });
 } catch (error) {
     console.error('Initial render failed:', error);
     menuContainer.innerHTML = `<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu. Please try again.</div></div>`;
