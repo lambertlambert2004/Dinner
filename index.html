@@ -46,7 +46,7 @@ body {
     color: var(--text-light);
     box-sizing: border-box;
     min-height: 100vh;
-    overflow-y: auto; /* Ensure scrolling */
+    overflow-y: auto;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -97,12 +97,20 @@ body.dark-mode #weekInfo {
     gap: 12px;
     max-width: 800px;
     margin: 16px auto 120px;
-    min-height: 100%; /* Ensure scrollable area */
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    min-height: 100%;
 }
 
-#menu.transition {
+#menu.transition-left {
+    transform: translateX(-100%);
     opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+}
+
+#menu.transition-right {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
 }
 
 .card {
@@ -111,8 +119,14 @@ body.dark-mode #weekInfo {
     padding: 16px;
     background: var(--bg-card-light);
     box-shadow: var(--shadow);
-    transition: var(--transition);
+    transition: var(--transition), backdrop-filter 0.3s;
     cursor: pointer;
+}
+
+#menu.transition-left .card,
+#menu.transition-right .card {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 body:not(.dark-mode) .card {
@@ -496,6 +510,7 @@ const weekMap = [
 // --- State Management
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 let currentWeekIndex = getInitialWeekIndex();
+let weekCache = {};
 const isDarkMode = localStorage.getItem('darkMode') === 'true';
 if (isDarkMode) document.body.classList.add('dark-mode');
 
@@ -537,12 +552,109 @@ function getInitialWeekIndex() {
     return index;
 }
 
+function generateWeekContent(index) {
+    if (!weekMap[index]) return '<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>';
+
+    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const weekInfo = weekMap[index];
+    const weekStartDate = new Date(weekInfo.start);
+    weekStartDate.setHours(0, 0, 0, 0);
+
+    let html = '';
+    weekdays.forEach((day, i) => {
+        const dayDate = new Date(weekStartDate);
+        dayDate.setDate(weekStartDate.getDate() + i);
+        dayDate.setHours(0, 0, 0, 0);
+
+        const isPacked = !!packedLunch[weekInfo.week]?.[day];
+        let label = '';
+        if (dayDate.getTime() === today.getTime()) {
+            label = '<span class="dayLabel today">Today</span>';
+        } else if (dayDate.getTime() === today.getTime() + 86400000) {
+            label = '<span class="dayLabel tomorrow">Tomorrow</span>';
+        } else if (dayDate.getTime() < today.getTime()) {
+            label = '<span class="dayLabel past">Past</span>';
+        }
+
+        html += `
+            <div class="card${isPacked ? ' packed' : ''}" data-day="${day}" data-week="${weekInfo.week}">
+                ${label}
+                <div class="dayTitle">${day}</div>
+                <div class="menuText">${MENUS[weekInfo.week][day]}</div>
+                <label class="toggle">
+                    <input type="checkbox"${isPacked ? ' checked' : ''}>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        `;
+    });
+
+    return html;
+}
+
+function preloadWeeks() {
+    weekCache[currentWeekIndex] = generateWeekContent(currentWeekIndex);
+    if (currentWeekIndex > 0) {
+        weekCache[currentWeekIndex - 1] = generateWeekContent(currentWeekIndex - 1);
+    }
+    if (currentWeekIndex < weekMap.length - 1) {
+        weekCache[currentWeekIndex + 1] = generateWeekContent(currentWeekIndex + 1);
+    }
+}
+
 function renderMenu(direction = null) {
-    menuContainer.classList.add('transition');
-    setTimeout(() => {
-        menuContainer.classList.remove('transition');
-        renderMenuContent();
-    }, 300);
+    if (!weekMap[currentWeekIndex]) return;
+
+    if (direction) {
+        menuContainer.classList.add(direction === 'next' ? 'transition-left' : 'transition-right');
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                menuContainer.innerHTML = weekCache[currentWeekIndex] || generateWeekContent(currentWeekIndex);
+                menuContainer.classList.remove('transition-left', 'transition-right');
+                attachCardListeners();
+                updateDisplay();
+                preloadWeeks();
+            }, 300);
+        });
+    } else {
+        menuContainer.innerHTML = weekCache[currentWeekIndex] || generateWeekContent(currentWeekIndex);
+        attachCardListeners();
+        updateDisplay();
+        preloadWeeks();
+    }
+}
+
+function attachCardListeners() {
+    document.querySelectorAll('.card').forEach(card => {
+        const input = card.querySelector('input');
+        const day = card.dataset.day;
+        const week = card.dataset.week;
+
+        input.addEventListener('change', () => {
+            if (!packedLunch[week]) packedLunch[week] = {};
+            if (input.checked) {
+                packedLunch[week][day] = true;
+                showToast(`Packed lunch added for ${day}`, card);
+            } else {
+                delete packedLunch[week][day];
+                showToast(`Packed lunch removed for ${day}`, card);
+            }
+            localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+            updatePackedCount();
+            card.classList.toggle('packed', input.checked);
+            preloadWeeks(); // Update cache for packed lunch changes
+        });
+
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.toggle')) return;
+            modalTitle.textContent = `${day} - Week ${week}`;
+            modalDescription.textContent = MENU_DETAILS[week][day].description;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        });
+    });
 }
 
 function showToast(message, card) {
@@ -557,17 +669,14 @@ function showToast(message, card) {
     }, 2000);
 }
 
-function renderMenuContent() {
-    menuContainer.innerHTML = '';
-    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+function updateDisplay() {
+    const weekInfo = weekMap[currentWeekIndex];
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const isSunday = today.getDay() === 0;
 
-    const weekInfo = weekMap[currentWeekIndex];
-
     if (!weekInfo) {
-        menuContainer.innerHTML = `<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>`;
+        menuContainer.innerHTML = '<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>';
         return;
     }
 
@@ -580,76 +689,6 @@ function renderMenuContent() {
     currentWeekBtn.textContent = isSunday ? 'Next Week' : '';
     currentWeekBtn.style.padding = isSunday ? '8px 16px' : '8px 12px';
 
-    weekdays.forEach((day, index) => {
-        const card = document.createElement("div");
-        card.classList.add("card");
-        if (packedLunch[weekInfo.week]?.[day]) card.classList.add("packed");
-
-        const dayDate = new Date(weekStartDate);
-        dayDate.setDate(weekStartDate.getDate() + index);
-        dayDate.setHours(0, 0, 0, 0);
-
-        const label = document.createElement("span");
-        if (dayDate.getTime() === today.getTime()) {
-            label.textContent = "Today";
-            label.className = "dayLabel today";
-            card.appendChild(label);
-        } else if (dayDate.getTime() === today.getTime() + 86400000) {
-            label.textContent = "Tomorrow";
-            label.className = "dayLabel tomorrow";
-            card.appendChild(label);
-        } else if (dayDate.getTime() < today.getTime()) {
-            label.textContent = "Past";
-            label.className = "dayLabel past";
-            card.appendChild(label);
-        }
-
-        const title = document.createElement("div");
-        title.className = "dayTitle";
-        title.textContent = day;
-        card.appendChild(title);
-
-        const menuText = document.createElement("div");
-        menuText.className = "menuText";
-        menuText.textContent = MENUS[weekInfo.week][day];
-        card.appendChild(menuText);
-
-        const toggle = document.createElement("label");
-        toggle.className = "toggle";
-        const input = document.createElement("input");
-        input.type = "checkbox";
-        input.checked = !!packedLunch[weekInfo.week]?.[day];
-        const slider = document.createElement("span");
-        slider.className = "slider";
-        toggle.appendChild(input);
-        toggle.appendChild(slider);
-        card.appendChild(toggle);
-
-        input.addEventListener("change", () => {
-            if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
-            if (input.checked) {
-                packedLunch[weekInfo.week][day] = true;
-                showToast(`Packed lunch added for ${day}`, card);
-            } else {
-                delete packedLunch[weekInfo.week][day];
-                showToast(`Packed lunch removed for ${day}`, card);
-            }
-            localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
-            updatePackedCount();
-            card.classList.toggle("packed", input.checked);
-        });
-
-        card.addEventListener("click", (e) => {
-            if (e.target.closest(".toggle")) return;
-            modalTitle.textContent = `${day} - Week ${weekInfo.week}`;
-            modalDescription.textContent = MENU_DETAILS[weekInfo.week][day].description;
-            modal.style.display = "flex";
-            setTimeout(() => modal.classList.add("show"), 10);
-        });
-
-        menuContainer.appendChild(card);
-    });
-
     updatePackedCount();
     updateNavButtons();
 }
@@ -661,8 +700,8 @@ function updatePackedCount() {
 }
 
 function updateNavButtons() {
-    prevWeekBtn.classList.toggle("disabled", currentWeekIndex === 0);
-    nextWeekBtn.classList.toggle("disabled", currentWeekIndex === weekMap.length - 1);
+    prevWeekBtn.classList.toggle('disabled', currentWeekIndex === 0);
+    nextWeekBtn.classList.toggle('disabled', currentWeekIndex === weekMap.length - 1);
 }
 
 // --- Pull-to-Refresh Simulation
@@ -722,15 +761,15 @@ darkModeToggle.addEventListener('click', () => {
 
 modalClose.addEventListener('click', () => {
     modal.classList.remove('show');
-    setTimeout(() => modal.style.display = "none", 300);
+    setTimeout(() => modal.style.display = 'none', 300);
 });
 
 // --- Notification Placeholder
 function requestNotificationPermission() {
-    if ("Notification" in window && Notification.permission !== "denied") {
+    if ('Notification' in window && Notification.permission !== 'denied') {
         Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                console.log("Notifications enabled. Add logic to schedule packed lunch reminders.");
+            if (permission === 'granted') {
+                console.log('Notifications enabled. Add logic to schedule packed lunch reminders.');
             }
         });
     }
@@ -738,6 +777,7 @@ function requestNotificationPermission() {
 
 // --- Initial Render
 requestNotificationPermission();
+preloadWeeks();
 renderMenu();
 </script>
 </body>
