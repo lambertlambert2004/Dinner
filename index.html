@@ -11,7 +11,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=SF+Pro+Display:wght@400;600;700&display=fallback" rel="stylesheet">
 <style>
 :root {
     --bg-light: linear-gradient(180deg, #fefce8, #f5f5f4);
@@ -36,7 +36,7 @@ body.dark-mode {
 }
 body {
     margin: 0;
-    padding: 0 16px 16px;
+    padding: 0 16px 100px;
     font-family: var(--font-family);
     background: var(--bg-light);
     color: var(--text-light);
@@ -165,12 +165,18 @@ body.dark-mode .allergens {
     50% { box-shadow: 0 0 12px rgba(255, 149, 0, 0.8); }
     100% { box-shadow: 0 0 6px rgba(255, 149, 0, 0.6); }
 }
-.toggle {
+.toggle-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     position: absolute;
     right: 12px;
     bottom: 12px;
-    width: 51px;
-    height: 31px;
+}
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 .toggle input {
     opacity: 0;
@@ -179,8 +185,8 @@ body.dark-mode .allergens {
 }
 .toggle .slider {
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 51px;
+    height: 31px;
     background-color: #d1d5db;
     border-radius: 15px;
     cursor: pointer;
@@ -211,6 +217,13 @@ body.dark-mode .toggle .slider {
 }
 .toggle:active .slider::before {
     transform: scale(0.95);
+}
+.toggle label {
+    font-size: 0.85rem;
+    color: #444444;
+}
+body.dark-mode .toggle label {
+    color: #cbd5e0;
 }
 #weekNav {
     display: flex;
@@ -273,9 +286,8 @@ body:not(.dark-mode) #weekNav {
     font-weight: 600;
     font-size: 1rem;
 }
-#darkModeToggle {
+#darkModeToggle, #manageChildrenBtn {
     position: fixed;
-    bottom: 20px;
     right: 20px;
     width: 44px;
     height: 44px;
@@ -287,6 +299,12 @@ body:not(.dark-mode) #weekNav {
     justify-content: center;
     cursor: pointer;
     transition: var(--transition);
+}
+#darkModeToggle {
+    bottom: 20px;
+}
+#manageChildrenBtn {
+    bottom: 76px;
 }
 #pullToRefresh {
     position: absolute;
@@ -305,7 +323,7 @@ body.dark-mode #pullToRefresh {
 #pullToRefresh.visible {
     opacity: 1;
 }
-#modal, #confirmToggle {
+#modal, #confirmToggle, #manageChildrenModal {
     position: fixed;
     top: 0;
     left: 0;
@@ -317,7 +335,7 @@ body.dark-mode #pullToRefresh {
     justify-content: center;
     z-index: 1000;
 }
-#modalContent, #confirmToggleContent {
+#modalContent, #confirmToggleContent, #manageChildrenContent {
     background: var(--bg-card-light);
     border-radius: var(--border-radius);
     padding: 20px;
@@ -328,23 +346,23 @@ body.dark-mode #pullToRefresh {
     transform: scale(0.7);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-#modal.show #modalContent, #confirmToggle.show #confirmToggleContent {
+#modal.show #modalContent, #confirmToggle.show #confirmToggleContent, #manageChildrenModal.show #manageChildrenContent {
     transform: scale(1);
 }
-#modal h2, #confirmToggle h2 {
+#modal h2, #confirmToggle h2, #manageChildrenModal h2 {
     margin: 0 0 12px;
     font-size: 1.2rem;
     font-weight: 600;
 }
-#modal p, #confirmToggle p {
+#modal p, #confirmToggle p, #manageChildrenModal p {
     margin: 0 0 12px;
     font-size: 0.95rem;
     color: #444444;
 }
-body.dark-mode #modal p, body.dark-mode #confirmToggle p {
+body.dark-mode #modal p, body.dark-mode #confirmToggle p, body.dark-mode #manageChildrenModal p {
     color: #cbd5e0;
 }
-#modal button, #confirmToggle button {
+#modal button, #confirmToggle button, #manageChildrenModal button {
     background: var(--accent-blue);
     color: #fff;
     border: none;
@@ -355,12 +373,41 @@ body.dark-mode #modal p, body.dark-mode #confirmToggle p {
     transition: var(--transition);
     margin: 0 5px;
 }
-#modal button:active, #confirmToggle button:active {
+#modal button:active, #confirmToggle button:active, #manageChildrenModal button:active {
     transform: scale(0.95);
 }
-#confirmToggle .button-group {
+#confirmToggle .button-group, #manageChildrenModal .button-group {
     display: flex;
     justify-content: space-between;
+}
+#childInput {
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+body.dark-mode #childInput {
+    border-color: #4b5563;
+    background: #2d3748;
+    color: #e2e8f0;
+}
+.children-list {
+    margin-bottom: 12px;
+}
+.children-list div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 0.95rem;
+}
+.children-list button {
+    background: var(--accent-red);
+    padding: 6px 12px;
+    font-size: 0.85rem;
 }
 :focus {
     outline: 2px solid var(--accent-blue);
@@ -372,7 +419,7 @@ body.dark-mode #modal p, body.dark-mode #confirmToggle p {
 <div id="pullToRefresh">Pull to refresh...</div>
 <header>
   <h1>School Dinner Menu</h1>
-  <div class="sub-header">Packed Meals This Week: <span id="packedCount">0</span></div>
+  <div class="sub-header" id="packedCount">Packed Meals This Week</div>
   <div id="weekInfo"></div>
 </header>
 <div id="weekNav">
@@ -405,6 +452,20 @@ body.dark-mode #modal p, body.dark-mode #confirmToggle p {
             <button id="confirmToggleConfirm">Confirm</button>
         </div>
     </div>
+</div>
+<div id="manageChildrenModal">
+    <div id="manageChildrenContent">
+        <h2>Manage Children</h2>
+        <input type="text" id="childInput" placeholder="Enter child's name" />
+        <div class="button-group">
+            <button id="addChildBtn">Add Child</button>
+            <button id="manageChildrenClose">Close</button>
+        </div>
+        <div class="children-list" id="childrenList"></div>
+    </div>
+</div>
+<div id="manageChildrenBtn" aria-label="Manage Children">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
 </div>
 <div id="darkModeToggle" aria-label="Toggle Dark Mode">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a9.75 9.75 0 00-9.75 9.75 9.75 9.75 0 009.75 9.75c1.077 0 2.1-.194 3.05-.56a.75.75 0 00-.6-.69h0a.75.75 0 01-.85-.14 9.752 9.752 0 004.1-6.19c.12-.472-.345-.92-.85-.85a8.25 8.25 0 01-5.75 2.19c-3.15 0-5.727-2.585-5.727-5.757s2.577-5.757 5.727-5.757c1.838 0 3.52 1.054 4.58 2.687a.75.75 0 001.25-.664A9.752 9.752 0 0012 2.25z"/></svg>
@@ -488,6 +549,7 @@ const weekMap = [
     { week: 1, start: "2025-12-01" }, { week: 2, start: "2025-12-08" }, { week: 3, start: "2025-12-15" }
 ];
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
+let children = JSON.parse(localStorage.getItem('children') || '[]');
 let currentWeekIndex = 0;
 const menuContainer = document.getElementById('menu');
 const weekTitleEl = document.getElementById('weekTitle');
@@ -496,6 +558,7 @@ const prevWeekBtn = document.getElementById('prevWeekBtn');
 const nextWeekBtn = document.getElementById('nextWeekBtn');
 const currentWeekBtn = document.getElementById('currentWeekBtn');
 const darkModeToggle = document.getElementById('darkModeToggle');
+const manageChildrenBtn = document.getElementById('manageChildrenBtn');
 const pullToRefresh = document.getElementById('pullToRefresh');
 const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modalTitle');
@@ -506,8 +569,14 @@ const confirmToggleTitle = document.getElementById('confirmToggleTitle');
 const confirmToggleMessage = document.getElementById('confirmToggleMessage');
 const confirmToggleCancel = document.getElementById('confirmToggleCancel');
 const confirmToggleConfirm = document.getElementById('confirmToggleConfirm');
+const manageChildrenModal = document.getElementById('manageChildrenModal');
+const manageChildrenClose = document.getElementById('manageChildrenClose');
+const addChildBtn = document.getElementById('addChildBtn');
+const childInput = document.getElementById('childInput');
+const childrenList = document.getElementById('childrenList');
 const progressFill = document.getElementById('progressFill');
 if (localStorage.getItem('darkMode') !== 'false') document.body.classList.add('dark-mode');
+if (children.length === 0) children = ['Child 1'];
 function getInitialWeekIndex() {
     try {
         const today = new Date();
@@ -537,11 +606,15 @@ function renderMenu() {
             renderMenuContent(menuContainer);
             menuContainer.classList.remove('fade');
             updateNavButtons();
+            redrawCurrentWeekBtn(); // Ensure SVG persists
         }, 300);
     } catch (e) {
         if (menuContainer) menuContainer.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu.</div></div>';
         menuContainer.classList.remove('fade');
     }
+}
+function redrawCurrentWeekBtn() {
+    currentWeekBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>`;
 }
 function renderMenuContent(container) {
     try {
@@ -567,7 +640,6 @@ function renderMenuContent(container) {
         weekdays.forEach((day, index) => {
             const card = document.createElement("div");
             card.classList.add("card");
-            if (packedLunch[weekInfo.week]?.[day]) card.classList.add("packed");
             const dayDate = new Date(weekStartDate);
             dayDate.setDate(weekStartDate.getDate() + index);
             dayDate.setHours(0, 0, 0, 0);
@@ -597,38 +669,47 @@ function renderMenuContent(container) {
             allergens.className = "allergens";
             allergens.textContent = "Allergens: " + (ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None");
             card.appendChild(allergens);
-            const toggle = document.createElement("label");
-            toggle.className = "toggle";
-            const input = document.createElement("input");
-            input.type = "checkbox";
-            input.checked = !!packedLunch[weekInfo.week]?.[day];
-            const slider = document.createElement("span");
-            slider.className = "slider";
-            toggle.appendChild(input);
-            toggle.appendChild(slider);
-            card.appendChild(toggle);
-            input.addEventListener("change", (e) => {
-                e.preventDefault();
-                confirmToggleTitle.textContent = input.checked ? `Add Packed Lunch` : `Remove Packed Lunch`;
-                confirmToggleMessage.textContent = input.checked ? `Add packed lunch for ${day}?` : `Remove packed lunch for ${day}?`;
-                confirmToggle.style.display = "flex";
-                setTimeout(() => confirmToggle.classList.add("show"), 10);
-                confirmToggleConfirm.onclick = () => {
-                    if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
-                    if (input.checked) packedLunch[weekInfo.week][day] = true;
-                    else delete packedLunch[weekInfo.week][day];
-                    localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
-                    updatePackedCount();
-                    card.classList.toggle("packed", input.checked);
-                    confirmToggle.classList.remove("show");
-                    setTimeout(() => confirmToggle.style.display = "none", 300);
-                };
-                confirmToggleCancel.onclick = () => {
-                    input.checked = !input.checked;
-                    confirmToggle.classList.remove("show");
-                    setTimeout(() => confirmToggle.style.display = "none", 300);
-                };
+            const toggleContainer = document.createElement("div");
+            toggleContainer.className = "toggle-container";
+            children.forEach(child => {
+                const toggle = document.createElement("label");
+                toggle.className = "toggle";
+                const input = document.createElement("input");
+                input.type = "checkbox";
+                input.checked = !!packedLunch[child]?.[weekInfo.week]?.[day];
+                const slider = document.createElement("span");
+                slider.className = "slider";
+                const childLabel = document.createElement("label");
+                childLabel.textContent = child;
+                toggle.appendChild(input);
+                toggle.appendChild(slider);
+                toggle.appendChild(childLabel);
+                toggleContainer.appendChild(toggle);
+                input.addEventListener("change", (e) => {
+                    e.preventDefault();
+                    confirmToggleTitle.textContent = input.checked ? `Add Packed Lunch for ${child}` : `Remove Packed Lunch for ${child}`;
+                    confirmToggleMessage.textContent = input.checked ? `Add packed lunch for ${child} on ${day}?` : `Remove packed lunch for ${child} on ${day}?`;
+                    confirmToggle.style.display = "flex";
+                    setTimeout(() => confirmToggle.classList.add("show"), 10);
+                    confirmToggleConfirm.onclick = () => {
+                        if (!packedLunch[child]) packedLunch[child] = {};
+                        if (!packedLunch[child][weekInfo.week]) packedLunch[child][weekInfo.week] = {};
+                        if (input.checked) packedLunch[child][weekInfo.week][day] = true;
+                        else delete packedLunch[child][weekInfo.week][day];
+                        localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+                        updatePackedCount();
+                        card.classList.toggle("packed", Object.keys(packedLunch).some(c => packedLunch[c][weekInfo.week]?.[day]));
+                        confirmToggle.classList.remove("show");
+                        setTimeout(() => confirmToggle.style.display = "none", 300);
+                    };
+                    confirmToggleCancel.onclick = () => {
+                        input.checked = !input.checked;
+                        confirmToggle.classList.remove("show");
+                        setTimeout(() => confirmToggle.style.display = "none", 300);
+                    };
+                });
             });
+            card.appendChild(toggleContainer);
             card.addEventListener("click", (e) => {
                 if (e.target.closest(".toggle")) return;
                 modalTitle.textContent = `${day} - Week ${weekInfo.week}`;
@@ -646,9 +727,24 @@ function renderMenuContent(container) {
 function updatePackedCount() {
     try {
         const weekInfo = weekMap[currentWeekIndex];
-        packedCountEl.textContent = weekInfo ? Object.keys(packedLunch[weekInfo.week] || {}).length : '0';
+        if (!weekInfo) {
+            packedCountEl.textContent = "Packed Meals This Week";
+            return;
+        }
+        let text = "Packed Meals This Week";
+        if (children.length === 1) {
+            const count = Object.keys(packedLunch[children[0]]?.[weekInfo.week] || {}).length;
+            text = `Packed Meals This Week: ${count}`;
+        } else {
+            text = "Packed Meals This Week:\n";
+            children.forEach(child => {
+                const count = Object.keys(packedLunch[child]?.[weekInfo.week] || {}).length;
+                text += `${child}: ${count}\n`;
+            });
+        }
+        packedCountEl.textContent = text;
     } catch (e) {
-        packedCountEl.textContent = '0';
+        packedCountEl.textContent = "Packed Meals This Week";
     }
 }
 function updateNavButtons() {
@@ -656,6 +752,38 @@ function updateNavButtons() {
         prevWeekBtn.classList.toggle("disabled", currentWeekIndex === 0);
         nextWeekBtn.classList.toggle("disabled", currentWeekIndex === weekMap.length - 1);
     } catch (e) {}
+}
+function renderChildrenList() {
+    childrenList.innerHTML = '';
+    children.forEach(child => {
+        const div = document.createElement('div');
+        div.textContent = child;
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remove';
+        removeBtn.onclick = () => {
+            confirmToggleTitle.textContent = `Remove ${child}`;
+            confirmToggleMessage.textContent = `Are you sure you want to remove ${child}?`;
+            confirmToggle.style.display = "flex";
+            setTimeout(() => confirmToggle.classList.add("show"), 10);
+            confirmToggleConfirm.onclick = () => {
+                children = children.filter(c => c !== child);
+                delete packedLunch[child];
+                localStorage.setItem('children', JSON.stringify(children));
+                localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+                if (children.length === 0) children = ['Child 1'];
+                renderChildrenList();
+                renderMenu();
+                confirmToggle.classList.remove("show");
+                setTimeout(() => confirmToggle.style.display = "none", 300);
+            };
+            confirmToggleCancel.onclick = () => {
+                confirmToggle.classList.remove("show");
+                setTimeout(() => confirmToggle.style.display = "none", 300);
+            };
+        };
+        div.appendChild(removeBtn);
+        childrenList.appendChild(div);
+    });
 }
 let startY = 0;
 let isPulling = false;
@@ -705,6 +833,25 @@ modalClose.addEventListener('click', () => {
     modal.classList.remove('show');
     setTimeout(() => modal.style.display = "none", 300);
 });
+manageChildrenBtn.addEventListener('click', () => {
+    manageChildrenModal.style.display = "flex";
+    setTimeout(() => manageChildrenModal.classList.add("show"), 10);
+    renderChildrenList();
+});
+manageChildrenClose.addEventListener('click', () => {
+    manageChildrenModal.classList.remove("show");
+    setTimeout(() => manageChildrenModal.style.display = "none", 300);
+});
+addChildBtn.addEventListener('click', () => {
+    const name = childInput.value.trim();
+    if (name && !children.includes(name)) {
+        children.push(name);
+        localStorage.setItem('children', JSON.stringify(children));
+        childInput.value = '';
+        renderChildrenList();
+        renderMenu();
+    }
+});
 function requestNotificationPermission() {
     try {
         if ("Notification" in window && Notification.permission !== "denied") {
@@ -716,15 +863,24 @@ function requestNotificationPermission() {
 }
 document.addEventListener('DOMContentLoaded', () => {
     try {
+        localStorage.setItem('children', JSON.stringify(children));
         currentWeekIndex = getInitialWeekIndex();
         requestNotificationPermission();
         renderMenu();
         requestAnimationFrame(() => {
             currentWeekBtn.style.opacity = '0';
-            requestAnimationFrame(() => currentWeekBtn.style.opacity = '1');
+            requestAnimationFrame(() => {
+                currentWeekBtn.style.opacity = '1';
+                redrawCurrentWeekBtn();
+            });
         });
     } catch (e) {
         if (menuContainer) menuContainer.innerHTML = '<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu.</div></div>';
+    }
+});
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        redrawCurrentWeekBtn();
     }
 });
 </script>
