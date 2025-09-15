@@ -17,12 +17,11 @@
     --bg-light: #fafafa;
     --bg-card-light: #ffffff;
     --text-light: #333333;
-    --packed-light: #ffca28; /* Bright yellow for packed lunch */
+    --packed-light: linear-gradient(135deg, #fff5e0 0%, #fed7aa 100%); /* Gradient for depth */
     --accent-blue: #0066cc;
     --accent-green: #34c759;
     --accent-orange: #ff9500;
     --accent-red: #ff3b30;
-    --toggle-off: #d1d1d6; /* Gray for toggle off */
     --shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     --border-radius: 16px;
     --font-family: -apple-system, 'SF Pro Display', 'Poppins', sans-serif;
@@ -33,20 +32,18 @@ body.dark-mode {
     --bg-light: #1a202c;
     --bg-card-light: #2d3748;
     --text-light: #e2e8f0;
-    --packed-light: #5a5231; /* Mustard for dark mode packed */
-    --toggle-off: #4b5563; /* Darker gray for dark mode */
+    --packed-light: #4a422a;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 body {
     margin: 0;
-    padding: calc(16px + env(safe-area-inset-top)) 16px 16px;
+    padding: 0 16px 16px;
     font-family: var(--font-family);
     background: var(--bg-light);
     color: var(--text-light);
-    box-sizing: border-box;
+    transition: var(--transition);
     min-height: 100vh;
-    overflow-y: auto;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -55,7 +52,7 @@ header {
     padding: 16px 0;
     background: var(--bg-light);
     position: sticky;
-    top: env(safe-area-inset-top);
+    top: 0;
     z-index: 20;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -91,30 +88,26 @@ body.dark-mode #weekInfo {
     color: #cbd5e0;
 }
 
+#menuWrapper {
+    position: relative;
+    overflow: hidden;
+}
+
 #menu {
     display: flex;
     flex-direction: column;
     gap: 12px;
     max-width: 800px;
     margin: 16px auto 120px;
-    position: relative;
-    min-height: 100%;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#menu.transition-left {
+#menu.slide-left {
     transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#menu.transition-right {
+#menu.slide-right {
     transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#menu.transition-left .card,
-#menu.transition-right .card {
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
 }
 
 .card {
@@ -123,7 +116,7 @@ body.dark-mode #weekInfo {
     padding: 16px;
     background: var(--bg-card-light);
     box-shadow: var(--shadow);
-    transition: var(--transition), backdrop-filter 0.3s;
+    transition: var(--transition);
     cursor: pointer;
 }
 
@@ -135,6 +128,14 @@ body:not(.dark-mode) .card {
 
 .card.packed {
     background: var(--packed-light);
+    border: 2px solid #f59e0b; /* Golden border for highlight */
+    box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.3); /* Subtle glow */
+    animation: pulse 2s infinite; /* Pulsing highlight */
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.3); }
+    50% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1); }
 }
 
 .dayTitle {
@@ -195,10 +196,14 @@ body.dark-mode .menuText {
     position: relative;
     width: 100%;
     height: 100%;
-    background: var(--toggle-off);
+    background: #d1d5db; /* Light mode unchecked: soft gray */
     border-radius: 15px;
     cursor: pointer;
     transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.dark-mode .slider {
+    background: #4b5563; /* Dark mode unchecked: muted blue-gray */
 }
 
 .slider::before {
@@ -208,19 +213,17 @@ body.dark-mode .menuText {
     top: 2px;
     width: 27px;
     height: 27px;
-    background: #ffffff;
+    background: #fff;
     border-radius: 50%;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.toggle input:checked + .slider {
-    background: var(--accent-green);
+.toggle input:checked + .slider { 
+    background: var(--accent-green); 
+    box-shadow: 0 0 4px rgba(52, 199, 89, 0.3); /* Glow on checked */
 }
-
-.toggle input:checked + .slider::before {
-    transform: translateX(20px);
-}
+.toggle input:checked + .slider::before { transform: translateX(20px); }
 
 .toggle:active .slider::before {
     transform: scale(0.95);
@@ -237,7 +240,7 @@ body.dark-mode .menuText {
     border-radius: 14px;
     box-shadow: var(--shadow);
     position: sticky;
-    top: calc(60px + env(safe-area-inset-top));
+    top: 60px;
     z-index: 10;
 }
 
@@ -259,9 +262,6 @@ body:not(.dark-mode) #weekNav {
     transition: var(--transition);
     min-width: 44px;
     min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .nav-btn.disabled {
@@ -276,10 +276,7 @@ body:not(.dark-mode) #weekNav {
 .nav-btn svg {
     width: 20px;
     height: 20px;
-}
-
-.nav-btn .sunday-text:not(:empty) {
-    margin-left: 8px;
+    vertical-align: middle;
 }
 
 #weekTitle {
@@ -306,7 +303,7 @@ body:not(.dark-mode) #weekNav {
 
 #pullToRefresh {
     position: absolute;
-    top: calc(-50px + env(safe-area-inset-top));
+    top: -50px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -384,27 +381,6 @@ body.dark-mode #modal p {
     transform: scale(0.95);
 }
 
-.toast {
-    position: absolute;
-    bottom: 60px;
-    right: 16px;
-    background: var(--bg-card-light);
-    color: var(--text-light);
-    padding: 8px 16px;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    font-size: 0.85rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.3s, transform 0.3s;
-    z-index: 100;
-}
-
-.toast.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
 :focus {
     outline: 2px solid var(--accent-blue);
     outline-offset: 2px;
@@ -427,7 +403,6 @@ body.dark-mode #modal p {
     </button>
     <button id="currentWeekBtn" class="nav-btn" aria-label="Current Week">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-        <span class="sunday-text"></span>
     </button>
     <div id="weekTitle"></div>
     <button id="nextWeekBtn" class="nav-btn" aria-label="Next Week">
@@ -435,7 +410,9 @@ body.dark-mode #modal p {
     </button>
 </div>
 
-<main id="menu"></main>
+<div id="menuWrapper">
+    <main id="menu"></main>
+</div>
 
 <div id="modal">
     <div id="modalContent">
@@ -450,7 +427,7 @@ body.dark-mode #modal p {
 </div>
 
 <script>
-// --- Menu Data
+// --- Menu Data (unchanged)
 const MENUS = {
     1: {
         Monday: "Oven baked sausage / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
@@ -520,7 +497,6 @@ const weekMap = [
 // --- State Management
 let packedLunch = JSON.parse(localStorage.getItem('packedLunch') || '{}');
 let currentWeekIndex = getInitialWeekIndex();
-let weekCache = {};
 const isDarkMode = localStorage.getItem('darkMode') === 'true';
 if (isDarkMode) document.body.classList.add('dark-mode');
 
@@ -531,7 +507,6 @@ const packedCountEl = document.getElementById('packedCount');
 const prevWeekBtn = document.getElementById('prevWeekBtn');
 const nextWeekBtn = document.getElementById('nextWeekBtn');
 const currentWeekBtn = document.getElementById('currentWeekBtn');
-const currentWeekText = currentWeekBtn.querySelector('.sunday-text');
 const darkModeToggle = document.getElementById('darkModeToggle');
 const pullToRefresh = document.getElementById('pullToRefresh');
 const modal = document.getElementById('modal');
@@ -544,170 +519,54 @@ function getInitialWeekIndex() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const todayTimestamp = today.getTime();
-    const isSunday = today.getDay() === 0;
 
-    let index = 0;
     for (let i = weekMap.length - 1; i >= 0; i--) {
         const weekStart = new Date(weekMap[i].start);
         weekStart.setHours(0, 0, 0, 0);
         if (todayTimestamp >= weekStart.getTime()) {
-            index = i;
-            break;
+            return i;
         }
     }
-
-    if (isSunday && index < weekMap.length - 1) {
-        index++;
-    }
-
-    return index;
-}
-
-function generateWeekContent(index) {
-    if (!weekMap[index]) {
-        return '<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>';
-    }
-
-    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const weekInfo = weekMap[index];
-    const weekStartDate = new Date(weekInfo.start);
-    weekStartDate.setHours(0, 0, 0, 0);
-
-    let html = '';
-    weekdays.forEach((day, i) => {
-        const dayDate = new Date(weekStartDate);
-        dayDate.setDate(weekStartDate.getDate() + i);
-        dayDate.setHours(0, 0, 0, 0);
-
-        const isPacked = !!packedLunch[weekInfo.week]?.[day];
-        let label = '';
-        if (dayDate.getTime() === today.getTime()) {
-            label = '<span class="dayLabel today">Today</span>';
-        } else if (dayDate.getTime() === today.getTime() + 86400000) {
-            label = '<span class="dayLabel tomorrow">Tomorrow</span>';
-        } else if (dayDate.getTime() < today.getTime()) {
-            label = '<span class="dayLabel past">Past</span>';
-        }
-
-        html += `
-            <div class="card${isPacked ? ' packed' : ''}" data-day="${day}" data-week="${weekInfo.week}">
-                ${label}
-                <div class="dayTitle">${day}</div>
-                <div class="menuText">${MENUS[weekInfo.week][day]}</div>
-                <label class="toggle">
-                    <input type="checkbox"${isPacked ? ' checked' : ''}>
-                    <span class="slider"></span>
-                </label>
-            </div>
-        `;
-    });
-
-    return html;
-}
-
-function preloadWeeks() {
-    weekCache[currentWeekIndex] = generateWeekContent(currentWeekIndex);
-    if (currentWeekIndex > 0) {
-        weekCache[currentWeekIndex - 1] = generateWeekContent(currentWeekIndex - 1);
-    } else {
-        weekCache[currentWeekIndex - 1] = '';
-    }
-    if (currentWeekIndex < weekMap.length - 1) {
-        weekCache[currentWeekIndex + 1] = generateWeekContent(currentWeekIndex + 1);
-    } else {
-        weekCache[currentWeekIndex + 1] = '';
-    }
+    return 0;
 }
 
 function renderMenu(direction = null) {
-    if (!weekMap[currentWeekIndex]) {
-        menuContainer.innerHTML = '<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>';
-        updateDisplay();
-        return;
+    const wrapper = document.getElementById('menuWrapper');
+    const oldMenu = menuContainer.cloneNode(true);
+    oldMenu.id = 'menu-old';
+    oldMenu.style.position = 'absolute';
+    oldMenu.style.top = '0';
+    oldMenu.style.left = '0';
+    oldMenu.style.width = '100%';
+    wrapper.appendChild(oldMenu);
+
+    if (direction === 'next') {
+        oldMenu.classList.add('slide-left');
+        menuContainer.classList.add('slide-left');
+    } else if (direction === 'prev') {
+        oldMenu.classList.add('slide-right');
+        menuContainer.classList.add('slide-right');
     }
 
-    // Generate or use cached content
-    const currentContent = weekCache[currentWeekIndex] || generateWeekContent(currentWeekIndex);
-    menuContainer.innerHTML = currentContent;
-
-    // Attach event listeners
-    attachCardListeners();
-
-    if (direction) {
-        menuContainer.classList.add(direction === 'next' ? 'transition-left' : 'transition-right');
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                menuContainer.classList.remove('transition-left', 'transition-right');
-                menuContainer.innerHTML = weekCache[currentWeekIndex] || generateWeekContent(currentWeekIndex);
-                attachCardListeners();
-                updateDisplay();
-                preloadWeeks();
-            }, 300);
-        });
-    } else {
-        updateDisplay();
-        preloadWeeks();
-    }
-}
-
-function attachCardListeners() {
-    menuContainer.querySelectorAll('.card').forEach(card => {
-        const input = card.querySelector('input');
-        const day = card.dataset.day;
-        const week = card.dataset.week;
-
-        if (input) {
-            input.addEventListener('change', () => {
-                if (!packedLunch[week]) packedLunch[week] = {};
-                if (input.checked) {
-                    packedLunch[week][day] = true;
-                    showToast(`Packed lunch added for ${day}`, card);
-                } else {
-                    delete packedLunch[week][day];
-                    showToast(`Packed lunch removed for ${day}`, card);
-                }
-                localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
-                updatePackedCount();
-                card.classList.toggle('packed', input.checked);
-                preloadWeeks();
-            });
-        }
-
-        card.addEventListener('click', (e) => {
-            if (e.target.closest('.toggle')) return;
-            modalTitle.textContent = `${day} - Week ${week}`;
-            modalDescription.textContent = MENU_DETAILS[week][day].description;
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('show'), 10);
-        });
-    });
-}
-
-function showToast(message, card) {
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = message;
-    card.appendChild(toast);
-    setTimeout(() => toast.classList.add('show'), 10);
     setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 2000);
+        oldMenu.remove();
+        if (direction) {
+            menuContainer.classList.remove('slide-left', 'slide-right');
+        }
+        renderMenuContent();
+    }, 400); // Match transition duration
 }
 
-function updateDisplay() {
-    const weekInfo = weekMap[currentWeekIndex];
+function renderMenuContent() {
+    menuContainer.innerHTML = '';
+    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const isSunday = today.getDay() === 0;
+
+    const weekInfo = weekMap[currentWeekIndex];
 
     if (!weekInfo) {
-        menuContainer.innerHTML = '<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>';
-        weekTitleEl.textContent = 'No Week';
-        document.getElementById('weekInfo').textContent = '';
-        packedCountEl.textContent = '0';
+        menuContainer.innerHTML = `<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>`;
         return;
     }
 
@@ -716,7 +575,71 @@ function updateDisplay() {
 
     weekTitleEl.textContent = `Week ${weekInfo.week}`;
     document.getElementById('weekInfo').textContent = `Week commencing ${weekStartDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
-    currentWeekText.textContent = isSunday ? 'Next Week' : '';
+
+    weekdays.forEach((day, index) => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        if (packedLunch[weekInfo.week]?.[day]) card.classList.add("packed");
+
+        const dayDate = new Date(weekStartDate);
+        dayDate.setDate(weekStartDate.getDate() + index);
+        dayDate.setHours(0, 0, 0, 0);
+
+        const label = document.createElement("span");
+        if (dayDate.getTime() === today.getTime()) {
+            label.textContent = "Today";
+            label.className = "dayLabel today";
+            card.appendChild(label);
+        } else if (dayDate.getTime() === today.getTime() + 86400000) {
+            label.textContent = "Tomorrow";
+            label.className = "dayLabel tomorrow";
+            card.appendChild(label);
+        } else if (dayDate.getTime() < today.getTime()) {
+            label.textContent = "Past";
+            label.className = "dayLabel past";
+            card.appendChild(label);
+        }
+
+        const title = document.createElement("div");
+        title.className = "dayTitle";
+        title.textContent = day;
+        card.appendChild(title);
+
+        const menuText = document.createElement("div");
+        menuText.className = "menuText";
+        menuText.textContent = MENUS[weekInfo.week][day];
+        card.appendChild(menuText);
+
+        const toggle = document.createElement("label");
+        toggle.className = "toggle";
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.checked = !!packedLunch[weekInfo.week]?.[day];
+        const slider = document.createElement("span");
+        slider.className = "slider";
+        toggle.appendChild(input);
+        toggle.appendChild(slider);
+        card.appendChild(toggle);
+
+        input.addEventListener("change", () => {
+            if (!packedLunch[weekInfo.week]) packedLunch[weekInfo.week] = {};
+            if (input.checked) packedLunch[weekInfo.week][day] = true;
+            else delete packedLunch[weekInfo.week][day];
+            localStorage.setItem('packedLunch', JSON.stringify(packedLunch));
+            updatePackedCount();
+            card.classList.toggle("packed", input.checked);
+        });
+
+        card.addEventListener("click", (e) => {
+            if (e.target.closest(".toggle")) return;
+            modalTitle.textContent = `${day} - Week ${weekInfo.week}`;
+            modalDescription.textContent = MENU_DETAILS[weekInfo.week][day].description;
+            modal.style.display = "flex";
+            setTimeout(() => modal.classList.add("show"), 10);
+        });
+
+        menuContainer.appendChild(card);
+    });
 
     updatePackedCount();
     updateNavButtons();
@@ -729,11 +652,11 @@ function updatePackedCount() {
 }
 
 function updateNavButtons() {
-    prevWeekBtn.classList.toggle('disabled', currentWeekIndex === 0);
-    nextWeekBtn.classList.toggle('disabled', currentWeekIndex === weekMap.length - 1);
+    prevWeekBtn.classList.toggle("disabled", currentWeekIndex === 0);
+    nextWeekBtn.classList.toggle("disabled", currentWeekIndex === weekMap.length - 1);
 }
 
-// --- Pull-to-Refresh Simulation
+// --- Pull-to-Refresh Simulation (unchanged)
 let startY = 0;
 let isPulling = false;
 
@@ -790,15 +713,15 @@ darkModeToggle.addEventListener('click', () => {
 
 modalClose.addEventListener('click', () => {
     modal.classList.remove('show');
-    setTimeout(() => modal.style.display = 'none', 300);
+    setTimeout(() => modal.style.display = "none", 300);
 });
 
-// --- Notification Placeholder
+// --- Notification Placeholder (unchanged)
 function requestNotificationPermission() {
-    if ('Notification' in window && Notification.permission !== 'denied') {
+    if ("Notification" in window && Notification.permission !== "denied") {
         Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                console.log('Notifications enabled. Add logic to schedule packed lunch reminders.');
+            if (permission === "granted") {
+                console.log("Notifications enabled. Add logic to schedule packed lunch reminders.");
             }
         });
     }
@@ -806,7 +729,6 @@ function requestNotificationPermission() {
 
 // --- Initial Render
 requestNotificationPermission();
-preloadWeeks();
 renderMenu();
 </script>
 </body>
