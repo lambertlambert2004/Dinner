@@ -397,54 +397,72 @@ body.dark-mode #modal p {
 <script>
 const MENUS = {
     1: {
-        Monday: "Oven baked sausage 🌭 / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
-        Tuesday: "Oven baked fish 🐟 / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
-        Wednesday: "Chicken curry 🍛 / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
-        Thursday: "Cottage pie 🥧 / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
-        Friday: "Breaded chicken steak 🍗 / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
+        Monday: "Oven baked sausages 🌭 / Vegetarian sausage\nAccompaniments of the day\nHomemade biscuit, peach slices / Fresh fruit",
+        Tuesday: "BBQ chicken wrap 🌯 / Cheese and tomato pizza\nAccompaniments of the day\nFruit yoghurt pot / Fresh fruit",
+        Wednesday: "Cheesy beany jacket 🥔 / Breaded chicken steak\nAccompaniments of the day\nPancake, sliced fruit / Fresh fruit",
+        Thursday: "Cottage pie 🥧 / Tomato pasta bake\nAccompaniments of the day\nCocoa crispy bar / Fresh fruit",
+        Friday: "Baked fish 🐟 / Cheese wrap\nAccompaniments of the day\nJam split, fruit wedge / Fresh fruit"
     },
     2: {
-        Monday: "Pasta bolognese 🍝 / Cheese and tomato pizza\nAccompaniments\nFruit / Biscuit",
-        Tuesday: "Oven baked fish 🐟 / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
-        Wednesday: "Chicken curry 🍛 / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
-        Thursday: "Cottage pie 🥧 / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
-        Friday: "Breaded chicken steak 🍗 / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
+        Monday: "Breaded chicken steak 🍗 / Vegetable cheese bake\nAccompaniments of the day\nFruit yoghurt pot / Fresh fruit",
+        Tuesday: "Pasta bolognese 🍝 / Omelette\nAccompaniments of the day\nJelly, mandarins / Fresh fruit",
+        Wednesday: "Chicken curry 🍛 / Cheese and tomato pizza\nAccompaniments of the day\nFruit muffin / Fresh fruit",
+        Thursday: "Roast chicken 🥚 / Pasta Napolitana\nAccompaniments of the day\nCookie / Fresh fruit",
+        Friday: "Fish fingers 🐟 / Cheese wrap\nAccompaniments of the day\nWelsh cake, fruit wedge / Fresh fruit"
     },
     3: {
-        Monday: "Oven baked sausage 🌭 / Vegetarian sausage\nAccompaniments\nFruit / Biscuit",
-        Tuesday: "Oven baked fish 🐟 / Cheese wrap\nAccompaniments\nJam split and fruit wedge",
-        Wednesday: "Chicken curry 🍛 / Quorn curry\nAccompaniments\nRice, Naan bread and vegetables\nFruit",
-        Thursday: "Cottage pie 🥧 / Macaroni cheese\nAccompaniments\nCookie / Fresh fruit",
-        Friday: "Breaded chicken steak 🍗 / Vegetable hotdog\nAccompaniments\nFruit yoghurt pot / Fresh fruit"
+        Monday: "Meatballs 🍲 / Tomato pasta bake\nAccompaniments of the day\nJam split, fruit wedge / Fresh fruit",
+        Tuesday: "Chicken curry 🍛 / Margherita pizza\nAccompaniments of the day\nFruit yoghurt pot / Fresh fruit",
+        Wednesday: "Cheese and tomato calzone 🍕 / Breaded chicken steak\nAccompaniments of the day\nJelly, mandarins / Fresh fruit",
+        Thursday: "Roast turkey 🦃 / Macaroni cheese\nAccompaniments of the day\nChocolate cookie / Fresh fruit",
+        Friday: "Baked fish 🐟 / Cheese wrap\nAccompaniments of the day\nFruit muffin / Fresh fruit"
     }
 };
 const MENU_DETAILS = {
     1: {
-        Monday: { description: "Sausage or vegetarian sausage with mashed potatoes and gravy. Includes fruit or a biscuit." },
-        Tuesday: { description: "Freshly baked fish or cheese wrap with salad. Served with a jam split and fruit wedge." },
-        Wednesday: { description: "Mild chicken or Quorn curry with rice, naan, and mixed vegetables. Fruit included." },
-        Thursday: { description: "Traditional cottage pie or macaroni cheese with greens. Comes with a cookie or fruit." },
-        Friday: { description: "Breaded chicken steak or veggie hotdog with fries. Includes fruit yoghurt or fresh fruit." }
+        Monday: { description: "Oven baked sausages or vegetarian sausage with daily accompaniments. Includes homemade biscuit and peach slices or fresh fruit. Halal baked sausage or GF/DF sausage available." },
+        Tuesday: { description: "BBQ chicken wrap or cheese and tomato pizza with daily accompaniments. Served with fruit yoghurt pot or fresh fruit. Halal or GF/DF BBQ chicken wrap available." },
+        Wednesday: { description: "Cheesy beany jacket potato or breaded chicken steak with daily accompaniments. Includes pancake with sliced fruit or fresh fruit. Halal breaded chicken steak or GF/DF cheesy beany jacket available." },
+        Thursday: { description: "Traditional cottage pie or tomato pasta bake with daily accompaniments. Comes with cocoa crispy bar or fresh fruit. Halal cottage pie or GF/DF tomato pasta bake available." },
+        Friday: { description: "Baked fish or cheese wrap with daily accompaniments. Includes jam split and fruit wedge or fresh fruit. Halal baked fish, GF/DF fish fingers, or baked salmon option available." }
     },
     2: {
-        Monday: { description: "Hearty pasta bolognese or cheese and tomato pizza with salad. Fruit or biscuit included." },
-        Tuesday: { description: "Freshly baked fish or cheese wrap with salad. Served with a jam split and fruit wedge." },
-        Wednesday: { description: "Mild chicken or Quorn curry with rice, naan, and mixed vegetables. Fruit included." },
-        Thursday: { description: "Traditional cottage pie or macaroni cheese with greens. Comes with a cookie or fruit." },
-        Friday: { description: "Breaded chicken steak or veggie hotdog with fries. Includes fruit yoghurt or fresh fruit." }
+        Monday: { description: "Breaded chicken steak or vegetable cheese bake with daily accompaniments. Includes fruit yoghurt pot or fresh fruit. Halal or GF/DF chicken steak available." },
+        Tuesday: { description: "Pasta bolognese or omelette with daily accompaniments. Served with jelly and mandarins or fresh fruit. Halal or GF/DF pasta bolognese available." },
+        Wednesday: { description: "Mild chicken curry or cheese and tomato pizza with daily accompaniments. Includes fruit muffin or fresh fruit. Halal or GF/DF chicken curry available." },
+        Thursday: { description: "Roast chicken or pasta Napolitana with daily accompaniments. Comes with a cookie or fresh fruit. Halal or GF/DF roast chicken available." },
+        Friday: { description: "Fish fingers or cheese wrap with daily accompaniments. Includes Welsh cake and fruit wedge or fresh fruit. Halal or GF/DF fish fingers or baked salmon option available." }
     },
     3: {
-        Monday: { description: "Sausage or vegetarian sausage with mashed potatoes and gravy. Includes fruit or a biscuit." },
-        Tuesday: { description: "Freshly baked fish or cheese wrap with salad. Served with a jam split and fruit wedge." },
-        Wednesday: { description: "Mild chicken or Quorn curry with rice, naan, and mixed vegetables. Fruit included." },
-        Thursday: { description: "Traditional cottage pie or macaroni cheese with greens. Comes with a cookie or fruit." },
-        Friday: { description: "Breaded chicken steak or veggie hotdog with fries. Includes fruit yoghurt or fresh fruit." }
+        Monday: { description: "Meatballs or tomato pasta bake with daily accompaniments. Includes jam split and fruit wedge or fresh fruit. Halal or GF/DF meatballs available." },
+        Tuesday: { description: "Mild chicken curry or margherita pizza with daily accompaniments. Served with fruit yoghurt pot or fresh fruit. Halal or GF/DF chicken curry available." },
+        Wednesday: { description: "Cheese and tomato calzone or breaded chicken steak with daily accompaniments. Includes jelly and mandarins or fresh fruit. Halal breaded chicken steak available." },
+        Thursday: { description: "Roast turkey or macaroni cheese with daily accompaniments. Comes with chocolate cookie or fresh fruit. Halal or GF/DF roast turkey available." },
+        Friday: { description: "Baked fish or cheese wrap with daily accompaniments. Includes fruit muffin or fresh fruit. Halal baked fish, GF/DF fish fingers, or baked salmon option available." }
     }
 };
 const ALLERGENS = {
-    1: { Monday: ["gluten", "dairy"], Tuesday: ["fish", "gluten", "dairy"], Wednesday: ["gluten"], Thursday: ["gluten", "dairy"], Friday: ["gluten", "dairy"] },
-    2: { Monday: ["gluten", "dairy"], Tuesday: ["fish", "gluten", "dairy"], Wednesday: ["gluten"], Thursday: ["gluten", "dairy"], Friday: ["gluten", "dairy"] },
-    3: { Monday: ["gluten", "dairy"], Tuesday: ["fish", "gluten", "dairy"], Wednesday: ["gluten"], Thursday: ["gluten", "dairy"], Friday: ["gluten", "dairy"] }
+    1: {
+        Monday: ["gluten", "dairy"], // Sausages, biscuit
+        Tuesday: ["gluten", "dairy"], // Wrap, pizza, yoghurt
+        Wednesday: ["gluten", "dairy"], // Jacket, chicken, pancake
+        Thursday: ["gluten", "dairy"], // Cottage pie, pasta, crispy bar
+        Friday: ["fish", "gluten", "dairy"] // Fish, wrap, jam split
+    },
+    2: {
+        Monday: ["gluten", "dairy"], // Chicken, cheese bake, yoghurt
+        Tuesday: ["gluten", "dairy"], // Pasta, omelette
+        Wednesday: ["gluten", "dairy"], // Curry, pizza, muffin
+        Thursday: ["gluten"], // Roast chicken, pasta
+        Friday: ["fish", "gluten", "dairy"] // Fish fingers, wrap, Welsh cake
+    },
+    3: {
+        Monday: ["gluten"], // Meatballs, pasta
+        Tuesday: ["gluten", "dairy"], // Curry, pizza, yoghurt
+        Wednesday: ["gluten", "dairy"], // Calzone, chicken
+        Thursday: ["gluten", "dairy"], // Turkey, macaroni
+        Friday: ["fish", "gluten", "dairy"] // Fish, wrap, muffin
+    }
 };
 const ALLERGEN_ICONS = { gluten: "🌾", dairy: "🧀", fish: "🐟", nuts: "🥜" };
 const weekMap = [
