@@ -629,32 +629,47 @@ const progressFill = document.getElementById('progressFill');
 
 // --- Functions
 function getInitialWeekIndex() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const todayTimestamp = today.getTime();
-    const isSunday = today.getDay() === 0;
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const todayTimestamp = today.getTime();
+        const isSunday = today.getDay() === 0;
 
-    for (let i = weekMap.length - 1; i >= 0; i--) {
-        const weekStart = new Date(weekMap[i].start);
-        weekStart.setHours(0, 0, 0, 0);
-        if (todayTimestamp >= weekStart.getTime()) {
-            return isSunday && i < weekMap.length - 1 ? i + 1 : i;
+        console.log('Calculating initial week index. Today:', today, 'Is Sunday:', isSunday);
+
+        for (let i = weekMap.length - 1; i >= 0; i--) {
+            const weekStart = new Date(weekMap[i].start);
+            weekStart.setHours(0, 0, 0, 0);
+            if (todayTimestamp >= weekStart.getTime()) {
+                const index = isSunday && i < weekMap.length - 1 ? i + 1 : i;
+                console.log('Selected week index:', index, 'Week:', weekMap[index]);
+                return index;
+            }
         }
+        console.warn('No valid week found, defaulting to 0');
+        return 0;
+    } catch (error) {
+        console.error('Error in getInitialWeekIndex:', error);
+        return 0;
     }
-    return 0;
 }
 
 function renderMenu(direction = null) {
-    if (isAnimating) return;
+    if (isAnimating) {
+        console.log('Animation in progress, skipping render');
+        return;
+    }
     isAnimating = true;
 
     try {
+        console.log('Rendering menu. Direction:', direction, 'Week index:', currentWeekIndex);
         menuNewContainer.innerHTML = '';
         menuNewContainer.style.display = 'flex';
         renderMenuContent(menuNewContainer);
 
         if (direction) {
             const isNext = direction === 'next';
+            console.log('Animating:', isNext ? 'Next (slide left)' : 'Previous (slide right)');
             menuContainer.classList.add(isNext ? 'slide-left' : 'slide-right');
             menuNewContainer.classList.add(isNext ? 'slide-in-right' : 'slide-in-left');
 
@@ -663,6 +678,7 @@ function renderMenu(direction = null) {
             });
 
             const onTransitionEnd = () => {
+                console.log('Transition ended, swapping containers');
                 menuContainer.classList.remove('slide-left', 'slide-right');
                 menuNewContainer.classList.remove('slide-in-right', 'slide-in-left', 'active');
                 menuContainer.innerHTML = menuNewContainer.innerHTML;
@@ -674,6 +690,7 @@ function renderMenu(direction = null) {
 
             menuContainer.addEventListener('transitionend', onTransitionEnd);
         } else {
+            console.log('No direction, direct render to main container');
             menuContainer.innerHTML = menuNewContainer.innerHTML;
             menuNewContainer.style.display = 'none';
             menuNewContainer.innerHTML = '';
@@ -690,17 +707,21 @@ function renderMenu(direction = null) {
 
 function renderMenuContent(container) {
     try {
+        const weekInfo = weekMap[currentWeekIndex];
+        console.log('Rendering content for week:', weekInfo);
+
+        if (!weekInfo || !MENUS[weekInfo.week]) {
+            console.warn('Invalid week info or menu data, falling back to Week 1');
+            container.innerHTML = `<div class="card"><div class="dayTitle">No menu found</div><div class="menuText">Displaying Week 1 as fallback.</div></div>`;
+            currentWeekIndex = 0; // Fallback to Week 1
+            renderMenuContent(container); // Retry with Week 1
+            return;
+        }
+
         container.innerHTML = '';
         const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-
-        const weekInfo = weekMap[currentWeekIndex];
-
-        if (!weekInfo || !MENUS[weekInfo.week]) {
-            container.innerHTML = `<div class="card"><div class="dayTitle">No menu found.</div><div class="menuText">Please check the menu data.</div></div>`;
-            return;
-        }
 
         const weekStartDate = new Date(weekInfo.start);
         weekStartDate.setHours(0, 0, 0, 0);
@@ -741,7 +762,7 @@ function renderMenuContent(container) {
 
             const menuText = document.createElement("div");
             menuText.className = "menuText";
-            menuText.textContent = MENUS[weekInfo.week][day];
+            menuText.textContent = MENUS[weekInfo.week][day] || "Menu not available";
             card.appendChild(menuText);
 
             const allergens = document.createElement("div");
@@ -776,7 +797,7 @@ function renderMenuContent(container) {
             card.addEventListener("click", (e) => {
                 if (e.target.closest(".toggle")) return;
                 modalTitle.textContent = `${day} - Week ${weekInfo.week}`;
-                modalDescription.textContent = `${MENU_DETAILS[weekInfo.week][day].description}\n\nAllergens: ${ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None"}`;
+                modalDescription.textContent = `${MENU_DETAILS[weekInfo.week][day]?.description || "No description available"}\n\nAllergens: ${ALLERGENS[weekInfo.week][day]?.map(a => ALLERGEN_ICONS[a]).join(" ") || "None"}`;
                 modal.style.display = "flex";
                 setTimeout(() => modal.classList.add("show"), 10);
             });
@@ -787,7 +808,7 @@ function renderMenuContent(container) {
         updatePackedCount();
     } catch (error) {
         console.error('Error rendering menu content:', error);
-        container.innerHTML = `<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu. Please try again.</div></div>`;
+        container.innerHTML = `<div class="card"><div class="dayTitle">Error</div><div class="menuText">Failed to load menu content. Please try again.</div></div>`;
     }
 }
 
@@ -796,6 +817,7 @@ function updatePackedCount() {
         const weekInfo = weekMap[currentWeekIndex];
         const count = Object.keys(packedLunch[weekInfo.week] || {}).length;
         packedCountEl.textContent = count;
+        console.log('Packed count updated:', count);
     } catch (error) {
         console.error('Error updating packed count:', error);
         packedCountEl.textContent = '0';
@@ -806,6 +828,7 @@ function updateNavButtons() {
     try {
         prevWeekBtn.classList.toggle("disabled", currentWeekIndex === 0);
         nextWeekBtn.classList.toggle("disabled", currentWeekIndex === weekMap.length - 1);
+        console.log('Nav buttons updated. Prev disabled:', currentWeekIndex === 0, 'Next disabled:', currentWeekIndex === weekMap.length - 1);
     } catch (error) {
         console.error('Error updating nav buttons:', error);
     }
@@ -835,6 +858,7 @@ document.addEventListener('touchmove', (e) => {
 
 document.addEventListener('touchend', () => {
     if (isPulling && pullToRefresh.classList.contains('visible')) {
+        console.log('Pull-to-refresh triggered');
         renderMenu();
         pullToRefresh.classList.remove('visible');
     }
@@ -870,6 +894,7 @@ darkModeToggle.addEventListener('click', () => {
     try {
         document.body.classList.toggle('dark-mode');
         localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        console.log('Dark mode toggled:', document.body.classList.contains('dark-mode'));
     } catch (error) {
         console.error('Error toggling dark mode:', error);
     }
@@ -893,12 +918,14 @@ function requestNotificationPermission() {
 
 // --- Initial Render
 try {
+    console.log('Starting initial render');
     requestNotificationPermission();
     requestAnimationFrame(() => {
         renderMenu();
         currentWeekBtn.style.opacity = '0';
         requestAnimationFrame(() => {
             currentWeekBtn.style.opacity = '1';
+            console.log('Initial render complete');
         });
     });
 } catch (error) {
