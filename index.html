@@ -7,7 +7,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Dinner">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#eaf2f5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#06151e" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.json">
@@ -64,20 +64,20 @@ body{
   min-height:100vh;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
-  padding:0 16px calc(40px + env(safe-area-inset-bottom));
+  padding:0 calc(16px + env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
   -webkit-touch-callout:none;
   -webkit-tap-highlight-color:transparent;
 }
 .wrap{max-width:760px;margin:0 auto}
 
 /* tide signature line */
-#tide{position:fixed;top:0;left:0;right:0;height:3px;background:var(--hairline);z-index:60}
+#tide{position:fixed;top:env(safe-area-inset-top);left:0;right:0;height:3px;background:var(--hairline);z-index:60}
 #tideFill{height:100%;width:0;background:linear-gradient(90deg,var(--tide-deep),var(--tide),var(--seafoam));
   background-size:220% 100%;transition:width .6s var(--ease);border-radius:0 3px 3px 0}
 
 /* app bar */
-.appbar{position:sticky;top:3px;z-index:50;display:flex;align-items:center;justify-content:space-between;
-  padding:14px 0 12px;background:rgba(240,246,248,.72);
+.appbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:calc(14px + env(safe-area-inset-top)) 0 12px;background:rgba(240,246,248,.72);
   -webkit-backdrop-filter:saturate(1.5) blur(20px);backdrop-filter:saturate(1.5) blur(20px);
   border-bottom:1px solid var(--hairline)}
 body.dark-mode .appbar,html.preload-dark .appbar{background:rgba(8,21,30,.72)}
@@ -284,9 +284,13 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
 .kid-chip button:hover{color:var(--coral)}
 .kid-chip svg{width:15px;height:15px}
 /* allergy warning */
-.warn{display:flex;align-items:flex-start;gap:9px;background:var(--coral-tint);border:1px solid var(--coral-line);
-  color:var(--coral-ink);border-radius:12px;padding:9px 11px;font-size:.82rem;font-weight:600;line-height:1.4;margin:0 0 10px}
-.warn svg{width:17px;height:17px;flex:none;margin-top:1px}
+.warn{display:flex;align-items:flex-start;gap:10px;background:var(--coral-tint);border:1px solid var(--coral-line);
+  color:var(--coral-ink);border-radius:12px;padding:11px 13px;font-size:.82rem;line-height:1.45;margin:14px 0 10px}
+.warn svg{width:18px;height:18px;flex:none;margin-top:1px}
+.warn-text{display:flex;flex-direction:column;gap:3px}
+.warn-title{font-weight:700}
+.warn-affects{font-weight:600}
+.warn-note{font-weight:600;opacity:.78;font-size:.78rem}
 .day.alert{border-color:var(--coral-line)}
 .hero.alert::before{background:linear-gradient(180deg,var(--coral),#b23a25)}
 @media (prefers-reduced-motion: no-preference){
@@ -636,7 +640,7 @@ let remindersOn = localStorage.getItem('remindersOn')==='1';
 let reminderTime = localStorage.getItem('reminderTime') || '18:00';
 let childAllergens = (()=>{ try{return JSON.parse(localStorage.getItem('childAllergens')||'{}')}catch(e){return {}} })();
 const ALL_ALLERGENS = ['gluten','dairy','fish','nuts'];
-const APP_VERSION = 'v9';
+const APP_VERSION = 'v11';
 const ICON='./icon-192.png';
 
 /* ================= Language ================= */
@@ -674,6 +678,9 @@ const STR = {
   no_more_menus:["No more menus","Dim mwy o fwydlenni","No hay mas menus"],
   year_finished:["The school year has finished. Enjoy the break.","Mae'r flwyddyn ysgol wedi gorffen. Mwynhewch y gwyliau.","El curso escolar ha terminado. Disfruta del descanso."],
   allergy_alert:["Allergy alert: this menu has {e}. Affects {t}. Check before ordering.","Rhybudd alergedd: mae'r fwydlen hon yn cynnwys {e}. Yn effeithio ar {t}. Gwiriwch cyn archebu.","Alerta de alergia: este menu contiene {e}. Afecta a {t}. Comprueba antes de pedir."],
+  warn_title:["Allergy alert: contains {e}","Rhybudd alergedd: yn cynnwys {e}","Alerta de alergia: contiene {e}"],
+  warn_affects:["Affects {t}","Yn effeithio ar {t}","Afecta a {t}"],
+  warn_check:["Check before ordering","Gwiriwch cyn archebu","Comprueba antes de pedir"],
   packed_n:["{n} packed this week","{n} pecyn yr wythnos hon","{n} de fiambrera esta semana"],
   no_packed:["No packed lunches this week","Dim pecynnau bwyd yr wythnos hon","Sin fiambreras esta semana"],
   week_lbl:["Week {n}","Wythnos {n}","Semana {n}"], range_to:["to","i","a"],
@@ -1014,7 +1021,7 @@ function warnHtml(week,day){
   if(!conf.length) return '';
   const text=conf.map(c=>`${escapeHtml(c.child)} (${c.list.map(a=>t(a)).join(', ')})`).join('; ');
   const emojis=[...new Set(conf.flatMap(c=>c.list))].map(a=>ALLERGEN_ICONS[a]).join(' ');
-  return `<div class="warn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22L12 2zm0 6 7 12H5l7-12zm-1 4v3h2v-3h-2zm0 4v2h2v-2h-2z"/></svg><span>${t('allergy_alert',{e:emojis,t:text})}</span></div>`;
+  return `<div class="warn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22L12 2zm0 6 7 12H5l7-12zm-1 4v3h2v-3h-2zm0 4v2h2v-2h-2z"/></svg><div class="warn-text"><span class="warn-title">${t('warn_title',{e:emojis})}</span><span class="warn-affects">${t('warn_affects',{t:text})}</span><span class="warn-note">${t('warn_check')}</span></div></div>`;
 }
 function buildAllergenPicker(selectedArr,onToggle){
   const wrap=document.createElement('div'); wrap.className='aller-pick';
