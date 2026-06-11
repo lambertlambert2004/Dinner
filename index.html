@@ -197,6 +197,7 @@ body.dark-mode .switch input:checked + .track{background:linear-gradient(180deg,
 .scrim{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;z-index:90;
   background:rgba(8,20,28,.5);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);padding:0}
 .scrim.show{display:flex}
+#confirmScrim{z-index:120}
 .sheet{background:var(--surface);width:100%;max-width:560px;border-radius:26px 26px 0 0;padding:30px 22px calc(26px + env(safe-area-inset-bottom));
   box-shadow:0 -12px 40px -16px rgba(8,20,28,.5);transform:translateY(16px);opacity:0;position:relative;
   max-height:90vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
@@ -346,7 +347,7 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
       </span>
       <div>
         <p class="eyebrow" id="schoolName">Hendrefoilan Primary</p>
-        <h1>Dinner</h1>
+        <h1 id="appTitle">Dinner</h1>
       </div>
     </div>
     <div class="appbar-actions">
@@ -640,7 +641,7 @@ let remindersOn = localStorage.getItem('remindersOn')==='1';
 let reminderTime = localStorage.getItem('reminderTime') || '18:00';
 let childAllergens = (()=>{ try{return JSON.parse(localStorage.getItem('childAllergens')||'{}')}catch(e){return {}} })();
 const ALL_ALLERGENS = ['gluten','dairy','fish','nuts'];
-const APP_VERSION = 'v11';
+const APP_VERSION = 'v14';
 const ICON='./icon-192.png';
 
 /* ================= Language ================= */
@@ -691,6 +692,12 @@ const STR = {
   cal_note:["Adds a calendar alert for every packed lunch coming up this term. Tap again after you change packed days to refresh them.","Yn ychwanegu rhybudd calendr ar gyfer pob pecyn bwyd sydd i ddod y tymor hwn. Tapiwch eto ar ol newid diwrnodau pecyn i'w hadnewyddu.","Anade una alerta de calendario para cada fiambrera de este trimestre. Toca otra vez tras cambiar los dias para actualizarlas."],
   home_screen:["Home screen","Sgrin gartref","Pantalla de inicio"],
   add_home:["Add to home screen","Ychwanegu at y sgrin gartref","Anadir a la pantalla de inicio"],
+  share_app_title:["Share the app","Rhannu'r ap","Compartir la app"],
+  share_app_desc:["Send another parent a link to Dinner so they can use it too.","Anfonwch ddolen Dinner at riant arall fel y gallant ei ddefnyddio hefyd.","Envia a otro padre un enlace a Dinner para que tambien pueda usarla."],
+  send_link:["Send link","Anfon dolen","Enviar enlace"],
+  copy_link:["Copy link","Copio dolen","Copiar enlace"],
+  share_app_text:["Dinner, the school dinner menu app for Swansea primaries:","Dinner, yr ap bwydlen cinio ysgol ar gyfer ysgolion cynradd Abertawe:","Dinner, la app del menu del comedor para las primarias de Swansea:"],
+  t_link_copied:["Link copied","Dolen wedi'i chopio","Enlace copiado"],
   share_title:["Share with another parent","Rhannu gyda rhiant arall","Compartir con otro padre"],
   share_desc:["Co-parenting? Send this short code to the other parent. They paste it in here and get the exact same setup. No accounts, no files.","Yn cyd-rianta? Anfonwch y cod byr hwn at y rhiant arall. Maent yn ei ludo yma ac yn cael yr un gosodiad yn union. Dim cyfrifon, dim ffeiliau.","Crianza compartida? Envia este codigo corto al otro padre. Lo pega aqui y obtiene la misma configuracion. Sin cuentas, sin archivos."],
   copy_code:["Copy code","Copio'r cod","Copiar codigo"], email_it:["Email it","E-bostio","Enviar por correo"],
@@ -711,6 +718,7 @@ const STR = {
   remove:["Remove","Tynnu","Quitar"],
   remove_q:["Remove {name}?","Tynnu {name}?","Quitar a {name}?"],
   remove_msg:["This clears {name} and their packed lunches.","Mae hyn yn clirio {name} a'u pecynnau bwyd.","Esto borra a {name} y sus fiambreras."],
+  remove_last_msg:["This is your only child, so removing them takes you back to the welcome screen.","Dyma eich unig blentyn, felly bydd eu tynnu yn mynd a chi yn ol i'r sgrin groeso.","Es tu unico hijo, asi que al quitarlo volveras a la pantalla de bienvenida."],
   pack_q:["Pack lunch on {d}?","Pecyn bwyd ar {d}?","Fiambrera el {d}?"],
   pack_msg:["{c} brings a packed lunch instead of a school dinner.","Mae {c} yn dod a phecyn bwyd yn lle cinio ysgol.","{c} lleva fiambrera en vez de comedor."],
   pack_ok:["Pack lunch","Pecyn bwyd","Llevar fiambrera"],
@@ -740,6 +748,7 @@ const STR = {
   theme:["Theme","Thema","Tema"], theme_system:["System","System","Sistema"],
   theme_light:["Light","Golau","Claro"], theme_dark:["Dark","Tywyll","Oscuro"],
   language:["Language","Iaith","Idioma"],
+  app_title:["Dinner","Cinio","Comedor"],
   t_copied:["Code copied","Cod wedi'i gopio","Codigo copiado"],
   t_select:["Select the code and copy it","Dewiswch y cod a'i gopio","Selecciona el codigo y copialo"],
   t_loaded:["Plan loaded","Cynllun wedi'i lwytho","Plan cargado"],
@@ -1093,12 +1102,25 @@ function renderKids(){
     const row=document.createElement('div'); row.className='kid';
     row.innerHTML=`<span class="name">${escapeHtml(child)}</span><span class="kcount">${total} packed</span>`;
     const rm=document.createElement('button'); rm.className='btn btn-danger'; rm.textContent=t('remove');
-    rm.onclick=()=>askConfirm(t('remove_q',{name:child}),t('remove_msg',{name:child}),t('remove'),()=>{
-      children=children.filter(c=>c!==child); delete packedLunch[child]; delete childAllergens[child];
-      if(!children.length) children=['Child 1'];
-      save('children',children); save('packedLunch',packedLunch); localStorage.setItem('childAllergens',JSON.stringify(childAllergens));
-      renderKids(); render(false);
-    });
+    rm.onclick=()=>{
+      const isLast = children.length===1;
+      askConfirm(t('remove_q',{name:child}), isLast?t('remove_last_msg'):t('remove_msg',{name:child}), t('remove'), ()=>{
+        children=children.filter(c=>c!==child); delete packedLunch[child]; delete childAllergens[child];
+        if(!children.length){
+          packedLunch={}; childAllergens={};
+          save('children',children); save('packedLunch',packedLunch);
+          localStorage.setItem('childAllergens',JSON.stringify(childAllergens));
+          localStorage.removeItem('onboarded');
+          closeSheet($('manageScrim'));
+          welcomeList=[]; welcomeSelected=[]; renderWelcomeAller(); renderWelcomeKids();
+          openSheet($('welcomeScrim'));
+          render(false);
+          return;
+        }
+        save('children',children); save('packedLunch',packedLunch); localStorage.setItem('childAllergens',JSON.stringify(childAllergens));
+        renderKids(); render(false);
+      });
+    };
     row.appendChild(rm); list.appendChild(row);
 
     const aller=document.createElement('div'); aller.className='kid-allerg';
@@ -1155,7 +1177,7 @@ mqDark.addEventListener('change',()=>{ if(themeMode==='system') applyThemeDOM(ef
 $('themeToggle').addEventListener('click',()=>{ setThemeMode(effectiveDark()?'light':'dark'); });
 
 function applyLang(){
-  const byId={ todayBtn:'jump_today', detailClose:'done', confirmCancel:'cancel',
+  const byId={ todayBtn:'jump_today', appTitle:'app_title', detailClose:'done', confirmCancel:'cancel',
     manageTitle:'children', manageMeta:'add_to_track', addChild:'add', rotaLabel:'menu_rota', rotaDesc:'rota_desc', manageClose:'close',
     welcomeTitle:'welcome_title', welcomeIntro:'welcome_intro', welcomeSchoolLbl:'which_school', welcomeAllerLbl:'allergies_prompt',
     welcomeAdd:'add_child', welcomeGo:'start', welcomeSkip:'setup_later',
@@ -1341,6 +1363,24 @@ function copyShare(){
     navigator.clipboard.writeText(code).then(()=>toast(t('t_copied'))).catch(()=>toast(t('t_select')));
   } else { const el=$('shareCode'); if(el){ el.focus(); } toast(t('t_select')); }
 }
+function appUrl(){ return (location.origin+location.pathname).replace(/index\.html$/,''); }
+function shareAppLink(){
+  const url=appUrl();
+  if(navigator.share){
+    navigator.share({title:'Dinner', text:t('share_app_text'), url}).catch(()=>{});
+  } else {
+    copyAppLink();
+  }
+}
+function copyAppLink(){
+  const url=appUrl();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(()=>toast(t('t_link_copied')))
+      .catch(()=>{ window.location.href='mailto:?subject='+encodeURIComponent('Dinner')+'&body='+encodeURIComponent(t('share_app_text')+' '+url); });
+  } else {
+    window.location.href='mailto:?subject='+encodeURIComponent('Dinner')+'&body='+encodeURIComponent(t('share_app_text')+' '+url);
+  }
+}
 function emailShare(){
   const code=encodeShare();
   const url=location.origin+location.pathname;
@@ -1449,6 +1489,12 @@ function renderSettings(){
   const il=document.createElement('p'); il.className='section-label'; il.textContent=t('home_screen'); box.appendChild(il);
   const ib=document.createElement('button'); ib.className='btn btn-ghost btn-block'; ib.textContent=t('add_home'); ib.onclick=openInstall;
   box.appendChild(ib);
+
+  // Share the app link
+  const al2=document.createElement('p'); al2.className='section-label'; al2.textContent=t('share_app_title'); box.appendChild(al2);
+  const ad2=document.createElement('p'); ad2.className='desc'; ad2.style.margin='0 0 10px'; ad2.textContent=t('share_app_desc'); box.appendChild(ad2);
+  const sb=document.createElement('button'); sb.className='btn btn-primary btn-block'; sb.textContent=t('send_link'); sb.onclick=shareAppLink; box.appendChild(sb);
+  const cl=document.createElement('button'); cl.className='btn btn-ghost btn-block'; cl.style.marginTop='8px'; cl.textContent=t('copy_link'); cl.onclick=copyAppLink; box.appendChild(cl);
 
   // Share with another parent
   const sl=document.createElement('p'); sl.className='section-label'; sl.textContent=t('share_title'); box.appendChild(sl);
@@ -1560,7 +1606,6 @@ $('welcomeSchool').appendChild(buildSchoolSelect());
     openSheet($('welcomeScrim'));
   } else {
     checkTomorrowReminder();
-    if(currentWeekIndex===getInitialWeekIndex()) setTimeout(scrollToToday,250);
   }
 })();
 

@@ -1,7 +1,7 @@
 /* School Dinner Menu - service worker
    HTML is network-first so a new deploy shows straight away.
    Other assets are cache-first for speed and offline use. */
-const CACHE = 'dinner-v11';
+const CACHE = 'dinner-v14';
 const ASSETS = ['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())); });
