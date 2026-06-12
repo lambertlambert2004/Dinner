@@ -11,6 +11,13 @@
 <meta name="theme-color" content="#eaf2f5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#06151e" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.json">
+<!-- Anonymous usage analytics (optional, off by default).
+     To turn it on, create a free account at https://cloud.umami.is (or self-host Umami),
+     add your site, then paste your Website ID below and uncomment the script.
+     It is cookie-free, collects no names, and records school, country and feature usage only.
+<script defer src="https://cloud.umami.is/script.js" data-website-id="PASTE-YOUR-UMAMI-WEBSITE-ID"></script>
+-->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -523,8 +530,8 @@ const MENU_DETAILS = {
 
 const ALLERGENS = {
   1:{ Monday:["gluten","dairy"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten","dairy"], Friday:["fish","gluten","dairy"] },
-  2:{ Monday:["gluten","dairy"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten"], Friday:["fish","gluten","dairy"] },
-  3:{ Monday:["gluten"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten","dairy"], Friday:["fish","gluten","dairy"] }
+  2:{ Monday:["gluten","dairy"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten","dairy"], Friday:["fish","gluten","dairy"] },
+  3:{ Monday:["gluten","dairy"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten","dairy"], Friday:["fish","gluten","dairy"] }
 };
 const ALLERGEN_ICONS = { gluten:"🌾", dairy:"🧀", fish:"🐟", nuts:"🥜" };
 
@@ -546,7 +553,74 @@ const BASE_CLOSURES = { "2026-05-04":"May Day" };
 /* Inset (training) days are chosen by each school. Pre-filled where known;
    the parent can edit them in Settings to match their school's term dates. */
 const KNOWN_INSETS = {
-  "Hendrefoilan Primary School": ["2025-09-01","2025-09-02","2025-11-03","2026-01-05","2026-05-22"]
+  "Birchgrove Primary School": ["2026-01-05"],
+  "Bishopston Primary School": ["2025-09-01","2025-12-19","2026-01-05","2026-02-23","2026-06-01","2026-07-20"],
+  "Blaenymaes Primary School": ["2025-09-01","2025-09-02","2025-10-24","2026-01-05","2026-04-13","2026-07-20"],
+  "Brynmill Primary School": ["2025-09-01","2025-09-02","2025-10-24","2026-01-05","2026-06-01","2026-07-20"],
+  "Burlais Primary School": ["2025-09-01","2025-09-02","2025-11-03"],
+  "Cadle Primary School": ["2025-09-01","2025-09-02","2026-01-05","2026-03-13","2026-07-17","2026-07-20"],
+  "Casllwchwr Primary School": ["2025-10-24","2025-11-03","2025-12-19","2026-01-05","2026-05-01","2026-07-20"],
+  "Christchurch CW Primary School": ["2025-09-01","2025-09-02","2025-12-01","2026-02-23","2026-06-01","2026-07-20"],
+  "Cila Primary School": ["2025-09-01"],
+  "Clase Primary School": ["2025-09-01","2025-09-02","2025-10-06","2026-01-05","2026-07-20"],
+  "Clydach Primary School": ["2025-09-01","2025-09-02","2026-01-05","2026-02-23","2026-04-13","2026-07-20"],
+  "Craigfelen Primary School": ["2025-09-01"],
+  "Crwys Primary School": ["2025-09-01","2025-09-02"],
+  "Cwmrhydyceirw Primary School": ["2025-09-01","2025-09-02","2025-11-28","2026-01-05","2026-05-22","2026-07-20"],
+  "Danygraig Primary School": ["2025-09-01","2026-02-23"],
+  "Dunvant Primary School": ["2025-09-01","2025-09-02","2025-12-19","2026-01-05","2026-06-01","2026-07-20"],
+  "Gendros Primary School": ["2025-09-01","2025-09-02","2026-01-05","2026-03-27","2026-06-01","2026-07-20"],
+  "Glais Primary School": ["2025-09-01","2025-11-03","2026-02-23","2026-06-01","2026-07-17","2026-07-20"],
+  "Glyncollen Primary School": ["2025-09-01","2025-09-02","2025-12-19","2026-02-13","2026-05-08","2026-07-20"],
+  "Gors Community Primary School": ["2025-09-01","2025-09-02","2026-03-25","2026-04-13","2026-06-01","2026-07-20"],
+  "Gorseinon Primary School": ["2025-09-01","2025-09-02","2025-11-03","2026-01-05","2026-04-13","2026-07-20"],
+  "Gowerton Primary School": ["2025-09-01","2025-09-02","2026-01-05","2026-04-13","2026-06-01","2026-07-20"],
+  "Grange Primary School": ["2025-09-01","2025-09-02","2026-01-05","2026-04-13","2026-07-17","2026-07-20"],
+  "Gwyrosydd Primary School": ["2025-09-01","2025-09-15","2026-02-23","2026-05-01","2026-05-05","2026-07-20"],
+  "Hafod Primary School": ["2025-09-01","2025-09-02","2025-12-19","2026-04-13","2026-06-01","2026-07-20"],
+  "Hendrefoilan Primary School": ["2025-09-01","2025-09-02","2025-11-03","2026-01-05","2026-05-22","2026-07-20"],
+  "Knelston Primary School": ["2025-09-01","2025-09-02","2026-02-06","2026-05-08","2026-07-20"],
+  "Llangyfelach Primary School": ["2025-09-01","2025-11-03","2025-11-04","2026-01-05","2026-04-27","2026-07-20"],
+  "Llanrhidian Primary School": ["2025-09-01","2025-09-02","2026-01-05","2026-04-13","2026-07-20"],
+  "Mayals Primary School": ["2025-09-01","2025-09-02","2026-01-05","2026-01-06","2026-02-06","2026-07-20"],
+  "Morriston Primary School": ["2025-09-01","2025-09-02","2026-01-05","2026-04-13","2026-06-01","2026-07-20"],
+  "Newton Primary School": ["2025-09-01","2025-10-03","2026-01-05","2026-02-06","2026-05-22","2026-07-20"],
+  "Oystermouth Primary School": ["2025-09-01","2026-01-05","2026-04-13","2026-05-22","2026-06-01","2026-07-20"],
+  "Parkland Primary School": ["2025-09-01","2025-10-24","2026-01-05","2026-02-13","2026-03-27","2026-07-20"],
+  "Penclawdd Primary School": ["2025-09-01","2025-09-02","2025-10-24","2026-01-05","2026-04-13","2026-07-20"],
+  "Penllergaer Primary School": ["2025-09-01","2025-09-02","2025-09-22","2026-01-05","2026-01-06","2026-07-20"],
+  "Pennard Primary School": ["2025-09-01","2025-11-03","2026-01-05","2026-02-06","2026-04-13","2026-07-20"],
+  "Pentrechwyth Primary School": ["2025-09-01","2025-10-10","2026-01-05"],
+  "Pen-y-Fro Primary School": ["2026-01-05"],
+  "Penyrheol Primary School": ["2025-09-01","2025-09-02","2025-11-03","2025-12-19","2026-05-01","2026-07-20"],
+  "Plasmarl Primary School": ["2025-09-01","2025-09-02","2025-10-24","2026-01-05","2026-04-13","2026-07-20"],
+  "Pontarddulais Primary School": ["2025-09-01","2025-09-02","2026-01-05","2026-07-20"],
+  "Pontlliw Primary School": ["2025-09-01","2025-09-02","2025-10-10","2026-01-05","2026-06-01","2026-07-20"],
+  "Pontybrenin Primary School": ["2025-09-01","2025-11-03","2026-04-13","2026-05-07","2026-07-17","2026-07-20"],
+  "Portmead Primary School": ["2025-09-01","2025-09-02","2025-10-24","2026-01-05","2026-05-01","2026-07-20"],
+  "Sea View Community Primary School": ["2026-01-05"],
+  "Sketty Primary School": ["2025-09-01","2025-09-02","2025-10-03","2025-12-19","2026-05-01","2026-07-20"],
+  "St David's RC Primary School": ["2025-09-01","2025-09-02","2025-10-24","2026-07-20"],
+  "St Helen's Primary School": ["2025-09-01","2025-09-02","2025-11-17","2026-01-05","2026-04-13","2026-07-20"],
+  "St Illtyd's RC Primary School": ["2025-09-01","2025-10-24","2026-02-23","2026-07-20"],
+  "St Joseph's RC Cathedral Primary School": ["2025-09-01","2025-09-02","2025-10-24","2026-02-23","2026-05-22","2026-07-20"],
+  "St Joseph's RC Primary School, Clydach": ["2025-09-01","2025-09-02","2025-10-24","2026-02-23","2026-04-13","2026-07-20"],
+  "St Thomas Community Primary School": ["2025-09-01","2025-09-08","2025-10-10","2026-01-05","2026-07-17","2026-07-20"],
+  "Terrace Road Primary School": ["2025-09-01","2025-09-02","2025-10-22","2026-03-11","2026-06-17","2026-07-20"],
+  "Townhill Primary School": ["2025-09-01","2025-11-03","2026-05-01","2026-05-05","2026-05-22","2026-07-20"],
+  "Trallwn Primary School": ["2025-09-01","2025-10-10","2026-01-30","2026-03-20","2026-05-01","2026-07-20"],
+  "Tre Uchaf Primary School": ["2025-09-01","2025-09-02","2025-11-28","2026-07-20"],
+  "Waunarlwydd Primary School": ["2025-09-01","2025-09-02","2026-01-05","2026-04-13","2026-06-26","2026-07-20"],
+  "Waun Wen Primary School": ["2025-09-01","2025-09-02","2026-03-27","2026-05-22","2026-06-01","2026-07-20"],
+  "Whitestone Primary School": ["2025-09-01","2025-09-02","2025-11-03","2026-01-05","2026-05-07","2026-07-20"],
+  "Ynystawe Primary School": ["2025-09-01","2025-09-02"],
+  "YGG Bryniago": ["2025-09-01","2025-09-02","2026-01-05","2026-04-13","2026-07-20"],
+  "YGG Brynymor": ["2025-09-01","2025-10-24","2026-05-01","2026-07-20"],
+  "YGG Llwynderw": ["2025-09-01","2025-09-02","2026-01-05","2026-02-13","2026-04-13","2026-07-20"],
+  "YGG Lon Las": ["2025-09-01","2025-09-02","2025-10-24","2026-04-24","2026-07-20"],
+  "YGG Pontybrenin": ["2025-09-01","2025-09-02","2025-10-03","2026-01-05","2026-01-20","2026-07-20"],
+  "YGG Tirdeunaw": ["2025-09-01","2025-10-24","2025-11-03","2026-01-05","2026-07-20"],
+  "YGG Y Login Fach": ["2025-09-01","2025-10-03","2026-02-23","2026-06-01","2026-07-20"]
 };
 const SWANSEA_SCHOOLS = [
   "Birchgrove Primary School","Bishopston Primary School","Blaenymaes Primary School",
@@ -562,7 +636,7 @@ const SWANSEA_SCHOOLS = [
   "Oystermouth Primary School","Parkland Primary School","Penclawdd Primary School","Pengelli Primary School",
   "Penllergaer Primary School","Pennard Primary School","Pentrechwyth Primary School","Pentre'r Graig Primary School",
   "Pen-y-Fro Primary School","Penyrheol Primary School","Plasmarl Primary School","Pontarddulais Primary School",
-  "Pontlliw Primary School","Portmead Primary School","Sea View Community Primary School","Sketty Primary School",
+  "Pontlliw Primary School","Pontybrenin Primary School","Portmead Primary School","Sea View Community Primary School","Sketty Primary School",
   "St David's RC Primary School","St Helen's Primary School","St Illtyd's RC Primary School",
   "St Joseph's RC Primary School, Clydach","St Joseph's RC Cathedral Primary School","St Thomas Community Primary School",
   "Talycopa Primary School","Terrace Road Primary School","Townhill Primary School","Trallwn Primary School",
@@ -641,7 +715,7 @@ let remindersOn = localStorage.getItem('remindersOn')==='1';
 let reminderTime = localStorage.getItem('reminderTime') || '18:00';
 let childAllergens = (()=>{ try{return JSON.parse(localStorage.getItem('childAllergens')||'{}')}catch(e){return {}} })();
 const ALL_ALLERGENS = ['gluten','dairy','fish','nuts'];
-const APP_VERSION = 'v14';
+const APP_VERSION = 'v17';
 const ICON='./icon-192.png';
 
 /* ================= Language ================= */
@@ -765,6 +839,15 @@ function t(k,vars){
   const row=STR[k]; let s = row ? (row[LANGS.indexOf(lang)]||row[0]) : k;
   if(vars) for(const p in vars) s=s.split('{'+p+'}').join(vars[p]);
   return s;
+}
+
+/* Anonymous usage tracking. Never sends names. No-ops until an analytics
+   provider (Umami or Plausible) is enabled in the head. */
+function track(event, props){
+  try{
+    if(window.umami && typeof window.umami.track==='function'){ window.umami.track(event, props||{}); }
+    else if(typeof window.plausible==='function'){ window.plausible(event, props?{props}:undefined); }
+  }catch(e){}
 }
 
 /* ================= Theme mode (system / light / dark) ================= */
@@ -1068,6 +1151,7 @@ function buildSchoolSelect(onChange){
 }
 function setSchool(name){
   if(name===school.name) { updateSchoolHeader(); return; }
+  track('school_selected',{school:schoolShort(name)});
   school.name=name;
   school.insets=(KNOWN_INSETS[name]||[]).slice();
   saveSchool(); updateSchoolHeader(); render(false);
@@ -1172,7 +1256,7 @@ function applyThemeDOM(dark){
   document.documentElement.classList.remove('preload-dark');
   updateThemeIcon(dark);
 }
-function setThemeMode(mode){ themeMode=mode; localStorage.setItem('themeMode',mode); applyThemeDOM(effectiveDark()); }
+function setThemeMode(mode){ themeMode=mode; localStorage.setItem('themeMode',mode); applyThemeDOM(effectiveDark()); track('theme',{mode}); }
 mqDark.addEventListener('change',()=>{ if(themeMode==='system') applyThemeDOM(effectiveDark()); });
 $('themeToggle').addEventListener('click',()=>{ setThemeMode(effectiveDark()?'light':'dark'); });
 
@@ -1194,7 +1278,7 @@ function applyLang(){
   if($('settingsScrim').classList.contains('show')) renderSettings();
 }
 $('langBtn').addEventListener('click',()=>{
-  const i=(LANGS.indexOf(lang)+1)%LANGS.length; lang=LANGS[i]; localStorage.setItem('lang',lang); applyLang();
+  const i=(LANGS.indexOf(lang)+1)%LANGS.length; lang=LANGS[i]; localStorage.setItem('lang',lang); applyLang(); track('language',{lang});
 });
 
 /* ================= Reminders, settings, backup ================= */
@@ -1287,6 +1371,7 @@ function downloadBlob(text,type,name){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 function exportCalendar(){
+  track('calendar_export');
   const ics=buildIcs();
   if(!ics){ toast(t('t_no_upcoming')); return; }
   downloadBlob(ics,'text/calendar','packed-lunch-reminders.ics');
@@ -1358,6 +1443,7 @@ function decodeShare(code){
   return true;
 }
 function copyShare(){
+  track('share_code');
   const code=encodeShare();
   if(navigator.clipboard&&navigator.clipboard.writeText){
     navigator.clipboard.writeText(code).then(()=>toast(t('t_copied'))).catch(()=>toast(t('t_select')));
@@ -1365,6 +1451,7 @@ function copyShare(){
 }
 function appUrl(){ return (location.origin+location.pathname).replace(/index\.html$/,''); }
 function shareAppLink(){
+  track('share_link');
   const url=appUrl();
   if(navigator.share){
     navigator.share({title:'Dinner', text:t('share_app_text'), url}).catch(()=>{});
@@ -1415,6 +1502,7 @@ function installSteps(){
   return {title:t('computer_title'),steps:[t('pc1'),t('pc2')]};
 }
 function openInstall(){
+  track('install_open');
   const body=$('installBody'); body.innerHTML='';
   if(isStandalone()){ body.innerHTML='<p>'+t('already_installed')+'</p>'; openSheet($('installScrim')); return; }
   const info=installSteps();
@@ -1467,6 +1555,7 @@ function renderSettings(){
   row1.innerHTML='<div><div class="lab">'+t('reminders_title')+'</div><div class="sub">'+t('reminders_sub')+'</div></div>';
   row1.appendChild(makeSwitch(remindersOn,t('reminders_title'),async(on)=>{
     remindersOn=on; localStorage.setItem('remindersOn',on?'1':'');
+    track('reminders',{on});
     if(on && 'Notification' in window && Notification.permission==='default'){ try{ await Notification.requestPermission(); }catch(e){} }
     if(on) checkTomorrowReminder();
   }));
@@ -1536,7 +1625,7 @@ function renderSettings(){
   const lseg=document.createElement('div'); lseg.className='seg';
   [['en','English'],['cy','Cymraeg'],['es','Espanol']].forEach(pair=>{
     const bb=document.createElement('button'); bb.textContent=pair[1]; bb.setAttribute('aria-pressed', lang===pair[0]?'true':'false');
-    bb.onclick=()=>{ lang=pair[0]; localStorage.setItem('lang',lang); applyLang(); };
+    bb.onclick=()=>{ lang=pair[0]; localStorage.setItem('lang',lang); applyLang(); track('language',{lang}); };
     lseg.appendChild(bb);
   });
   box.appendChild(lseg);
@@ -1585,6 +1674,7 @@ function finishOnboarding(){
   packedLunch={}; save('children',children); save('packedLunch',packedLunch);
   localStorage.setItem('childAllergens',JSON.stringify(childAllergens));
   localStorage.setItem('onboarded','1');
+  track('onboarded',{school:schoolShort(school.name),children:children.length});
   closeSheet($('welcomeScrim'));
   currentWeekIndex=getInitialWeekIndex(); render(false);
 }
@@ -1599,6 +1689,13 @@ $('welcomeSchool').appendChild(buildSchoolSelect());
 (function init(){
   applyThemeDOM(effectiveDark());
   applyLang();
+  if(!localStorage.getItem('insetSeed_v1')){
+    if(school && school.name && KNOWN_INSETS[school.name] && (!Array.isArray(school.insets) || !school.insets.length)){
+      school.insets = KNOWN_INSETS[school.name].slice();
+      saveSchool();
+    }
+    localStorage.setItem('insetSeed_v1','1');
+  }
   updateSchoolHeader();
   currentWeekIndex=getInitialWeekIndex();
   render(true);
@@ -1608,6 +1705,9 @@ $('welcomeSchool').appendChild(buildSchoolSelect());
     checkTomorrowReminder();
   }
 })();
+window.addEventListener('load',()=>{
+  track('app_open',{ school:schoolShort(school.name), lang, theme:themeMode, standalone:isStandalone() });
+});
 
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'){
