@@ -11,12 +11,8 @@
 <meta name="theme-color" content="#eaf2f5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#06151e" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.json">
-<!-- Anonymous usage analytics (optional, off by default).
-     To turn it on, create a free account at https://cloud.umami.is (or self-host Umami),
-     add your site, then paste your Website ID below and uncomment the script.
-     It is cookie-free, collects no names, and records school, country and feature usage only.
-<script defer src="https://cloud.umami.is/script.js" data-website-id="PASTE-YOUR-UMAMI-WEBSITE-ID"></script>
--->
+<!-- Anonymous, cookie-free usage analytics (Umami). No names collected. -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="f26e897a-bbbc-44c1-bf54-0a5dac48d43e"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -715,7 +711,7 @@ let remindersOn = localStorage.getItem('remindersOn')==='1';
 let reminderTime = localStorage.getItem('reminderTime') || '18:00';
 let childAllergens = (()=>{ try{return JSON.parse(localStorage.getItem('childAllergens')||'{}')}catch(e){return {}} })();
 const ALL_ALLERGENS = ['gluten','dairy','fish','nuts'];
-const APP_VERSION = 'v17';
+const APP_VERSION = 'v18';
 const ICON='./icon-192.png';
 
 /* ================= Language ================= */
