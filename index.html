@@ -155,6 +155,10 @@ h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.5rem;line-hei
 .badge{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-pill);color:#fff}
 .badge.today{background:var(--tide)}
 .badge.tomorrow{background:var(--seafoam)}
+.badge.updated{background:#c2610c}
+.day.updated{border-color:#e6a86a}
+.day.updated.alert{border-color:var(--coral-line)}
+.hero-updated{margin:8px 0 2px}
 .chip{font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-pill);
   background:var(--sand);color:var(--sand-ink)}
 .meal{margin:0;font-size:.96rem;line-height:1.5;white-space:pre-line;color:var(--ink)}
@@ -531,6 +535,21 @@ const ALLERGENS = {
 };
 const ALLERGEN_ICONS = { gluten:"🌾", dairy:"🧀", fish:"🐟", nuts:"🥜" };
 
+/* One-off menu changes sent by the school that replace the standard rota for
+   specific dates. Keyed by date (YYYY-MM-DD). Days here show an "updated" badge.
+   Allergens are a best estimate pending the council's official allergen list. */
+const MENU_OVERRIDES = {
+  "2026-07-06": { meal:"Meatballs 🍖 / Pesto pasta 🌿🥜\nAccompaniments of the day 🥕\nFresh fruit 🍎", allergens:["gluten","dairy","nuts"] },
+  "2026-07-07": { meal:"Chicken curry 🍛 / Pizza 🍕\nAccompaniments of the day 🥗\nFresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-08": { meal:"BBQ chicken wrap 🌯 / Jacket potato with cheese and beans 🥔🧀\nAccompaniments of the day 🥕\nFresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-09": { meal:"Roast beef 🥩 / Tomato pasta 🍝\nAccompaniments of the day 🥕\nFresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-10": { meal:"Fish fingers 🐟 / Cheese wrap 🧀🌯\nAccompaniments of the day 🥗\nFresh fruit 🍎", allergens:["fish","gluten","dairy"] }
+};
+function overrideFor(dateOrKey){
+  const key = typeof dateOrKey==='string' ? dateOrKey : ymdLocal(dateOrKey);
+  return MENU_OVERRIDES[key] || null;
+}
+
 /* ================= School calendar (Hendrefoilan Primary 2025/26) =================
    Teaching blocks are continuous Monday to Friday spans with no internal holiday.
    The 3 week rota counts forward across every block and pauses over the gaps
@@ -711,7 +730,7 @@ let remindersOn = localStorage.getItem('remindersOn')==='1';
 let reminderTime = localStorage.getItem('reminderTime') || '18:00';
 let childAllergens = (()=>{ try{return JSON.parse(localStorage.getItem('childAllergens')||'{}')}catch(e){return {}} })();
 const ALL_ALLERGENS = ['gluten','dairy','fish','nuts'];
-const APP_VERSION = 'v18';
+const APP_VERSION = 'v19';
 const ICON='./icon-192.png';
 
 /* ================= Language ================= */
@@ -741,6 +760,8 @@ const STR = {
   or:["or","neu","o"], accompaniments:["Accompaniments of the day","Ategolion y dydd","Acompanamientos del dia"],
   fresh_fruit:["Fresh fruit","Ffrwyth ffres","Fruta fresca"],
   today:["Today","Heddiw","Hoy"], tomorrow:["Tomorrow","Yfory","Manana"],
+  menu_updated:["Menu updated","Bwydlen wedi'i diweddaru","Menu actualizado"],
+  updated_note:["The school has updated this day's menu, so it differs from the usual rota. Allergens shown are our best estimate, so please confirm with the school kitchen.","Mae'r ysgol wedi diweddaru bwydlen y diwrnod hwn, felly mae'n wahanol i'r drefn arferol. Amcangyfrif yw'r alergenau, felly cadarnhewch gyda chegin yr ysgol.","El colegio ha actualizado el menu de este dia, asi que difiere del habitual. Los alergenos son una estimacion, confirma con la cocina del colegio."],
   packed:["Packed","Pecyn","Fiambrera"], dinner:["Dinner","Cinio","Comedor"],
   no_service:["No service","Dim gwasanaeth","Sin servicio"],
   inset_day:["Inset day","Diwrnod HMS","Dia de formacion"], may_day:["May Day","Gwyl Banc Mai","Festivo de mayo"],
@@ -881,11 +902,13 @@ $('detailClose').addEventListener('click',()=>closeSheet($('detailScrim')));
 let pendingRevert=null;
 let heroFlashed=false;
 
-function openDetail(week,day,dateLabel){
+function openDetail(week,day,dateLabel,date){
   $('detailTitle').textContent=day;
   $('detailMeta').textContent=`${t('week_lbl',{n:week})}, ${dateLabel}`;
-  const desc=(MENU_DETAILS[week]&&MENU_DETAILS[week][day]&&MENU_DETAILS[week][day].description)||t('no_desc');
-  const allerg=(ALLERGENS[week]&&ALLERGENS[week][day]||[]).map(a=>ALLERGEN_ICONS[a]).join(' ')||t('none_listed');
+  const ov=date?overrideFor(date):null;
+  const desc=ov?t('updated_note'):((MENU_DETAILS[week]&&MENU_DETAILS[week][day]&&MENU_DETAILS[week][day].description)||t('no_desc'));
+  const alList=ov?ov.allergens:((ALLERGENS[week]&&ALLERGENS[week][day])||[]);
+  const allerg=alList.map(a=>ALLERGEN_ICONS[a]).join(' ')||t('none_listed');
   $('detailBody').textContent=`${desc}\n\n${t('detail_allergens',{x:allerg})}`;
   openSheet($('detailScrim'));
 }
@@ -920,9 +943,11 @@ function renderHero(){
   const idx=weekIndexContaining(focus);
   const wk=weekMap[idx].week;
   const dayName=WEEKDAYS[(focus.getDay()+6)%7];
-  const meal=(MENUS[wk]&&MENUS[wk][dayName])||'Menu not available';
-  const allerg=(ALLERGENS[wk]&&ALLERGENS[wk][dayName]||[]);
-  const warn=warnHtml(wk,dayName);
+  const ov=overrideFor(focus);
+  const meal=ov?ov.meal:((MENUS[wk]&&MENUS[wk][dayName])||'Menu not available');
+  const allerg=ov?ov.allergens:((ALLERGENS[wk]&&ALLERGENS[wk][dayName])||[]);
+  const warn=warnHtml(allerg);
+  const updated=ov?`<span class="badge updated">${t('menu_updated')}</span>`:'';
 
   let pills='';
   children.forEach(c=>{
@@ -940,6 +965,7 @@ function renderHero(){
   heroEl.innerHTML=
     `<div class="hero-eyebrow">${eyebrow}</div>
      ${subline}
+     ${updated?`<div class="hero-updated">${updated}</div>`:''}
      ${warn}
      <div class="hero-meal">${mealHtml(meal)}</div>
      ${allergensHtml(allerg)}
@@ -948,7 +974,7 @@ function renderHero(){
     const chip=e.target.closest('.al-chip');
     if(chip){ e.stopPropagation(); openAllergen(chip.dataset.a); return; }
     currentWeekIndex=idx; renderWeek(true); setTimeout(()=>scrollToToday(),60);
-    openDetail(wk,dayName,`${sdow(focus)} ${fmtDM(focus)}`);
+    openDetail(wk,dayName,`${sdow(focus)} ${fmtDM(focus)}`,focus);
   };
 }
 
@@ -993,14 +1019,17 @@ function renderWeek(animate){
     else if(date.getTime()===tomorrow.getTime()) badge=`<span class="badge tomorrow">${t('tomorrow')}</span>`;
     const packedChip=anyPacked(info.week,day)?`<span class="chip">${t('packed')}</span>`:'';
 
-    const meal=(MENUS[info.week]&&MENUS[info.week][day])||'Menu not available';
-    const allerg=(ALLERGENS[info.week]&&ALLERGENS[info.week][day]||[]);
-    const warn=warnHtml(info.week,day);
+    const ov=overrideFor(key);
+    const updatedBadge=ov?`<span class="badge updated">${t('menu_updated')}</span>`:'';
+    const meal=ov?ov.meal:((MENUS[info.week]&&MENUS[info.week][day])||'Menu not available');
+    const allerg=ov?ov.allergens:((ALLERGENS[info.week]&&ALLERGENS[info.week][day])||[]);
+    const warn=warnHtml(allerg);
     if(warn) card.classList.add('alert');
+    if(ov) card.classList.add('updated');
 
     const body=document.createElement('div');
     body.className='day-body';
-    body.innerHTML=`<div class="day-top">${badge}${packedChip}</div>${warn}${mealHtml(meal)}${allergensHtml(allerg)}`;
+    body.innerHTML=`<div class="day-top">${badge}${updatedBadge}${packedChip}</div>${warn}${mealHtml(meal)}${allergensHtml(allerg)}`;
 
     const toggles=document.createElement('div');
     toggles.className='day-toggles';
@@ -1041,7 +1070,7 @@ function renderWeek(animate){
       if(e.target.closest('.switch')) return;
       const chip=e.target.closest('.al-chip');
       if(chip){ e.stopPropagation(); openAllergen(chip.dataset.a); return; }
-      openDetail(info.week,day,`${SHORT_DOW[day]} ${fmtDM(date)}`);
+      openDetail(info.week,day,`${SHORT_DOW[day]} ${fmtDM(date)}`,date);
     });
     menuEl.appendChild(card);
   });
@@ -1093,9 +1122,8 @@ function openAllergen(key){
   $('detailBody').textContent=(ALLERGEN_INFO[key]||'')+'\n\n'+t('kitchen_note');
   openSheet($('detailScrim'));
 }
-function conflictsFor(week,day){
-  const dayAll=(ALLERGENS[week]&&ALLERGENS[week][day])||[];
-  if(!dayAll.length) return [];
+function conflictsFor(dayAll){
+  if(!dayAll||!dayAll.length) return [];
   const out=[];
   children.forEach(c=>{
     const ca=childAllergens[c]||[];
@@ -1104,8 +1132,8 @@ function conflictsFor(week,day){
   });
   return out;
 }
-function warnHtml(week,day){
-  const conf=conflictsFor(week,day);
+function warnHtml(dayAll){
+  const conf=conflictsFor(dayAll);
   if(!conf.length) return '';
   const text=conf.map(c=>`${escapeHtml(c.child)} (${c.list.map(a=>t(a)).join(', ')})`).join('; ');
   const emojis=[...new Set(conf.flatMap(c=>c.list))].map(a=>ALLERGEN_ICONS[a]).join(' ');
