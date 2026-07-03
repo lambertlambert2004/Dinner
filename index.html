@@ -159,6 +159,32 @@ h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.5rem;line-hei
 .day.updated{border-color:#e6a86a}
 .day.updated.alert{border-color:var(--coral-line)}
 .hero-updated{margin:8px 0 2px}
+/* animated tide inside the hero */
+.hero{padding-bottom:34px}
+.wavewrap{position:absolute;left:0;right:0;bottom:-1px;height:30px;pointer-events:none;overflow:hidden}
+.wavewrap .w{position:absolute;bottom:0;left:0;width:200%;height:100%}
+.wavewrap .w path{fill:var(--tide);opacity:.10}
+.wavewrap .w2 path{opacity:.16}
+body.dark-mode .wavewrap .w path{opacity:.16}
+body.dark-mode .wavewrap .w2 path{opacity:.24}
+@media (prefers-reduced-motion: no-preference){
+  @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .wavewrap .w1{animation:drift 14s linear infinite}
+  .wavewrap .w2{animation:drift 9s linear infinite}
+}
+/* holiday countdown chip */
+.count-chip{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:.78rem;font-weight:700;
+  color:var(--tide);background:color-mix(in srgb,var(--tide) 10%,transparent);
+  border:1px solid color-mix(in srgb,var(--tide) 26%,transparent);border-radius:var(--radius-pill);padding:5px 11px}
+/* today card glow */
+.day.today{border-color:var(--tide)}
+@media (prefers-reduced-motion: no-preference){
+  @keyframes todayGlow{0%,100%{box-shadow:0 0 0 0 rgba(17,138,168,0),var(--shadow-md)}50%{box-shadow:0 0 18px -4px rgba(17,138,168,.45),var(--shadow-md)}}
+  .day.today{animation:todayGlow 4s var(--ease) infinite}
+}
+/* tactile card press */
+.day{transition:transform .12s var(--ease)}
+.day:active{transform:scale(.985)}
 .chip{font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-pill);
   background:var(--sand);color:var(--sand-ink)}
 .meal{margin:0;font-size:.96rem;line-height:1.5;white-space:pre-line;color:var(--ink)}
@@ -535,15 +561,21 @@ const ALLERGENS = {
 };
 const ALLERGEN_ICONS = { gluten:"🌾", dairy:"🧀", fish:"🐟", nuts:"🥜" };
 
-/* One-off menu changes sent by the school that replace the standard rota for
-   specific dates. Keyed by date (YYYY-MM-DD). Days here show an "updated" badge.
-   Allergens are a best estimate pending the council's official allergen list. */
+/* End of term special menu, published by Swansea Council for the last two weeks.
+   Keyed by date (YYYY-MM-DD). These days show an "updated" badge because they
+   differ from the standard 3 week rota. Allergens are a best estimate; the
+   council publishes allergens separately, so confirm with the kitchen. */
 const MENU_OVERRIDES = {
-  "2026-07-06": { meal:"Meatballs 🍖 / Pesto pasta 🌿🥜\nAccompaniments of the day 🥕\nFresh fruit 🍎", allergens:["gluten","dairy","nuts"] },
-  "2026-07-07": { meal:"Chicken curry 🍛 / Pizza 🍕\nAccompaniments of the day 🥗\nFresh fruit 🍎", allergens:["gluten","dairy"] },
-  "2026-07-08": { meal:"BBQ chicken wrap 🌯 / Jacket potato with cheese and beans 🥔🧀\nAccompaniments of the day 🥕\nFresh fruit 🍎", allergens:["gluten","dairy"] },
-  "2026-07-09": { meal:"Roast beef 🥩 / Tomato pasta 🍝\nAccompaniments of the day 🥕\nFresh fruit 🍎", allergens:["gluten","dairy"] },
-  "2026-07-10": { meal:"Fish fingers 🐟 / Cheese wrap 🧀🌯\nAccompaniments of the day 🥗\nFresh fruit 🍎", allergens:["fish","gluten","dairy"] }
+  "2026-07-06": { meal:"Meatballs 🍖 / Pesto pasta and garlic bread 🌿🥖\nAccompaniments of the day 🥕\nHomemade biscuit 🍪 and peach slices 🍑 / Fresh fruit 🍎", allergens:["gluten","dairy","nuts"] },
+  "2026-07-07": { meal:"Chicken curry and naan 🍛🫓 / Cheese and tomato pizza 🍕\nAccompaniments of the day 🥗\nWelsh yoghurt and dried fruit 🥛 / Fresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-08": { meal:"BBQ chicken wrap 🌯 / Jacket potato, cheese and beans 🥔🧀\nAccompaniments of the day 🥕\nWaffle 🧇 and mandarin slices 🍊 / Fresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-09": { meal:"Roast beef and Yorkshire pudding 🥩 / Pasta napolitana 🍝\nAccompaniments of the day 🥕\nCheese and crackers 🧀 and dried fruit / Fresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-10": { meal:"Jumbo fish finger 🐟 / Cheese wrap 🧀🌯\nAccompaniments of the day 🥗\nJam split 🍰 and fruit wedge 🍉 / Fresh fruit 🍎", allergens:["fish","gluten","dairy"] },
+  "2026-07-13": { meal:"Pasta bolognaise 🍝 / Omelette 🍳\nAccompaniments of the day 🥕\nWelsh cake 🍪 and fruit wedge 🍉 / Fresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-14": { meal:"Roast chicken 🍗 / Macaroni cheese 🧀🍝\nAccompaniments of the day 🥗\nWelsh yoghurt and dried fruit 🥛 / Fresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-15": { meal:"Chicken curry and naan 🍛🫓 / Cheese and tomato calzone 🧀🥟\nAccompaniments of the day 🥕\nMandarin sponge and custard 🍮 / Fresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-16": { meal:"Sausage dinner 🌭 / Vegetarian mild chilli 🫘\nAccompaniments of the day 🥕\nCheese and crackers 🧀 and dried fruit / Fresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-17": { meal:"Fish fingers 🐟 / Cheese wrap 🧀🌯\nAccompaniments of the day 🥗\nPancake 🥞 and fruit wedge 🍉 / Fresh fruit 🍎", allergens:["fish","gluten","dairy"] }
 };
 function overrideFor(dateOrKey){
   const key = typeof dateOrKey==='string' ? dateOrKey : ymdLocal(dateOrKey);
@@ -721,6 +753,19 @@ function nextSchoolDay(){
   for(let i=0;i<400;i++){ if(isSchoolDay(d)) return new Date(d); d.setDate(d.getDate()+1); }
   return null;
 }
+/* Which break follows each teaching block */
+const BREAK_AFTER = { "2025-10-24":"brk_half", "2025-12-19":"brk_xmas", "2026-02-13":"brk_half",
+  "2026-03-27":"brk_easter", "2026-05-22":"brk_half", "2026-07-17":"brk_summer" };
+function nextBreak(){
+  const today=new Date(); today.setHours(0,0,0,0);
+  const blk=TERM_BLOCKS.find(b=> today>=parseDateYMD(b.start) && today<=parseDateYMD(b.end));
+  if(!blk) return null;
+  let n=0; const d=new Date(today);
+  const end=parseDateYMD(blk.end);
+  while(d<=end){ if(isSchoolDay(d)) n++; d.setDate(d.getDate()+1); }
+  if(!n) return null;
+  return { n, key: BREAK_AFTER[blk.end] || 'brk_half' };
+}
 
 /* ================= State ================= */
 let packedLunch = (()=>{ try{return JSON.parse(localStorage.getItem('packedLunch')||'{}')}catch(e){return {}} })();
@@ -730,7 +775,7 @@ let remindersOn = localStorage.getItem('remindersOn')==='1';
 let reminderTime = localStorage.getItem('reminderTime') || '18:00';
 let childAllergens = (()=>{ try{return JSON.parse(localStorage.getItem('childAllergens')||'{}')}catch(e){return {}} })();
 const ALL_ALLERGENS = ['gluten','dairy','fish','nuts'];
-const APP_VERSION = 'v19';
+const APP_VERSION = 'v21';
 const ICON='./icon-192.png';
 
 /* ================= Language ================= */
@@ -761,6 +806,12 @@ const STR = {
   fresh_fruit:["Fresh fruit","Ffrwyth ffres","Fruta fresca"],
   today:["Today","Heddiw","Hoy"], tomorrow:["Tomorrow","Yfory","Manana"],
   menu_updated:["Menu updated","Bwydlen wedi'i diweddaru","Menu actualizado"],
+  countdown:["{n} school days until {h}","{n} diwrnod ysgol tan {h}","{n} dias de cole hasta {h}"],
+  countdown_one:["Last school day before {h}","Diwrnod ysgol olaf cyn {h}","Ultimo dia de cole antes de {h}"],
+  brk_half:["half term","hanner tymor","el medio trimestre"],
+  brk_xmas:["Christmas","y Nadolig","Navidad"],
+  brk_easter:["Easter","y Pasg","Semana Santa"],
+  brk_summer:["the summer holidays","gwyliau'r haf","las vacaciones de verano"],
   updated_note:["The school has updated this day's menu, so it differs from the usual rota. Allergens shown are our best estimate, so please confirm with the school kitchen.","Mae'r ysgol wedi diweddaru bwydlen y diwrnod hwn, felly mae'n wahanol i'r drefn arferol. Amcangyfrif yw'r alergenau, felly cadarnhewch gyda chegin yr ysgol.","El colegio ha actualizado el menu de este dia, asi que difiere del habitual. Los alergenos son una estimacion, confirma con la cocina del colegio."],
   packed:["Packed","Pecyn","Fiambrera"], dinner:["Dinner","Cinio","Comedor"],
   no_service:["No service","Dim gwasanaeth","Sin servicio"],
@@ -960,6 +1011,13 @@ function renderHero(){
     : `${t('next_school_day')}<span class="mid"></span>${sdow(focus)} ${fmtDM(focus)}`;
   const subline = todayIsSchool ? '' : `<div class="hero-sub" style="margin:6px 0 0">${t('showing_next')}</div>`;
 
+  const brk=nextBreak();
+  const countChip = brk ? `<div class="count-chip">🎉 ${brk.n===1?t('countdown_one',{h:t(brk.key)}):t('countdown',{n:brk.n,h:t(brk.key)})}</div>` : '';
+  const waves = `<div class="wavewrap" aria-hidden="true">
+      <svg class="w w1" viewBox="0 0 1200 40" preserveAspectRatio="none"><path d="M0 22 Q 75 6 150 22 T 300 22 T 450 22 T 600 22 T 750 22 T 900 22 T 1050 22 T 1200 22 V40 H0 Z"/></svg>
+      <svg class="w w2" viewBox="0 0 1200 40" preserveAspectRatio="none"><path d="M0 26 Q 75 12 150 26 T 300 26 T 450 26 T 600 26 T 750 26 T 900 26 T 1050 26 T 1200 26 V40 H0 Z"/></svg>
+    </div>`;
+
   heroEl.className='hero enter'+(warn?(' alert'+(heroFlashed?'':' flash')):'');
   if(warn) heroFlashed=true;
   heroEl.innerHTML=
@@ -969,7 +1027,9 @@ function renderHero(){
      ${warn}
      <div class="hero-meal">${mealHtml(meal)}</div>
      ${allergensHtml(allerg)}
-     <div class="hero-status">${pills}</div>`;
+     <div class="hero-status">${pills}</div>
+     ${countChip}
+     ${waves}`;
   heroEl.onclick=(e)=>{
     const chip=e.target.closest('.al-chip');
     if(chip){ e.stopPropagation(); openAllergen(chip.dataset.a); return; }
