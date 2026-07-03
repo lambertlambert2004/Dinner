@@ -150,6 +150,9 @@ h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.5rem;line-hei
 .dow{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
 .dom{font-family:var(--display);font-weight:800;font-size:1.5rem;line-height:1;margin-top:3px;font-variant-numeric:tabular-nums}
 .day.today .dom{color:var(--tide)}
+.wx{display:flex;flex-direction:column;align-items:center;margin-top:6px;font-size:.86rem;line-height:1.15}
+.wx .wt{font-size:.72rem;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums;margin-top:1px}
+.wx.hot .wt{color:#c2610c}
 .day-body{min-width:0}
 .day-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;min-height:8px;flex-wrap:wrap}
 .badge{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-pill);color:#fff}
@@ -555,31 +558,63 @@ const MENU_DETAILS = {
 };
 
 const ALLERGENS = {
-  1:{ Monday:["gluten","dairy"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten","dairy"], Friday:["fish","gluten","dairy"] },
-  2:{ Monday:["gluten","dairy"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten","dairy"], Friday:["fish","gluten","dairy"] },
-  3:{ Monday:["gluten","dairy"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten","dairy"], Friday:["fish","gluten","dairy"] }
+  1:{ Monday:["gluten","dairy","egg"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy","egg"], Thursday:["gluten","dairy"], Friday:["fish","gluten","dairy","egg"] },
+  2:{ Monday:["gluten","dairy"], Tuesday:["gluten","dairy","egg"], Wednesday:["gluten","dairy","egg"], Thursday:["gluten","dairy","egg"], Friday:["fish","gluten","dairy","egg"] },
+  3:{ Monday:["gluten","dairy","egg"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten","dairy","egg"], Friday:["fish","gluten","dairy","egg"] }
 };
-const ALLERGEN_ICONS = { gluten:"🌾", dairy:"🧀", fish:"🐟", nuts:"🥜" };
+const ALLERGEN_ICONS = { gluten:"🌾", dairy:"🧀", fish:"🐟", nuts:"🥜", egg:"🥚" };
 
 /* End of term special menu, published by Swansea Council for the last two weeks.
    Keyed by date (YYYY-MM-DD). These days show an "updated" badge because they
    differ from the standard 3 week rota. Allergens are a best estimate; the
    council publishes allergens separately, so confirm with the kitchen. */
 const MENU_OVERRIDES = {
-  "2026-07-06": { meal:"Meatballs 🍖 / Pesto pasta and garlic bread 🌿🥖\nAccompaniments of the day 🥕\nHomemade biscuit 🍪 and peach slices 🍑 / Fresh fruit 🍎", allergens:["gluten","dairy","nuts"] },
+  "2026-07-06": { meal:"Meatballs 🍖 / Pesto pasta and garlic bread 🌿🥖\nAccompaniments of the day 🥕\nHomemade biscuit 🍪 and peach slices 🍑 / Fresh fruit 🍎", allergens:["gluten","dairy","nuts","egg"] },
   "2026-07-07": { meal:"Chicken curry and naan 🍛🫓 / Cheese and tomato pizza 🍕\nAccompaniments of the day 🥗\nWelsh yoghurt and dried fruit 🥛 / Fresh fruit 🍎", allergens:["gluten","dairy"] },
-  "2026-07-08": { meal:"BBQ chicken wrap 🌯 / Jacket potato, cheese and beans 🥔🧀\nAccompaniments of the day 🥕\nWaffle 🧇 and mandarin slices 🍊 / Fresh fruit 🍎", allergens:["gluten","dairy"] },
-  "2026-07-09": { meal:"Roast beef and Yorkshire pudding 🥩 / Pasta napolitana 🍝\nAccompaniments of the day 🥕\nCheese and crackers 🧀 and dried fruit / Fresh fruit 🍎", allergens:["gluten","dairy"] },
-  "2026-07-10": { meal:"Jumbo fish finger 🐟 / Cheese wrap 🧀🌯\nAccompaniments of the day 🥗\nJam split 🍰 and fruit wedge 🍉 / Fresh fruit 🍎", allergens:["fish","gluten","dairy"] },
-  "2026-07-13": { meal:"Pasta bolognaise 🍝 / Omelette 🍳\nAccompaniments of the day 🥕\nWelsh cake 🍪 and fruit wedge 🍉 / Fresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-08": { meal:"BBQ chicken wrap 🌯 / Jacket potato, cheese and beans 🥔🧀\nAccompaniments of the day 🥕\nWaffle 🧇 and mandarin slices 🍊 / Fresh fruit 🍎", allergens:["gluten","dairy","egg"] },
+  "2026-07-09": { meal:"Roast beef and Yorkshire pudding 🥩 / Pasta napolitana 🍝\nAccompaniments of the day 🥕\nCheese and crackers 🧀 and dried fruit / Fresh fruit 🍎", allergens:["gluten","dairy","egg"] },
+  "2026-07-10": { meal:"Jumbo fish finger 🐟 / Cheese wrap 🧀🌯\nAccompaniments of the day 🥗\nJam split 🍰 and fruit wedge 🍉 / Fresh fruit 🍎", allergens:["fish","gluten","dairy","egg"] },
+  "2026-07-13": { meal:"Pasta bolognaise 🍝 / Omelette 🍳\nAccompaniments of the day 🥕\nWelsh cake 🍪 and fruit wedge 🍉 / Fresh fruit 🍎", allergens:["gluten","dairy","egg"] },
   "2026-07-14": { meal:"Roast chicken 🍗 / Macaroni cheese 🧀🍝\nAccompaniments of the day 🥗\nWelsh yoghurt and dried fruit 🥛 / Fresh fruit 🍎", allergens:["gluten","dairy"] },
-  "2026-07-15": { meal:"Chicken curry and naan 🍛🫓 / Cheese and tomato calzone 🧀🥟\nAccompaniments of the day 🥕\nMandarin sponge and custard 🍮 / Fresh fruit 🍎", allergens:["gluten","dairy"] },
+  "2026-07-15": { meal:"Chicken curry and naan 🍛🫓 / Cheese and tomato calzone 🧀🥟\nAccompaniments of the day 🥕\nMandarin sponge and custard 🍮 / Fresh fruit 🍎", allergens:["gluten","dairy","egg"] },
   "2026-07-16": { meal:"Sausage dinner 🌭 / Vegetarian mild chilli 🫘\nAccompaniments of the day 🥕\nCheese and crackers 🧀 and dried fruit / Fresh fruit 🍎", allergens:["gluten","dairy"] },
-  "2026-07-17": { meal:"Fish fingers 🐟 / Cheese wrap 🧀🌯\nAccompaniments of the day 🥗\nPancake 🥞 and fruit wedge 🍉 / Fresh fruit 🍎", allergens:["fish","gluten","dairy"] }
+  "2026-07-17": { meal:"Fish fingers 🐟 / Cheese wrap 🧀🌯\nAccompaniments of the day 🥗\nPancake 🥞 and fruit wedge 🍉 / Fresh fruit 🍎", allergens:["fish","gluten","dairy","egg"] }
 };
 function overrideFor(dateOrKey){
   const key = typeof dateOrKey==='string' ? dateOrKey : ymdLocal(dateOrKey);
   return MENU_OVERRIDES[key] || null;
+}
+
+/* ================= Weather (Open-Meteo, free, no key, 14 day) ================= */
+let weather = (()=>{ try{ return JSON.parse(localStorage.getItem('weather')||'null'); }catch(e){ return null; } })();
+function wxEmoji(code){
+  if(code===0||code===1) return '🌞';
+  if(code===2||code===3) return '⛅';
+  if(code===45||code===48) return '🌁';
+  if(code>=71&&code<=77) return '⛄';
+  if(code>=85&&code<=86) return '⛄';
+  if(code>=95) return '⚡';
+  if(code>=51&&code<=82) return '☔';
+  return '⛅';
+}
+function weatherFor(key){
+  if(!weather||!weather.days) return null;
+  const d=weather.days[key]; if(!d) return null;
+  return { t:d.t, emoji:wxEmoji(d.c) };
+}
+async function fetchWeather(){
+  if(weather && weather.at && (Date.now()-weather.at) < 3*3600*1000 && weather.days) return;
+  try{
+    const url='https://api.open-meteo.com/v1/forecast?latitude=51.62&longitude=-3.94&daily=temperature_2m_max,weather_code&timezone=Europe%2FLondon&forecast_days=14';
+    const res=await fetch(url); if(!res.ok) return;
+    const j=await res.json();
+    if(!j.daily||!j.daily.time) return;
+    const days={}, tm=j.daily.time, mx=j.daily.temperature_2m_max, wc=j.daily.weather_code;
+    for(let i=0;i<tm.length;i++){ days[tm[i]]={ t:Math.round(mx[i]), c:wc[i] }; }
+    weather={ at:Date.now(), days };
+    try{ localStorage.setItem('weather', JSON.stringify(weather)); }catch(e){}
+    renderWeek(false); renderHero();
+  }catch(e){}
 }
 
 /* ================= School calendar (Hendrefoilan Primary 2025/26) =================
@@ -701,12 +736,13 @@ let rotaOffset = parseInt(localStorage.getItem('rotaOffset') || '0', 10) || 0;
 
 const WEEKDAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
 const SHORT_DOW = { Monday:"Mon", Tuesday:"Tue", Wednesday:"Wed", Thursday:"Thu", Friday:"Fri" };
-const ALLERGEN_NAMES = { gluten:"Gluten", dairy:"Dairy", fish:"Fish", nuts:"Nuts" };
+const ALLERGEN_NAMES = { gluten:"Gluten", dairy:"Dairy", fish:"Fish", nuts:"Nuts", egg:"Egg" };
 const ALLERGEN_INFO = {
   gluten:"Gluten is a protein found in wheat, barley and rye. It turns up in bread, pasta, batter, biscuits, pastry and many sauces.",
   dairy:"Dairy covers cow's milk and anything made from it, such as cheese, butter, cream, custard and yoghurt.",
   fish:"Fish covers all finned fish, like cod, salmon and haddock, including the fish used in fish fingers.",
-  nuts:"Nuts means tree nuts such as almonds, hazelnuts, cashews and walnuts. Peanuts are a legume but are often handled in the same kitchen."
+  nuts:"Nuts means tree nuts such as almonds, hazelnuts, cashews and walnuts. Peanuts are a legume but are often handled in the same kitchen.",
+  egg:"Egg appears in omelettes and pancakes, and in many baked puddings such as cakes, cookies, muffins, waffles, sponge and custard, and in some batters and coatings."
 };
 
 function parseDateYMD(s){ const p=s.split('-').map(Number); const d=new Date(p[0],p[1]-1,p[2]); d.setHours(0,0,0,0); return d; }
@@ -774,8 +810,8 @@ let currentWeekIndex = 0;
 let remindersOn = localStorage.getItem('remindersOn')==='1';
 let reminderTime = localStorage.getItem('reminderTime') || '18:00';
 let childAllergens = (()=>{ try{return JSON.parse(localStorage.getItem('childAllergens')||'{}')}catch(e){return {}} })();
-const ALL_ALLERGENS = ['gluten','dairy','fish','nuts'];
-const APP_VERSION = 'v21';
+const ALL_ALLERGENS = ['gluten','dairy','fish','nuts','egg'];
+const APP_VERSION = 'v22';
 const ICON='./icon-192.png';
 
 /* ================= Language ================= */
@@ -789,7 +825,7 @@ const STR = {
   allergens:["Allergens","Alergenau","Alergenos"],
   none_listed:["None listed","Dim wedi'u rhestru","Ninguno indicado"],
   gluten:["Gluten","Glwten","Gluten"], dairy:["Dairy","Llaeth","Lacteos"],
-  fish:["Fish","Pysgod","Pescado"], nuts:["Nuts","Cnau","Frutos secos"],
+  fish:["Fish","Pysgod","Pescado"], nuts:["Nuts","Cnau","Frutos secos"], egg:["Egg","Wy","Huevo"],
   done:["Done","Iawn","Hecho"], cancel:["Cancel","Canslo","Cancelar"],
   confirm:["Confirm","Cadarnhau","Confirmar"], close:["Close","Cau","Cerrar"],
   add:["Add","Ychwanegu","Anadir"], children:["Children","Plant","Hijos"],
@@ -1006,9 +1042,11 @@ function renderHero(){
     pills+=`<span class="status-pill ${packed?'packed':''}"><span class="dot"></span>${escapeHtml(c)}<span class="mid"></span>${packed?t('packed'):t('dinner')}</span>`;
   });
 
-  const eyebrow = todayIsSchool
+  const wxT = weatherFor(ymdLocal(focus));
+  const wxEy = wxT ? `<span class="mid"></span>${wxT.emoji} ${wxT.t}°` : '';
+  const eyebrow = (todayIsSchool
     ? `${t('today')}<span class="mid"></span>${sdow(focus)} ${fmtDM(focus)}`
-    : `${t('next_school_day')}<span class="mid"></span>${sdow(focus)} ${fmtDM(focus)}`;
+    : `${t('next_school_day')}<span class="mid"></span>${sdow(focus)} ${fmtDM(focus)}`) + wxEy;
   const subline = todayIsSchool ? '' : `<div class="hero-sub" style="margin:6px 0 0">${t('showing_next')}</div>`;
 
   const brk=nextBreak();
@@ -1059,7 +1097,9 @@ function renderWeek(animate){
     if(animate) card.style.animationDelay=(i*45)+'ms';
     card.dataset.date=key;
 
-    const rail=`<div class="day-rail"><span class="dow">${sdow(date)}</span><span class="dom">${date.getDate()}</span></div>`;
+    const wx=weatherFor(key);
+    const wxHtml = wx ? `<span class="wx${wx.t>=25?' hot':''}">${wx.emoji}<span class="wt">${wx.t}°</span></span>` : '';
+    const rail=`<div class="day-rail"><span class="dow">${sdow(date)}</span><span class="dom">${date.getDate()}</span>${wxHtml}</div>`;
 
     const closeWhy=closureReason(key);
     if(closeWhy){
@@ -1204,7 +1244,7 @@ function buildAllergenPicker(selectedArr,onToggle){
   ALL_ALLERGENS.forEach(a=>{
     const b=document.createElement('button'); b.type='button'; b.className='pick';
     b.setAttribute('aria-pressed', selectedArr.includes(a)?'true':'false');
-    b.innerHTML=`<span class="a-emoji">${ALLERGEN_ICONS[a]}</span>${ALLERGEN_NAMES[a]}`;
+    b.innerHTML=`<span class="a-emoji">${ALLERGEN_ICONS[a]}</span>${t(a)}`;
     b.onclick=()=>{ const on=b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed',on?'true':'false'); onToggle(a,on); };
     wrap.appendChild(b);
   });
@@ -1355,7 +1395,7 @@ function applyLang(){
   const pin=$('shareIn'); if(pin) pin.placeholder=t('paste_ph');
   const leg=$('legend');
   if(leg) leg.innerHTML=`<span class="title">${t('allergens')}</span>`+
-    ['gluten','dairy','fish','nuts'].map(a=>`<span class="k"><span class="a-emoji">${ALLERGEN_ICONS[a]}</span> ${t(a)}</span>`).join('');
+    ['gluten','dairy','fish','nuts','egg'].map(a=>`<span class="k"><span class="a-emoji">${ALLERGEN_ICONS[a]}</span> ${t(a)}</span>`).join('');
   const lb=$('langBtn'); if(lb) lb.textContent=LANG_LABEL[lang];
   document.documentElement.lang = lang;
   render(true);
@@ -1791,6 +1831,7 @@ $('welcomeSchool').appendChild(buildSchoolSelect());
 })();
 window.addEventListener('load',()=>{
   track('app_open',{ school:schoolShort(school.name), lang, theme:themeMode, standalone:isStandalone() });
+  fetchWeather();
 });
 
 document.addEventListener('visibilitychange',()=>{
@@ -1799,6 +1840,7 @@ document.addEventListener('visibilitychange',()=>{
     renderTide(); renderHero();
     if(i!==currentWeekIndex){ currentWeekIndex=i; renderWeek(false); }
     checkTomorrowReminder();
+    fetchWeather();
   }
 });
 
