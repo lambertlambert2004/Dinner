@@ -167,6 +167,10 @@ h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.5rem;line-hei
 .day.updated{border-color:#e6a86a}
 .day.updated.alert{border-color:var(--coral-line)}
 .hero-updated{margin:8px 0 2px}
+.hero-share{position:absolute;top:14px;right:14px;z-index:3;width:34px;height:34px;border-radius:11px;
+  border:1px solid var(--hairline);background:var(--surface-2);color:var(--ink-soft);display:grid;place-items:center;cursor:pointer;transition:transform .12s var(--ease)}
+.hero-share svg{width:17px;height:17px}
+.hero-share:active{transform:scale(.92)}
 /* animated tide inside the hero */
 .hero{padding-bottom:34px}
 .wavewrap{position:absolute;left:0;right:0;bottom:-1px;height:30px;pointer-events:none;overflow:hidden}
@@ -281,7 +285,10 @@ body.dark-mode .switch input:checked + .track{background:linear-gradient(180deg,
 .kid:last-child{border-bottom:0}
 .kid .name{font-weight:600}
 .kid .kcount{font-size:.8rem;color:var(--ink-soft);margin-left:auto;margin-right:10px;font-variant-numeric:tabular-nums}
-.section-label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:22px 0 8px}
+.section-label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:28px 0 10px}
+#settingsBody .btn-block + .btn-block{margin-top:10px}
+#settingsBody .desc + .school-select,#settingsBody .desc + .btn-block{margin-top:2px}
+#settingsBody .set-row:first-of-type{padding-top:6px}
 .rota-row{display:flex;align-items:center;gap:10px}
 .rota-row .desc{font-size:.86rem;color:var(--ink-soft);line-height:1.4;margin:0 0 10px}
 .stepper{display:flex;align-items:center;gap:0;border:1px solid var(--hairline);border-radius:12px;overflow:hidden}
@@ -317,13 +324,13 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
 .orline{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin:3px 0}
 .sides{font-size:.88rem;line-height:1.4;color:var(--ink-soft);margin-top:9px}
 /* allergens */
-.allergens{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:13px;padding-top:12px;border-top:1px solid var(--hairline)}
-.al-label{font-size:.64rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint)}
-.al-chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--body);font-size:.8rem;font-weight:600;color:var(--ink);
-  background:var(--surface-2);border:1px solid var(--hairline);border-radius:var(--radius-pill);padding:5px 11px;cursor:pointer;transition:transform .12s var(--ease)}
+.allergens{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:11px;padding-top:11px;border-top:1px solid var(--hairline)}
+.al-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.al-chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--body);font-size:.72rem;font-weight:600;color:var(--ink);
+  background:var(--surface-2);border:1px solid var(--hairline);border-radius:var(--radius-pill);padding:4px 9px;cursor:pointer;transition:transform .12s var(--ease)}
 .al-chip:active{transform:scale(.95)}
-.al-chip .a-emoji{font-size:.95rem}
-.al-none{font-size:.82rem;color:var(--ink-soft)}
+.al-chip .a-emoji{font-size:.82rem}
+.al-none{font-size:.76rem;color:var(--ink-soft)}
 /* onboarding child chips */
 #welcomeKids{display:flex;flex-wrap:wrap;margin:0 0 4px}
 .kid-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--hairline);
@@ -840,7 +847,7 @@ let remindersOn = localStorage.getItem('remindersOn')==='1';
 let reminderTime = localStorage.getItem('reminderTime') || '18:00';
 let childAllergens = (()=>{ try{return JSON.parse(localStorage.getItem('childAllergens')||'{}')}catch(e){return {}} })();
 const ALL_ALLERGENS = ['gluten','dairy','fish','nuts','egg','peanuts','soya','sesame','celery','mustard','crustaceans','molluscs','lupin','sulphites'];
-const APP_VERSION = 'v24';
+const APP_VERSION = 'v25';
 const ICON='./icon-192.png';
 
 /* ================= Language ================= */
@@ -907,6 +914,8 @@ const STR = {
   send_link:["Send link","Anfon dolen","Enviar enlace"],
   copy_link:["Copy link","Copio dolen","Copiar enlace"],
   share_week:["Share this week as an image","Rhannu'r wythnos hon fel llun","Compartir esta semana como imagen"],
+  share_now:["Share","Rhannu","Compartir"],
+  save_image:["Save image","Cadw'r llun","Guardar imagen"],
   share_app_text:["Dinner, the school dinner menu app for Swansea primaries:","Dinner, yr ap bwydlen cinio ysgol ar gyfer ysgolion cynradd Abertawe:","Dinner, la app del menu del comedor para las primarias de Swansea:"],
   t_link_copied:["Link copied","Dolen wedi'i chopio","Enlace copiado"],
   share_title:["Share with another parent","Rhannu gyda rhiant arall","Compartir con otro padre"],
@@ -1127,7 +1136,8 @@ function renderHero(){
   heroEl.className='hero enter'+(warn?(' alert'+(heroFlashed?'':' flash')):'');
   if(warn) heroFlashed=true;
   heroEl.innerHTML=
-    `<div class="hero-eyebrow">${eyebrow}</div>
+    `<button class="hero-share" aria-label="${t('share_week')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+     <div class="hero-eyebrow">${eyebrow}</div>
      ${subline}
      ${updated?`<div class="hero-updated">${updated}</div>`:''}
      ${warn}
@@ -1138,6 +1148,7 @@ function renderHero(){
      ${countChip}
      ${waves}`;
   heroEl.onclick=(e)=>{
+    if(e.target.closest('.hero-share')){ e.stopPropagation(); shareWeekImage(); return; }
     const chip=e.target.closest('.al-chip');
     if(chip){ e.stopPropagation(); openAllergen(chip.dataset.a); return; }
     currentWeekIndex=idx; renderWeek(true); setTimeout(()=>scrollToToday(),60);
@@ -1706,12 +1717,36 @@ function shareWeekImage(){
   x.fillText(t('app_title')+'  '+appUrl().replace(/^https?:\/\//,'').replace(/\/$/,''), W/2, H-44); x.textAlign='left';
   c.toBlob(async(blob)=>{
     if(!blob) return;
-    const file=new File([blob],'dinner-week.png',{type:'image/png'});
-    try{
-      if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:t('app_title')}); return; }
-    }catch(e){}
-    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='dinner-week.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),3000);
+    const dataUrl=c.toDataURL('image/png');
+    showImagePreview(dataUrl, blob);
   },'image/png');
+}
+function showImagePreview(dataUrl, blob){
+  let scrim=document.getElementById('previewScrim');
+  if(scrim) scrim.remove();
+  scrim=document.createElement('div'); scrim.className='scrim'; scrim.id='previewScrim'; scrim.style.zIndex='140';
+  const sheet=document.createElement('div'); sheet.className='sheet'; sheet.style.textAlign='center';
+  const img=document.createElement('img'); img.src=dataUrl; img.alt=t('share_week');
+  img.style.cssText='width:100%;max-width:340px;border-radius:16px;box-shadow:var(--shadow-md);margin:6px auto 16px;display:block';
+  sheet.appendChild(img);
+  const actions=document.createElement('div'); actions.className='sheet-actions stack';
+  const file=new File([blob],'dinner-week.png',{type:'image/png'});
+  const canShareFile = navigator.canShare && navigator.canShare({files:[file]});
+  if(canShareFile){
+    const sh=document.createElement('button'); sh.className='btn btn-primary'; sh.textContent=t('share_now');
+    sh.onclick=async()=>{ try{ await navigator.share({files:[file], title:t('app_title')}); }catch(e){} closeSheet(scrim); };
+    actions.appendChild(sh);
+  }
+  const sv=document.createElement('button'); sv.className='btn btn-ghost'; sv.textContent=t('save_image');
+  sv.onclick=()=>{ const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='dinner-week.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),3000); closeSheet(scrim); };
+  actions.appendChild(sv);
+  const cx=document.createElement('button'); cx.className='btn btn-ghost'; cx.textContent=t('close'); cx.onclick=()=>closeSheet(scrim);
+  actions.appendChild(cx);
+  sheet.appendChild(actions);
+  scrim.appendChild(sheet);
+  scrim.addEventListener('click',e=>{ if(e.target===scrim) closeSheet(scrim); });
+  document.body.appendChild(scrim);
+  openSheet(scrim);
 }
 function emailShare(){
   const code=encodeShare();
@@ -1796,8 +1831,9 @@ function renderSettings(){
   ind.textContent=t('inset_desc');
   box.appendChild(ind);
   const insetBox=document.createElement('div'); box.appendChild(insetBox); renderInsetList(insetBox);
+  const rl=document.createElement('p'); rl.className='section-label'; rl.textContent=t('reminders_title'); box.appendChild(rl);
   const row1=document.createElement('div'); row1.className='set-row';
-  row1.innerHTML='<div><div class="lab">'+t('reminders_title')+'</div><div class="sub">'+t('reminders_sub')+'</div></div>';
+  row1.innerHTML='<div><div class="sub">'+t('reminders_sub')+'</div></div>';
   row1.appendChild(makeSwitch(remindersOn,t('reminders_title'),async(on)=>{
     remindersOn=on; localStorage.setItem('remindersOn',on?'1':'');
     track('reminders',{on});
