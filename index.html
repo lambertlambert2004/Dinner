@@ -252,6 +252,10 @@ body.dark-mode .switch input:checked + .track{background:linear-gradient(180deg,
   max-height:90vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
   transition:transform .3s var(--ease),opacity .26s}
 .sheet::before{content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);width:38px;height:5px;border-radius:3px;background:var(--hairline)}
+.sheet-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:11px;border:1px solid var(--hairline);
+  background:var(--surface-2);color:var(--ink-soft);display:grid;place-items:center;cursor:pointer;z-index:5}
+.sheet-close svg{width:17px;height:17px}
+.sheet-close:active{transform:scale(.92)}
 .scrim.show .sheet{transform:translateY(0);opacity:1}
 .steps{margin:6px 0 4px;padding-left:20px}
 .steps li{font-size:.95rem;line-height:1.5;margin-bottom:9px;color:var(--ink)}
@@ -259,7 +263,7 @@ body.dark-mode .switch input:checked + .track{background:linear-gradient(180deg,
   background:var(--surface-2);border:1px solid var(--hairline);border-radius:12px;padding:11px 12px;word-break:break-all;line-height:1.45;margin:0 0 10px}
 .share-actions{display:flex;gap:10px;margin-bottom:8px}
 .share-actions .btn{flex:1;display:flex;justify-content:center}
-.sheet h2{font-family:var(--display);font-weight:700;font-size:1.25rem;margin:0 0 4px}
+.sheet h2{font-family:var(--display);font-weight:700;font-size:1.25rem;margin:0 0 4px;padding-right:42px}
 .sheet .meta{font-size:.85rem;color:var(--ink-soft);margin:0 0 14px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
 .sheet p{font-size:.96rem;line-height:1.55;margin:0 0 14px;white-space:pre-line;color:var(--ink)}
 .sheet-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
@@ -285,7 +289,7 @@ body.dark-mode .switch input:checked + .track{background:linear-gradient(180deg,
 .kid:last-child{border-bottom:0}
 .kid .name{font-weight:600}
 .kid .kcount{font-size:.8rem;color:var(--ink-soft);margin-left:auto;margin-right:10px;font-variant-numeric:tabular-nums}
-.section-label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:28px 0 10px}
+.sheet .section-label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:30px 0 12px}
 #settingsBody .btn-block + .btn-block{margin-top:10px}
 #settingsBody .desc + .school-select,#settingsBody .desc + .btn-block{margin-top:2px}
 #settingsBody .set-row:first-of-type{padding-top:6px}
@@ -475,6 +479,7 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
 <!-- Settings sheet -->
 <div class="scrim" id="settingsScrim" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
   <div class="sheet">
+    <button class="sheet-close" id="settingsCloseX" aria-label="Close" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <h2 id="settingsTitle">Settings</h2>
     <div id="settingsBody"></div>
     <input id="importFile" type="file" accept="application/json" style="display:none">
@@ -485,6 +490,7 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
 <!-- Install sheet -->
 <div class="scrim" id="installScrim" role="dialog" aria-modal="true" aria-labelledby="installTitle">
   <div class="sheet">
+    <button class="sheet-close" id="installCloseX" aria-label="Close" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <h2 id="installTitle">Add to home screen</h2>
     <div id="installBody"></div>
     <div class="sheet-actions" style="margin-top:18px"><button class="btn btn-ghost btn-block" id="installClose">Close</button></div>
@@ -513,6 +519,7 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
 <!-- Manage sheet -->
 <div class="scrim" id="manageScrim" role="dialog" aria-modal="true" aria-labelledby="manageTitle">
   <div class="sheet">
+    <button class="sheet-close" id="manageCloseX" aria-label="Close" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <h2 id="manageTitle">Children</h2>
     <p class="meta" id="manageMeta">Add a child to track packed lunches</p>
     <div class="field">
@@ -847,7 +854,7 @@ let remindersOn = localStorage.getItem('remindersOn')==='1';
 let reminderTime = localStorage.getItem('reminderTime') || '18:00';
 let childAllergens = (()=>{ try{return JSON.parse(localStorage.getItem('childAllergens')||'{}')}catch(e){return {}} })();
 const ALL_ALLERGENS = ['gluten','dairy','fish','nuts','egg','peanuts','soya','sesame','celery','mustard','crustaceans','molluscs','lupin','sulphites'];
-const APP_VERSION = 'v25';
+const APP_VERSION = 'v26';
 const ICON='./icon-192.png';
 
 /* ================= Language ================= */
@@ -1429,6 +1436,7 @@ function renderKids(){
 }
 $('manageBtn').addEventListener('click',()=>{ renderKids(); openSheet($('manageScrim')); });
 $('manageClose').addEventListener('click',()=>closeSheet($('manageScrim')));
+$('manageCloseX').addEventListener('click',()=>closeSheet($('manageScrim')));
 $('addChild').addEventListener('click',()=>{
   const name=($('childInput').value||'').trim(); if(!name) return;
   if(children.length===1 && children[0]==='Child 1' && !Object.keys(packedLunch['Child 1']||{}).length) children=[];
@@ -1797,6 +1805,7 @@ function openInstall(){
   openSheet($('installScrim'));
 }
 $('installClose').addEventListener('click',()=>closeSheet($('installScrim')));
+$('installCloseX').addEventListener('click',()=>closeSheet($('installScrim')));
 
 function renderInsetList(box){
   box.innerHTML='';
@@ -1917,6 +1926,7 @@ function renderSettings(){
 }
 $('settingsBtn').addEventListener('click',()=>{ renderSettings(); openSheet($('settingsScrim')); });
 $('settingsClose').addEventListener('click',()=>closeSheet($('settingsScrim')));
+$('settingsCloseX').addEventListener('click',()=>closeSheet($('settingsScrim')));
 $('importFile').addEventListener('change',e=>{ if(e.target.files[0]) importData(e.target.files[0]); e.target.value=''; });
 
 /* ================= Onboarding ================= */
