@@ -87,7 +87,7 @@ body.dark-mode .appbar,html.preload-dark .appbar{background:rgba(8,21,30,.72)}
 .brand{display:flex;align-items:center;gap:12px}
 .mark{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;color:#fff;flex:none;
   background:linear-gradient(150deg,var(--tide),var(--tide-deep));box-shadow:var(--shadow-sm)}
-.mark svg{width:22px;height:22px}
+.mark svg{width:23px;height:23px;display:block}
 .eyebrow{margin:0;font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
 h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.5rem;line-height:1;letter-spacing:-.01em}
 .appbar-actions{display:flex;gap:6px}
@@ -153,6 +153,11 @@ h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.5rem;line-hei
 .wx{display:flex;flex-direction:column;align-items:center;margin-top:6px;font-size:.86rem;line-height:1.15}
 .wx .wt{font-size:.72rem;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums;margin-top:1px}
 .wx.hot .wt{color:#c2610c}
+.wx .wxi{display:inline-block}
+@media (prefers-reduced-motion: no-preference){
+  @keyframes wxpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.28)}}
+  .wx.hot .wxi{animation:wxpulse 1.6s var(--ease) infinite}
+}
 .day-body{min-width:0}
 .day-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;min-height:8px;flex-wrap:wrap}
 .badge{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-pill);color:#fff}
@@ -179,6 +184,10 @@ body.dark-mode .wavewrap .w2 path{opacity:.24}
 .count-chip{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:.78rem;font-weight:700;
   color:var(--tide);background:color-mix(in srgb,var(--tide) 10%,transparent);
   border:1px solid color-mix(in srgb,var(--tide) 26%,transparent);border-radius:var(--radius-pill);padding:5px 11px}
+.wx-note{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:.8rem;font-weight:700;
+  color:var(--ink-soft);background:var(--surface-2);border:1px solid var(--hairline);border-radius:var(--radius-pill);padding:5px 11px}
+.wx-note.hot{color:#c2610c;background:#fdf1e6;border-color:#f0c69a}
+body.dark-mode .wx-note.hot{color:#f0a868;background:#3a2416;border-color:#7a4a24}
 /* today card glow */
 .day.today{border-color:var(--tide)}
 @media (prefers-reduced-motion: no-preference){
@@ -250,6 +259,8 @@ body.dark-mode .switch input:checked + .track{background:linear-gradient(180deg,
 .sheet .meta{font-size:.85rem;color:var(--ink-soft);margin:0 0 14px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
 .sheet p{font-size:.96rem;line-height:1.55;margin:0 0 14px;white-space:pre-line;color:var(--ink)}
 .sheet-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.sheet-actions.stack{flex-direction:column;align-items:stretch}
+.sheet-actions.stack .btn{width:100%}
 .btn{font-family:var(--body);font-weight:600;font-size:.95rem;padding:13px 18px;border-radius:13px;border:0;cursor:pointer;transition:transform .12s var(--ease),filter .2s}
 .btn:active{transform:scale(.97)}
 .btn-primary{background:linear-gradient(180deg,#1391b3,var(--tide));color:#fff;box-shadow:0 2px 8px -2px rgba(14,124,155,.5),inset 0 1px 0 rgba(255,255,255,.25)}
@@ -296,8 +307,8 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
   opacity:0;pointer-events:none;transition:opacity .2s;max-width:88%}
 .toast.show{opacity:.97}
 .welcome-mark{width:56px;height:56px;border-radius:17px;display:grid;place-items:center;color:#fff;margin-bottom:14px;
-  background:linear-gradient(150deg,var(--tide),var(--tide-deep));box-shadow:var(--shadow-sm)}
-.welcome-mark svg{width:30px;height:30px}
+  overflow:hidden;box-shadow:var(--shadow-sm)}
+.welcome-mark svg{width:56px;height:56px;display:block}
 /* structured meal */
 .meal{margin:0}
 .course-label{display:block;font-size:.64rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 5px}
@@ -343,6 +354,10 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
 .aller-pick .pick .a-emoji{font-size:.95rem}
 .kid-allerg{margin-top:8px}
 .app-version{text-align:center;font-size:.72rem;color:var(--ink-faint);margin:18px 0 0}
+.updated-row{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px 2px 0;font-size:.72rem;color:var(--ink-faint)}
+.refresh-btn{border:1px solid var(--hairline);background:var(--surface);color:var(--ink-soft);border-radius:var(--radius-pill);
+  padding:4px 12px;font-family:var(--body);font-size:.72rem;font-weight:600;cursor:pointer}
+.refresh-btn:active{transform:scale(.96)}
 .seg{display:flex;gap:6px;background:var(--surface-2);border:1px solid var(--hairline);border-radius:13px;padding:4px;margin:0 0 4px}
 .seg button{flex:1;border:0;background:none;color:var(--ink-soft);font-family:var(--body);font-weight:600;font-size:.9rem;padding:9px 6px;border-radius:10px;cursor:pointer;transition:all .15s var(--ease)}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
@@ -379,7 +394,12 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
   <header class="appbar">
     <div class="brand">
       <span class="mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M2 9c2.5 0 2.5 2.4 5 2.4S9.5 9 12 9s2.5 2.4 5 2.4S19.5 9 22 9"/><path d="M2 15c2.5 0 2.5 2.4 5 2.4S9.5 15 12 15s2.5 2.4 5 2.4S19.5 15 22 15"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5.2"/>
+          <circle cx="12" cy="12" r="2.4" stroke-opacity="0.62"/>
+          <path d="M4.6 4v3M6 4v3M7.4 4v3M6 7V20"/>
+          <path d="M18.4 4c-1.05 0-1.9 1.5-1.9 3.3s0.85 3.1 1.9 3.1M18.4 4v16"/>
+        </svg>
       </span>
       <div>
         <p class="eyebrow" id="schoolName">Hendrefoilan Primary</p>
@@ -424,12 +444,13 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
     <span class="k"><span class="a-emoji">🐟</span> Fish</span>
     <span class="k"><span class="a-emoji">🥜</span> Nuts</span>
   </footer>
+  <div class="updated-row"><span id="updatedText"></span><button id="refreshBtn" class="refresh-btn" type="button"></button></div>
 </div>
 
 <!-- Welcome / onboarding sheet -->
 <div class="scrim" id="welcomeScrim" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
   <div class="sheet">
-    <div class="welcome-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M2 9c2.5 0 2.5 2.4 5 2.4S9.5 9 12 9s2.5 2.4 5 2.4S19.5 9 22 9"/><path d="M2 15c2.5 0 2.5 2.4 5 2.4S9.5 15 12 15s2.5 2.4 5 2.4S19.5 15 22 15"/></svg></div>
+    <div class="welcome-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wmg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2aa7c6"/><stop offset="1" stop-color="#0b6f93"/></linearGradient></defs><rect x="1" y="1" width="46" height="46" rx="13" fill="url(#wmg)"/><rect x="1.6" y="1.6" width="44.8" height="44.8" rx="12.4" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="1.2"/><circle cx="24" cy="24" r="10.5" fill="none" stroke="#fff" stroke-width="2.2"/><circle cx="24" cy="24" r="5.4" fill="none" stroke="#fff" stroke-opacity=".72" stroke-width="1.6"/><path d="M10 13v6.4M12.4 13v6.4M14.8 13v6.4M12.4 19.4V35" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M35.6 13c-1.7 0-3 2.2-3 5s1.3 4.8 3 4.8M35.6 13v22" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <h2 id="welcomeTitle">School dinners, sorted</h2>
     <p id="welcomeIntro">See what's for lunch each day, and tap any day to switch a child to a packed lunch. Packed days repeat every time that week comes round. Add everyone you want to track.</p>
     <p class="desc" id="welcomeSchoolLbl" style="margin:14px 0 6px">Which school?</p>
@@ -478,10 +499,7 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
   <div class="sheet">
     <h2 id="confirmTitle"></h2>
     <p id="confirmMsg"></p>
-    <div class="sheet-actions">
-      <button class="btn btn-ghost" id="confirmCancel">Cancel</button>
-      <button class="btn btn-primary" id="confirmOk">Confirm</button>
-    </div>
+    <div class="sheet-actions" id="confirmActions"></div>
   </div>
 </div>
 
@@ -562,7 +580,7 @@ const ALLERGENS = {
   2:{ Monday:["gluten","dairy"], Tuesday:["gluten","dairy","egg"], Wednesday:["gluten","dairy","egg"], Thursday:["gluten","dairy","egg"], Friday:["fish","gluten","dairy","egg"] },
   3:{ Monday:["gluten","dairy","egg"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy"], Thursday:["gluten","dairy","egg"], Friday:["fish","gluten","dairy","egg"] }
 };
-const ALLERGEN_ICONS = { gluten:"🌾", dairy:"🧀", fish:"🐟", nuts:"🥜", egg:"🥚" };
+const ALLERGEN_ICONS = { gluten:"🌾", dairy:"🧀", fish:"🐟", nuts:"🌰", egg:"🥚", peanuts:"🥜", soya:"🫘", sesame:"🥯", celery:"🥬", mustard:"🫙", crustaceans:"🦐", molluscs:"🦪", lupin:"🌼", sulphites:"🍷" };
 
 /* End of term special menu, published by Swansea Council for the last two weeks.
    Keyed by date (YYYY-MM-DD). These days show an "updated" badge because they
@@ -600,8 +618,9 @@ function wxEmoji(code){
 function weatherFor(key){
   if(!weather||!weather.days) return null;
   const d=weather.days[key]; if(!d) return null;
-  return { t:d.t, emoji:wxEmoji(d.c) };
+  return { t:d.t, c:d.c, emoji:wxEmoji(d.c) };
 }
+function wxRainy(c){ return (c>=51&&c<=82) || c>=95; }
 async function fetchWeather(){
   if(weather && weather.at && (Date.now()-weather.at) < 3*3600*1000 && weather.days) return;
   try{
@@ -613,7 +632,7 @@ async function fetchWeather(){
     for(let i=0;i<tm.length;i++){ days[tm[i]]={ t:Math.round(mx[i]), c:wc[i] }; }
     weather={ at:Date.now(), days };
     try{ localStorage.setItem('weather', JSON.stringify(weather)); }catch(e){}
-    renderWeek(false); renderHero();
+    renderWeek(false); renderHero(); updateFooter();
   }catch(e){}
 }
 
@@ -736,13 +755,22 @@ let rotaOffset = parseInt(localStorage.getItem('rotaOffset') || '0', 10) || 0;
 
 const WEEKDAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
 const SHORT_DOW = { Monday:"Mon", Tuesday:"Tue", Wednesday:"Wed", Thursday:"Thu", Friday:"Fri" };
-const ALLERGEN_NAMES = { gluten:"Gluten", dairy:"Dairy", fish:"Fish", nuts:"Nuts", egg:"Egg" };
+const ALLERGEN_NAMES = { gluten:"Gluten", dairy:"Dairy", fish:"Fish", nuts:"Tree nuts", egg:"Egg", peanuts:"Peanuts", soya:"Soya", sesame:"Sesame", celery:"Celery", mustard:"Mustard", crustaceans:"Crustaceans", molluscs:"Molluscs", lupin:"Lupin", sulphites:"Sulphites" };
 const ALLERGEN_INFO = {
   gluten:"Gluten is a protein found in wheat, barley and rye. It turns up in bread, pasta, batter, biscuits, pastry and many sauces.",
   dairy:"Dairy covers cow's milk and anything made from it, such as cheese, butter, cream, custard and yoghurt.",
   fish:"Fish covers all finned fish, like cod, salmon and haddock, including the fish used in fish fingers.",
   nuts:"Nuts means tree nuts such as almonds, hazelnuts, cashews and walnuts. Peanuts are a legume but are often handled in the same kitchen.",
-  egg:"Egg appears in omelettes and pancakes, and in many baked puddings such as cakes, cookies, muffins, waffles, sponge and custard, and in some batters and coatings."
+  egg:"Egg appears in omelettes and pancakes, and in many baked puddings such as cakes, cookies, muffins, waffles, sponge and custard, and in some batters and coatings.",
+  peanuts:"Peanuts are a legume and one of the most common causes of serious allergic reactions.",
+  soya:"Soya comes from soya beans and appears in tofu, some breads, sauces, spreads and many processed foods.",
+  sesame:"Sesame seeds and sesame oil turn up on burger buns, wraps, houmous and some breads.",
+  celery:"Celery includes the stalks, leaves, seeds and celeriac, and is common in soups, stocks and stir fries.",
+  mustard:"Mustard covers the seeds, powder and made mustard, and hides in dressings, marinades and sauces.",
+  crustaceans:"Crustaceans means prawns, crab, lobster, langoustine and scampi.",
+  molluscs:"Molluscs means mussels, squid, whelks, oysters, snails and scallops.",
+  lupin:"Lupin is a flowering plant whose flour and seeds appear in some breads, pastries and pasta.",
+  sulphites:"Sulphites, or sulphur dioxide, are preservatives used in dried fruit, some meats and soft drinks."
 };
 
 function parseDateYMD(s){ const p=s.split('-').map(Number); const d=new Date(p[0],p[1]-1,p[2]); d.setHours(0,0,0,0); return d; }
@@ -805,13 +833,14 @@ function nextBreak(){
 
 /* ================= State ================= */
 let packedLunch = (()=>{ try{return JSON.parse(localStorage.getItem('packedLunch')||'{}')}catch(e){return {}} })();
+let packedOnce = (()=>{ try{return JSON.parse(localStorage.getItem('packedOnce')||'{}')}catch(e){return {}} })();
 let children = (()=>{ try{const c=JSON.parse(localStorage.getItem('children')||'[]'); return Array.isArray(c)&&c.length?c:['Child 1']}catch(e){return ['Child 1']} })();
 let currentWeekIndex = 0;
 let remindersOn = localStorage.getItem('remindersOn')==='1';
 let reminderTime = localStorage.getItem('reminderTime') || '18:00';
 let childAllergens = (()=>{ try{return JSON.parse(localStorage.getItem('childAllergens')||'{}')}catch(e){return {}} })();
-const ALL_ALLERGENS = ['gluten','dairy','fish','nuts','egg'];
-const APP_VERSION = 'v22';
+const ALL_ALLERGENS = ['gluten','dairy','fish','nuts','egg','peanuts','soya','sesame','celery','mustard','crustaceans','molluscs','lupin','sulphites'];
+const APP_VERSION = 'v24';
 const ICON='./icon-192.png';
 
 /* ================= Language ================= */
@@ -825,7 +854,10 @@ const STR = {
   allergens:["Allergens","Alergenau","Alergenos"],
   none_listed:["None listed","Dim wedi'u rhestru","Ninguno indicado"],
   gluten:["Gluten","Glwten","Gluten"], dairy:["Dairy","Llaeth","Lacteos"],
-  fish:["Fish","Pysgod","Pescado"], nuts:["Nuts","Cnau","Frutos secos"], egg:["Egg","Wy","Huevo"],
+  fish:["Fish","Pysgod","Pescado"], nuts:["Tree nuts","Cnau coed","Frutos de cascara"], egg:["Egg","Wy","Huevo"],
+  peanuts:["Peanuts","Cnau daear","Cacahuetes"], soya:["Soya","Soia","Soja"], sesame:["Sesame","Sesame","Sesamo"],
+  celery:["Celery","Seleri","Apio"], mustard:["Mustard","Mwstard","Mostaza"], crustaceans:["Crustaceans","Cramenogion","Crustaceos"],
+  molluscs:["Molluscs","Molwsgiaid","Moluscos"], lupin:["Lupin","Lwpin","Altramuces"], sulphites:["Sulphites","Sylffitau","Sulfitos"],
   done:["Done","Iawn","Hecho"], cancel:["Cancel","Canslo","Cancelar"],
   confirm:["Confirm","Cadarnhau","Confirmar"], close:["Close","Cau","Cerrar"],
   add:["Add","Ychwanegu","Anadir"], children:["Children","Plant","Hijos"],
@@ -874,6 +906,7 @@ const STR = {
   share_app_desc:["Send another parent a link to Dinner so they can use it too.","Anfonwch ddolen Dinner at riant arall fel y gallant ei ddefnyddio hefyd.","Envia a otro padre un enlace a Dinner para que tambien pueda usarla."],
   send_link:["Send link","Anfon dolen","Enviar enlace"],
   copy_link:["Copy link","Copio dolen","Copiar enlace"],
+  share_week:["Share this week as an image","Rhannu'r wythnos hon fel llun","Compartir esta semana como imagen"],
   share_app_text:["Dinner, the school dinner menu app for Swansea primaries:","Dinner, yr ap bwydlen cinio ysgol ar gyfer ysgolion cynradd Abertawe:","Dinner, la app del menu del comedor para las primarias de Swansea:"],
   t_link_copied:["Link copied","Dolen wedi'i chopio","Enlace copiado"],
   share_title:["Share with another parent","Rhannu gyda rhiant arall","Compartir con otro padre"],
@@ -898,6 +931,14 @@ const STR = {
   remove_msg:["This clears {name} and their packed lunches.","Mae hyn yn clirio {name} a'u pecynnau bwyd.","Esto borra a {name} y sus fiambreras."],
   remove_last_msg:["This is your only child, so removing them takes you back to the welcome screen.","Dyma eich unig blentyn, felly bydd eu tynnu yn mynd a chi yn ol i'r sgrin groeso.","Es tu unico hijo, asi que al quitarlo volveras a la pantalla de bienvenida."],
   pack_q:["Pack lunch on {d}?","Pecyn bwyd ar {d}?","Fiambrera el {d}?"],
+  pack_choose:["How often does {c} want a packed lunch?","Pa mor aml mae {c} eisiau pecyn bwyd?","Con que frecuencia quiere {c} fiambrera?"],
+  pack_every:["Every {d}","Bob {d}","Cada {d}"],
+  pack_once:["Just this date","Y dyddiad hwn yn unig","Solo este dia"],
+  wx_hot:["Hot day, pack a water bottle","Diwrnod poeth, paciwch botel ddwr","Dia caluroso, lleva una botella de agua"],
+  wx_rain:["Rain likely, send a coat","Glaw yn debygol, anfonwch got","Posible lluvia, lleva un abrigo"],
+  refresh:["Refresh","Adnewyddu","Actualizar"],
+  updated_at:["Updated {t}","Diweddarwyd {t}","Actualizado {t}"],
+  unpack_every_msg:["This stops {c}'s packed lunch every {d}.","Mae hyn yn atal pecyn bwyd {c} bob {d}.","Esto quita la fiambrera de {c} cada {d}."],
   pack_msg:["{c} brings a packed lunch instead of a school dinner.","Mae {c} yn dod a phecyn bwyd yn lle cinio ysgol.","{c} lleva fiambrera en vez de comedor."],
   pack_ok:["Pack lunch","Pecyn bwyd","Llevar fiambrera"],
   unpack_q:["Back to school dinner?","Yn ol i ginio ysgol?","Volver al comedor?"],
@@ -926,7 +967,7 @@ const STR = {
   theme:["Theme","Thema","Tema"], theme_system:["System","System","Sistema"],
   theme_light:["Light","Golau","Claro"], theme_dark:["Dark","Tywyll","Oscuro"],
   language:["Language","Iaith","Idioma"],
-  app_title:["Dinner","Cinio","Comedor"],
+  app_title:["Dinner menu","Bwydlen cinio","Menu del comedor"],
   t_copied:["Code copied","Cod wedi'i gopio","Codigo copiado"],
   t_select:["Select the code and copy it","Dewiswch y cod a'i gopio","Selecciona el codigo y copialo"],
   t_loaded:["Plan loaded","Cynllun wedi'i lwytho","Plan cargado"],
@@ -962,8 +1003,19 @@ function systemDark(){ return mqDark.matches; }
 function effectiveDark(){ return themeMode==='dark' ? true : themeMode==='light' ? false : systemDark(); }
 
 const save = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
-const isPacked = (child,week,day)=> !!(packedLunch[child]&&packedLunch[child][week]&&packedLunch[child][week][day]);
-const anyPacked = (week,day)=> children.some(c=>isPacked(c,week,day));
+const isPacked = (child,week,day,dateKey)=> !!((dateKey && packedOnce[child] && packedOnce[child][dateKey]) || (packedLunch[child]&&packedLunch[child][week]&&packedLunch[child][week][day]));
+const isRecurring = (child,week,day)=> !!(packedLunch[child]&&packedLunch[child][week]&&packedLunch[child][week][day]);
+const anyPacked = (week,day,dateKey)=> children.some(c=>isPacked(c,week,day,dateKey));
+function setPackedEveryWeek(child,day,on){
+  if(!packedLunch[child]) packedLunch[child]={};
+  [1,2,3].forEach(w=>{ if(!packedLunch[child][w]) packedLunch[child][w]={}; if(on) packedLunch[child][w][day]=true; else delete packedLunch[child][w][day]; });
+  save('packedLunch',packedLunch);
+}
+function setPackedOnce(child,dateKey,on){
+  if(!packedOnce[child]) packedOnce[child]={};
+  if(on) packedOnce[child][dateKey]=true; else delete packedOnce[child][dateKey];
+  localStorage.setItem('packedOnce',JSON.stringify(packedOnce));
+}
 
 /* ================= DOM refs ================= */
 const $=id=>document.getElementById(id);
@@ -976,14 +1028,28 @@ function openSheet(scrim){ scrim.style.display='flex'; requestAnimationFrame(()=
 function closeSheet(scrim){ scrim.classList.remove('show'); setTimeout(()=>scrim.style.display='none',260); }
 document.querySelectorAll('.scrim').forEach(s=> s.addEventListener('click',e=>{ if(e.target===s) closeSheet(s); }));
 
+function setConfirmButtons(btns, stack){
+  const box=$('confirmActions'); box.innerHTML=''; box.classList.toggle('stack',!!stack);
+  btns.forEach(b=>{ const el=document.createElement('button'); el.className=b.cls||'btn btn-primary'; el.textContent=b.label; el.onclick=b.onClick; box.appendChild(el); });
+}
+function cancelConfirm(){ closeSheet($('confirmScrim')); if(pendingRevert){pendingRevert();pendingRevert=null;} }
 function askConfirm(title,msg,okLabel,onOk){
   $('confirmTitle').textContent=title;
   $('confirmMsg').textContent=msg;
-  $('confirmOk').textContent=okLabel||'Confirm';
+  setConfirmButtons([
+    {label:t('cancel'),cls:'btn btn-ghost',onClick:cancelConfirm},
+    {label:okLabel||t('confirm'),cls:'btn btn-primary',onClick:()=>{ closeSheet($('confirmScrim')); onOk&&onOk(); }}
+  ], false);
   openSheet($('confirmScrim'));
-  $('confirmOk').onclick=()=>{ closeSheet($('confirmScrim')); onOk&&onOk(); };
 }
-$('confirmCancel').addEventListener('click',()=>{ closeSheet($('confirmScrim')); if(pendingRevert){pendingRevert();pendingRevert=null;} });
+function askChoice(title,msg,options){
+  $('confirmTitle').textContent=title;
+  $('confirmMsg').textContent=msg;
+  const btns=options.map(o=>({label:o.label,cls:o.cls||'btn btn-primary',onClick:()=>{ closeSheet($('confirmScrim')); pendingRevert=null; o.onClick&&o.onClick(); }}));
+  btns.push({label:t('cancel'),cls:'btn btn-ghost',onClick:cancelConfirm});
+  setConfirmButtons(btns, true);
+  openSheet($('confirmScrim'));
+}
 $('confirmScrim').addEventListener('click',e=>{ if(e.target===$('confirmScrim')&&pendingRevert){pendingRevert();pendingRevert=null;} });
 $('detailClose').addEventListener('click',()=>closeSheet($('detailScrim')));
 let pendingRevert=null;
@@ -1038,12 +1104,14 @@ function renderHero(){
 
   let pills='';
   children.forEach(c=>{
-    const packed=isPacked(c,wk,dayName);
+    const packed=isPacked(c,wk,dayName,ymdLocal(focus));
     pills+=`<span class="status-pill ${packed?'packed':''}"><span class="dot"></span>${escapeHtml(c)}<span class="mid"></span>${packed?t('packed'):t('dinner')}</span>`;
   });
 
   const wxT = weatherFor(ymdLocal(focus));
   const wxEy = wxT ? `<span class="mid"></span>${wxT.emoji} ${wxT.t}°` : '';
+  let wxNote='';
+  if(wxT){ if(wxT.t>=25) wxNote=`<div class="wx-note hot">🥤 ${t('wx_hot')}</div>`; else if(wxRainy(wxT.c)) wxNote=`<div class="wx-note">🧥 ${t('wx_rain')}</div>`; }
   const eyebrow = (todayIsSchool
     ? `${t('today')}<span class="mid"></span>${sdow(focus)} ${fmtDM(focus)}`
     : `${t('next_school_day')}<span class="mid"></span>${sdow(focus)} ${fmtDM(focus)}`) + wxEy;
@@ -1066,6 +1134,7 @@ function renderHero(){
      <div class="hero-meal">${mealHtml(meal)}</div>
      ${allergensHtml(allerg)}
      <div class="hero-status">${pills}</div>
+     ${wxNote}
      ${countChip}
      ${waves}`;
   heroEl.onclick=(e)=>{
@@ -1098,7 +1167,7 @@ function renderWeek(animate){
     card.dataset.date=key;
 
     const wx=weatherFor(key);
-    const wxHtml = wx ? `<span class="wx${wx.t>=25?' hot':''}">${wx.emoji}<span class="wt">${wx.t}°</span></span>` : '';
+    const wxHtml = wx ? `<span class="wx${wx.t>=25?' hot':''}"><span class="wxi">${wx.emoji}</span><span class="wt">${wx.t}°</span></span>` : '';
     const rail=`<div class="day-rail"><span class="dow">${sdow(date)}</span><span class="dom">${date.getDate()}</span>${wxHtml}</div>`;
 
     const closeWhy=closureReason(key);
@@ -1112,12 +1181,12 @@ function renderWeek(animate){
 
     if(date.getTime()<today.getTime()) card.classList.add('past');
     if(date.getTime()===today.getTime()) card.classList.add('today');
-    if(anyPacked(info.week,day)) card.classList.add('packed');
+    if(anyPacked(info.week,day,key)) card.classList.add('packed');
 
     let badge='';
     if(date.getTime()===today.getTime()) badge=`<span class="badge today">${t('today')}</span>`;
     else if(date.getTime()===tomorrow.getTime()) badge=`<span class="badge tomorrow">${t('tomorrow')}</span>`;
-    const packedChip=anyPacked(info.week,day)?`<span class="chip">${t('packed')}</span>`:'';
+    const packedChip=anyPacked(info.week,day,key)?`<span class="chip">${t('packed')}</span>`:'';
 
     const ov=overrideFor(key);
     const updatedBadge=ov?`<span class="badge updated">${t('menu_updated')}</span>`:'';
@@ -1136,7 +1205,7 @@ function renderWeek(animate){
     children.forEach(child=>{
       const lab=document.createElement('label'); lab.className='switch';
       const input=document.createElement('input'); input.type='checkbox';
-      input.checked=isPacked(child,info.week,day);
+      input.checked=isPacked(child,info.week,day,key);
       input.setAttribute('aria-label',`${t('packed')}: ${child} ${sdow(date)}`);
       const track=document.createElement('span'); track.className='track';
       const txt=document.createElement('span'); txt.className='swlabel'; txt.textContent=children.length>1?child:t('packed');
@@ -1144,21 +1213,23 @@ function renderWeek(animate){
       input.addEventListener('change',()=>{
         const turningOn=input.checked;
         const dl=`${sdow(date)} ${fmtDM(date)}`;
+        const wkday=sdow(date);
         pendingRevert=()=>{ input.checked=!turningOn; };
-        askConfirm(
-          turningOn?t('pack_q',{d:dl}):t('unpack_q'),
-          turningOn?t('pack_msg',{c:child}):t('unpack_msg',{c:child,d:dl}),
-          turningOn?t('pack_ok'):t('unpack_ok'),
-          ()=>{
-            pendingRevert=null;
-            if(!packedLunch[child]) packedLunch[child]={};
-            if(!packedLunch[child][info.week]) packedLunch[child][info.week]={};
-            if(turningOn) packedLunch[child][info.week][day]=true; else delete packedLunch[child][info.week][day];
-            save('packedLunch',packedLunch);
-            card.classList.toggle('packed',anyPacked(info.week,day));
-            renderWeek(false); renderHero(); updateStats();
-          }
-        );
+        const after=()=>{ card.classList.toggle('packed',anyPacked(info.week,day,key)); renderWeek(false); renderHero(); updateStats(); };
+        if(turningOn){
+          askChoice(t('pack_q',{d:dl}), t('pack_choose',{c:child}), [
+            {label:t('pack_every',{d:wkday}), cls:'btn btn-primary', onClick:()=>{ setPackedEveryWeek(child,day,true); after(); }},
+            {label:t('pack_once'), cls:'btn btn-ghost', onClick:()=>{ setPackedOnce(child,key,true); after(); }}
+          ]);
+        } else {
+          const recurring=isRecurring(child,info.week,day);
+          askConfirm(
+            t('unpack_q'),
+            recurring? t('unpack_every_msg',{c:child,d:wkday}) : t('unpack_msg',{c:child,d:dl}),
+            t('unpack_ok'),
+            ()=>{ pendingRevert=null; setPackedOnce(child,key,false); if(recurring) setPackedEveryWeek(child,day,false); after(); }
+          );
+        }
       });
       toggles.appendChild(lab);
     });
@@ -1313,9 +1384,10 @@ function renderKids(){
     rm.onclick=()=>{
       const isLast = children.length===1;
       askConfirm(t('remove_q',{name:child}), isLast?t('remove_last_msg'):t('remove_msg',{name:child}), t('remove'), ()=>{
-        children=children.filter(c=>c!==child); delete packedLunch[child]; delete childAllergens[child];
+        children=children.filter(c=>c!==child); delete packedLunch[child]; delete packedOnce[child]; delete childAllergens[child];
         if(!children.length){
-          packedLunch={}; childAllergens={};
+          packedLunch={}; packedOnce={}; childAllergens={};
+          localStorage.setItem('packedOnce',JSON.stringify(packedOnce));
           save('children',children); save('packedLunch',packedLunch);
           localStorage.setItem('childAllergens',JSON.stringify(childAllergens));
           localStorage.removeItem('onboarded');
@@ -1384,8 +1456,13 @@ function setThemeMode(mode){ themeMode=mode; localStorage.setItem('themeMode',mo
 mqDark.addEventListener('change',()=>{ if(themeMode==='system') applyThemeDOM(effectiveDark()); });
 $('themeToggle').addEventListener('click',()=>{ setThemeMode(effectiveDark()?'light':'dark'); });
 
+function updateFooter(){
+  const rb=$('refreshBtn'); if(rb) rb.textContent=t('refresh');
+  const ut=$('updatedText'); if(ut){ const at = (weather&&weather.at)? new Date(weather.at): new Date(); ut.textContent=t('updated_at',{t:at.toLocaleTimeString(dloc(),{hour:'2-digit',minute:'2-digit'})}); }
+}
+$('refreshBtn').addEventListener('click',()=>{ try{ if(weather) weather.at=0; }catch(e){} location.reload(); });
 function applyLang(){
-  const byId={ todayBtn:'jump_today', appTitle:'app_title', detailClose:'done', confirmCancel:'cancel',
+  const byId={ todayBtn:'jump_today', appTitle:'app_title', detailClose:'done',
     manageTitle:'children', manageMeta:'add_to_track', addChild:'add', rotaLabel:'menu_rota', rotaDesc:'rota_desc', manageClose:'close',
     welcomeTitle:'welcome_title', welcomeIntro:'welcome_intro', welcomeSchoolLbl:'which_school', welcomeAllerLbl:'allergies_prompt',
     welcomeAdd:'add_child', welcomeGo:'start', welcomeSkip:'setup_later',
@@ -1398,6 +1475,7 @@ function applyLang(){
     ['gluten','dairy','fish','nuts','egg'].map(a=>`<span class="k"><span class="a-emoji">${ALLERGEN_ICONS[a]}</span> ${t(a)}</span>`).join('');
   const lb=$('langBtn'); if(lb) lb.textContent=LANG_LABEL[lang];
   document.documentElement.lang = lang;
+  updateFooter();
   render(true);
   if($('settingsScrim').classList.contains('show')) renderSettings();
 }
@@ -1427,7 +1505,7 @@ function packedTomorrow(){
   const idx=weekIndexContaining(tom);
   if(idx===-1 || closureReason(ymdLocal(tom))) return null;
   const day=WEEKDAYS[(tom.getDay()+6)%7];
-  const kids=children.filter(c=>isPacked(c,weekMap[idx].week,day));
+  const kids=children.filter(c=>isPacked(c,weekMap[idx].week,day,ymdLocal(tom)));
   if(!kids.length) return null;
   return {date:tom, kids, label:tom.toLocaleDateString(dloc(),{weekday:'short',day:'numeric',month:'short'})};
 }
@@ -1461,7 +1539,7 @@ function upcomingPackedDays(){
     WEEKDAYS.forEach((day,di)=>{
       const date=new Date(start); date.setDate(start.getDate()+di); date.setHours(0,0,0,0);
       if(date<today || closureReason(ymdLocal(date))) return;
-      const kids=children.filter(c=>isPacked(c,info.week,day));
+      const kids=children.filter(c=>isPacked(c,info.week,day,ymdLocal(date)));
       if(kids.length) out.push({date,kids});
     });
   });
@@ -1502,7 +1580,7 @@ function exportCalendar(){
   toast(t('t_rem_ready'));
 }
 function exportData(){
-  const data={children,packedLunch,childAllergens,school,rotaOffset,remindersOn,reminderTime,themeMode,lang};
+  const data={children,packedLunch,packedOnce,childAllergens,school,rotaOffset,remindersOn,reminderTime,themeMode,lang};
   downloadBlob(JSON.stringify(data,null,2),'application/json','dinner-backup.json');
   toast(t('t_backup_dl'));
 }
@@ -1513,6 +1591,7 @@ function importData(file){
       const d=JSON.parse(r.result);
       if(Array.isArray(d.children)&&d.children.length) children=d.children;
       if(d.packedLunch&&typeof d.packedLunch==='object') packedLunch=d.packedLunch;
+      if(d.packedOnce&&typeof d.packedOnce==='object'){ packedOnce=d.packedOnce; localStorage.setItem('packedOnce',JSON.stringify(packedOnce)); }
       if(d.childAllergens&&typeof d.childAllergens==='object'){ childAllergens=d.childAllergens; localStorage.setItem('childAllergens',JSON.stringify(childAllergens)); }
       if(d.school&&d.school.name){ school={name:d.school.name, insets:Array.isArray(d.school.insets)?d.school.insets:[]}; saveSchool(); updateSchoolHeader(); }
       if(d.themeMode){ setThemeMode(d.themeMode); } else if('darkMode' in d){ setThemeMode(d.darkMode?'dark':'light'); }
@@ -1591,6 +1670,48 @@ function copyAppLink(){
   } else {
     window.location.href='mailto:?subject='+encodeURIComponent('Dinner')+'&body='+encodeURIComponent(t('share_app_text')+' '+url);
   }
+}
+function roundRect(x,px,py,w,h,r){ x.beginPath(); x.moveTo(px+r,py); x.arcTo(px+w,py,px+w,py+h,r); x.arcTo(px+w,py+h,px,py+h,r); x.arcTo(px,py+h,px,py,r); x.arcTo(px,py,px+w,py,r); x.closePath(); }
+function stripEmoji(s){ return String(s).replace(/[\u{1F000}-\u{1FFFF}\u2190-\u27BF\u2B00-\u2BFF\uFE0F]/gu,'').replace(/\s+/g,' ').trim(); }
+function shareWeekImage(){
+  track('share_week');
+  const info=weekMap[currentWeekIndex];
+  const start=parseDateYMD(info.start); const fri=new Date(start); fri.setDate(start.getDate()+4);
+  const W=1080,H=1350,c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d');
+  x.fillStyle='#f4f8fa'; x.fillRect(0,0,W,H);
+  const g=x.createLinearGradient(0,0,0,230); g.addColorStop(0,'#2aa7c6'); g.addColorStop(1,'#0b6f93');
+  x.fillStyle=g; x.fillRect(0,0,W,230);
+  x.fillStyle='#fff'; x.textAlign='left';
+  x.font='700 38px system-ui,-apple-system,sans-serif'; x.fillText(schoolShort(school.name),60,88);
+  x.font='800 66px system-ui,-apple-system,sans-serif'; x.fillText(t('app_title'),60,168);
+  x.textAlign='right'; x.font='700 36px system-ui,-apple-system,sans-serif'; x.fillText(t('week_lbl',{n:info.week}),W-60,92);
+  x.font='500 30px system-ui,-apple-system,sans-serif'; x.fillText(fmtDM(start)+' '+t('range_to')+' '+fmtDM(fri),W-60,142); x.textAlign='left';
+  let y=290; const rowH=198;
+  WEEKDAYS.forEach((day,i)=>{
+    const date=new Date(start); date.setDate(start.getDate()+i); const key=ymdLocal(date);
+    const ov=overrideFor(key);
+    const meal=ov?ov.meal:((MENUS[info.week]&&MENUS[info.week][day])||'');
+    const p=parseMeal(meal);
+    const allerg=ov?ov.allergens:((ALLERGENS[info.week]&&ALLERGENS[info.week][day])||[]);
+    x.fillStyle='#ffffff'; roundRect(x,50,y,W-100,rowH-22,20); x.fill();
+    x.fillStyle='#0b6f93'; x.font='800 30px system-ui,-apple-system,sans-serif'; x.fillText(sdow(date).toUpperCase(),82,y+58);
+    const mains=p.mains.map(stripEmoji);
+    x.fillStyle='#12303c'; x.font='600 36px system-ui,-apple-system,sans-serif'; x.fillText(mains[0]||'',82,y+112);
+    if(mains[1]){ x.fillStyle='#6b8794'; x.font='500 30px system-ui,-apple-system,sans-serif'; x.fillText(t('or')+' '+mains[1],82,y+156); }
+    x.textAlign='right'; x.font='36px system-ui,-apple-system,sans-serif'; x.fillStyle='#12303c';
+    x.fillText(allerg.map(a=>ALLERGEN_ICONS[a]).join('  '),W-82,y+64); x.textAlign='left';
+    y+=rowH;
+  });
+  x.fillStyle='#6b8794'; x.font='500 26px system-ui,-apple-system,sans-serif'; x.textAlign='center';
+  x.fillText(t('app_title')+'  '+appUrl().replace(/^https?:\/\//,'').replace(/\/$/,''), W/2, H-44); x.textAlign='left';
+  c.toBlob(async(blob)=>{
+    if(!blob) return;
+    const file=new File([blob],'dinner-week.png',{type:'image/png'});
+    try{
+      if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:t('app_title')}); return; }
+    }catch(e){}
+    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='dinner-week.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),3000);
+  },'image/png');
 }
 function emailShare(){
   const code=encodeShare();
@@ -1708,6 +1829,7 @@ function renderSettings(){
   const ad2=document.createElement('p'); ad2.className='desc'; ad2.style.margin='0 0 10px'; ad2.textContent=t('share_app_desc'); box.appendChild(ad2);
   const sb=document.createElement('button'); sb.className='btn btn-primary btn-block'; sb.textContent=t('send_link'); sb.onclick=shareAppLink; box.appendChild(sb);
   const cl=document.createElement('button'); cl.className='btn btn-ghost btn-block'; cl.style.marginTop='8px'; cl.textContent=t('copy_link'); cl.onclick=copyAppLink; box.appendChild(cl);
+  const sw=document.createElement('button'); sw.className='btn btn-ghost btn-block'; sw.style.marginTop='8px'; sw.textContent=t('share_week'); sw.onclick=shareWeekImage; box.appendChild(sw);
 
   // Share with another parent
   const sl=document.createElement('p'); sl.className='section-label'; sl.textContent=t('share_title'); box.appendChild(sl);
@@ -1795,7 +1917,7 @@ function finishOnboarding(){
   const list = welcomeList.length ? welcomeList : [{name:'Child 1',allergens:[]}];
   children = list.map(k=>k.name);
   childAllergens={}; list.forEach(k=>{ if(k.allergens.length) childAllergens[k.name]=k.allergens; });
-  packedLunch={}; save('children',children); save('packedLunch',packedLunch);
+  packedLunch={}; packedOnce={}; localStorage.setItem('packedOnce',JSON.stringify(packedOnce)); save('children',children); save('packedLunch',packedLunch);
   localStorage.setItem('childAllergens',JSON.stringify(childAllergens));
   localStorage.setItem('onboarded','1');
   track('onboarded',{school:schoolShort(school.name),children:children.length});
@@ -1828,9 +1950,14 @@ $('welcomeSchool').appendChild(buildSchoolSelect());
   } else {
     checkTomorrowReminder();
   }
+  try{
+    const v=new URLSearchParams(location.search).get('view');
+    if(v==='manage'){ setTimeout(()=>{ renderKids(); openSheet($('manageScrim')); }, 200); }
+    else if(v==='today'){ setTimeout(()=>{ currentWeekIndex=getInitialWeekIndex(); renderWeek(true); scrollToToday(); }, 200); }
+  }catch(e){}
 })();
 window.addEventListener('load',()=>{
-  track('app_open',{ school:schoolShort(school.name), lang, theme:themeMode, standalone:isStandalone() });
+  track('app_open',{ school:schoolShort(school.name), kids:children.length, lang, theme:themeMode, standalone:isStandalone() });
   fetchWeather();
 });
 

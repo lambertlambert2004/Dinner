@@ -25,5 +25,29 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Today's menu",
+      "short_name": "Today",
+      "url": "./?view=today",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Packed lunches",
+      "short_name": "Packed",
+      "url": "./?view=manage",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
   ]
 }
