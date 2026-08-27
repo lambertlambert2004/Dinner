@@ -91,7 +91,7 @@ body.dark-mode .appbar,html.preload-dark .appbar{background:rgba(8,21,30,.72)}
 .mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none;
   background:linear-gradient(150deg,var(--tide),var(--tide-deep));box-shadow:var(--shadow-sm)}
 .mark svg{width:23px;height:23px;display:block}
-.eyebrow{margin:4px 0 0;font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+.eyebrow{margin:4px 0 0;font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
   line-height:1.3;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .eyebrow-count{color:var(--tide)}
 .eyebrow-count:not(:empty) + .eyebrow-title{display:none}
@@ -117,12 +117,18 @@ h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.28rem;line-he
   display:flex;align-items:center;flex-wrap:wrap;row-gap:4px;padding-right:44px;line-height:1.4}
 .hero.rest .hero-eyebrow{color:var(--ink-soft)}
 .hero-eyebrow .wxe{color:var(--ink-soft);letter-spacing:.06em}
-.hero-dish{margin:12px 0 0;font-family:var(--display);font-weight:800;font-size:1.72rem;line-height:1.08;letter-spacing:-.025em;color:var(--ink);
+.hero-dish{margin:12px 44px 0 0;font-family:var(--display);font-weight:800;font-size:1.72rem;line-height:1.08;letter-spacing:-.025em;color:var(--ink);
   text-wrap:balance}
 .hero-dish-alt{margin:6px 0 0;font-size:.98rem;line-height:1.4;color:var(--ink-soft)}
 .hero-dish-alt b{font-weight:600;color:var(--ink-faint);font-size:.78em;letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
 .hero-rest-title{font-family:var(--display);font-weight:700;font-size:1.3rem;margin:10px 0 4px;letter-spacing:-.01em}
 .hero-sub{font-size:.92rem;color:var(--ink-soft);margin:2px 0 0}
+.hero-sides{margin-top:8px;font-size:.92rem;color:var(--ink-soft)}
+.hero-pud{margin-top:14px;padding-top:12px;border-top:1px dashed var(--hairline);font-size:.98rem;line-height:1.5}
+.hero-pud .course-label{margin-bottom:3px}
+.hero-pud-opt{color:var(--ink)}
+.hero-or{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin:0 8px}
+.hero .allergens{margin-top:14px;padding-top:14px}
 .hero-kids{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .hero .warn{margin:14px 0 0}
 .hero .wx-note{margin-top:14px}
@@ -273,6 +279,7 @@ body.dark-mode .track::after,html.preload-dark .track::after{background:radial-g
   box-shadow:0 -12px 40px -16px rgba(8,20,28,.5);transform:translateY(16px);opacity:0;position:relative;
   max-height:90vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
   transition:transform .3s var(--ease),opacity .26s}
+.sheet:focus{outline:none}
 .sheet::before{content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);width:38px;height:5px;border-radius:3px;background:var(--hairline)}
 .sheet-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:11px;border:1px solid var(--hairline);
   background:var(--surface-2);color:var(--ink-soft);display:grid;place-items:center;cursor:pointer;z-index:5}
@@ -599,17 +606,17 @@ let MENUS = {
 };
 
 let MENU_DETAILS = {
-  1:{ Monday:{description:"Meatballs or pesto pasta and garlic bread with daily accompaniments. Homemade biscuit and peach slices, or fresh fruit. Halal meatballs or GF/DF meatballs available."},
-      Tuesday:{description:"Chicken curry and naan or cheese and tomato pizza with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal chicken curry and naan, or GF/DF pizza available."},
-      Wednesday:{description:"BBQ chicken wrap or jacket potato with cheese and beans, with daily accompaniments. Waffle and mandarin slices, or fresh fruit. Halal or GF/DF BBQ chicken wrap available."},
-      Thursday:{description:"Roast beef and Yorkshire pudding or pasta napolitana with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal roast chicken and Yorkshire pudding, or GF/DF roast beef available."},
-      Friday:{description:"Jumbo fish finger or cheese wrap with daily accompaniments. Jam split and fruit wedge, or fresh fruit. Halal jumbo fish finger, GF/DF fish fingers, or baked salmon available."}
+  1:{ Monday:{description:"Meatballs or pesto pasta and garlic bread with daily accompaniments. Homemade biscuit and peach slices, or fresh fruit. Halal meatballs or GF/DF meatballs available.",cy:"Peli cig neu basta pesto a bara garlleg gydag ategolion y dydd. Bisged gartref a thafelli eirin gwlanog, neu ffrwyth ffres. Peli cig halal neu beli cig heb glwten a llaeth ar gael.",es:"Albóndigas o pasta al pesto con pan de ajo y los acompañamientos del día. Galleta casera con melocotón, o fruta fresca. Disponibles albóndigas halal o sin gluten ni lácteos."},
+      Tuesday:{description:"Chicken curry and naan or cheese and tomato pizza with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal chicken curry and naan, or GF/DF pizza available.",cy:"Cyri cyw iâr a naan neu bitsa caws a thomato gydag ategolion y dydd. Iogwrt Cymreig a ffrwythau sych, neu ffrwyth ffres. Cyri cyw iâr halal a naan, neu bitsa heb glwten a llaeth ar gael.",es:"Curry de pollo con naan o pizza de queso y tomate con los acompañamientos del día. Yogur galés con fruta seca, o fruta fresca. Disponibles curry halal o pizza sin gluten ni lácteos."},
+      Wednesday:{description:"BBQ chicken wrap or jacket potato with cheese and beans, with daily accompaniments. Waffle and mandarin slices, or fresh fruit. Halal or GF/DF BBQ chicken wrap available.",cy:"Wrap cyw iâr barbeciw neu daten bob gyda chaws a ffa, gydag ategolion y dydd. Waffl a thafelli mandarin, neu ffrwyth ffres. Wrap cyw iâr halal neu heb glwten a llaeth ar gael.",es:"Wrap de pollo a la barbacoa o patata asada con queso y alubias, con los acompañamientos del día. Gofre con mandarina, o fruta fresca. Disponible wrap halal o sin gluten ni lácteos."},
+      Thursday:{description:"Roast beef and Yorkshire pudding or pasta napolitana with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal roast chicken and Yorkshire pudding, or GF/DF roast beef available.",cy:"Cig eidion rhost a phwdin Efrog neu basta napolitana gydag ategolion y dydd. Caws a chracers gyda ffrwythau sych, neu ffrwyth ffres. Cyw iâr rhost halal a phwdin Efrog, neu gig eidion rhost heb glwten a llaeth ar gael.",es:"Rosbif con pudin de Yorkshire o pasta napolitana con los acompañamientos del día. Queso con galletas saladas y fruta seca, o fruta fresca. Disponibles pollo asado halal con pudin de Yorkshire, o rosbif sin gluten ni lácteos."},
+      Friday:{description:"Jumbo fish finger or cheese wrap with daily accompaniments. Jam split and fruit wedge, or fresh fruit. Halal jumbo fish finger, GF/DF fish fingers, or baked salmon available.",cy:"Bys pysgod jymbo neu wrap caws gydag ategolion y dydd. Sblit jam a lletem ffrwyth, neu ffrwyth ffres. Bys pysgod jymbo halal, bysedd pysgod heb glwten a llaeth, neu eog wedi'i bobi ar gael.",es:"Palito de pescado jumbo o wrap de queso con los acompañamientos del día. Bollo de mermelada con trozo de fruta, o fruta fresca. Disponibles palito de pescado halal, palitos sin gluten ni lácteos, o salmón al horno."}
   },
-  2:{ Monday:{description:"Pasta bolognaise or omelette with daily accompaniments. Welsh cake and fruit wedge, or fresh fruit. Halal or GF/DF pasta bolognaise available."},
-      Tuesday:{description:"Roast chicken or macaroni cheese with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal or GF/DF roast chicken available."},
-      Wednesday:{description:"Chicken curry and naan or cheese and tomato calzone with daily accompaniments. Mandarin sponge and custard, or fresh fruit. Halal chicken curry, or GF/DF pizza available."},
-      Thursday:{description:"Sausage dinner or vegetarian mild chilli with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal or GF/DF sausage available."},
-      Friday:{description:"Fish fingers or cheese wrap with daily accompaniments. Pancake and fruit wedge, or fresh fruit. Halal or GF/DF fish fingers, or baked salmon available."}
+  2:{ Monday:{description:"Pasta bolognaise or omelette with daily accompaniments. Welsh cake and fruit wedge, or fresh fruit. Halal or GF/DF pasta bolognaise available.",cy:"Pasta bolognaise neu omled gydag ategolion y dydd. Cacen gri a lletem ffrwyth, neu ffrwyth ffres. Pasta bolognaise halal neu heb glwten a llaeth ar gael.",es:"Pasta a la boloñesa o tortilla francesa con los acompañamientos del día. Torta galesa con trozo de fruta, o fruta fresca. Disponible boloñesa halal o sin gluten ni lácteos."},
+      Tuesday:{description:"Roast chicken or macaroni cheese with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal or GF/DF roast chicken available.",cy:"Cyw iâr rhost neu facaroni caws gydag ategolion y dydd. Iogwrt Cymreig a ffrwythau sych, neu ffrwyth ffres. Cyw iâr rhost halal neu heb glwten a llaeth ar gael.",es:"Pollo asado o macarrones con queso con los acompañamientos del día. Yogur galés con fruta seca, o fruta fresca. Disponible pollo asado halal o sin gluten ni lácteos."},
+      Wednesday:{description:"Chicken curry and naan or cheese and tomato calzone with daily accompaniments. Mandarin sponge and custard, or fresh fruit. Halal chicken curry, or GF/DF pizza available.",cy:"Cyri cyw iâr a naan neu galzone caws a thomato gydag ategolion y dydd. Sbwng mandarin a chwstard, neu ffrwyth ffres. Cyri cyw iâr halal, neu bitsa heb glwten a llaeth ar gael.",es:"Curry de pollo con naan o calzone de queso y tomate con los acompañamientos del día. Bizcocho de mandarina con natillas, o fruta fresca. Disponibles curry halal o pizza sin gluten ni lácteos."},
+      Thursday:{description:"Sausage dinner or vegetarian mild chilli with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal or GF/DF sausage available.",cy:"Cinio selsig neu chilli llysieuol mwyn gydag ategolion y dydd. Caws a chracers gyda ffrwythau sych, neu ffrwyth ffres. Selsig halal neu heb glwten a llaeth ar gael.",es:"Salchichas con guarnición o chili vegetariano suave con los acompañamientos del día. Queso con galletas saladas y fruta seca, o fruta fresca. Disponibles salchichas halal o sin gluten ni lácteos."},
+      Friday:{description:"Fish fingers or cheese wrap with daily accompaniments. Pancake and fruit wedge, or fresh fruit. Halal or GF/DF fish fingers, or baked salmon available.",cy:"Bysedd pysgod neu wrap caws gydag ategolion y dydd. Crempog a lletem ffrwyth, neu ffrwyth ffres. Bysedd pysgod halal neu heb glwten a llaeth, neu eog wedi'i bobi ar gael.",es:"Palitos de pescado o wrap de queso con los acompañamientos del día. Tortita con trozo de fruta, o fruta fresca. Disponibles palitos halal o sin gluten ni lácteos, o salmón al horno."}
   }
 };
 
@@ -623,6 +630,114 @@ const ALLERGEN_ICONS = { gluten:"🌾", dairy:"🧀", fish:"🐟", nuts:"🌰", 
    dates. Keyed by date (YYYY-MM-DD). Days here show an "updated" badge.
    Empty now; the council publishes the standard two week rota above. */
 let MENU_OVERRIDES = {};
+/* Dish names in Welsh and Spanish, keyed by the English name without emoji.
+   Anything missing here shows in English. */
+let DISH_I18N = {
+ "Meatballs": [
+  "Peli cig",
+  "Albóndigas"
+ ],
+ "Pesto pasta and garlic bread": [
+  "Pasta pesto a bara garlleg",
+  "Pasta al pesto y pan de ajo"
+ ],
+ "Homemade biscuit and peach slices": [
+  "Bisged gartref a thafelli eirin gwlanog",
+  "Galleta casera y melocotón en rodajas"
+ ],
+ "Chicken curry and naan": [
+  "Cyri cyw iâr a naan",
+  "Curry de pollo con naan"
+ ],
+ "Cheese and tomato pizza": [
+  "Pitsa caws a thomato",
+  "Pizza de queso y tomate"
+ ],
+ "Welsh yoghurt and dried fruit": [
+  "Iogwrt Cymreig a ffrwythau sych",
+  "Yogur galés y fruta seca"
+ ],
+ "BBQ chicken wrap": [
+  "Wrap cyw iâr barbeciw",
+  "Wrap de pollo a la barbacoa"
+ ],
+ "Jacket potato, cheese and beans": [
+  "Taten bob, caws a ffa",
+  "Patata asada con queso y alubias"
+ ],
+ "Waffle and mandarin slices": [
+  "Waffl a thafelli mandarin",
+  "Gofre y gajos de mandarina"
+ ],
+ "Roast beef and Yorkshire pudding": [
+  "Cig eidion rhost a phwdin Efrog",
+  "Rosbif con pudin de Yorkshire"
+ ],
+ "Pasta napolitana": [
+  "Pasta napolitana",
+  "Pasta napolitana"
+ ],
+ "Cheese and crackers and dried fruit": [
+  "Caws a chracers a ffrwythau sych",
+  "Queso con galletas saladas y fruta seca"
+ ],
+ "Jumbo fish finger": [
+  "Bys pysgod jymbo",
+  "Palito de pescado jumbo"
+ ],
+ "Cheese wrap": [
+  "Wrap caws",
+  "Wrap de queso"
+ ],
+ "Jam split and fruit wedge": [
+  "Sblit jam a lletem ffrwyth",
+  "Bollo de mermelada y trozo de fruta"
+ ],
+ "Pasta bolognaise": [
+  "Pasta bolognaise",
+  "Pasta a la boloñesa"
+ ],
+ "Omelette": [
+  "Omled",
+  "Tortilla francesa"
+ ],
+ "Welsh cake and fruit wedge": [
+  "Cacen gri a lletem ffrwyth",
+  "Torta galesa y trozo de fruta"
+ ],
+ "Roast chicken": [
+  "Cyw iâr rhost",
+  "Pollo asado"
+ ],
+ "Macaroni cheese": [
+  "Macaroni caws",
+  "Macarrones con queso"
+ ],
+ "Cheese and tomato calzone": [
+  "Calzone caws a thomato",
+  "Calzone de queso y tomate"
+ ],
+ "Mandarin sponge and custard": [
+  "Sbwng mandarin a chwstard",
+  "Bizcocho de mandarina con natillas"
+ ],
+ "Sausage dinner": [
+  "Cinio selsig",
+  "Salchichas con guarnición"
+ ],
+ "Vegetarian mild chilli": [
+  "Chilli llysieuol mwyn",
+  "Chili vegetariano suave"
+ ],
+ "Fish fingers": [
+  "Bysedd pysgod",
+  "Palitos de pescado"
+ ],
+ "Pancake and fruit wedge": [
+  "Crempog a lletem ffrwyth",
+  "Tortita y trozo de fruta"
+ ]
+};
 function overrideFor(dateOrKey){
   const key = typeof dateOrKey==='string' ? dateOrKey : ymdLocal(dateOrKey);
   return MENU_OVERRIDES[key] || null;
@@ -796,27 +911,107 @@ const WEEKDAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
 const SHORT_DOW = { Monday:"Mon", Tuesday:"Tue", Wednesday:"Wed", Thursday:"Thu", Friday:"Fri" };
 const ALLERGEN_NAMES = { gluten:"Gluten", dairy:"Dairy", fish:"Fish", nuts:"Tree nuts", egg:"Egg", peanuts:"Peanuts", soya:"Soya", sesame:"Sesame", celery:"Celery", mustard:"Mustard", crustaceans:"Crustaceans", molluscs:"Molluscs", lupin:"Lupin", sulphites:"Sulphites" };
 const ALLERGEN_INFO = {
-  gluten:"Gluten is a protein found in wheat, barley and rye. It turns up in bread, pasta, batter, biscuits, pastry and many sauces.",
-  dairy:"Dairy covers cow's milk and anything made from it, such as cheese, butter, cream, custard and yoghurt.",
-  fish:"Fish covers all finned fish, like cod, salmon and haddock, including the fish used in fish fingers.",
-  nuts:"Nuts means tree nuts such as almonds, hazelnuts, cashews and walnuts. Peanuts are a legume but are often handled in the same kitchen.",
-  egg:"Egg appears in omelettes and pancakes, and in many baked puddings such as cakes, cookies, muffins, waffles, sponge and custard, and in some batters and coatings.",
-  peanuts:"Peanuts are a legume and one of the most common causes of serious allergic reactions.",
-  soya:"Soya comes from soya beans and appears in tofu, some breads, sauces, spreads and many processed foods.",
-  sesame:"Sesame seeds and sesame oil turn up on burger buns, wraps, houmous and some breads.",
-  celery:"Celery includes the stalks, leaves, seeds and celeriac, and is common in soups, stocks and stir fries.",
-  mustard:"Mustard covers the seeds, powder and made mustard, and hides in dressings, marinades and sauces.",
-  crustaceans:"Crustaceans means prawns, crab, lobster, langoustine and scampi.",
-  molluscs:"Molluscs means mussels, squid, whelks, oysters, snails and scallops.",
-  lupin:"Lupin is a flowering plant whose flour and seeds appear in some breads, pastries and pasta.",
-  sulphites:"Sulphites, or sulphur dioxide, are preservatives used in dried fruit, some meats and soft drinks."
+ "gluten": [
+  "Gluten is a protein found in wheat, barley and rye. It turns up in bread, pasta, batter, biscuits, pastry and many sauces.",
+  "Protein a geir mewn gwenith, haidd a rhyg yw glwten. Mae'n ymddangos mewn bara, pasta, cytew, bisgedi, crwst a llawer o sawsiau.",
+  "El gluten es una proteína del trigo, la cebada y el centeno. Está en el pan, la pasta, los rebozados, las galletas, la masa y muchas salsas."
+ ],
+ "dairy": [
+  "Dairy covers cow's milk and anything made from it, such as cheese, butter, cream, custard and yoghurt.",
+  "Mae llaeth yn cynnwys llaeth buwch ac unrhyw beth a wneir ohono, fel caws, menyn, hufen, cwstard ac iogwrt.",
+  "Los lácteos incluyen la leche de vaca y todo lo que se hace con ella: queso, mantequilla, nata, natillas y yogur."
+ ],
+ "fish": [
+  "Fish covers all finned fish, like cod, salmon and haddock, including the fish used in fish fingers.",
+  "Mae pysgod yn cynnwys pob pysgodyn ag esgyll, fel penfras, eog a hadog, gan gynnwys y pysgod mewn bysedd pysgod.",
+  "El pescado incluye todo pescado con aletas, como bacalao, salmón y eglefino, incluido el de los palitos de pescado."
+ ],
+ "nuts": [
+  "Nuts means tree nuts such as almonds, hazelnuts, cashews and walnuts. Peanuts are a legume but are often handled in the same kitchen.",
+  "Cnau coed yw cnau, fel almonau, cnau cyll, cashiws a chnau Ffrengig. Codlys yw pysgnau ond cânt eu trin yn yr un gegin yn aml.",
+  "Los frutos de cáscara son almendras, avellanas, anacardos y nueces. El cacahuete es una legumbre, pero suele manipularse en la misma cocina."
+ ],
+ "egg": [
+  "Egg appears in omelettes and pancakes, and in many baked puddings such as cakes, cookies, muffins, waffles, sponge and custard, and in some batters and coatings.",
+  "Mae wy mewn omledau a chrempogau, ac mewn llawer o bwdinau wedi'u pobi fel cacennau, cwcis, myffins, wafflau, sbwng a chwstard, ac mewn rhai cytewau a haenau.",
+  "El huevo está en tortillas y tortitas, y en muchos postres horneados como bizcochos, galletas, magdalenas, gofres y natillas, además de algunos rebozados."
+ ],
+ "peanuts": [
+  "Peanuts are a legume and one of the most common causes of serious allergic reactions.",
+  "Codlys yw pysgnau ac un o achosion mwyaf cyffredin adweithiau alergaidd difrifol.",
+  "El cacahuete es una legumbre y una de las causas más comunes de reacciones alérgicas graves."
+ ],
+ "soya": [
+  "Soya comes from soya beans and appears in tofu, some breads, sauces, spreads and many processed foods.",
+  "Daw soia o ffa soia ac mae mewn tofu, rhai bara, sawsiau, taeniadau a llawer o fwydydd wedi'u prosesu.",
+  "La soja procede de la semilla de soja y está en el tofu, algunos panes, salsas, untables y muchos alimentos procesados."
+ ],
+ "sesame": [
+  "Sesame seeds and sesame oil turn up on burger buns, wraps, houmous and some breads.",
+  "Mae hadau sesame ac olew sesame ar fyns byrgyr, wrapiau, hwmws a rhai bara.",
+  "Las semillas y el aceite de sésamo aparecen en panes de hamburguesa, wraps, hummus y algunos panes."
+ ],
+ "celery": [
+  "Celery includes the stalks, leaves, seeds and celeriac, and is common in soups, stocks and stir fries.",
+  "Mae seleri yn cynnwys y coesau, dail, hadau a seleriac, ac mae'n gyffredin mewn cawl, stoc a thro-ffrio.",
+  "El apio incluye tallos, hojas, semillas y apionabo, y es común en sopas, caldos y salteados."
+ ],
+ "mustard": [
+  "Mustard covers the seeds, powder and made mustard, and hides in dressings, marinades and sauces.",
+  "Mae mwstard yn cynnwys yr hadau, powdr a mwstard parod, ac mae'n cuddio mewn dresins, marinadau a sawsiau.",
+  "La mostaza incluye semillas, polvo y mostaza preparada, y se esconde en aliños, marinadas y salsas."
+ ],
+ "crustaceans": [
+  "Crustaceans means prawns, crab, lobster, langoustine and scampi.",
+  "Cramenogion yw corgimychiaid, crancod, cimychiaid, langoustine a scampi.",
+  "Los crustáceos son gambas, cangrejo, langosta, cigala y langostinos."
+ ],
+ "molluscs": [
+  "Molluscs means mussels, squid, whelks, oysters, snails and scallops.",
+  "Molysgiaid yw cregyn gleision, sgwid, gwichiaid, wystrys, malwod a chregyn bylchog.",
+  "Los moluscos son mejillones, calamar, bígaros, ostras, caracoles y vieiras."
+ ],
+ "lupin": [
+  "Lupin is a flowering plant whose flour and seeds appear in some breads, pastries and pasta.",
+  "Planhigyn blodeuol yw bysedd y blaidd; mae ei flawd a'i hadau mewn rhai bara, crwst a phasta.",
+  "El altramuz es una planta cuya harina y semillas aparecen en algunos panes, bollería y pasta."
+ ],
+ "sulphites": [
+  "Sulphites, or sulphur dioxide, are preservatives used in dried fruit, some meats and soft drinks.",
+  "Cadwolion yw sylffitau, neu sylffwr deuocsid, a ddefnyddir mewn ffrwythau sych, rhai cigoedd a diodydd meddal.",
+  "Los sulfitos, o dióxido de azufre, son conservantes usados en fruta seca, algunas carnes y refrescos."
+ ]
 };
 
 function parseDateYMD(s){ const p=s.split('-').map(Number); const d=new Date(p[0],p[1]-1,p[2]); d.setHours(0,0,0,0); return d; }
 function ymdLocal(d){ const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0'); return y+'-'+m+'-'+day; }
 function mondayOf(input){ const x=(input instanceof Date)?new Date(input):parseDateYMD(input); x.setHours(0,0,0,0); x.setDate(x.getDate()-((x.getDay()+6)%7)); return x; }
-function fmtDM(d){ return d.toLocaleDateString(dloc(),{day:'numeric',month:'short'}); }
-function sdow(d){ return d.toLocaleDateString(dloc(),{weekday:'short'}); }
+/* Some phones ship without Welsh date data and print "M09" for months.
+   Detect that once and fall back to our own names. */
+const CY_MON=['Ion','Chwe','Maw','Ebr','Mai','Meh','Gorff','Awst','Medi','Hyd','Tach','Rhag'];
+const CY_MON_LONG=['Ionawr','Chwefror','Mawrth','Ebrill','Mai','Mehefin','Gorffennaf','Awst','Medi','Hydref','Tachwedd','Rhagfyr'];
+const CY_DOW=['Sul','Llun','Maw','Mer','Iau','Gwe','Sad'];
+const CY_DOW_LONG=['Dydd Sul','Dydd Llun','Dydd Mawrth','Dydd Mercher','Dydd Iau','Dydd Gwener','Dydd Sadwrn'];
+let _cyNative=null;
+function cyNative(){
+  if(_cyNative===null){ try{ _cyNative = Intl.DateTimeFormat.supportedLocalesOf(['cy']).length>0 && !/M\d/.test(new Date(2026,8,1).toLocaleDateString('cy',{month:'short'})); }catch(e){ _cyNative=false; } }
+  return _cyNative;
+}
+function fmtDate(d,opts){
+  if(lang==='cy' && !cyNative()){
+    const parts=[];
+    if(opts.weekday) parts.push(opts.weekday==='long'?CY_DOW_LONG[d.getDay()]:CY_DOW[d.getDay()]);
+    if(opts.day) parts.push(String(d.getDate()));
+    if(opts.month) parts.push(opts.month==='long'?CY_MON_LONG[d.getMonth()]:CY_MON[d.getMonth()]);
+    if(opts.year) parts.push(String(d.getFullYear()));
+    return parts.join(' ');
+  }
+  let out=d.toLocaleDateString(dloc(),opts);
+  if(opts.weekday==='long' && !opts.day) out=out.charAt(0).toUpperCase()+out.slice(1);
+  return out;
+}
+function fmtDM(d){ return fmtDate(d,{day:'numeric',month:'short'}); }
+function sdow(d){ return fmtDate(d,{weekday:'short'}); }
 
 function buildWeekMap(){
   return WEEK_STARTS.map(x=>({ week: ((x.w-1+rotaOffset)%2+2)%2+1, start:x.d }));
@@ -835,6 +1030,7 @@ function applyData(d){
   if(d.closures) BASE_CLOSURES=d.closures;
   if(d.insets) KNOWN_INSETS=d.insets;
   if(d.breaks) BREAKS=d.breaks;
+  if(d.dishes) DISH_I18N=d.dishes;
   dataVersion=d.version;
   weekMap=buildWeekMap();
   return true;
@@ -942,7 +1138,7 @@ const STR = {
   menu_updated:["Menu updated","Bwydlen wedi'i diweddaru","Menú actualizado"],
   countdown:["{n} school days until {h}","{n} diwrnod ysgol tan {h}","{n} días de cole hasta {h}"],
   countdown_one:["Last school day before {h}","Diwrnod ysgol olaf cyn {h}","Último día de cole antes de {h}"],
-  brk_half:["half term","hanner tymor","el medio trimestre"],
+  brk_half:["half term","hanner tymor","medio trimestre"],
   brk_xmas:["Christmas","y Nadolig","Navidad"],
   brk_easter:["Easter","y Pasg","Semana Santa"],
   brk_summer:["the summer holidays","gwyliau'r haf","las vacaciones de verano"],
@@ -1072,7 +1268,7 @@ const STR = {
   t_unreadable:["That file could not be read","Ni ellid darllen y ffeil honno","No se pudo leer ese archivo"],
   t_rem_ready:["Reminders ready to add","Atgoffwyr yn barod","Avisos listos para anadir"],
   t_no_upcoming:["No packed lunches coming up yet","Dim pecynnau bwyd ar y gweill eto","Aún no hay fiambreras próximas"],
-  meals_note:["Menu items are shown in English from the council menu.","Dangosir eitemau'r fwydlen yn Saesneg o fwydlen y cyngor.","Los platos se muestran en inglés según el menú del ayuntamiento."]
+  meals_note:["Dish names are translated from the council's English menu.","Cyfieithir enwau'r prydau o fwydlen Saesneg y cyngor.","Los nombres de los platos se traducen del menú en inglés del ayuntamiento."]
 };
 function t(k,vars){
   const row=STR[k]; let s = row ? (row[LANGS.indexOf(lang)]||row[0]) : k;
@@ -1124,8 +1320,9 @@ function openSheet(scrim){
   scrim.style.display='flex';
   requestAnimationFrame(()=>{
     scrim.classList.add('show');
-    const first=scrim.querySelector('.sheet input:not([type=checkbox]),.sheet select')||scrim.querySelector(FOCUSABLE);
-    if(first){ try{ first.focus({preventScroll:true}); }catch(e){} }
+    const sheet=scrim.querySelector('.sheet');
+    const first=scrim.querySelector('.sheet input:not([type=checkbox]),.sheet select')||sheet;
+    if(first){ if(first===sheet) sheet.tabIndex=-1; try{ first.focus({preventScroll:true}); }catch(e){} }
   });
 }
 function closeSheet(scrim){
@@ -1172,12 +1369,12 @@ let pendingRevert=null;
 let heroFlashed=false;
 
 function openDetail(week,day,dateLabel,date){
-  $('detailTitle').textContent=day;
+  $('detailTitle').textContent=date?fmtDate(date,{weekday:'long'}):day;
   const wxd=date?weatherFor(ymdLocal(date)):null;
   $('detailMeta').textContent=`${t('week_lbl',{n:week})}, ${dateLabel}`;
   const wxl=$('detailWx'); wxl.textContent=wxd?wxDetailLine(wxd):''; wxl.hidden=!wxd;
   const ov=date?overrideFor(date):null;
-  const desc=ov?t('updated_note'):((MENU_DETAILS[week]&&MENU_DETAILS[week][day]&&MENU_DETAILS[week][day].description)||t('no_desc'));
+  const desc=ov?t('updated_note'):(localiseDesc(MENU_DETAILS[week]&&MENU_DETAILS[week][day])||t('no_desc'));
   const alList=ov?ov.allergens:((ALLERGENS[week]&&ALLERGENS[week][day])||[]);
   const mealD=ov?ov.meal:((MENUS[week]&&MENUS[week][day])||'');
   const dm=$('detailMenu'); dm.innerHTML=mealHtml(mealD)+allergensHtml(alList); dm.hidden=!mealD;
@@ -1232,6 +1429,14 @@ function dishHtml(meal,cls){
   const d=dishParts(meal);
   return `<div class="${cls}">${escapeHtml(d.main)}</div>`+(d.alt?`<div class="${cls}-alt"><b>${t('or')}</b>${escapeHtml(d.alt)}</div>`:'');
 }
+/* Sides and pudding under the hero headline */
+function heroCoursesHtml(meal){
+  const p=parseMeal(meal);
+  let h='';
+  if(p.sides) h+=`<div class="hero-sides">${escapeHtml(localiseDish(p.sides))}</div>`;
+  if(p.pudding.length) h+=`<div class="hero-pud"><span class="course-label">${t('pudding')}</span>${p.pudding.map(localiseDish).map((o,i)=>(i?`<span class="hero-or">${t('or')}</span>`:'')+`<span class="hero-pud-opt">${escapeHtml(o)}</span>`).join('')}</div>`;
+  return h;
+}
 function renderCountdown(){
   const el=$('countdown'); if(!el) return;
   const brk=nextBreak();
@@ -1277,8 +1482,6 @@ function renderHero(){
   const eyebrow = (todayIsSchool ? t('today') : t('next_school_day')) + `<span class="mid"></span>${sdow(focus)} ${fmtDM(focus)}` + wxEy;
   const subline = todayIsSchool ? '' : `<div class="hero-sub" style="margin:6px 0 0">${t('showing_next')}</div>`;
   const updated=ov?`<div class="hero-updated"><span class="badge updated">${t('menu_updated')}</span></div>`:'';
-  /* one alert line at most: allergy beats weather */
-  const alertLine = warn || (wxT?wxNoteHtml(wxT):'');
 
   heroEl.className='hero enter'+(warn?(' alert'+(heroFlashed?'':' flash')):'');
   if(warn) heroFlashed=true;
@@ -1288,7 +1491,10 @@ function renderHero(){
      ${subline}
      ${updated}
      ${dishHtml(meal,'hero-dish')}
-     ${alertLine}`;
+     ${heroCoursesHtml(meal)}
+     ${allergensHtml(allerg)}
+     ${warn}
+     ${wxT?wxNoteHtml(wxT):''}`;
   const after=()=>{ render(false); };
   heroEl.appendChild(kidRow('hero-kids',wk,dayName,key,focus,after));
   heroEl.onclick=(e)=>{
@@ -1342,7 +1548,7 @@ function renderWeek(animate){
       card.classList.add('past');
       const packedAny=anyPacked(info.week,day,key);
       card.innerHTML=rail+`<div class="past-dish">${escapeHtml(dishParts(mealP).main)}</div><span class="past-dot${packedAny?'':' nope'}" title="${packedAny?t('packed'):t('dinner')}"></span>`;
-      card.addEventListener('click',()=>openDetail(info.week,day,`${SHORT_DOW[day]} ${fmtDM(date)}`,date));
+      card.addEventListener('click',()=>openDetail(info.week,day,`${sdow(date)} ${fmtDM(date)}`,date));
       menuEl.appendChild(card);
       return;
     }
@@ -1377,7 +1583,7 @@ function renderWeek(animate){
       if(e.target.closest('.kid-toggle')) return;
       const chip=e.target.closest('.al-chip');
       if(chip){ e.stopPropagation(); openAllergen(chip.dataset.a); return; }
-      openDetail(info.week,day,`${SHORT_DOW[day]} ${fmtDM(date)}`,date);
+      openDetail(info.week,day,`${sdow(date)} ${fmtDM(date)}`,date);
     });
     menuEl.appendChild(card);
   });
@@ -1407,7 +1613,21 @@ function courseHtml(label,opts){
   return inner;
 }
 function localiseDish(s){
-  return String(s).replace('Accompaniments of the day',t('accompaniments')).replace('Fresh fruit',t('fresh_fruit'));
+  s=String(s);
+  if(/Accompaniments of the day/.test(s)) return s.replace('Accompaniments of the day',t('accompaniments'));
+  if(/^Fresh fruit/.test(s)) return s.replace('Fresh fruit',t('fresh_fruit'));
+  if(lang==='en') return s;
+  const key=stripEmoji(s);
+  const row=DISH_I18N[key]; if(!row) return s;
+  const tr=row[lang==='cy'?0:1]; if(!tr) return s;
+  const emoji=(s.match(/[\u{1F000}-\u{1FFFF}\u2190-\u27BF\u2B00-\u2BFF]\uFE0F?/gu)||[]).join('');
+  return emoji ? tr+' '+emoji : tr;
+}
+function localiseDesc(det){
+  if(!det) return '';
+  if(lang==='cy'&&det.cy) return det.cy;
+  if(lang==='es'&&det.es) return det.es;
+  return det.description||'';
 }
 function mealHtml(str){
   const p=parseMeal(str);
@@ -1426,7 +1646,8 @@ function allergensHtml(list){
 function openAllergen(key){
   $('detailTitle').textContent=`${ALLERGEN_ICONS[key]||''} ${t(key)}`;
   $('detailMeta').textContent=t('allergen_word'); $('detailWx').hidden=true; $('detailMenu').hidden=true;
-  $('detailBody').textContent=(ALLERGEN_INFO[key]||'')+'\n\n'+t('kitchen_note');
+  const info=ALLERGEN_INFO[key]; const txt=Array.isArray(info)?(info[LANGS.indexOf(lang)]||info[0]):(info||'');
+  $('detailBody').textContent=txt+'\n\n'+t('kitchen_note');
   openSheet($('detailScrim'));
 }
 function conflictsFor(dayAll){
@@ -1647,7 +1868,7 @@ function packedTomorrow(){
   const day=WEEKDAYS[(tom.getDay()+6)%7];
   const kids=children.filter(c=>isPacked(c,weekMap[idx].week,day,ymdLocal(tom)));
   if(!kids.length) return null;
-  return {date:tom, kids, label:tom.toLocaleDateString(dloc(),{weekday:'short',day:'numeric',month:'short'})};
+  return {date:tom, kids, label:fmtDate(tom,{weekday:'short',day:'numeric',month:'short'})};
 }
 function showReminderBanner(p){
   const nav=document.querySelector('.weeknav');
@@ -1698,7 +1919,7 @@ function buildIcs(){
   items.forEach((it,i)=>{
     const ev=new Date(it.date); ev.setDate(ev.getDate()-1); ev.setHours(hh,mm,0,0);
     const end=new Date(ev); end.setMinutes(end.getMinutes()+15);
-    const dl=it.date.toLocaleDateString(dloc(),{weekday:'short',day:'numeric',month:'short'});
+    const dl=fmtDate(it.date,{weekday:'short',day:'numeric',month:'short'});
     const sum=t('ics_summary',{who:joinNames(it.kids),d:dl});
     L.push('BEGIN:VEVENT','UID:packed-'+ymdLocal(it.date)+'-'+i+'@dinner','DTSTAMP:'+stamp,
       'DTSTART:'+icsStamp(ev),'DTEND:'+icsStamp(end),'SUMMARY:'+icsEsc(sum),
@@ -1836,7 +2057,7 @@ function shareWeekImage(){
     const allerg=ov?ov.allergens:((ALLERGENS[info.week]&&ALLERGENS[info.week][day])||[]);
     x.fillStyle='#ffffff'; roundRect(x,50,y,W-100,rowH-22,20); x.fill();
     x.fillStyle='#0b6f93'; x.font='800 30px system-ui,-apple-system,sans-serif'; x.fillText(sdow(date).toUpperCase(),82,y+58);
-    const mains=p.mains.map(stripEmoji);
+    const mains=p.mains.map(localiseDish).map(stripEmoji);
     x.fillStyle='#12303c'; x.font='600 36px system-ui,-apple-system,sans-serif'; x.fillText(mains[0]||'',82,y+112);
     if(mains[1]){ x.fillStyle='#6b8794'; x.font='500 30px system-ui,-apple-system,sans-serif'; x.fillText(t('or')+' '+mains[1],82,y+156); }
     x.textAlign='right'; x.font='36px system-ui,-apple-system,sans-serif'; x.fillStyle='#12303c';
@@ -1936,7 +2157,7 @@ function renderInsetList(box){
   sorted.forEach(d=>{
     const row=document.createElement('div'); row.className='inset-row';
     const lbl=document.createElement('span'); lbl.className='d';
-    lbl.textContent=parseDateYMD(d).toLocaleDateString(dloc(),{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+    lbl.textContent=fmtDate(parseDateYMD(d),{weekday:'short',day:'numeric',month:'short',year:'numeric'});
     const rm=document.createElement('button'); rm.setAttribute('aria-label',t('remove_inset'));
     rm.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 5.7 18.3l-1.4-1.4L9.2 12 4.3 7.1l1.4-1.4 4.9 4.9 6.3-6.3z"/></svg>';
     rm.onclick=()=>{ school.insets=school.insets.filter(x=>x!==d); saveSchool(); renderInsetList(box); render(false); };

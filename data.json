@@ -19,36 +19,56 @@
  "details": {
   "1": {
    "Monday": {
-    "description": "Meatballs or pesto pasta and garlic bread with daily accompaniments. Homemade biscuit and peach slices, or fresh fruit. Halal meatballs or GF/DF meatballs available."
+    "description": "Meatballs or pesto pasta and garlic bread with daily accompaniments. Homemade biscuit and peach slices, or fresh fruit. Halal meatballs or GF/DF meatballs available.",
+    "cy": "Peli cig neu basta pesto a bara garlleg gydag ategolion y dydd. Bisged gartref a thafelli eirin gwlanog, neu ffrwyth ffres. Peli cig halal neu beli cig heb glwten a llaeth ar gael.",
+    "es": "Albóndigas o pasta al pesto con pan de ajo y los acompañamientos del día. Galleta casera con melocotón, o fruta fresca. Disponibles albóndigas halal o sin gluten ni lácteos."
    },
    "Tuesday": {
-    "description": "Chicken curry and naan or cheese and tomato pizza with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal chicken curry and naan, or GF/DF pizza available."
+    "description": "Chicken curry and naan or cheese and tomato pizza with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal chicken curry and naan, or GF/DF pizza available.",
+    "cy": "Cyri cyw iâr a naan neu bitsa caws a thomato gydag ategolion y dydd. Iogwrt Cymreig a ffrwythau sych, neu ffrwyth ffres. Cyri cyw iâr halal a naan, neu bitsa heb glwten a llaeth ar gael.",
+    "es": "Curry de pollo con naan o pizza de queso y tomate con los acompañamientos del día. Yogur galés con fruta seca, o fruta fresca. Disponibles curry halal o pizza sin gluten ni lácteos."
    },
    "Wednesday": {
-    "description": "BBQ chicken wrap or jacket potato with cheese and beans, with daily accompaniments. Waffle and mandarin slices, or fresh fruit. Halal or GF/DF BBQ chicken wrap available."
+    "description": "BBQ chicken wrap or jacket potato with cheese and beans, with daily accompaniments. Waffle and mandarin slices, or fresh fruit. Halal or GF/DF BBQ chicken wrap available.",
+    "cy": "Wrap cyw iâr barbeciw neu daten bob gyda chaws a ffa, gydag ategolion y dydd. Waffl a thafelli mandarin, neu ffrwyth ffres. Wrap cyw iâr halal neu heb glwten a llaeth ar gael.",
+    "es": "Wrap de pollo a la barbacoa o patata asada con queso y alubias, con los acompañamientos del día. Gofre con mandarina, o fruta fresca. Disponible wrap halal o sin gluten ni lácteos."
    },
    "Thursday": {
-    "description": "Roast beef and Yorkshire pudding or pasta napolitana with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal roast chicken and Yorkshire pudding, or GF/DF roast beef available."
+    "description": "Roast beef and Yorkshire pudding or pasta napolitana with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal roast chicken and Yorkshire pudding, or GF/DF roast beef available.",
+    "cy": "Cig eidion rhost a phwdin Efrog neu basta napolitana gydag ategolion y dydd. Caws a chracers gyda ffrwythau sych, neu ffrwyth ffres. Cyw iâr rhost halal a phwdin Efrog, neu gig eidion rhost heb glwten a llaeth ar gael.",
+    "es": "Rosbif con pudin de Yorkshire o pasta napolitana con los acompañamientos del día. Queso con galletas saladas y fruta seca, o fruta fresca. Disponibles pollo asado halal con pudin de Yorkshire, o rosbif sin gluten ni lácteos."
    },
    "Friday": {
-    "description": "Jumbo fish finger or cheese wrap with daily accompaniments. Jam split and fruit wedge, or fresh fruit. Halal jumbo fish finger, GF/DF fish fingers, or baked salmon available."
+    "description": "Jumbo fish finger or cheese wrap with daily accompaniments. Jam split and fruit wedge, or fresh fruit. Halal jumbo fish finger, GF/DF fish fingers, or baked salmon available.",
+    "cy": "Bys pysgod jymbo neu wrap caws gydag ategolion y dydd. Sblit jam a lletem ffrwyth, neu ffrwyth ffres. Bys pysgod jymbo halal, bysedd pysgod heb glwten a llaeth, neu eog wedi'i bobi ar gael.",
+    "es": "Palito de pescado jumbo o wrap de queso con los acompañamientos del día. Bollo de mermelada con trozo de fruta, o fruta fresca. Disponibles palito de pescado halal, palitos sin gluten ni lácteos, o salmón al horno."
    }
   },
   "2": {
    "Monday": {
-    "description": "Pasta bolognaise or omelette with daily accompaniments. Welsh cake and fruit wedge, or fresh fruit. Halal or GF/DF pasta bolognaise available."
+    "description": "Pasta bolognaise or omelette with daily accompaniments. Welsh cake and fruit wedge, or fresh fruit. Halal or GF/DF pasta bolognaise available.",
+    "cy": "Pasta bolognaise neu omled gydag ategolion y dydd. Cacen gri a lletem ffrwyth, neu ffrwyth ffres. Pasta bolognaise halal neu heb glwten a llaeth ar gael.",
+    "es": "Pasta a la boloñesa o tortilla francesa con los acompañamientos del día. Torta galesa con trozo de fruta, o fruta fresca. Disponible boloñesa halal o sin gluten ni lácteos."
    },
    "Tuesday": {
-    "description": "Roast chicken or macaroni cheese with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal or GF/DF roast chicken available."
+    "description": "Roast chicken or macaroni cheese with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal or GF/DF roast chicken available.",
+    "cy": "Cyw iâr rhost neu facaroni caws gydag ategolion y dydd. Iogwrt Cymreig a ffrwythau sych, neu ffrwyth ffres. Cyw iâr rhost halal neu heb glwten a llaeth ar gael.",
+    "es": "Pollo asado o macarrones con queso con los acompañamientos del día. Yogur galés con fruta seca, o fruta fresca. Disponible pollo asado halal o sin gluten ni lácteos."
    },
    "Wednesday": {
-    "description": "Chicken curry and naan or cheese and tomato calzone with daily accompaniments. Mandarin sponge and custard, or fresh fruit. Halal chicken curry, or GF/DF pizza available."
+    "description": "Chicken curry and naan or cheese and tomato calzone with daily accompaniments. Mandarin sponge and custard, or fresh fruit. Halal chicken curry, or GF/DF pizza available.",
+    "cy": "Cyri cyw iâr a naan neu galzone caws a thomato gydag ategolion y dydd. Sbwng mandarin a chwstard, neu ffrwyth ffres. Cyri cyw iâr halal, neu bitsa heb glwten a llaeth ar gael.",
+    "es": "Curry de pollo con naan o calzone de queso y tomate con los acompañamientos del día. Bizcocho de mandarina con natillas, o fruta fresca. Disponibles curry halal o pizza sin gluten ni lácteos."
    },
    "Thursday": {
-    "description": "Sausage dinner or vegetarian mild chilli with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal or GF/DF sausage available."
+    "description": "Sausage dinner or vegetarian mild chilli with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal or GF/DF sausage available.",
+    "cy": "Cinio selsig neu chilli llysieuol mwyn gydag ategolion y dydd. Caws a chracers gyda ffrwythau sych, neu ffrwyth ffres. Selsig halal neu heb glwten a llaeth ar gael.",
+    "es": "Salchichas con guarnición o chili vegetariano suave con los acompañamientos del día. Queso con galletas saladas y fruta seca, o fruta fresca. Disponibles salchichas halal o sin gluten ni lácteos."
    },
    "Friday": {
-    "description": "Fish fingers or cheese wrap with daily accompaniments. Pancake and fruit wedge, or fresh fruit. Halal or GF/DF fish fingers, or baked salmon available."
+    "description": "Fish fingers or cheese wrap with daily accompaniments. Pancake and fruit wedge, or fresh fruit. Halal or GF/DF fish fingers, or baked salmon available.",
+    "cy": "Bysedd pysgod neu wrap caws gydag ategolion y dydd. Crempog a lletem ffrwyth, neu ffrwyth ffres. Bysedd pysgod halal neu heb glwten a llaeth, neu eog wedi'i bobi ar gael.",
+    "es": "Palitos de pescado o wrap de queso con los acompañamientos del día. Tortita con trozo de fruta, o fruta fresca. Disponibles palitos halal o sin gluten ni lácteos, o salmón al horno."
    }
   }
  },
@@ -585,6 +605,112 @@
   "YGG Y Login Fach": [
    "2026-09-01",
    "2026-09-02"
+  ]
+ },
+ "dishes": {
+  "Meatballs": [
+   "Peli cig",
+   "Albóndigas"
+  ],
+  "Pesto pasta and garlic bread": [
+   "Pasta pesto a bara garlleg",
+   "Pasta al pesto y pan de ajo"
+  ],
+  "Homemade biscuit and peach slices": [
+   "Bisged gartref a thafelli eirin gwlanog",
+   "Galleta casera y melocotón en rodajas"
+  ],
+  "Chicken curry and naan": [
+   "Cyri cyw iâr a naan",
+   "Curry de pollo con naan"
+  ],
+  "Cheese and tomato pizza": [
+   "Pitsa caws a thomato",
+   "Pizza de queso y tomate"
+  ],
+  "Welsh yoghurt and dried fruit": [
+   "Iogwrt Cymreig a ffrwythau sych",
+   "Yogur galés y fruta seca"
+  ],
+  "BBQ chicken wrap": [
+   "Wrap cyw iâr barbeciw",
+   "Wrap de pollo a la barbacoa"
+  ],
+  "Jacket potato, cheese and beans": [
+   "Taten bob, caws a ffa",
+   "Patata asada con queso y alubias"
+  ],
+  "Waffle and mandarin slices": [
+   "Waffl a thafelli mandarin",
+   "Gofre y gajos de mandarina"
+  ],
+  "Roast beef and Yorkshire pudding": [
+   "Cig eidion rhost a phwdin Efrog",
+   "Rosbif con pudin de Yorkshire"
+  ],
+  "Pasta napolitana": [
+   "Pasta napolitana",
+   "Pasta napolitana"
+  ],
+  "Cheese and crackers and dried fruit": [
+   "Caws a chracers a ffrwythau sych",
+   "Queso con galletas saladas y fruta seca"
+  ],
+  "Jumbo fish finger": [
+   "Bys pysgod jymbo",
+   "Palito de pescado jumbo"
+  ],
+  "Cheese wrap": [
+   "Wrap caws",
+   "Wrap de queso"
+  ],
+  "Jam split and fruit wedge": [
+   "Sblit jam a lletem ffrwyth",
+   "Bollo de mermelada y trozo de fruta"
+  ],
+  "Pasta bolognaise": [
+   "Pasta bolognaise",
+   "Pasta a la boloñesa"
+  ],
+  "Omelette": [
+   "Omled",
+   "Tortilla francesa"
+  ],
+  "Welsh cake and fruit wedge": [
+   "Cacen gri a lletem ffrwyth",
+   "Torta galesa y trozo de fruta"
+  ],
+  "Roast chicken": [
+   "Cyw iâr rhost",
+   "Pollo asado"
+  ],
+  "Macaroni cheese": [
+   "Macaroni caws",
+   "Macarrones con queso"
+  ],
+  "Cheese and tomato calzone": [
+   "Calzone caws a thomato",
+   "Calzone de queso y tomate"
+  ],
+  "Mandarin sponge and custard": [
+   "Sbwng mandarin a chwstard",
+   "Bizcocho de mandarina con natillas"
+  ],
+  "Sausage dinner": [
+   "Cinio selsig",
+   "Salchichas con guarnición"
+  ],
+  "Vegetarian mild chilli": [
+   "Chilli llysieuol mwyn",
+   "Chili vegetariano suave"
+  ],
+  "Fish fingers": [
+   "Bysedd pysgod",
+   "Palitos de pescado"
+  ],
+  "Pancake and fruit wedge": [
+   "Crempog a lletem ffrwyth",
+   "Tortita y trozo de fruta"
   ]
  }
 }
