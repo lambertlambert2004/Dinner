@@ -1198,7 +1198,8 @@ const STR = {
   remove_last_msg:["This is your only child, so removing them takes you back to the welcome screen.","Dyma eich unig blentyn, felly bydd eu tynnu yn mynd â chi yn ôl i'r sgrin groeso.","Es tu único hijo, así que al quitarlo volverás a la pantalla de bienvenida."],
   pack_q:["Pack lunch on {d}?","Pecyn bwyd ar {d}?","¿Fiambrera el {d}?"],
   pack_choose:["How often does {c} want a packed lunch?","Pa mor aml mae {c} eisiau pecyn bwyd?","¿Con qué frecuencia quiere {c} fiambrera?"],
-  pack_every:["Every {d}","Bob {d}","Cada {d}"],
+  pack_every:["Every {d}, both weeks","Bob {d}, y ddwy wythnos","Cada {d}, ambas semanas"],
+  pack_week:["Every {d} in week {w}","Bob {d} yn wythnos {w}","Cada {d} de la semana {w}"],
   pack_once:["Just this date","Y dyddiad hwn yn unig","Solo este dia"],
   wx_hot:["Hot day, pack a water bottle and sun hat","Diwrnod poeth, paciwch botel ddŵr a het haul","Día caluroso, lleva una botella de agua y gorra"],
   wx_rain:["Heavy rain likely, send a coat and wellies","Glaw trwm yn debygol, anfonwch got ac esgidiau glaw","Lluvia intensa probable, lleva abrigo y botas de agua"],
@@ -1228,7 +1229,7 @@ const STR = {
   update_ready:["New version ready. Tap to update.","Fersiwn newydd yn barod. Tapiwch i ddiweddaru.","Nueva versión lista. Toca para actualizar."],
   refresh:["Refresh","Adnewyddu","Actualizar"],
   updated_at:["Updated {t}","Diweddarwyd {t}","Actualizado {t}"],
-  unpack_every_msg:["This stops {c}'s packed lunch every {d}.","Mae hyn yn atal pecyn bwyd {c} bob {d}.","Esto quita la fiambrera de {c} cada {d}."],
+  unpack_every_msg:["This stops {c}'s packed lunch every {d} in week {w}.","Mae hyn yn atal pecyn bwyd {c} bob {d} yn wythnos {w}.","Esto quita la fiambrera de {c} cada {d} de la semana {w}."],
   pack_msg:["{c} brings a packed lunch instead of a school dinner.","Mae {c} yn dod a phecyn bwyd yn lle cinio ysgol.","{c} lleva fiambrera en vez de comedor."],
   pack_ok:["Pack lunch","Pecyn bwyd","Llevar fiambrera"],
   unpack_q:["Back to school dinner?","Yn ôl i ginio ysgol?","¿Volver al comedor?"],
@@ -1296,6 +1297,12 @@ const save = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
 const isPacked = (child,week,day,dateKey)=> !!((dateKey && packedOnce[child] && packedOnce[child][dateKey]) || (packedLunch[child]&&packedLunch[child][week]&&packedLunch[child][week][day]));
 const isRecurring = (child,week,day)=> !!(packedLunch[child]&&packedLunch[child][week]&&packedLunch[child][week][day]);
 const anyPacked = (week,day,dateKey)=> children.some(c=>isPacked(c,week,day,dateKey));
+function setPackedWeek(child,week,day,on){
+  if(!packedLunch[child]) packedLunch[child]={};
+  if(!packedLunch[child][week]) packedLunch[child][week]={};
+  if(on) packedLunch[child][week][day]=true; else delete packedLunch[child][week][day];
+  save('packedLunch',packedLunch);
+}
 function setPackedEveryWeek(child,day,on){
   if(!packedLunch[child]) packedLunch[child]={};
   [1,2].forEach(w=>{ if(!packedLunch[child][w]) packedLunch[child][w]={}; if(on) packedLunch[child][w][day]=true; else delete packedLunch[child][w][day]; });
@@ -1404,12 +1411,13 @@ function kidChip(child,week,day,key,date,after){
     if(turningOn){
       askChoice(t('pack_q',{d:dl}), t('pack_choose',{c:child}), [
         {label:t('pack_every',{d:wkday}), cls:'btn btn-primary', onClick:()=>{ setPackedEveryWeek(child,day,true); after(); }},
+        {label:t('pack_week',{d:wkday,w:week}), cls:'btn btn-ghost', onClick:()=>{ setPackedWeek(child,week,day,true); after(); }},
         {label:t('pack_once'), cls:'btn btn-ghost', onClick:()=>{ setPackedOnce(child,key,true); after(); }}
       ]);
     } else {
       const recurring=isRecurring(child,week,day);
-      askConfirm(t('unpack_q'), recurring? t('unpack_every_msg',{c:child,d:wkday}) : t('unpack_msg',{c:child,d:dl}), t('unpack_ok'),
-        ()=>{ pendingRevert=null; setPackedOnce(child,key,false); if(recurring) setPackedEveryWeek(child,day,false); after(); });
+      askConfirm(t('unpack_q'), recurring? t('unpack_every_msg',{c:child,d:wkday,w:week}) : t('unpack_msg',{c:child,d:dl}), t('unpack_ok'),
+        ()=>{ pendingRevert=null; setPackedOnce(child,key,false); if(recurring) setPackedWeek(child,week,day,false); after(); });
     }
   });
   return b;
