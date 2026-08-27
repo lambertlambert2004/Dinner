@@ -1,0 +1,590 @@
+{
+ "version": 1,
+ "menus": {
+  "1": {
+   "Monday": "Meatballs 🍖 / Pesto pasta and garlic bread 🌿🥖\nAccompaniments of the day 🥕\nHomemade biscuit 🍪 and peach slices 🍑 / Fresh fruit 🍎",
+   "Tuesday": "Chicken curry and naan 🍛🫓 / Cheese and tomato pizza 🍕\nAccompaniments of the day 🥗\nWelsh yoghurt and dried fruit 🥛 / Fresh fruit 🍎",
+   "Wednesday": "BBQ chicken wrap 🌯 / Jacket potato, cheese and beans 🥔🧀\nAccompaniments of the day 🥕\nWaffle 🧇 and mandarin slices 🍊 / Fresh fruit 🍎",
+   "Thursday": "Roast beef and Yorkshire pudding 🥩 / Pasta napolitana 🍝\nAccompaniments of the day 🥕\nCheese and crackers 🧀 and dried fruit / Fresh fruit 🍎",
+   "Friday": "Jumbo fish finger 🐟 / Cheese wrap 🧀🌯\nAccompaniments of the day 🥗\nJam split 🍰 and fruit wedge 🍉 / Fresh fruit 🍎"
+  },
+  "2": {
+   "Monday": "Pasta bolognaise 🍝 / Omelette 🍳\nAccompaniments of the day 🥕\nWelsh cake 🍪 and fruit wedge 🍉 / Fresh fruit 🍎",
+   "Tuesday": "Roast chicken 🍗 / Macaroni cheese 🧀🍝\nAccompaniments of the day 🥗\nWelsh yoghurt and dried fruit 🥛 / Fresh fruit 🍎",
+   "Wednesday": "Chicken curry and naan 🍛🫓 / Cheese and tomato calzone 🧀🥟\nAccompaniments of the day 🥕\nMandarin sponge and custard 🍮 / Fresh fruit 🍎",
+   "Thursday": "Sausage dinner 🌭 / Vegetarian mild chilli 🫘\nAccompaniments of the day 🥕\nCheese and crackers 🧀 and dried fruit / Fresh fruit 🍎",
+   "Friday": "Fish fingers 🐟 / Cheese wrap 🧀🌯\nAccompaniments of the day 🥗\nPancake 🥞 and fruit wedge 🍉 / Fresh fruit 🍎"
+  }
+ },
+ "details": {
+  "1": {
+   "Monday": {
+    "description": "Meatballs or pesto pasta and garlic bread with daily accompaniments. Homemade biscuit and peach slices, or fresh fruit. Halal meatballs or GF/DF meatballs available."
+   },
+   "Tuesday": {
+    "description": "Chicken curry and naan or cheese and tomato pizza with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal chicken curry and naan, or GF/DF pizza available."
+   },
+   "Wednesday": {
+    "description": "BBQ chicken wrap or jacket potato with cheese and beans, with daily accompaniments. Waffle and mandarin slices, or fresh fruit. Halal or GF/DF BBQ chicken wrap available."
+   },
+   "Thursday": {
+    "description": "Roast beef and Yorkshire pudding or pasta napolitana with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal roast chicken and Yorkshire pudding, or GF/DF roast beef available."
+   },
+   "Friday": {
+    "description": "Jumbo fish finger or cheese wrap with daily accompaniments. Jam split and fruit wedge, or fresh fruit. Halal jumbo fish finger, GF/DF fish fingers, or baked salmon available."
+   }
+  },
+  "2": {
+   "Monday": {
+    "description": "Pasta bolognaise or omelette with daily accompaniments. Welsh cake and fruit wedge, or fresh fruit. Halal or GF/DF pasta bolognaise available."
+   },
+   "Tuesday": {
+    "description": "Roast chicken or macaroni cheese with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal or GF/DF roast chicken available."
+   },
+   "Wednesday": {
+    "description": "Chicken curry and naan or cheese and tomato calzone with daily accompaniments. Mandarin sponge and custard, or fresh fruit. Halal chicken curry, or GF/DF pizza available."
+   },
+   "Thursday": {
+    "description": "Sausage dinner or vegetarian mild chilli with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal or GF/DF sausage available."
+   },
+   "Friday": {
+    "description": "Fish fingers or cheese wrap with daily accompaniments. Pancake and fruit wedge, or fresh fruit. Halal or GF/DF fish fingers, or baked salmon available."
+   }
+  }
+ },
+ "allergens": {
+  "1": {
+   "Monday": [
+    "gluten",
+    "dairy",
+    "nuts",
+    "egg"
+   ],
+   "Tuesday": [
+    "gluten",
+    "dairy"
+   ],
+   "Wednesday": [
+    "gluten",
+    "dairy",
+    "egg"
+   ],
+   "Thursday": [
+    "gluten",
+    "dairy",
+    "egg"
+   ],
+   "Friday": [
+    "fish",
+    "gluten",
+    "dairy",
+    "egg"
+   ]
+  },
+  "2": {
+   "Monday": [
+    "gluten",
+    "dairy",
+    "egg"
+   ],
+   "Tuesday": [
+    "gluten",
+    "dairy"
+   ],
+   "Wednesday": [
+    "gluten",
+    "dairy",
+    "egg"
+   ],
+   "Thursday": [
+    "gluten",
+    "dairy"
+   ],
+   "Friday": [
+    "fish",
+    "gluten",
+    "dairy",
+    "egg"
+   ]
+  }
+ },
+ "overrides": {},
+ "weekStarts": [
+  {
+   "d": "2026-08-31",
+   "w": 1
+  },
+  {
+   "d": "2026-09-07",
+   "w": 2
+  },
+  {
+   "d": "2026-09-14",
+   "w": 1
+  },
+  {
+   "d": "2026-09-21",
+   "w": 2
+  },
+  {
+   "d": "2026-09-28",
+   "w": 1
+  },
+  {
+   "d": "2026-10-05",
+   "w": 2
+  },
+  {
+   "d": "2026-10-12",
+   "w": 1
+  },
+  {
+   "d": "2026-10-19",
+   "w": 2
+  },
+  {
+   "d": "2026-11-02",
+   "w": 1
+  },
+  {
+   "d": "2026-11-09",
+   "w": 2
+  },
+  {
+   "d": "2026-11-16",
+   "w": 1
+  },
+  {
+   "d": "2026-11-23",
+   "w": 2
+  },
+  {
+   "d": "2026-11-30",
+   "w": 1
+  },
+  {
+   "d": "2026-12-07",
+   "w": 2
+  },
+  {
+   "d": "2026-12-14",
+   "w": 1
+  },
+  {
+   "d": "2027-01-04",
+   "w": 2
+  },
+  {
+   "d": "2027-01-11",
+   "w": 1
+  },
+  {
+   "d": "2027-01-18",
+   "w": 2
+  },
+  {
+   "d": "2027-01-25",
+   "w": 1
+  },
+  {
+   "d": "2027-02-01",
+   "w": 2
+  },
+  {
+   "d": "2027-02-15",
+   "w": 1
+  },
+  {
+   "d": "2027-02-22",
+   "w": 2
+  },
+  {
+   "d": "2027-03-01",
+   "w": 1
+  },
+  {
+   "d": "2027-03-08",
+   "w": 2
+  },
+  {
+   "d": "2027-03-15",
+   "w": 1
+  },
+  {
+   "d": "2027-04-05",
+   "w": 2
+  },
+  {
+   "d": "2027-04-12",
+   "w": 1
+  },
+  {
+   "d": "2027-04-19",
+   "w": 2
+  },
+  {
+   "d": "2027-04-26",
+   "w": 1
+  },
+  {
+   "d": "2027-05-03",
+   "w": 2
+  },
+  {
+   "d": "2027-05-10",
+   "w": 1
+  },
+  {
+   "d": "2027-05-17",
+   "w": 2
+  },
+  {
+   "d": "2027-05-24",
+   "w": 1
+  },
+  {
+   "d": "2027-06-07",
+   "w": 2
+  },
+  {
+   "d": "2027-06-14",
+   "w": 1
+  },
+  {
+   "d": "2027-06-21",
+   "w": 2
+  },
+  {
+   "d": "2027-06-28",
+   "w": 1
+  },
+  {
+   "d": "2027-07-05",
+   "w": 2
+  },
+  {
+   "d": "2027-07-12",
+   "w": 1
+  },
+  {
+   "d": "2027-07-19",
+   "w": 2
+  }
+ ],
+ "closures": {
+  "2026-08-31": "Bank holiday",
+  "2027-05-03": "May Day"
+ },
+ "breaks": {
+  "2026-10-19": "brk_half",
+  "2026-12-14": "brk_xmas",
+  "2027-02-01": "brk_half",
+  "2027-03-15": "brk_easter",
+  "2027-05-24": "brk_half",
+  "2027-07-19": "brk_summer"
+ },
+ "insets": {
+  "Blaenymaes Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2026-10-23",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Brynmill Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-01-04"
+  ],
+  "Casllwchwr Primary School": [
+   "2026-09-01"
+  ],
+  "Christchurch CW Primary School": [
+   "2026-09-01",
+   "2026-09-02"
+  ],
+  "Cila Primary School": [
+   "2026-09-01",
+   "2026-11-02",
+   "2027-01-04",
+   "2027-05-28",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Clase Primary School": [
+   "2026-09-01",
+   "2026-09-02"
+  ],
+  "Cwmrhydyceirw Primary School": [
+   "2026-11-27",
+   "2027-03-19",
+   "2027-05-28",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Danygraig Primary School": [
+   "2026-09-01",
+   "2026-09-02"
+  ],
+  "Dunvant Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2026-12-18",
+   "2027-01-04",
+   "2027-06-07",
+   "2027-07-20"
+  ],
+  "Glais Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Glyncollen Primary School": [
+   "2026-09-01",
+   "2026-09-25",
+   "2027-01-17",
+   "2027-03-19",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Gors Community Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2026-11-02",
+   "2027-01-04",
+   "2027-04-05",
+   "2027-06-07"
+  ],
+  "Hafod Primary School": [
+   "2026-09-01",
+   "2026-10-23",
+   "2027-01-04",
+   "2027-05-28",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Hendrefoilan Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-01-04",
+   "2027-04-05",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Knelston Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-01-04",
+   "2027-02-05"
+  ],
+  "Mayals Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-01-04",
+   "2027-02-05",
+   "2027-06-07"
+  ],
+  "Morriston Primary School": [
+   "2026-09-01",
+   "2026-10-02",
+   "2027-01-04",
+   "2027-03-19",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Newton Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2026-11-02",
+   "2027-02-05",
+   "2027-04-05",
+   "2027-05-28"
+  ],
+  "Oystermouth Primary School": [
+   "2026-09-01",
+   "2026-10-23",
+   "2027-01-04",
+   "2027-04-05",
+   "2027-05-28",
+   "2027-06-07"
+  ],
+  "Parkland Primary School": [
+   "2026-09-01"
+  ],
+  "Pengelli Primary School": [
+   "2026-09-01",
+   "2027-01-04",
+   "2027-04-05",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Penllergaer Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-05-28"
+  ],
+  "Pennard Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2026-12-18",
+   "2027-01-04",
+   "2027-02-05",
+   "2027-04-05"
+  ],
+  "Pentrechwyth Primary School": [
+   "2026-09-01",
+   "2027-01-04",
+   "2027-04-05"
+  ],
+  "Pentre'r Graig Primary School": [
+   "2026-09-01",
+   "2026-09-02"
+  ],
+  "Penyrheol Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-01-04",
+   "2027-04-30",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Plasmarl Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-01-04",
+   "2027-04-05",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Pontarddulais Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-01-04",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Pontybrenin Primary School": [
+   "2026-09-01",
+   "2027-01-04",
+   "2027-04-05",
+   "2027-05-06",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Portmead Primary School": [
+   "2026-09-01",
+   "2026-10-23",
+   "2027-01-04",
+   "2027-04-30",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Sea View Community Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-01-04",
+   "2027-04-05",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Sketty Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2026-10-02",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "St David's RC Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-02-15",
+   "2027-05-28",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "St Helen's Primary School": [
+   "2026-09-01",
+   "2026-09-02",
+   "2026-11-16",
+   "2027-01-04"
+  ],
+  "St Illtyd's RC Primary School": [
+   "2026-09-01",
+   "2026-11-02",
+   "2027-02-15",
+   "2027-06-07",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "St Joseph's RC Primary School, Clydach": [
+   "2026-09-01",
+   "2026-09-02",
+   "2026-10-23",
+   "2027-02-15",
+   "2027-04-05",
+   "2027-07-20"
+  ],
+  "St Thomas Community Primary School": [
+   "2026-09-01",
+   "2027-02-15",
+   "2027-06-07"
+  ],
+  "Terrace Road Primary School": [
+   "2026-09-01",
+   "2026-11-25",
+   "2027-04-14",
+   "2027-06-23",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Tre Uchaf Primary School": [
+   "2026-09-01",
+   "2026-10-02",
+   "2027-01-04",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "Waunarlwydd Primary School": [
+   "2026-09-01",
+   "2027-01-04",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "YGG Bryniago": [
+   "2026-09-01",
+   "2026-11-02",
+   "2027-01-04",
+   "2027-02-05",
+   "2027-04-05"
+  ],
+  "YGG Gellionnen": [
+   "2026-09-01",
+   "2026-09-02"
+  ],
+  "YGG Llwynderw": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-02-05",
+   "2027-04-05",
+   "2027-06-07",
+   "2027-07-20"
+  ],
+  "YGG Lon Las": [
+   "2026-09-01",
+   "2026-09-02",
+   "2027-01-29",
+   "2027-07-19",
+   "2027-07-20"
+  ],
+  "YGG Pontybrenin": [
+   "2026-09-01",
+   "2026-10-02",
+   "2026-10-05"
+  ],
+  "YGG Y Login Fach": [
+   "2026-09-01",
+   "2026-09-02"
+  ]
+ }
+}
