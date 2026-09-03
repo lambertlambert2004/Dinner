@@ -588,6 +588,7 @@ body.dark-mode .toast.tap{color:#fff}
    no code change and no service worker bump. Bump DATA_VERSION here
    whenever this built-in copy changes. */
 const DATA_VERSION = 1;
+const SCHOOL_YEAR = '2026-27';
 let MENUS = {
     1: {
         Monday: "Meatballs 🍖 / Pesto pasta and garlic bread 🌿🥖\nAccompaniments of the day 🥕\nHomemade biscuit 🍪 and peach slices 🍑 / Fresh fruit 🍎",
@@ -757,7 +758,8 @@ function wxEmoji(code){
 }
 function weatherFor(key){
   if(!weather||!weather.days) return null;
-  const d=weather.days[key]; if(!d) return null;
+  const d=weather.days[key]; if(!d||typeof d.t!=='number'||typeof d.c!=='number') return null;
+  if(d.t===0&&d.c===0&&d.lo===0) return null;
   const w={ t:d.t, lo:d.lo, c:d.c, p:d.p, g:d.g, emoji:wxEmoji(d.c) };
   w.ex=wxExtreme(w);
   return w;
@@ -769,7 +771,7 @@ function wxSnowy(c){ return (c>=71&&c<=77) || c===85 || c===86; }
 function wxExtreme(w){
   if(w.c>=95) return {cls:'storm',key:'wx_storm',emoji:'\u26a1'};
   if(wxSnowy(w.c)) return {cls:'snow',key:'wx_snow',emoji:'\u26c4'};
-  if((typeof w.lo==='number'&&w.lo<=0)||w.t<=3) return {cls:'cold',key:'wx_cold',emoji:'\ud83e\udde4'};
+  if((typeof w.lo==='number'&&w.lo<=0)||(typeof w.t==='number'&&w.t<=3)) return {cls:'cold',key:'wx_cold',emoji:'\ud83e\udde4'};
   if(w.t>=25) return {cls:'hot',key:'wx_hot',emoji:'\ud83e\udd64'};
   if(typeof w.g==='number'&&w.g>=60) return {cls:'wind',key:'wx_wind',emoji:'\ud83c\udf2c\ufe0f'};
   if(wxRainy(w.c)&&((typeof w.p==='number'&&w.p>=60)||[63,65,67,81,82].includes(w.c))) return {cls:'rain',key:'wx_rain',emoji:'\ud83e\udde5'};
@@ -796,6 +798,9 @@ async function fetchWeather(){
     if(!j.daily||!j.daily.time) return;
     const days={}, tm=j.daily.time, mx=j.daily.temperature_2m_max, mn=j.daily.temperature_2m_min||[], wc=j.daily.weather_code, pp=j.daily.precipitation_probability_max||[], gu=j.daily.wind_gusts_10m_max||[];
     for(let i=0;i<tm.length;i++){
+      /* The far end of the 16 day range often comes back null. Math.round(null)
+         is 0, which read as a freezing day. Skip any day without a real high. */
+      if(typeof mx[i]!=='number' || typeof wc[i]!=='number') continue;
       const d={ t:Math.round(mx[i]), c:wc[i] };
       if(typeof mn[i]==='number') d.lo=Math.round(mn[i]);
       if(typeof pp[i]==='number') d.p=Math.round(pp[i]);
@@ -1224,6 +1229,7 @@ const STR = {
   email_s1:["Open the app: {url}","Agorwch yr ap: {url}","Abre la app: {url}"],
   email_s2:["Tap the settings cog, then Share with another parent.","Tapiwch y cog gosodiadau, yna Rhannu gyda rhiant arall.","Toca la rueda de ajustes y luego Compartir con otro padre."],
   email_s3:["Paste the code below into the box and tap Apply.","Gludwch y cod isod yn y blwch a thapio Cymhwyso.","Pega el código de abajo en la casilla y toca Aplicar."],
+  t_backup_old:["Restored children and school from an older backup. Packed lunch days were left out as they belong to last year's menu.","Adferwyd plant ac ysgol o gopi wrth gefn hŷn. Gadawyd diwrnodau pecyn bwyd allan gan eu bod yn perthyn i fwydlen y llynedd.","Se restauraron los hijos y el colegio desde una copia antigua. Los días de fiambrera se omitieron porque pertenecen al menú del curso pasado."],
   t_data_updated:["Menu and term dates updated","Bwydlen a dyddiadau tymor wedi'u diweddaru","Menú y fechas del trimestre actualizados"],
   t_year_reset:["New school year: packed lunch days have been cleared. Children and allergies are kept.","Blwyddyn ysgol newydd: mae diwrnodau pecyn bwyd wedi'u clirio. Cedwir plant ac alergeddau.","Nuevo curso: se han borrado los días de fiambrera. Se conservan los hijos y las alergias."],
   update_ready:["New version ready. Tap to update.","Fersiwn newydd yn barod. Tapiwch i ddiweddaru.","Nueva versión lista. Toca para actualizar."],
@@ -1950,7 +1956,7 @@ function exportCalendar(){
   toast(t('t_rem_ready'));
 }
 function exportData(){
-  const data={children,packedLunch,packedOnce,childAllergens,school,rotaOffset,remindersOn,reminderTime,themeMode,lang};
+  const data={schoolYear:SCHOOL_YEAR,exportedAt:new Date().toISOString(),children,packedLunch,packedOnce,childAllergens,school,rotaOffset,remindersOn,reminderTime,themeMode,lang};
   downloadBlob(JSON.stringify(data,null,2),'application/json','dinner-backup.json');
   toast(t('t_backup_dl'));
 }
@@ -1959,19 +1965,23 @@ function importData(file){
   r.onload=()=>{
     try{
       const d=JSON.parse(r.result);
+      /* A backup from a previous school year carries packed days that were
+         tied to the old menu. Restore the children, allergies and school but
+         leave those days out. */
+      const sameYear = d.schoolYear===SCHOOL_YEAR;
       if(Array.isArray(d.children)&&d.children.length) children=d.children;
-      if(d.packedLunch&&typeof d.packedLunch==='object') packedLunch=d.packedLunch;
-      if(d.packedOnce&&typeof d.packedOnce==='object'){ packedOnce=d.packedOnce; localStorage.setItem('packedOnce',JSON.stringify(packedOnce)); }
+      if(sameYear && d.packedLunch&&typeof d.packedLunch==='object') packedLunch=d.packedLunch;
+      if(sameYear && d.packedOnce&&typeof d.packedOnce==='object'){ packedOnce=d.packedOnce; localStorage.setItem('packedOnce',JSON.stringify(packedOnce)); }
       if(d.childAllergens&&typeof d.childAllergens==='object'){ childAllergens=d.childAllergens; localStorage.setItem('childAllergens',JSON.stringify(childAllergens)); }
       if(d.school&&d.school.name){ school={name:d.school.name, insets:Array.isArray(d.school.insets)?d.school.insets:[]}; saveSchool(); updateSchoolHeader(); }
       if(d.themeMode){ setThemeMode(d.themeMode); } else if('darkMode' in d){ setThemeMode(d.darkMode?'dark':'light'); }
       if(d.lang && ['en','cy','es'].includes(d.lang)){ lang=d.lang; localStorage.setItem('lang',lang); applyLang(); }
-      if(typeof d.rotaOffset==='number'){ rotaOffset=d.rotaOffset; localStorage.setItem('rotaOffset',String(rotaOffset)); weekMap=buildWeekMap(); }
+      if(sameYear && typeof d.rotaOffset==='number'){ rotaOffset=d.rotaOffset; localStorage.setItem('rotaOffset',String(rotaOffset)); weekMap=buildWeekMap(); }
       if('reminderTime' in d){ reminderTime=d.reminderTime; localStorage.setItem('reminderTime',reminderTime); }
       if('remindersOn' in d){ remindersOn=!!d.remindersOn; localStorage.setItem('remindersOn',remindersOn?'1':''); }
       save('children',children); save('packedLunch',packedLunch);
       currentWeekIndex=getInitialWeekIndex(); render(false); renderSettings();
-      toast(t('t_backup_rs'));
+      toast(sameYear?t('t_backup_rs'):t('t_backup_old'));
     }catch(e){ toast(t('t_unreadable')); }
   };
   r.readAsText(file);
@@ -2002,7 +2012,7 @@ function decodeShare(code){
     const mask=parseInt(f[1],36)||0; const abits=f.length>2?(parseInt(f[2],36)||0):0;
     if(!name) continue;
     kids.push(name); pl[name]={};
-    for(let b=0;b<15;b++){ if(mask&(1<<b)){ const w=Math.floor(b/5)+1, d=DAY_ORDER[b%5]; if(!pl[name][w])pl[name][w]={}; pl[name][w][d]=true; } }
+    for(let b=0;b<10;b++){ if(mask&(1<<b)){ const w=Math.floor(b/5)+1, d=DAY_ORDER[b%5]; if(!pl[name][w])pl[name][w]={}; pl[name][w][d]=true; } }
     const al=ALL_ALLERGENS.filter((a,ai)=>abits&(1<<ai));
     if(al.length) ca[name]=al;
   }
