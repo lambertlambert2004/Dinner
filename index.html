@@ -14,9 +14,9 @@
 <!-- Anonymous, cookie-free usage analytics (Umami). No names collected. -->
 <script defer src="https://cloud.umami.is/script.js" data-website-id="f26e897a-bbbc-44c1-bf54-0a5dac48d43e"></script>
 
-<!-- Fonts are self-hosted (SIL OFL, see fonts/OFL.txt): works offline and no request goes to Google -->
-<link rel="preload" href="./fonts/hanken.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="./fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script>
   (function(){
     var m=localStorage.getItem('themeMode');
@@ -26,20 +26,18 @@
   })();
 </script>
 <style>
-@font-face{font-family:'Bricolage Grotesque';src:url('./fonts/bricolage.woff2') format('woff2');font-weight:200 800;font-display:swap}
-@font-face{font-family:'Hanken Grotesk';src:url('./fonts/hanken.woff2') format('woff2');font-weight:100 900;font-display:swap}
 :root{
-  --canvas-top:#e6eef1; --canvas-bot:#f4f7f8;
-  --surface:#ffffff; --surface-2:#f0f5f7;
-  --ink:#0a1d28; --ink-soft:#55707e; --ink-faint:#93a6b0;
-  --hairline:rgba(10,29,40,.08);
-  --tide:#0b7a97; --tide-deep:#05576e;
+  --canvas-top:#e9f1f4; --canvas-bot:#f7fafb;
+  --surface:#ffffff; --surface-2:#f1f7f9;
+  --ink:#0b2a3a; --ink-soft:#5b7280; --ink-faint:#90a4ae;
+  --hairline:rgba(11,42,58,.09);
+  --tide:#0e7c9b; --tide-deep:#075a72;
   --seafoam:#1fae97;
-  --sand:#efd7a4; --sand-tint:#fbf1dc; --sand-line:#e6cd98; --sand-ink:#8a5a12;
+  --sand:#f4d9a6; --sand-tint:#fdf3df; --sand-ink:#a9711a;
   --coral:#d9573f;
-  --shadow-sm:0 1px 2px rgba(10,29,40,.05),0 1px 1px rgba(10,29,40,.03);
-  --shadow-md:0 1px 2px rgba(10,29,40,.05),0 18px 40px -22px rgba(10,29,40,.38);
-  --radius:22px; --radius-sm:14px; --radius-pill:999px;
+  --shadow-sm:0 1px 2px rgba(11,42,58,.06);
+  --shadow-md:0 14px 34px -18px rgba(11,42,58,.40);
+  --radius:20px; --radius-sm:13px; --radius-pill:999px;
   --display:'Bricolage Grotesque',system-ui,sans-serif;
   --body:'Hanken Grotesk',system-ui,-apple-system,sans-serif;
   --ease:cubic-bezier(.4,0,.2,1);
@@ -47,16 +45,15 @@
   --coral-tint:#fdece8;--coral-line:#f1b4a6;--coral-ink:#b23a25;
 }
 html.preload-dark body, body.dark-mode{
-  --canvas-top:#07131b; --canvas-bot:#07131b;
-  --surface:#0f2230; --surface-2:#152b3a;
+  --canvas-top:#06151e; --canvas-bot:#06151e;
+  --surface:#0e2430; --surface-2:#132c39;
   --ink:#e6eef2; --ink-soft:#8aa2ae; --ink-faint:#5e7681;
   --hairline:rgba(255,255,255,.09);
   --tide:#38bbe0; --tide-deep:#1e93b8;
   --seafoam:#33d2bd;
-  --sand:#e9c27e; --sand-tint:#25313a; --sand-line:#4a4128; --sand-ink:#efcf8c;
+  --sand:#e9c27e; --sand-tint:#23303a; --sand-ink:#e9c27e;
   --coral:#f0745c;
-  --shadow-sm:0 1px 2px rgba(0,0,0,.3);
-  --shadow-md:0 1px 2px rgba(0,0,0,.3),0 22px 44px -22px rgba(0,0,0,.7);
+  --shadow-md:0 18px 40px -18px rgba(0,0,0,.65);
   --hi:inset 0 1px 0 rgba(255,255,255,.06);
   --coral-tint:#3a221c;--coral-line:#7a3a2c;--coral-ink:#f3a892;
 }
@@ -77,9 +74,9 @@ body{
 .wrap{max-width:760px;margin:0 auto}
 
 /* tide signature line */
-#tide{position:fixed;top:env(safe-area-inset-top);left:0;right:0;height:2px;background:var(--hairline);z-index:60}
-#tideFill{height:100%;width:0;background:linear-gradient(90deg,var(--tide-deep),var(--tide));
-  transition:width .8s var(--ease);border-radius:0 2px 2px 0}
+#tide{position:fixed;top:env(safe-area-inset-top);left:0;right:0;height:3px;background:var(--hairline);z-index:60}
+#tideFill{height:100%;width:0;background:linear-gradient(90deg,var(--tide-deep),var(--tide),var(--seafoam));
+  background-size:220% 100%;transition:width .6s var(--ease);border-radius:0 3px 3px 0}
 
 /* app bar */
 .appbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
@@ -88,18 +85,12 @@ body{
   border-bottom:1px solid var(--hairline)}
 body.dark-mode .appbar,html.preload-dark .appbar{background:rgba(8,21,30,.72)}
 .brand{display:flex;align-items:center;gap:12px}
-.mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none;
+.mark{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;color:#fff;flex:none;
   background:linear-gradient(150deg,var(--tide),var(--tide-deep));box-shadow:var(--shadow-sm)}
 .mark svg{width:23px;height:23px;display:block}
-.eyebrow{margin:4px 0 0;font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
-  line-height:1.3;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.eyebrow-count{color:var(--tide)}
-.eyebrow-count:not(:empty) + .eyebrow-title{display:none}
-h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.28rem;line-height:1.05;letter-spacing:-.02em;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand{min-width:0;flex:1}
-.brand > div{min-width:0}
-.appbar-actions{display:flex;gap:8px;flex:none}
+.eyebrow{margin:0;font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.5rem;line-height:1;letter-spacing:-.01em}
+.appbar-actions{display:flex;gap:6px}
 .icon-btn{width:40px;height:40px;border:1px solid var(--hairline);background:var(--surface);color:var(--ink);
   border-radius:12px;display:grid;place-items:center;cursor:pointer;transition:transform .15s var(--ease),background .2s}
 .lang-btn{font-family:var(--body);font-weight:700;font-size:.82rem;letter-spacing:.03em}
@@ -108,31 +99,24 @@ h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.28rem;line-he
 .icon-btn svg{width:20px;height:20px}
 
 /* hero */
-.hero{margin:10px 0 20px;padding:20px 20px 20px;border-radius:var(--radius);background:var(--surface);
-  border:1px solid var(--hairline);box-shadow:var(--shadow-md),var(--hi);position:relative;overflow:hidden;cursor:pointer;
-  transition:transform .15s var(--ease)}
-.hero:active{transform:scale(.99)}
+.hero{margin:6px 0 18px;padding:20px 20px 18px;border-radius:var(--radius);background:var(--surface);
+  border:1px solid var(--hairline);box-shadow:var(--shadow-md),var(--hi);position:relative;overflow:hidden;cursor:pointer}
+.hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
+  background:linear-gradient(180deg,var(--tide),var(--seafoam))}
 .hero.rest{cursor:default}
-.hero-eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tide);
-  display:flex;align-items:center;flex-wrap:wrap;row-gap:4px;padding-right:44px;line-height:1.4}
+.hero.rest::before{background:linear-gradient(180deg,var(--ink-faint),var(--ink-faint))}
+.hero-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--tide);
+  display:flex;align-items:center;gap:8px}
 .hero.rest .hero-eyebrow{color:var(--ink-soft)}
-.hero-eyebrow .wxe{color:var(--ink-soft);letter-spacing:.06em}
-.hero-dish{margin:12px 44px 0 0;font-family:var(--display);font-weight:800;font-size:1.72rem;line-height:1.08;letter-spacing:-.025em;color:var(--ink);
-  text-wrap:balance}
-.hero-dish-alt{margin:6px 0 0;font-size:.98rem;line-height:1.4;color:var(--ink-soft)}
-.hero-dish-alt b{font-weight:600;color:var(--ink-faint);font-size:.78em;letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
-.hero-rest-title{font-family:var(--display);font-weight:700;font-size:1.3rem;margin:10px 0 4px;letter-spacing:-.01em}
+.hero-meal{margin:12px 0 0}
+.hero-rest-title{font-family:var(--display);font-weight:700;font-size:1.3rem;margin:10px 0 4px}
 .hero-sub{font-size:.92rem;color:var(--ink-soft);margin:2px 0 0}
-.hero-sides{margin-top:8px;font-size:.92rem;color:var(--ink-soft)}
-.hero-pud{margin-top:14px;padding-top:12px;border-top:1px dashed var(--hairline);font-size:.98rem;line-height:1.5}
-.hero-pud .course-label{margin-bottom:3px}
-.hero-pud-opt{color:var(--ink)}
-.hero-or{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin:0 8px}
-.hero .allergens{margin-top:14px;padding-top:14px}
-.hero-kids{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.hero .warn{margin:14px 0 0}
-.hero .wx-note{margin-top:14px}
-.hero.alert{border-color:var(--coral-line)}
+.hero-status{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.status-pill{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;font-weight:600;
+  padding:6px 11px;border-radius:var(--radius-pill);background:var(--surface-2);color:var(--ink-soft)}
+.status-pill.packed{background:var(--sand-tint);color:var(--sand-ink)}
+.status-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--seafoam)}
+.status-pill.packed .dot{background:var(--sand-ink)}
 
 /* week nav */
 .weeknav{display:flex;align-items:center;gap:10px;margin:0 0 4px}
@@ -144,125 +128,113 @@ h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.28rem;line-he
 .weekpill{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 12px;cursor:pointer;
   border:1px solid var(--hairline);background:var(--surface);border-radius:14px;color:var(--ink);transition:background .2s}
 .weekpill:hover{background:var(--surface-2)}
-.week-label{font-family:var(--display);font-weight:700;font-size:1.02rem;letter-spacing:-.01em}
+.week-label{font-family:var(--display);font-weight:700;font-size:1.02rem}
 .week-range{font-size:.82rem;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .weeknav-sub{display:flex;align-items:center;justify-content:space-between;min-height:26px;margin:8px 2px 14px}
-.week-stats{font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.week-stats{font-size:.82rem;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .today-jump{border:0;background:none;color:var(--tide);font-family:var(--body);font-weight:600;font-size:.86rem;
   cursor:pointer;padding:4px 0;display:none}
 .today-jump.show{display:inline-block}
 
 /* day cards */
 .menu{display:flex;flex-direction:column;gap:12px}
-.day{display:grid;grid-template-columns:56px 1fr;grid-template-rows:auto auto;gap:0 16px;align-items:start;
-  padding:18px 18px 16px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--hairline);
+.day{display:grid;grid-template-columns:54px 1fr auto;gap:14px;align-items:start;
+  padding:16px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--hairline);
   box-shadow:var(--shadow-sm),var(--hi);cursor:pointer;position:relative;transition:transform .15s var(--ease),box-shadow .2s,border-color .2s}
 .day:hover{box-shadow:var(--shadow-md),var(--hi)}
-.day.packed{background:linear-gradient(180deg,var(--sand-tint),var(--surface) 70%);border-color:var(--sand-line)}
-.day.closed{cursor:default;background:var(--surface-2);box-shadow:none;grid-template-rows:auto}
-.day-rail{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:3px;
-  border-right:1px solid var(--hairline);padding-right:14px;align-self:stretch}
-.dow{font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
-.dom{font-family:var(--display);font-weight:800;font-size:1.72rem;line-height:1;margin-top:2px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.day.packed{background:linear-gradient(180deg,var(--sand-tint),var(--surface));border-color:rgba(201,138,46,.28)}
+.day.past{opacity:.62}
+.day.closed{cursor:default;background:var(--surface-2)}
+.day-rail{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding-top:2px;border-right:1px solid var(--hairline);height:100%}
+.dow{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.dom{font-family:var(--display);font-weight:800;font-size:1.5rem;line-height:1;margin-top:3px;font-variant-numeric:tabular-nums}
 .day.today .dom{color:var(--tide)}
-.wx{display:flex;flex-direction:column;align-items:center;margin-top:8px;font-size:.98rem;line-height:1.1}
-.wx .wt{font-size:.72rem;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums;margin-top:2px}
-/* collapsed past days */
-.day.past{grid-template-columns:56px 1fr auto;grid-template-rows:auto;align-items:center;padding:12px 16px;
-  box-shadow:none;background:transparent;border-color:transparent;opacity:.72}
-.day.past:hover{box-shadow:none;background:var(--surface);border-color:var(--hairline)}
-.day.past .day-rail{flex-direction:row;gap:7px;padding:0 14px 0 0;align-items:baseline;border-right:1px solid var(--hairline)}
-.day.past .dom{font-size:1.02rem;margin:0}
-.day.past .wx{display:none}
-.past-dish{font-weight:600;font-size:.94rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.past-dot{width:8px;height:8px;border-radius:50%;background:var(--sand-ink);flex:none;margin-left:10px}
-.past-dot.nope{background:transparent;box-shadow:inset 0 0 0 1.5px var(--hairline)}
-.day.past .closed-label{padding:0;font-size:.94rem}
+.wx{display:flex;flex-direction:column;align-items:center;margin-top:6px;font-size:.86rem;line-height:1.15}
+.wx .wt{font-size:.72rem;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums;margin-top:1px}
 .wx.hot .wt{color:#c2610c}
-.wx.cold .wt,.wx.snow .wt{color:#2b7fb5}
-.wx.storm .wt{color:#7a3fb8}
-.wx.wind .wt{color:#2f8a6b}
-.wx.rain .wt{color:#3c6f9e}
 .wx .wxi{display:inline-block}
-
-.wx-note.cold,.wx-note.snow{color:#1f6fa3;background:#e8f3fb;border-color:#a9cfe9}
-.wx-note.storm{color:#6b2fa8;background:#f1e9fb;border-color:#c9b0ea}
-.wx-note.wind{color:#22705a;background:#e6f5ef;border-color:#a6d8c3}
-.wx-note.rain{color:#345f8a;background:#eaf1f8;border-color:#b6cbe0}
-body.dark-mode .wx-note.cold,body.dark-mode .wx-note.snow{color:#8fc6f0;background:#14283a;border-color:#2c5578}
-body.dark-mode .wx-note.storm{color:#c9a6f2;background:#26183a;border-color:#4d2f7a}
-body.dark-mode .wx-note.wind{color:#8fdcbf;background:#122e26;border-color:#26604b}
-body.dark-mode .wx-note.rain{color:#a7c4e3;background:#16283a;border-color:#2d4d6d}
+@media (prefers-reduced-motion: no-preference){
+  @keyframes wxpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.28)}}
+  .wx.hot .wxi{animation:wxpulse 1.6s var(--ease) infinite}
+}
 .day-body{min-width:0}
-.day-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.day-top:empty{display:none}
-.dish{font-family:var(--display);font-weight:700;font-size:1.14rem;line-height:1.2;letter-spacing:-.015em;color:var(--ink);text-wrap:balance}
-.dish-alt{font-size:.92rem;line-height:1.4;color:var(--ink-soft);margin-top:4px}
-.dish-alt b{font-weight:600;color:var(--ink-faint);font-size:.78em;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
-.day .allergens{margin-top:12px;padding-top:0;border-top:0}
-.day .warn{margin:12px 0 0}
-.day .wx-note{margin-top:10px}
-.badge{font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-pill);color:#fff;line-height:1.2}
+.day-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;min-height:8px;flex-wrap:wrap}
+.badge{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-pill);color:#fff}
 .badge.today{background:var(--tide)}
-.badge.tomorrow{background:transparent;color:var(--tide);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tide) 45%,transparent)}
+.badge.tomorrow{background:var(--seafoam)}
 .badge.updated{background:#c2610c}
 .day.updated{border-color:#e6a86a}
 .day.updated.alert{border-color:var(--coral-line)}
-.hero-updated{margin:10px 0 0}
-.hero-share{position:absolute;top:16px;right:16px;z-index:3;width:36px;height:36px;border-radius:12px;
+.hero-updated{margin:8px 0 2px}
+.hero-share{position:absolute;top:14px;right:14px;z-index:3;width:34px;height:34px;border-radius:11px;
   border:1px solid var(--hairline);background:var(--surface-2);color:var(--ink-soft);display:grid;place-items:center;cursor:pointer;transition:transform .12s var(--ease)}
 .hero-share svg{width:17px;height:17px}
 .hero-share:active{transform:scale(.92)}
+/* animated tide inside the hero */
+.hero{padding-bottom:34px}
+.wavewrap{position:absolute;left:0;right:0;bottom:-1px;height:30px;pointer-events:none;overflow:hidden}
+.wavewrap .w{position:absolute;bottom:0;left:0;width:200%;height:100%}
+.wavewrap .w path{fill:var(--tide);opacity:.10}
+.wavewrap .w2 path{opacity:.16}
+body.dark-mode .wavewrap .w path{opacity:.16}
+body.dark-mode .wavewrap .w2 path{opacity:.24}
+@media (prefers-reduced-motion: no-preference){
+  @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .wavewrap .w1{animation:drift 14s linear infinite}
+  .wavewrap .w2{animation:drift 9s linear infinite}
+}
+/* holiday countdown chip */
+.count-chip{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:.78rem;font-weight:700;
+  color:var(--tide);background:color-mix(in srgb,var(--tide) 10%,transparent);
+  border:1px solid color-mix(in srgb,var(--tide) 26%,transparent);border-radius:var(--radius-pill);padding:5px 11px}
 .wx-note{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:.8rem;font-weight:700;
   color:var(--ink-soft);background:var(--surface-2);border:1px solid var(--hairline);border-radius:var(--radius-pill);padding:5px 11px}
 .wx-note.hot{color:#c2610c;background:#fdf1e6;border-color:#f0c69a}
 body.dark-mode .wx-note.hot{color:#f0a868;background:#3a2416;border-color:#7a4a24}
-.day.today{border-color:color-mix(in srgb,var(--tide) 55%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--tide) 10%,transparent),var(--shadow-md)}
+/* today card glow */
+.day.today{border-color:var(--tide)}
+@media (prefers-reduced-motion: no-preference){
+  @keyframes todayGlow{0%,100%{box-shadow:0 0 0 0 rgba(17,138,168,0),var(--shadow-md)}50%{box-shadow:0 0 18px -4px rgba(17,138,168,.45),var(--shadow-md)}}
+  .day.today{animation:todayGlow 4s var(--ease) infinite}
+}
 /* tactile card press */
 .day{transition:transform .12s var(--ease)}
 .day:active{transform:scale(.985)}
-.chip{font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-pill);
-  background:var(--sand-tint);color:var(--sand-ink);box-shadow:inset 0 0 0 1px var(--sand-line);line-height:1.2}
+.chip{font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-pill);
+  background:var(--sand);color:var(--sand-ink)}
 .meal{margin:0;font-size:.96rem;line-height:1.5;white-space:pre-line;color:var(--ink)}
 .allergen-row{display:flex;align-items:center;gap:6px;margin-top:11px;font-size:.78rem;color:var(--ink-soft)}
 .allergen-row .a-emoji{font-size:.95rem}
 .closed-label{margin:0;font-weight:600;color:var(--ink-soft);align-self:center;padding:8px 0}
 .day.closed .day-rail{opacity:.6}
 
-/* child chips: tap to switch between dinner and packed */
-.day-kids{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--hairline)}
-.day-kids:empty{display:none}
-.kid-toggle{display:inline-flex;align-items:center;gap:8px;max-width:100%;font-family:var(--body);font-size:.84rem;font-weight:600;
-  color:var(--ink-soft);background:var(--surface-2);border:1px solid var(--hairline);border-radius:var(--radius-pill);
-  padding:8px 13px 8px 10px;cursor:pointer;transition:background .2s var(--ease),color .2s,border-color .2s,transform .12s var(--ease)}
-.kid-toggle:active{transform:scale(.96)}
-.kid-toggle .ki{width:16px;height:16px;flex:none;display:grid;place-items:center}
-.kid-toggle .ki svg{width:16px;height:16px;display:block}
-.kid-toggle .kn{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
-.kid-toggle .ks{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
-.kid-toggle[aria-pressed="true"]{background:var(--sand-tint);border-color:var(--sand-line);color:var(--sand-ink)}
-.kid-toggle[aria-pressed="true"] .kn,.kid-toggle[aria-pressed="true"] .ks{color:var(--sand-ink)}
-.kid-toggle .ki .lunch{display:none}
-.kid-toggle[aria-pressed="true"] .ki .lunch{display:block}
-.kid-toggle[aria-pressed="true"] .ki .plate{display:none}
-/* switch (settings only) */
+/* toggles column */
+.day-toggles{display:flex;flex-direction:column;gap:10px;align-items:flex-end;justify-content:center;height:100%}
 .switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
 .switch input{position:absolute;width:1px;height:1px;opacity:0;margin:0}
+.switch .swlabel{font-size:.8rem;font-weight:600;color:var(--ink-soft);order:-1;max-width:84px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .track{width:52px;height:32px;border-radius:999px;position:relative;flex:none;
   background:linear-gradient(180deg,#e3e9ed,#d1dadf);
   box-shadow:inset 0 1px 3px rgba(11,42,58,.18), inset 0 0 0 1px rgba(11,42,58,.05);
   transition:background .3s var(--ease),box-shadow .3s var(--ease)}
+.track::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 58%)}
 .track::after{content:"";position:absolute;top:2px;left:2px;width:28px;height:28px;border-radius:50%;
   background:radial-gradient(125% 125% at 50% 22%,#fff,#eef2f5);
   box-shadow:0 3px 8px rgba(11,42,58,.30),0 1px 2px rgba(11,42,58,.22),inset 0 1px 0 rgba(255,255,255,.9);
-  transition:transform .34s cubic-bezier(.34,1.56,.64,1)}
-.switch input:checked + .track{background:linear-gradient(180deg,#1391b3,var(--tide));
+  transition:transform .34s cubic-bezier(.34,1.56,.64,1),width .2s var(--ease)}
+.switch input:checked + .track{background:linear-gradient(180deg,#36cda2,var(--seafoam));
   box-shadow:inset 0 1px 2px rgba(0,0,0,.14),inset 0 0 0 1px rgba(0,0,0,.05)}
 .switch input:checked + .track::after{transform:translateX(20px)}
+.switch:active .track::after{width:32px}
+.switch input:checked:active + .track::after{width:32px;transform:translateX(16px)}
 .switch input:focus-visible + .track{outline:2px solid var(--tide);outline-offset:3px}
 body.dark-mode .track,html.preload-dark .track{background:linear-gradient(180deg,#2c4351,#243643);
   box-shadow:inset 0 1px 3px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.05)}
 body.dark-mode .track::after,html.preload-dark .track::after{background:radial-gradient(125% 125% at 50% 22%,#fff,#e6edf0)}
+body.dark-mode .switch input:checked + .track{background:linear-gradient(180deg,#39d9c2,var(--seafoam))}
 
 /* legend */
 .legend{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:22px 2px 0;padding-top:16px;
@@ -279,7 +251,6 @@ body.dark-mode .track::after,html.preload-dark .track::after{background:radial-g
   box-shadow:0 -12px 40px -16px rgba(8,20,28,.5);transform:translateY(16px);opacity:0;position:relative;
   max-height:90vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
   transition:transform .3s var(--ease),opacity .26s}
-.sheet:focus{outline:none}
 .sheet::before{content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);width:38px;height:5px;border-radius:3px;background:var(--hairline)}
 .sheet-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:11px;border:1px solid var(--hairline);
   background:var(--surface-2);color:var(--ink-soft);display:grid;place-items:center;cursor:pointer;z-index:5}
@@ -293,13 +264,8 @@ body.dark-mode .track::after,html.preload-dark .track::after{background:radial-g
 .share-actions{display:flex;gap:10px;margin-bottom:8px}
 .share-actions .btn{flex:1;display:flex;justify-content:center}
 .sheet h2{font-family:var(--display);font-weight:700;font-size:1.25rem;margin:0 0 4px;padding-right:42px}
-.wx-line{font-size:.9rem;color:var(--ink-soft);margin:-8px 0 14px;font-weight:600}
 .sheet .meta{font-size:.85rem;color:var(--ink-soft);margin:0 0 14px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
 .sheet p{font-size:.96rem;line-height:1.55;margin:0 0 14px;white-space:pre-line;color:var(--ink)}
-.detail-menu{padding:16px 18px;border-radius:var(--radius-sm);background:var(--surface-2);margin:0 0 16px}
-.detail-menu .opt{font-size:1rem}
-.detail-menu .allergens{border-top-color:rgba(10,29,40,.1)}
-body.dark-mode .detail-menu .allergens{border-top-color:rgba(255,255,255,.1)}
 .sheet-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
 .sheet-actions.stack{flex-direction:column;align-items:stretch}
 .sheet-actions.stack .btn{width:100%}
@@ -351,9 +317,6 @@ input[type=time]{font-family:var(--body);font-size:1rem;padding:9px 12px;border-
   background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-size:.9rem;font-weight:600;z-index:120;
   opacity:0;pointer-events:none;transition:opacity .2s;max-width:88%}
 .toast.show{opacity:.97}
-body.dark-mode .toast{color:#06151e}
-body.dark-mode .toast.tap{color:#fff}
-.toast.tap{pointer-events:auto;cursor:pointer;background:var(--tide-deep);text-decoration:underline;text-underline-offset:3px}
 .welcome-mark{width:56px;height:56px;border-radius:17px;display:grid;place-items:center;color:#fff;margin-bottom:14px;
   overflow:hidden;box-shadow:var(--shadow-sm)}
 .welcome-mark svg{width:56px;height:56px;display:block}
@@ -367,9 +330,8 @@ body.dark-mode .toast.tap{color:#fff}
 /* allergens */
 .allergens{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:11px;padding-top:11px;border-top:1px solid var(--hairline)}
 .al-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
-.al-chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--body);font-size:.72rem;font-weight:600;color:var(--ink-soft);
-  background:transparent;border:1px solid var(--hairline);border-radius:var(--radius-pill);padding:4px 9px;cursor:pointer;transition:transform .12s var(--ease),background .2s}
-.al-chip:hover{background:var(--surface-2)}
+.al-chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--body);font-size:.72rem;font-weight:600;color:var(--ink);
+  background:var(--surface-2);border:1px solid var(--hairline);border-radius:var(--radius-pill);padding:4px 9px;cursor:pointer;transition:transform .12s var(--ease)}
 .al-chip:active{transform:scale(.95)}
 .al-chip .a-emoji{font-size:.82rem}
 .al-none{font-size:.76rem;color:var(--ink-soft)}
@@ -382,13 +344,14 @@ body.dark-mode .toast.tap{color:#fff}
 .kid-chip svg{width:15px;height:15px}
 /* allergy warning */
 .warn{display:flex;align-items:flex-start;gap:10px;background:var(--coral-tint);border:1px solid var(--coral-line);
-  color:var(--coral-ink);border-radius:14px;padding:11px 13px;font-size:.82rem;line-height:1.45;margin:14px 0 10px}
+  color:var(--coral-ink);border-radius:12px;padding:11px 13px;font-size:.82rem;line-height:1.45;margin:14px 0 10px}
 .warn svg{width:18px;height:18px;flex:none;margin-top:1px}
 .warn-text{display:flex;flex-direction:column;gap:3px}
 .warn-title{font-weight:700}
 .warn-affects{font-weight:600}
 .warn-note{font-weight:600;opacity:.78;font-size:.78rem}
 .day.alert{border-color:var(--coral-line)}
+.hero.alert::before{background:linear-gradient(180deg,var(--coral),#b23a25)}
 @media (prefers-reduced-motion: no-preference){
   @keyframes flashred{0%,100%{box-shadow:var(--shadow-md),var(--hi)}35%{box-shadow:0 0 0 3px var(--coral-line),var(--shadow-md)}}
   .hero.alert.flash{animation:flashred 1.1s var(--ease) 1}
@@ -428,12 +391,143 @@ body.dark-mode .toast.tap{color:#fff}
 :focus-visible{outline:2px solid var(--tide);outline-offset:3px}
 
 @media (max-width:480px){
-  .day{grid-template-columns:50px 1fr;gap:0 14px;padding:16px 16px 14px}
-  .day.past{grid-template-columns:50px 1fr auto;padding:11px 14px}
-  .hero{padding:18px 18px 18px}
-  .hero-dish{font-size:1.58rem}
-  h1{font-size:1.12rem}
+  .day{grid-template-columns:46px 1fr;gap:12px;padding:14px}
+  .day-toggles{grid-column:1 / -1;flex-direction:row;flex-wrap:wrap;justify-content:flex-start;align-items:center;
+    height:auto;margin-top:4px;padding-top:12px;border-top:1px solid var(--hairline)}
+  .day-toggles:empty{display:none}
+  h1{font-size:1.35rem}
 }
+/* ---------- Christmas theme ----------
+   Gold fairy lights from the header, a tinsel garland and holly on the top card, a snow
+   drift at its foot, a snow cap on today's card, snowfall and a soft warm glow behind.
+   Everything is decorative (aria-hidden, no pointer events) and sits on top of the normal
+   design rather than replacing it. */
+body.xmas{
+  --xm-gold:#c79a38; --xm-gold-hi:#f0d083; --xm-pine:#14503f; --xm-berry:#a82a43; --xm-wire:#52636d;
+  background:
+    radial-gradient(340px 240px at 6% 4%,rgba(232,190,90,.17),transparent 70%) no-repeat fixed,
+    radial-gradient(280px 220px at 96% 10%,rgba(176,46,70,.10),transparent 70%) no-repeat fixed,
+    radial-gradient(320px 260px at 88% 64%,rgba(36,130,96,.09),transparent 70%) no-repeat fixed,
+    linear-gradient(180deg,var(--canvas-top) 0%,var(--canvas-bot) 38%) no-repeat;
+  background-color:var(--canvas-bot);
+}
+body.xmas.dark-mode{--xm-gold:#e3bd62; --xm-pine:#1d7a5c; --xm-berry:#f0a3b0; --xm-wire:#8fa3ae;
+  background:
+    radial-gradient(340px 240px at 6% 4%,rgba(232,190,90,.20),transparent 70%) no-repeat fixed,
+    radial-gradient(280px 220px at 96% 10%,rgba(190,60,84,.16),transparent 70%) no-repeat fixed,
+    radial-gradient(320px 260px at 88% 64%,rgba(40,150,110,.14),transparent 70%) no-repeat fixed,
+    linear-gradient(180deg,var(--canvas-top) 0%,var(--canvas-bot) 38%) no-repeat;
+  background-color:var(--canvas-bot)}
+body.xmas .eyebrow.event{color:var(--xm-berry)}
+body.xmas .appbar{border-bottom-color:color-mix(in srgb,var(--xm-gold) 30%,var(--hairline))}
+body.xmas .mark{position:relative;overflow:visible}
+body.xmas .mark::after{content:'';position:absolute;top:-8px;right:-6px;width:17px;height:17px;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23fff6cf%22%2F%3E%3Cstop%20offset%3D%22.5%22%20stop-color%3D%22%23f0cd78%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23bf922f%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpolygon%20points%3D%2212%2C1.6%2014.7%2C8.88%2022.46%2C9.2%2016.37%2C14.02%2018.47%2C21.5%2012%2C17.2%205.53%2C21.5%207.63%2C14.02%201.54%2C9.2%209.3%2C8.88%22%20fill%3D%22url(%23g)%22%20stroke%3D%22%23a97c24%22%20stroke-width%3D%22.5%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat;filter:drop-shadow(0 0 4px rgba(255,214,120,.85));
+  animation:xm-star 3.6s ease-in-out infinite}
+@keyframes xm-star{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.16) rotate(9deg)}}
+
+body.xmas .hero{margin-top:32px;padding-top:32px}
+body.xmas .hero:not(.alert){padding:32px 20px 34px;
+  border-color:color-mix(in srgb,var(--xm-gold) 34%,var(--hairline));
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--xm-gold) 10%,transparent),var(--shadow-md),var(--hi);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--xm-pine) 8%,var(--surface)),var(--surface) 42%)}
+body.xmas .hero:not(.alert)::before{content:'';position:absolute;left:0;right:0;top:0;height:36px;pointer-events:none;z-index:2;
+  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2254%22%20height%3D%2250%22%20viewBox%3D%220%200%2054%2050%22%3E%3Cg%20transform%3D%22translate(0%207)%22%3E%3Cg%20transform%3D%22translate(20%2024)%20rotate(-32)%22%3E%3Cpath%20d%3D%22M17%200L18.36%200.72L19.17%201.54L19.17%202.37L18.3%203.14L16.65%203.76L14.44%204.19L12.02%204.42L11.52%205.39L10.46%206.31L8.81%207.05L6.71%207.5L4.37%207.63L2.07%207.43L0%207L-2.07%207.69L-4.37%208.16L-6.71%208.29L-8.81%208.03L-10.46%207.4L-11.52%206.5L-12.02%205.47L-14.44%205.3L-16.65%204.85L-18.3%204.12L-19.17%203.15L-19.17%202.06L-18.36%200.98L-17%200L-18.36%20-0.98L-19.17%20-2.06L-19.17%20-3.15L-18.3%20-4.12L-16.65%20-4.85L-14.44%20-5.3L-12.02%20-5.47L-11.52%20-6.5L-10.46%20-7.4L-8.81%20-8.03L-6.71%20-8.29L-4.37%20-8.16L-2.07%20-7.69L0%20-7L2.07%20-7.43L4.37%20-7.63L6.71%20-7.5L8.81%20-7.05L10.46%20-6.31L11.52%20-5.39L12.02%20-4.42L14.44%20-4.19L16.65%20-3.76L18.3%20-3.14L19.17%20-2.37L19.17%20-1.54L18.36%20-0.72Z%22%20fill%3D%22%232a7a59%22%20stroke%3D%22%231c5a41%22%20stroke-width%3D%22.6%22%2F%3E%3Cpath%20d%3D%22M-16%200L15%200%22%20stroke%3D%22%2379c9a1%22%20stroke-width%3D%22.9%22%20opacity%3D%22.7%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(34%2022)%20rotate(26)%22%3E%3Cpath%20d%3D%22M17%200L18.36%200.72L19.17%201.54L19.17%202.37L18.3%203.14L16.65%203.76L14.44%204.19L12.02%204.42L11.52%205.39L10.46%206.31L8.81%207.05L6.71%207.5L4.37%207.63L2.07%207.43L0%207L-2.07%207.69L-4.37%208.16L-6.71%208.29L-8.81%208.03L-10.46%207.4L-11.52%206.5L-12.02%205.47L-14.44%205.3L-16.65%204.85L-18.3%204.12L-19.17%203.15L-19.17%202.06L-18.36%200.98L-17%200L-18.36%20-0.98L-19.17%20-2.06L-19.17%20-3.15L-18.3%20-4.12L-16.65%20-4.85L-14.44%20-5.3L-12.02%20-5.47L-11.52%20-6.5L-10.46%20-7.4L-8.81%20-8.03L-6.71%20-8.29L-4.37%20-8.16L-2.07%20-7.69L0%20-7L2.07%20-7.43L4.37%20-7.63L6.71%20-7.5L8.81%20-7.05L10.46%20-6.31L11.52%20-5.39L12.02%20-4.42L14.44%20-4.19L16.65%20-3.76L18.3%20-3.14L19.17%20-2.37L19.17%20-1.54L18.36%20-0.72Z%22%20fill%3D%22%232a7a59%22%20stroke%3D%22%231c5a41%22%20stroke-width%3D%22.6%22%2F%3E%3Cpath%20d%3D%22M-16%200L15%200%22%20stroke%3D%22%2379c9a1%22%20stroke-width%3D%22.9%22%20opacity%3D%22.7%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(26%2014)%20rotate(-72)%22%3E%3Cpath%20d%3D%22M17%200L18.36%200.72L19.17%201.54L19.17%202.37L18.3%203.14L16.65%203.76L14.44%204.19L12.02%204.42L11.52%205.39L10.46%206.31L8.81%207.05L6.71%207.5L4.37%207.63L2.07%207.43L0%207L-2.07%207.69L-4.37%208.16L-6.71%208.29L-8.81%208.03L-10.46%207.4L-11.52%206.5L-12.02%205.47L-14.44%205.3L-16.65%204.85L-18.3%204.12L-19.17%203.15L-19.17%202.06L-18.36%200.98L-17%200L-18.36%20-0.98L-19.17%20-2.06L-19.17%20-3.15L-18.3%20-4.12L-16.65%20-4.85L-14.44%20-5.3L-12.02%20-5.47L-11.52%20-6.5L-10.46%20-7.4L-8.81%20-8.03L-6.71%20-8.29L-4.37%20-8.16L-2.07%20-7.69L0%20-7L2.07%20-7.43L4.37%20-7.63L6.71%20-7.5L8.81%20-7.05L10.46%20-6.31L11.52%20-5.39L12.02%20-4.42L14.44%20-4.19L16.65%20-3.76L18.3%20-3.14L19.17%20-2.37L19.17%20-1.54L18.36%20-0.72Z%22%20fill%3D%22%232a7a59%22%20stroke%3D%22%231c5a41%22%20stroke-width%3D%22.6%22%2F%3E%3Cpath%20d%3D%22M-16%200L15%200%22%20stroke%3D%22%2379c9a1%22%20stroke-width%3D%22.9%22%20opacity%3D%22.7%22%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%2226%22%20cy%3D%2228%22%20r%3D%223.7%22%20fill%3D%22%23b8324a%22%20stroke%3D%22%238c1f35%22%20stroke-width%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2224.8%22%20cy%3D%2226.7%22%20r%3D%221.1%22%20fill%3D%22%23fff%22%20opacity%3D%22.7%22%2F%3E%3Ccircle%20cx%3D%2231.5%22%20cy%3D%2231%22%20r%3D%223.7%22%20fill%3D%22%23b8324a%22%20stroke%3D%22%238c1f35%22%20stroke-width%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2230.3%22%20cy%3D%2229.7%22%20r%3D%221.1%22%20fill%3D%22%23fff%22%20opacity%3D%22.7%22%2F%3E%3Ccircle%20cx%3D%2221.5%22%20cy%3D%2232%22%20r%3D%223.7%22%20fill%3D%22%23b8324a%22%20stroke%3D%22%238c1f35%22%20stroke-width%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2220.3%22%20cy%3D%2230.7%22%20r%3D%221.1%22%20fill%3D%22%23fff%22%20opacity%3D%22.7%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") right 12px top 1px/38px auto no-repeat,url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%2232%22%20viewBox%3D%220%200%20140%2032%22%3E%3Cpath%20d%3D%22M-4%204.83%204%204.83%20L0%206%20L4%207.17%20L8%208.32%20L12%209.46%20L16%2010.57%20L20%2011.64%20L24%2012.67%20L28%2013.64%20L32%2014.55%20L36%2015.4%20L40%2016.16%20L44%2016.85%20L48%2017.45%20L52%2017.95%20L56%2018.36%20L60%2018.67%20L64%2018.88%20L68%2018.99%20L72%2018.99%20L76%2018.88%20L80%2018.67%20L84%2018.36%20L88%2017.95%20L92%2017.45%20L96%2016.85%20L100%2016.16%20L104%2015.4%20L108%2014.55%20L112%2013.64%20L116%2012.67%20L120%2011.64%20L124%2010.57%20L128%209.46%20L132%208.32%20L136%207.17%20L140%206%20L144%204.83%20%22%20fill%3D%22none%22%20stroke%3D%22%23a97c24%22%20stroke-width%3D%221.5%22%20opacity%3D%22.55%22%2F%3E%3Cpath%20d%3D%22M-3.66%204.47L-2.24%2014.08M136.34%204.47L137.76%2014.08M-143.66%204.47L-142.24%2014.08M3.38%207.79L6.71%20-0.91M6.06%206.89L-0.01%2012.25M146.06%206.89L139.99%2012.25M-133.94%206.89L-140.01%2012.25M9.54%208.61L11.47%2014.89M10.69%209.16L4.46%2012.73M10.69%209.16L17.4%202.37M11.32%209.2L10.19%205.34M11.83%208.71L7.93%2010.72M17.57%2010.95L17.64%2018.44M19.53%2011.22L14.59%2015.43M20.67%2012.27L20.98%2017.95M23.86%2012.77L15.84%2019.07M26.41%2013.86L34.57%209.03M30.66%2014.92L31.86%2022.06M30.66%2014.92L31.52%207.43M32.28%2014.11L29.29%2017.12M35.74%2014.53L37.68%2019.73M45.42%2017.9L43.32%2027.82M48.58%2017L45.89%2022.31M51.14%2018.79L52.53%209.53M52.27%2017.65L50.12%2023.39M55.83%2018.08L57.4%2012.7M57.13%2017.87L60.01%2023.25M58.92%2019.42L54.61%2028M72.25%2018.78L70.68%2028.1M83.32%2019.38L80.28%2016.26M85.32%2019L82.63%2025.43M85.32%2019L80.29%2014.01M97.1%2015.81L97.35%2019.85M100.63%2016.67L97.32%209.78M104.85%2014.91L104.94%208.48M106.53%2014.65L106.05%2010.09M110.08%2013.23L110.86%207.09M111.62%2014.78L105.01%208.85M112.86%2013.27L115.09%2020.76M118.37%2011.26L114.67%2020.47M123.71%2010.72L122.8%205.92M125.97%2010.37L127.53%2017.54M131.8%208.49L128.52%204.45M132.93%208.4L131%203.46M135.97%207.55L135.19%2012.16M136.17%208.01L133.85%2012.4M143.14%204.56L146.66%208.52M283.14%204.56L286.66%208.52M3.14%204.56L6.66%208.52M144.98%205.45L148.03%20-2.73M284.98%205.45L288.03%20-2.73M4.98%205.45L8.03%20-2.73M145.97%203.24L142.63%20-0.94M285.97%203.24L282.63%20-0.94M5.97%203.24L2.63%20-0.94%22%20stroke%3D%22%23e6bf5a%22%20stroke-width%3D%221.05%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M-6.59%203.29L-10.88%209.31M133.41%203.29L129.12%209.31M-146.59%203.29L-150.88%209.31M-5.14%203.83L-6.77%208.85M134.86%203.83L133.23%208.85M-145.14%203.83L-146.77%208.85M-1.25%206.52L1.2%2011.03M138.75%206.52L141.2%2011.03M-141.25%206.52L-138.8%2011.03M1.85%205.59L5.85%203.01M11.32%209.2L12.81%2014.63M11.83%208.71L14.18%200.27M13.38%2010.53L15.56%205.05M15.03%209.29L21.67%203.16M15.68%2011.45L17.8%202.3M22.16%2011.46L23.03%2018.9M24.79%2012.98L17.07%2018.63M34.84%2015.46L31.16%209.09M37.06%2015.47L34.41%2019.84M37.81%2016.22L41.78%2022.83M40.92%2016.16L41.58%2021.69M43.51%2016.85L41.85%2021.04M44.38%2017.99L44.74%2012.54M47.22%2016.67L49.69%2011.17M48.58%2017L44.89%2010.41M49.41%2018.31L47.1%2027.06M55.23%2017.17L62.25%2024.76M59.2%2018.45L62.68%2024.49M60.11%2019.01L61.28%2023.13M64.5%2018.54L69.53%2024.42M65.25%2019.29L66.5%2023.18M65.25%2019.29L62.32%2016.11M66.07%2019.35L72.85%2012.11M68.13%2019.91L71.71%2013.64M70.29%2018.08L66.92%2022M70.29%2018.08L73.62%2011.57M71.58%2020.08L68.18%2013.16M73.78%2018.02L76.45%2025.75M73.78%2018.02L71.42%2013.67M74.63%2018.06L80.25%2023.84M77.92%2019.21L76.19%2027.32M77.92%2019.21L73.75%2014.77M91.86%2017.48L93.33%2013.69M98.86%2016.24L101.01%2024.97M101.6%2014.76L97.79%208.84M105.93%2015.93L110.33%2022.44M109.57%2014.39L110.25%2023.21M109.57%2014.39L107.97%209.35M113.16%2012.44L116.58%2015.33M118.37%2011.26L121.37%205.03M120.58%2010.57L122.25%202.24M121.98%2012.05L123.93%202.04M125.23%2010.79L125.68%206.17M128.9%208.67L125.81%204.61M130.52%208.46L128.3%2014M136.17%208.01L137.24%200.7M138.92%205.48L135.96%2010.44M140.06%205.9L135.62%20-3.5M280.06%205.9L275.62%20-3.5M0.06%205.9L-4.38%20-3.5M141.84%205.77L133.12%200.59M281.84%205.77L273.12%200.59M1.84%205.77L-6.88%200.59%22%20stroke%3D%22%23f5e2ab%22%20stroke-width%3D%221.05%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M-6.59%203.29L-7.8%20-4.21M133.41%203.29L132.2%20-4.21M-146.59%203.29L-147.8%20-4.21M-1.25%206.52L-3.57%202.58M138.75%206.52L136.43%202.58M-141.25%206.52L-143.57%202.58M-0.41%205.77L-7.81%2010.09M139.59%205.77L132.19%2010.09M-140.41%205.77L-147.81%2010.09M0.73%205.47L0.63%200.23M4.37%206.89L9.39%202.31M9.54%208.61L16.39%203.1M13.38%2010.53L8.14%2015.82M18.14%2011.01L11.79%2015.14M22.16%2011.46L27.31%205.27M22.9%2012.56L23.97%207.77M28.99%2013.26L30.58%2022.28M39.82%2016.81L33.33%2023.08M39.82%2016.81L43.26%208.97M40.92%2016.16L44%2010.12M43.51%2016.85L47.18%2010.5M45.42%2017.9L43.74%2013.97M49.41%2018.31L51.95%2010.73M50.56%2018.34L43.93%2025.26M55.23%2017.17L57.04%2010.91M55.83%2018.08L51.97%2024.52M60.11%2019.01L64.84%2013.17M66.07%2019.35L61.51%2027.13M68.49%2018.99L66.03%2024.72M68.49%2018.99L70.51%2010.54M76.01%2019.84L79.86%2023.34M79.74%2018.63L76.92%2022.19M81.36%2017.59L77.35%2012.62M82.76%2018.29L79.48%2026.17M83.32%2019.38L85.52%2026.25M89.79%2016.86L84.39%208.35M96.31%2017.79L97.78%2024.97M96.31%2017.79L94.83%2013.58M101.6%2014.76L104.8%2019.58M106.53%2014.65L102.82%2021.25M108.07%2014.25L107.2%2019.42M114.86%2013.96L112.47%2017.59M117.64%2012.97L114.81%205.62M122.59%2010.76L128.95%2013.95M127.49%209.11L122.2%205.31M129.26%209.76L131.25%201.54M132.93%208.4L134.23%2013.65M134.33%208.13L137.93%201.71M137.73%206.71L136.65%2015.48%22%20stroke%3D%22%23dce6ee%22%20stroke-width%3D%221.05%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M-2.96%204.8L-5.95%208.14M137.04%204.8L134.05%208.14M-142.96%204.8L-145.95%208.14M1.85%205.59L-4.51%209.68M141.85%205.59L135.49%209.68M-138.15%205.59L-144.51%209.68M7.53%209.33L1.76%2014.96M17.57%2010.95L21.5%201.31M20.67%2012.27L28.23%207.2M32.28%2014.11L36.79%2010.41M41.99%2017.09L41.55%2023.62M79.74%2018.63L78.26%209.02M85.54%2017.81L78.19%2011M87.4%2018.87L83.73%2028.14M91.86%2017.48L90.21%2021.44M94.45%2016.35L97.8%2010.34M97.1%2015.81L96.76%206.72M102.86%2016.46L100.84%208.41M112.86%2013.27L112.9%205.7M121.98%2012.05L126.3%2015.93M130.52%208.46L123.85%204.47M141.4%206.59L138.89%203.06M281.4%206.59L278.89%203.06M1.4%206.59L-1.11%203.06%22%20stroke%3D%22%23b98a2c%22%20stroke-width%3D%221.05%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M-2.96%204.8L1%20-2.63M137.04%204.8L141%20-2.63M-142.96%204.8L-139%20-2.63M3.38%207.79L-2.57%2012.94M143.38%207.79L137.43%2012.94M-136.62%207.79L-142.57%2012.94M4.37%206.89L1.17%2015.21M6.06%206.89L9.77%20-0.94M24.79%2012.98L23.83%205.84M35.74%2014.53L33.37%2011.04M50.56%2018.34L47.99%2013.29M62.43%2019.8L67.56%2012.17M85.54%2017.81L89.5%2024.89M104.85%2014.91L105.39%2023.2M117.64%2012.97L115.94%2019.54M119.27%2011.78L122.85%2018.2M120.58%2010.57L122.07%2018M125.97%2010.37L127.4%204.51M127.49%209.11L123.65%2018.33M135.97%207.55L135.88%201.66M137.73%206.71L135.2%201.29%22%20stroke%3D%22%23b8324a%22%20stroke-width%3D%221.05%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E") -20px -2px/140px 32px repeat-x;
+  animation:xm-tinsel 4.8s ease-in-out infinite}
+@keyframes xm-tinsel{0%,100%{filter:brightness(1)}50%{filter:brightness(1.24) saturate(1.12)}}
+body.xmas .hero::after{content:'';position:absolute;left:0;right:0;bottom:-1px;pointer-events:none;height:30px;opacity:1;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22700%22%20height%3D%2240%22%20viewBox%3D%220%200%20700%2040%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M0%2040%20L0%2024%20C70%2010%20120%2032%20200%2021%20C280%209%20340%2031%20430%2019%20C520%207%20590%2029%20700%2017%20L700%2040%20Z%22%20fill%3D%22%23f1f7fb%22%20opacity%3D%220.9%22%2F%3E%3Cpath%20d%3D%22M0%2040%20L0%2029%20C90%2020%20150%2036%20250%2027%20C340%2018%20430%2036%20520%2026%20C600%2017%20650%2030%20700%2024%20L700%2040%20Z%22%20fill%3D%22%23e3eef5%22%20opacity%3D%221%22%2F%3E%3Cpath%20d%3D%22M0%2029%20C90%2020%20150%2036%20250%2027%20C340%2018%20430%2036%20520%2026%20C600%2017%20650%2030%20700%2024%22%20fill%3D%22none%22%20stroke%3D%22%23b4cddd%22%20stroke-width%3D%221%22%20opacity%3D%22.75%22%2F%3E%3Ccircle%20cx%3D%22201.71%22%20cy%3D%2226.83%22%20r%3D%221.11%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22658.95%22%20cy%3D%2227.68%22%20r%3D%220.71%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22487.2%22%20cy%3D%2233.04%22%20r%3D%221.09%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22515.53%22%20cy%3D%2226.33%22%20r%3D%221.35%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22228.51%22%20cy%3D%2231.67%22%20r%3D%221.22%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22456.72%22%20cy%3D%2231.85%22%20r%3D%221.26%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22698.23%22%20cy%3D%2228.65%22%20r%3D%220.91%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22624.22%22%20cy%3D%2230.27%22%20r%3D%221%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22164.72%22%20cy%3D%2227.45%22%20r%3D%220.98%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%2237.96%22%20cy%3D%2228.99%22%20r%3D%220.91%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22226.84%22%20cy%3D%2227.87%22%20r%3D%221.12%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22433.1%22%20cy%3D%2229.09%22%20r%3D%221.07%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22242.04%22%20cy%3D%2228.7%22%20r%3D%220.98%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22527.24%22%20cy%3D%2227.88%22%20r%3D%220.71%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22401.81%22%20cy%3D%2231.62%22%20r%3D%220.8%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%2271.03%22%20cy%3D%2233.77%22%20r%3D%220.96%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22103.53%22%20cy%3D%2230.16%22%20r%3D%220.99%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22597.6%22%20cy%3D%2226.77%22%20r%3D%221.22%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22271.49%22%20cy%3D%2228.47%22%20r%3D%220.99%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%2241.41%22%20cy%3D%2234.33%22%20r%3D%220.7%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%2220.9%22%20cy%3D%2232.55%22%20r%3D%221.06%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22316.68%22%20cy%3D%2230.62%22%20r%3D%220.83%22%20fill%3D%22%23fff%22%20opacity%3D%220.95%22%2F%3E%3C%2Fsvg%3E") bottom/100% 100% no-repeat}
+body.xmas.dark-mode .hero::after{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22700%22%20height%3D%2240%22%20viewBox%3D%220%200%20700%2040%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M0%2040%20L0%2024%20C70%2010%20120%2032%20200%2021%20C280%209%20340%2031%20430%2019%20C520%207%20590%2029%20700%2017%20L700%2040%20Z%22%20fill%3D%22%239fbccd%22%20opacity%3D%220.55%22%2F%3E%3Cpath%20d%3D%22M0%2040%20L0%2029%20C90%2020%20150%2036%20250%2027%20C340%2018%20430%2036%20520%2026%20C600%2017%20650%2030%20700%2024%20L700%2040%20Z%22%20fill%3D%22%23d9e8f1%22%20opacity%3D%220.97%22%2F%3E%3Cpath%20d%3D%22M0%2029%20C90%2020%20150%2036%20250%2027%20C340%2018%20430%2036%20520%2026%20C600%2017%20650%2030%20700%2024%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221%22%20opacity%3D%22.75%22%2F%3E%3Ccircle%20cx%3D%22358.11%22%20cy%3D%2231.83%22%20r%3D%221.13%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22413.11%22%20cy%3D%2235.36%22%20r%3D%221.08%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%2256.02%22%20cy%3D%2231.84%22%20r%3D%221.13%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22315.23%22%20cy%3D%2231.28%22%20r%3D%221.29%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22293.98%22%20cy%3D%2233.37%22%20r%3D%221.18%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22112.57%22%20cy%3D%2227.96%22%20r%3D%220.89%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22277.14%22%20cy%3D%2230.15%22%20r%3D%221.11%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%2289.24%22%20cy%3D%2232.57%22%20r%3D%221.1%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22292.89%22%20cy%3D%2235.29%22%20r%3D%221.26%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22538.16%22%20cy%3D%2229.49%22%20r%3D%221.14%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22176.18%22%20cy%3D%2226.62%22%20r%3D%221.22%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22684.37%22%20cy%3D%2229.27%22%20r%3D%220.8%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22520.49%22%20cy%3D%2229.82%22%20r%3D%221.09%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22403.67%22%20cy%3D%2235.3%22%20r%3D%220.8%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22594.79%22%20cy%3D%2235.02%22%20r%3D%220.97%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%2217.79%22%20cy%3D%2226.84%22%20r%3D%221.29%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22348.08%22%20cy%3D%2231.79%22%20r%3D%220.89%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22351.41%22%20cy%3D%2234.08%22%20r%3D%220.76%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22450.87%22%20cy%3D%2226.5%22%20r%3D%221.01%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22444.35%22%20cy%3D%2236.83%22%20r%3D%221%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22326.32%22%20cy%3D%2229.88%22%20r%3D%220.73%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22513.38%22%20cy%3D%2230.61%22%20r%3D%221.23%22%20fill%3D%22%23fff%22%20opacity%3D%220.9%22%2F%3E%3C%2Fsvg%3E")}
+
+body.xmas .day{position:relative}
+body.xmas .day.today{border-color:color-mix(in srgb,var(--xm-gold) 70%,transparent);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--xm-gold) 14%,transparent),var(--shadow-md)}
+body.xmas .day.today::before{content:'';position:absolute;left:20px;right:20px;top:-11px;height:20px;pointer-events:none;z-index:1;filter:drop-shadow(0 1.5px 1.5px rgba(30,70,100,.28));
+  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%2220%22%20viewBox%3D%220%200%20300%2020%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M0%2011%20Q16.35%20-0.73%2032.71%205.34%20Q46.36%20-0.54%2060.02%206.24%20Q73.6%20-0.61%2087.17%206.38%20Q100.61%20-0.44%20114.05%206.41%20Q128.6%200.95%20143.15%206.66%20Q161.43%200.94%20179.71%205.26%20Q194.83%200.66%20209.95%206.06%20Q226.66%20-0.99%20243.37%205.12%20Q260.59%200.57%20277.8%206.16%20Q288.9%20-0.57%20300%205.66%20L300%2010%20Q286.15%2019.24%20272.31%2010.07%20Q263.17%2018.82%20254.03%2010.49%20Q244.13%2018.51%20234.24%2010.65%20Q227.26%2016.24%20220.27%2010.06%20Q212.7%2015.52%20205.14%2011.24%20Q196.84%2020.17%20188.54%2010.68%20Q173.96%2018.99%20159.39%2010.41%20Q149.03%2016.05%20138.67%2010.91%20Q124.25%2019.38%20109.84%2011.13%20Q102.34%2019.37%2094.85%2011.18%20Q84.04%2015.8%2073.22%2010.18%20Q66.65%2016.12%2060.07%2010.54%20Q50.02%2018.85%2039.97%2011.24%20Q31.88%2018.86%2023.79%2011.43%20Q13.98%2016.79%204.17%2010.46%20Q2.09%2019.9%200%2010.36%20Z%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%23b7cfdf%22%20stroke-width%3D%22.9%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") 0 0/100% 100% no-repeat}
+body.xmas.dark-mode .day.today::before{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%2220%22%20viewBox%3D%220%200%20300%2020%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M0%2011%20Q15.03%20-0.53%2030.05%205.85%20Q45.18%200.53%2060.31%205.85%20Q74.29%20-0.76%2088.28%207.29%20Q102.95%20-0.48%20117.63%206.39%20Q132.97%201.06%20148.3%205.13%20Q166.55%200.22%20184.79%205.58%20Q202.88%200.37%20220.97%206.16%20Q235.39%20-0.76%20249.81%206.67%20Q264.91%201.01%20280.01%207.25%20Q290.01%200.62%20300%206.47%20L300%2010%20Q291.85%2019.45%20283.7%2010.47%20Q271.48%2019.47%20259.26%2011.39%20Q247.52%2015.63%20235.78%2011.3%20Q220.99%2016.28%20206.2%2010.19%20Q195.45%2018.75%20184.71%2011.09%20Q174.68%2015.56%20164.65%2010.32%20Q152.22%2015.07%20139.79%2010.04%20Q132.2%2020%20124.61%2011.13%20Q115.65%2015.43%20106.69%2011.35%20Q91.45%2019.11%2076.22%2010.01%20Q68.94%2016.64%2061.66%2011.08%20Q51.46%2019.06%2041.26%2010.7%20Q27.69%2019.45%2014.11%2010.24%20Q7.06%2018.63%200%2010.84%20Z%22%20fill%3D%22%23eef5fa%22%20stroke%3D%22%23c3d7e4%22%20stroke-width%3D%22.9%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E")}
+body.xmas .badge.today{background:linear-gradient(150deg,#1d7a5c,#0f5a43)}
+
+/* fairy lights, hung from the bottom edge of the header */
+.xm-lights{position:absolute;left:0;right:0;top:100%;height:34px;pointer-events:none;z-index:2;display:none}
+body.xmas .xm-lights{display:block}
+.xm-lights::before{content:'';position:absolute;left:0;right:0;top:0;height:38px;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--canvas-bot) 97%,transparent) 0%,color-mix(in srgb,var(--canvas-bot) 94%,transparent) 55%,transparent 100%)}
+.xm-lights svg{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible}
+.xm-bulb{position:absolute;width:7px;height:10px;margin-left:-3.5px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;
+  background:radial-gradient(circle at 35% 30%,#fff 0 12%,var(--c) 55%,color-mix(in srgb,var(--c) 68%,#000) 100%);
+  transform:rotate(var(--tilt));transform-origin:50% 0}
+.xm-bulb::before{content:'';position:absolute;left:50%;top:-3px;width:4px;height:4px;margin-left:-2px;background:#3a4650;border-radius:1px}
+.xm-bulb::after{content:'';position:absolute;left:50%;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;
+  background:radial-gradient(circle,color-mix(in srgb,var(--c) 78%,transparent) 0%,transparent 66%);opacity:.8;
+  animation:xm-glow var(--dur) ease-in-out var(--delay) infinite}
+@keyframes xm-glow{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:.28;transform:scale(.78)}}
+#xmSnow{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:55}
+body.xmas .hero:not(.alert)::before{width:auto;bottom:auto}
+body.xmas .wavewrap{display:none}
+body.xmas .hero-share{top:40px}
+@media (prefers-reduced-motion: reduce){
+  body.xmas .mark::after,body.xmas .hero::before,.xm-bulb::after{animation:none}
+  .xm-bulb::after{opacity:.6}
+}
+/* themed days and rotating countdown chip */
+.hero-theme{display:inline-flex;align-items:center;gap:9px;margin-top:14px;font-size:.92rem;font-weight:800;
+  padding:9px 13px;border-radius:14px;color:#fff;letter-spacing:.01em;
+  background:linear-gradient(150deg,var(--theme),color-mix(in srgb,var(--theme) 64%,#000))}
+.hero-theme .em{font-size:1.12rem}
+.day.themed:not(.packed):not(.alert){background:color-mix(in srgb,var(--theme) 6%,var(--surface))}
+.theme-ribbon{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:-16px -16px 4px;padding:8px 16px;
+  font-size:.7rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#fff;
+  background:linear-gradient(90deg,var(--theme),color-mix(in srgb,var(--theme) 60%,#000));
+  border-radius:calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0}
+.theme-ribbon .em{font-size:1rem}
+.count-chip{transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.count-chip.cd-out{opacity:0;transform:translateY(4px)}
+.count-chip.event{color:#a82a43;background:rgba(168,42,67,.08);border-color:rgba(168,42,67,.28)}
+body.dark-mode .count-chip.event{color:#f0a3b0;background:rgba(240,163,176,.10);border-color:rgba(240,163,176,.30)}
+@media (prefers-reduced-motion: reduce){ .count-chip{transition:none} }
+
+
+/* ---------- more seasonal themes ---------- */
+.seg.wrap{flex-wrap:wrap}
+.seg.wrap button{flex:1 1 30%;font-size:.78rem;padding:9px 2px;white-space:nowrap}
+body[class*="season-"]:not(.xmas) .mark{position:relative;overflow:visible}
+body[class*="season-"]:not(.xmas) .mark::after{position:absolute;top:-9px;right:-9px;font-size:17px;line-height:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+body.season-halloween .mark::after{content:"\1F383"}
+body.season-remembrance .mark::after{content:"\1F33A"}
+body.season-stdavid .mark::after{content:"\1F33C"}
+body.season-easter .mark::after{content:"\1F423"}
+body.season-summer .mark::after{content:"\1F31E"}
+body.season-halloween .hero:not(.alert)::before{background:linear-gradient(180deg,#f08a24,#6a3fb0)}
+body.season-remembrance .hero:not(.alert)::before{background:linear-gradient(180deg,#c8102e,#7d0a1d)}
+body.season-stdavid .hero:not(.alert)::before{background:linear-gradient(180deg,#00843d,#c8102e)}
+body.season-easter .hero:not(.alert)::before{background:linear-gradient(180deg,#f4a6c0,#b69cf0)}
+body.season-summer .hero:not(.alert)::before{background:linear-gradient(180deg,#ffc83d,#ff8a3d)}
+body.season-halloween .hero:not(.alert){background:linear-gradient(160deg,color-mix(in srgb,#f08a24 10%,var(--surface)),var(--surface) 58%)}
+body.season-remembrance .hero:not(.alert){background:linear-gradient(160deg,color-mix(in srgb,#c8102e 6%,var(--surface)),var(--surface) 58%)}
+body.season-stdavid .hero:not(.alert){background:linear-gradient(160deg,color-mix(in srgb,#00843d 9%,var(--surface)),var(--surface) 58%)}
+body.season-easter .hero:not(.alert){background:linear-gradient(160deg,color-mix(in srgb,#b69cf0 11%,var(--surface)),var(--surface) 58%)}
+body.season-summer .hero:not(.alert){background:radial-gradient(circle at 100% 0,rgba(255,200,61,.34),transparent 52%),var(--surface)}
+body.season-halloween .badge.today{background:#e0761f}
+body.season-stdavid .badge.today{background:#00843d}
+body.season-easter .badge.today{background:#9a7fe0}
+body.season-summer .badge.today{background:#e08a1f}
+body.season-remembrance .badge.today{background:#b8202f}
+body.season-stdavid .hero,body.season-easter .hero{margin-top:30px}
+.sn-bunting{position:absolute;left:0;right:0;top:100%;height:30px;pointer-events:none;z-index:2;background-repeat:repeat-x;background-size:160px 30px}
+.sn-bunting.stdavid{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='30' viewBox='0 0 160 30'%3E%3Cpath d='M0 2 Q20 8 40 2 Q60 8 80 2 Q100 8 120 2 Q140 8 160 2' fill='none' stroke='%237a8a92' stroke-width='1.2'/%3E%3Cpath d='M5 5 L35 5 L20 27Z' fill='%23c8102e'/%3E%3Cpath d='M45 5 L75 5 L60 27Z' fill='%2300843d'/%3E%3Cpath d='M85 5 L115 5 L100 27Z' fill='%23ffffff' stroke='%23c3ced4' stroke-width='.8'/%3E%3Cpath d='M125 5 L155 5 L140 27Z' fill='%23f5c400'/%3E%3C/svg%3E")}
+.sn-bunting.easter{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='30' viewBox='0 0 160 30'%3E%3Cpath d='M0 2 Q20 8 40 2 Q60 8 80 2 Q100 8 120 2 Q140 8 160 2' fill='none' stroke='%237a8a92' stroke-width='1.2'/%3E%3Cpath d='M5 5 L35 5 L20 27Z' fill='%23f6b9cc'/%3E%3Cpath d='M45 5 L75 5 L60 27Z' fill='%23bfe3c6'/%3E%3Cpath d='M85 5 L115 5 L100 27Z' fill='%23fff0a8'/%3E%3Cpath d='M125 5 L155 5 L140 27Z' fill='%23cdbcf5'/%3E%3C/svg%3E")}
+.sn-bats{position:fixed;top:0;left:0;right:0;height:150px;overflow:hidden;pointer-events:none;z-index:54}
+.sn-bat{position:absolute;left:-80px;opacity:.85;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 26'%3E%3Cpath d='M32 6 L35 12 Q40 4 50 4 Q58 4 62 12 Q56 10 53 14 Q50 12 46 15 Q44 14 41 18 Q38 16 36 20 L32 25 L28 20 Q26 16 23 18 Q20 14 18 15 Q14 12 11 14 Q8 10 2 12 Q6 4 14 4 Q24 4 29 12Z' fill='%232a1a45'/%3E%3C/svg%3E") center/contain no-repeat}
+body.dark-mode .sn-bat{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 26'%3E%3Cpath d='M32 6 L35 12 Q40 4 50 4 Q58 4 62 12 Q56 10 53 14 Q50 12 46 15 Q44 14 41 18 Q38 16 36 20 L32 25 L28 20 Q26 16 23 18 Q20 14 18 15 Q14 12 11 14 Q8 10 2 12 Q6 4 14 4 Q24 4 29 12Z' fill='%23c9b6f2'/%3E%3C/svg%3E")}
+@media (prefers-reduced-motion: no-preference){
+  @keyframes batfly{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 160px))}}
+  @keyframes batbob{0%,100%{margin-top:0}50%{margin-top:18px}}
+  .sn-bat{animation:batfly 16s linear infinite,batbob 2.4s ease-in-out infinite}
+}
+@media (prefers-reduced-motion: reduce){ .sn-bats{display:none} }
+.wx-notes{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.wx-notes .wx-note{margin-top:0}
+.wx-note.uv{color:#8a5a00;background:#fff6d6;border-color:#f0d58a}
+body.dark-mode .wx-note.uv{color:#f3d27a;background:#3a3114;border-color:#7a6420}
 </style>
 </head>
 <body>
@@ -451,11 +545,15 @@ body.dark-mode .toast.tap{color:#fff}
         </svg>
       </span>
       <div>
-        <h1 id="schoolName">Hendrefoilan Primary</h1>
-        <p class="eyebrow"><span class="eyebrow-count" id="countdown"></span><span class="eyebrow-title" id="appTitle">Dinner</span></p>
+        <p class="eyebrow" id="schoolName">Hendrefoilan Primary</p>
+        <h1 id="appTitle">Dinner</h1>
       </div>
     </div>
     <div class="appbar-actions">
+      <button id="langBtn" class="icon-btn lang-btn" aria-label="Change language">EN</button>
+      <button id="themeToggle" class="icon-btn" aria-label="Switch between light and dark">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36A5.39 5.39 0 0112 4.1c0-.37.03-.74.1-1.1H12z"/></svg>
+      </button>
       <button id="settingsBtn" class="icon-btn" aria-label="Settings">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm0 2a2 2 0 110 4 2 2 0 010-4z"/><path d="M19.4 13a7.8 7.8 0 000-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 00-1.7-1l-.4-2.5h-4l-.4 2.5a7.6 7.6 0 00-1.7 1l-2.4-1-2 3.4L4.6 11a7.8 7.8 0 000 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.7 1.7 1l.4 2.5h4l.4-2.5c.6-.3 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6z" opacity=".28"/></svg>
       </button>
@@ -537,8 +635,6 @@ body.dark-mode .toast.tap{color:#fff}
   <div class="sheet">
     <h2 id="detailTitle"></h2>
     <p class="meta" id="detailMeta"></p>
-    <p class="wx-line" id="detailWx" hidden></p>
-    <div class="detail-menu" id="detailMenu" hidden></div>
     <p id="detailBody"></p>
     <div class="sheet-actions"><button class="btn btn-primary" id="detailClose">Done</button></div>
   </div>
@@ -580,16 +676,8 @@ body.dark-mode .toast.tap{color:#fff}
 </div>
 
 <script>
-/* ===== Menu data (from Swansea Council primary school menu) =====
-   Everything in this block down to KNOWN_INSETS is the built-in copy.
-   The same data lives in data.json with a version number. On load the app
-   fetches data.json and, if its version is higher, swaps it in. So menu
-   changes, new inset days and holiday names are a JSON edit on GitHub,
-   no code change and no service worker bump. Bump DATA_VERSION here
-   whenever this built-in copy changes. */
-const DATA_VERSION = 1;
-const SCHOOL_YEAR = '2026-27';
-let MENUS = {
+/* ===== Menu data (from Swansea Council primary school menu) ===== */
+const MENUS = {
     1: {
         Monday: "Meatballs 🍖 / Pesto pasta and garlic bread 🌿🥖\nAccompaniments of the day 🥕\nHomemade biscuit 🍪 and peach slices 🍑 / Fresh fruit 🍎",
         Tuesday: "Chicken curry and naan 🍛🫓 / Cheese and tomato pizza 🍕\nAccompaniments of the day 🥗\nWelsh yoghurt and dried fruit 🥛 / Fresh fruit 🍎",
@@ -606,22 +694,22 @@ let MENUS = {
     }
 };
 
-let MENU_DETAILS = {
-  1:{ Monday:{description:"Meatballs or pesto pasta and garlic bread with daily accompaniments. Homemade biscuit and peach slices, or fresh fruit. Halal meatballs or GF/DF meatballs available.",cy:"Peli cig neu basta pesto a bara garlleg gydag ategolion y dydd. Bisged gartref a thafelli eirin gwlanog, neu ffrwyth ffres. Peli cig halal neu beli cig heb glwten a llaeth ar gael.",es:"Albóndigas o pasta al pesto con pan de ajo y los acompañamientos del día. Galleta casera con melocotón, o fruta fresca. Disponibles albóndigas halal o sin gluten ni lácteos."},
-      Tuesday:{description:"Chicken curry and naan or cheese and tomato pizza with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal chicken curry and naan, or GF/DF pizza available.",cy:"Cyri cyw iâr a naan neu bitsa caws a thomato gydag ategolion y dydd. Iogwrt Cymreig a ffrwythau sych, neu ffrwyth ffres. Cyri cyw iâr halal a naan, neu bitsa heb glwten a llaeth ar gael.",es:"Curry de pollo con naan o pizza de queso y tomate con los acompañamientos del día. Yogur galés con fruta seca, o fruta fresca. Disponibles curry halal o pizza sin gluten ni lácteos."},
-      Wednesday:{description:"BBQ chicken wrap or jacket potato with cheese and beans, with daily accompaniments. Waffle and mandarin slices, or fresh fruit. Halal or GF/DF BBQ chicken wrap available.",cy:"Wrap cyw iâr barbeciw neu daten bob gyda chaws a ffa, gydag ategolion y dydd. Waffl a thafelli mandarin, neu ffrwyth ffres. Wrap cyw iâr halal neu heb glwten a llaeth ar gael.",es:"Wrap de pollo a la barbacoa o patata asada con queso y alubias, con los acompañamientos del día. Gofre con mandarina, o fruta fresca. Disponible wrap halal o sin gluten ni lácteos."},
-      Thursday:{description:"Roast beef and Yorkshire pudding or pasta napolitana with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal roast chicken and Yorkshire pudding, or GF/DF roast beef available.",cy:"Cig eidion rhost a phwdin Efrog neu basta napolitana gydag ategolion y dydd. Caws a chracers gyda ffrwythau sych, neu ffrwyth ffres. Cyw iâr rhost halal a phwdin Efrog, neu gig eidion rhost heb glwten a llaeth ar gael.",es:"Rosbif con pudin de Yorkshire o pasta napolitana con los acompañamientos del día. Queso con galletas saladas y fruta seca, o fruta fresca. Disponibles pollo asado halal con pudin de Yorkshire, o rosbif sin gluten ni lácteos."},
-      Friday:{description:"Jumbo fish finger or cheese wrap with daily accompaniments. Jam split and fruit wedge, or fresh fruit. Halal jumbo fish finger, GF/DF fish fingers, or baked salmon available.",cy:"Bys pysgod jymbo neu wrap caws gydag ategolion y dydd. Sblit jam a lletem ffrwyth, neu ffrwyth ffres. Bys pysgod jymbo halal, bysedd pysgod heb glwten a llaeth, neu eog wedi'i bobi ar gael.",es:"Palito de pescado jumbo o wrap de queso con los acompañamientos del día. Bollo de mermelada con trozo de fruta, o fruta fresca. Disponibles palito de pescado halal, palitos sin gluten ni lácteos, o salmón al horno."}
+const MENU_DETAILS = {
+  1:{ Monday:{description:"Meatballs or pesto pasta and garlic bread with daily accompaniments. Homemade biscuit and peach slices, or fresh fruit. Halal meatballs or GF/DF meatballs available."},
+      Tuesday:{description:"Chicken curry and naan or cheese and tomato pizza with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal chicken curry and naan, or GF/DF pizza available."},
+      Wednesday:{description:"BBQ chicken wrap or jacket potato with cheese and beans, with daily accompaniments. Waffle and mandarin slices, or fresh fruit. Halal or GF/DF BBQ chicken wrap available."},
+      Thursday:{description:"Roast beef and Yorkshire pudding or pasta napolitana with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal roast chicken and Yorkshire pudding, or GF/DF roast beef available."},
+      Friday:{description:"Jumbo fish finger or cheese wrap with daily accompaniments. Jam split and fruit wedge, or fresh fruit. Halal jumbo fish finger, GF/DF fish fingers, or baked salmon available."}
   },
-  2:{ Monday:{description:"Pasta bolognaise or omelette with daily accompaniments. Welsh cake and fruit wedge, or fresh fruit. Halal or GF/DF pasta bolognaise available.",cy:"Pasta bolognaise neu omled gydag ategolion y dydd. Cacen gri a lletem ffrwyth, neu ffrwyth ffres. Pasta bolognaise halal neu heb glwten a llaeth ar gael.",es:"Pasta a la boloñesa o tortilla francesa con los acompañamientos del día. Torta galesa con trozo de fruta, o fruta fresca. Disponible boloñesa halal o sin gluten ni lácteos."},
-      Tuesday:{description:"Roast chicken or macaroni cheese with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal or GF/DF roast chicken available.",cy:"Cyw iâr rhost neu facaroni caws gydag ategolion y dydd. Iogwrt Cymreig a ffrwythau sych, neu ffrwyth ffres. Cyw iâr rhost halal neu heb glwten a llaeth ar gael.",es:"Pollo asado o macarrones con queso con los acompañamientos del día. Yogur galés con fruta seca, o fruta fresca. Disponible pollo asado halal o sin gluten ni lácteos."},
-      Wednesday:{description:"Chicken curry and naan or cheese and tomato calzone with daily accompaniments. Mandarin sponge and custard, or fresh fruit. Halal chicken curry, or GF/DF pizza available.",cy:"Cyri cyw iâr a naan neu galzone caws a thomato gydag ategolion y dydd. Sbwng mandarin a chwstard, neu ffrwyth ffres. Cyri cyw iâr halal, neu bitsa heb glwten a llaeth ar gael.",es:"Curry de pollo con naan o calzone de queso y tomate con los acompañamientos del día. Bizcocho de mandarina con natillas, o fruta fresca. Disponibles curry halal o pizza sin gluten ni lácteos."},
-      Thursday:{description:"Sausage dinner or vegetarian mild chilli with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal or GF/DF sausage available.",cy:"Cinio selsig neu chilli llysieuol mwyn gydag ategolion y dydd. Caws a chracers gyda ffrwythau sych, neu ffrwyth ffres. Selsig halal neu heb glwten a llaeth ar gael.",es:"Salchichas con guarnición o chili vegetariano suave con los acompañamientos del día. Queso con galletas saladas y fruta seca, o fruta fresca. Disponibles salchichas halal o sin gluten ni lácteos."},
-      Friday:{description:"Fish fingers or cheese wrap with daily accompaniments. Pancake and fruit wedge, or fresh fruit. Halal or GF/DF fish fingers, or baked salmon available.",cy:"Bysedd pysgod neu wrap caws gydag ategolion y dydd. Crempog a lletem ffrwyth, neu ffrwyth ffres. Bysedd pysgod halal neu heb glwten a llaeth, neu eog wedi'i bobi ar gael.",es:"Palitos de pescado o wrap de queso con los acompañamientos del día. Tortita con trozo de fruta, o fruta fresca. Disponibles palitos halal o sin gluten ni lácteos, o salmón al horno."}
+  2:{ Monday:{description:"Pasta bolognaise or omelette with daily accompaniments. Welsh cake and fruit wedge, or fresh fruit. Halal or GF/DF pasta bolognaise available."},
+      Tuesday:{description:"Roast chicken or macaroni cheese with daily accompaniments. Welsh yoghurt and dried fruit, or fresh fruit. Halal or GF/DF roast chicken available."},
+      Wednesday:{description:"Chicken curry and naan or cheese and tomato calzone with daily accompaniments. Mandarin sponge and custard, or fresh fruit. Halal chicken curry, or GF/DF pizza available."},
+      Thursday:{description:"Sausage dinner or vegetarian mild chilli with daily accompaniments. Cheese and crackers with dried fruit, or fresh fruit. Halal or GF/DF sausage available."},
+      Friday:{description:"Fish fingers or cheese wrap with daily accompaniments. Pancake and fruit wedge, or fresh fruit. Halal or GF/DF fish fingers, or baked salmon available."}
   }
 };
 
-let ALLERGENS = {
+const ALLERGENS = {
   1:{ Monday:["gluten","dairy","nuts","egg"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy","egg"], Thursday:["gluten","dairy","egg"], Friday:["fish","gluten","dairy","egg"] },
   2:{ Monday:["gluten","dairy","egg"], Tuesday:["gluten","dairy"], Wednesday:["gluten","dairy","egg"], Thursday:["gluten","dairy"], Friday:["fish","gluten","dairy","egg"] }
 };
@@ -630,115 +718,7 @@ const ALLERGEN_ICONS = { gluten:"🌾", dairy:"🧀", fish:"🐟", nuts:"🌰", 
 /* One-off menu changes from the school that replace the rota for specific
    dates. Keyed by date (YYYY-MM-DD). Days here show an "updated" badge.
    Empty now; the council publishes the standard two week rota above. */
-let MENU_OVERRIDES = {};
-/* Dish names in Welsh and Spanish, keyed by the English name without emoji.
-   Anything missing here shows in English. */
-let DISH_I18N = {
- "Meatballs": [
-  "Peli cig",
-  "Albóndigas"
- ],
- "Pesto pasta and garlic bread": [
-  "Pasta pesto a bara garlleg",
-  "Pasta al pesto y pan de ajo"
- ],
- "Homemade biscuit and peach slices": [
-  "Bisged gartref a thafelli eirin gwlanog",
-  "Galleta casera y melocotón en rodajas"
- ],
- "Chicken curry and naan": [
-  "Cyri cyw iâr a naan",
-  "Curry de pollo con naan"
- ],
- "Cheese and tomato pizza": [
-  "Pitsa caws a thomato",
-  "Pizza de queso y tomate"
- ],
- "Welsh yoghurt and dried fruit": [
-  "Iogwrt Cymreig a ffrwythau sych",
-  "Yogur galés y fruta seca"
- ],
- "BBQ chicken wrap": [
-  "Wrap cyw iâr barbeciw",
-  "Wrap de pollo a la barbacoa"
- ],
- "Jacket potato, cheese and beans": [
-  "Taten bob, caws a ffa",
-  "Patata asada con queso y alubias"
- ],
- "Waffle and mandarin slices": [
-  "Waffl a thafelli mandarin",
-  "Gofre y gajos de mandarina"
- ],
- "Roast beef and Yorkshire pudding": [
-  "Cig eidion rhost a phwdin Efrog",
-  "Rosbif con pudin de Yorkshire"
- ],
- "Pasta napolitana": [
-  "Pasta napolitana",
-  "Pasta napolitana"
- ],
- "Cheese and crackers and dried fruit": [
-  "Caws a chracers a ffrwythau sych",
-  "Queso con galletas saladas y fruta seca"
- ],
- "Jumbo fish finger": [
-  "Bys pysgod jymbo",
-  "Palito de pescado jumbo"
- ],
- "Cheese wrap": [
-  "Wrap caws",
-  "Wrap de queso"
- ],
- "Jam split and fruit wedge": [
-  "Sblit jam a lletem ffrwyth",
-  "Bollo de mermelada y trozo de fruta"
- ],
- "Pasta bolognaise": [
-  "Pasta bolognaise",
-  "Pasta a la boloñesa"
- ],
- "Omelette": [
-  "Omled",
-  "Tortilla francesa"
- ],
- "Welsh cake and fruit wedge": [
-  "Cacen gri a lletem ffrwyth",
-  "Torta galesa y trozo de fruta"
- ],
- "Roast chicken": [
-  "Cyw iâr rhost",
-  "Pollo asado"
- ],
- "Macaroni cheese": [
-  "Macaroni caws",
-  "Macarrones con queso"
- ],
- "Cheese and tomato calzone": [
-  "Calzone caws a thomato",
-  "Calzone de queso y tomate"
- ],
- "Mandarin sponge and custard": [
-  "Sbwng mandarin a chwstard",
-  "Bizcocho de mandarina con natillas"
- ],
- "Sausage dinner": [
-  "Cinio selsig",
-  "Salchichas con guarnición"
- ],
- "Vegetarian mild chilli": [
-  "Chilli llysieuol mwyn",
-  "Chili vegetariano suave"
- ],
- "Fish fingers": [
-  "Bysedd pysgod",
-  "Palitos de pescado"
- ],
- "Pancake and fruit wedge": [
-  "Crempog a lletem ffrwyth",
-  "Tortita y trozo de fruta"
- ]
-};
+const MENU_OVERRIDES = {};
 function overrideFor(dateOrKey){
   const key = typeof dateOrKey==='string' ? dateOrKey : ymdLocal(dateOrKey);
   return MENU_OVERRIDES[key] || null;
@@ -758,56 +738,20 @@ function wxEmoji(code){
 }
 function weatherFor(key){
   if(!weather||!weather.days) return null;
-  const d=weather.days[key]; if(!d||typeof d.t!=='number'||typeof d.c!=='number') return null;
-  if(d.t===0&&d.c===0&&d.lo===0) return null;
-  const w={ t:d.t, lo:d.lo, c:d.c, p:d.p, g:d.g, emoji:wxEmoji(d.c) };
-  w.ex=wxExtreme(w);
-  return w;
+  const d=weather.days[key]; if(!d) return null;
+  return { t:d.t, c:d.c, u:d.u||0, emoji:wxEmoji(d.c) };
 }
 function wxRainy(c){ return (c>=51&&c<=82) || c>=95; }
-function wxSnowy(c){ return (c>=71&&c<=77) || c===85 || c===86; }
-/* Extreme weather categories. First match wins. cls drives the colour,
-   key the advice line, emoji the little prompt. */
-function wxExtreme(w){
-  if(w.c>=95) return {cls:'storm',key:'wx_storm',emoji:'\u26a1'};
-  if(wxSnowy(w.c)) return {cls:'snow',key:'wx_snow',emoji:'\u26c4'};
-  if((typeof w.lo==='number'&&w.lo<=0)||(typeof w.t==='number'&&w.t<=3)) return {cls:'cold',key:'wx_cold',emoji:'\ud83e\udde4'};
-  if(w.t>=25) return {cls:'hot',key:'wx_hot',emoji:'\ud83e\udd64'};
-  if(typeof w.g==='number'&&w.g>=60) return {cls:'wind',key:'wx_wind',emoji:'\ud83c\udf2c\ufe0f'};
-  if(wxRainy(w.c)&&((typeof w.p==='number'&&w.p>=60)||[63,65,67,81,82].includes(w.c))) return {cls:'rain',key:'wx_rain',emoji:'\ud83e\udde5'};
-  return null;
-}
-function wxNoteHtml(w){
-  if(!w||!w.ex) return '';
-  return `<div class="wx-note ${w.ex.cls}">${w.ex.emoji} ${t(w.ex.key)}</div>`;
-}
-function wxDetailLine(w){
-  if(!w) return '';
-  const bits=[`${w.emoji} ${t('wx_high',{n:w.t})}`];
-  if(typeof w.lo==='number') bits.push(t('wx_low',{n:w.lo}));
-  if(typeof w.p==='number'&&w.p>=20) bits.push(t('wx_rain_chance',{n:w.p}));
-  if(typeof w.g==='number'&&w.g>=40) bits.push(t('wx_gusts',{n:w.g}));
-  return bits.join(', ');
-}
 async function fetchWeather(){
-  if(weather && weather.at && (Date.now()-weather.at) < 3*3600*1000 && weather.days) return;
+  if(weather && weather.at && weather.v===2 && (Date.now()-weather.at) < 3*3600*1000 && weather.days) return;
   try{
-    const url='https://api.open-meteo.com/v1/forecast?latitude=51.62&longitude=-3.94&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max,wind_gusts_10m_max&timezone=Europe%2FLondon&forecast_days=16';
+    const url='https://api.open-meteo.com/v1/forecast?latitude=51.62&longitude=-3.94&daily=temperature_2m_max,weather_code,uv_index_max&timezone=Europe%2FLondon&forecast_days=14';
     const res=await fetch(url); if(!res.ok) return;
     const j=await res.json();
     if(!j.daily||!j.daily.time) return;
-    const days={}, tm=j.daily.time, mx=j.daily.temperature_2m_max, mn=j.daily.temperature_2m_min||[], wc=j.daily.weather_code, pp=j.daily.precipitation_probability_max||[], gu=j.daily.wind_gusts_10m_max||[];
-    for(let i=0;i<tm.length;i++){
-      /* The far end of the 16 day range often comes back null. Math.round(null)
-         is 0, which read as a freezing day. Skip any day without a real high. */
-      if(typeof mx[i]!=='number' || typeof wc[i]!=='number') continue;
-      const d={ t:Math.round(mx[i]), c:wc[i] };
-      if(typeof mn[i]==='number') d.lo=Math.round(mn[i]);
-      if(typeof pp[i]==='number') d.p=Math.round(pp[i]);
-      if(typeof gu[i]==='number') d.g=Math.round(gu[i]);
-      days[tm[i]]=d;
-    }
-    weather={ at:Date.now(), days };
+    const days={}, tm=j.daily.time, mx=j.daily.temperature_2m_max, wc=j.daily.weather_code, uv=j.daily.uv_index_max||[];
+    for(let i=0;i<tm.length;i++){ days[tm[i]]={ t:Math.round(mx[i]), c:wc[i], u:Math.round((uv[i]||0)*10)/10 }; }
+    weather={ at:Date.now(), v:2, days };
     try{ localStorage.setItem('weather', JSON.stringify(weather)); }catch(e){}
     renderWeek(false); renderHero(); updateFooter();
   }catch(e){}
@@ -817,7 +761,7 @@ async function fetchWeather(){
    The council publishes a two week rota anchored to these week-commencing
    Mondays. Any Monday not listed is a school holiday, so no dinner shows.
    Weeks come straight from this list, which makes the rota match the dates. */
-let WEEK_STARTS = [
+const WEEK_STARTS = [
   {d:"2026-08-31",w:1},{d:"2026-09-07",w:2},{d:"2026-09-14",w:1},{d:"2026-09-21",w:2},{d:"2026-09-28",w:1},
   {d:"2026-10-05",w:2},{d:"2026-10-12",w:1},{d:"2026-10-19",w:2},{d:"2026-11-02",w:1},{d:"2026-11-09",w:2},
   {d:"2026-11-16",w:1},{d:"2026-11-23",w:2},{d:"2026-11-30",w:1},{d:"2026-12-07",w:2},{d:"2026-12-14",w:1},
@@ -828,13 +772,10 @@ let WEEK_STARTS = [
   {d:"2027-06-21",w:2},{d:"2027-06-28",w:1},{d:"2027-07-05",w:2},{d:"2027-07-12",w:1},{d:"2027-07-19",w:2}
 ];
 /* Bank holidays that fall inside term and close every Swansea school. */
-let BASE_CLOSURES = { "2026-08-31":"Bank holiday", "2027-05-03":"May Day" };
-/* Name of the holiday that follows a given week (keyed by that week's Monday).
-   Anything not listed falls back to a guess by month. */
-let BREAKS = { "2026-10-19":"brk_half", "2026-12-14":"brk_xmas", "2027-02-01":"brk_half", "2027-03-15":"brk_easter", "2027-05-24":"brk_half", "2027-07-19":"brk_summer" };
+const BASE_CLOSURES = { "2026-08-31":"Bank holiday", "2027-05-03":"May Day" };
 /* Inset (training) days are chosen by each school. Pre-filled where known;
    the parent can edit them in Settings to match their school's term dates. */
-let KNOWN_INSETS = {
+const KNOWN_INSETS = {
   "Blaenymaes Primary School": ["2026-09-01","2026-09-02","2026-10-23","2027-07-19","2027-07-20"],
   "Brynmill Primary School": ["2026-09-01","2026-09-02","2027-01-04"],
   "Casllwchwr Primary School": ["2026-09-01"],
@@ -916,141 +857,32 @@ const WEEKDAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
 const SHORT_DOW = { Monday:"Mon", Tuesday:"Tue", Wednesday:"Wed", Thursday:"Thu", Friday:"Fri" };
 const ALLERGEN_NAMES = { gluten:"Gluten", dairy:"Dairy", fish:"Fish", nuts:"Tree nuts", egg:"Egg", peanuts:"Peanuts", soya:"Soya", sesame:"Sesame", celery:"Celery", mustard:"Mustard", crustaceans:"Crustaceans", molluscs:"Molluscs", lupin:"Lupin", sulphites:"Sulphites" };
 const ALLERGEN_INFO = {
- "gluten": [
-  "Gluten is a protein found in wheat, barley and rye. It turns up in bread, pasta, batter, biscuits, pastry and many sauces.",
-  "Protein a geir mewn gwenith, haidd a rhyg yw glwten. Mae'n ymddangos mewn bara, pasta, cytew, bisgedi, crwst a llawer o sawsiau.",
-  "El gluten es una proteína del trigo, la cebada y el centeno. Está en el pan, la pasta, los rebozados, las galletas, la masa y muchas salsas."
- ],
- "dairy": [
-  "Dairy covers cow's milk and anything made from it, such as cheese, butter, cream, custard and yoghurt.",
-  "Mae llaeth yn cynnwys llaeth buwch ac unrhyw beth a wneir ohono, fel caws, menyn, hufen, cwstard ac iogwrt.",
-  "Los lácteos incluyen la leche de vaca y todo lo que se hace con ella: queso, mantequilla, nata, natillas y yogur."
- ],
- "fish": [
-  "Fish covers all finned fish, like cod, salmon and haddock, including the fish used in fish fingers.",
-  "Mae pysgod yn cynnwys pob pysgodyn ag esgyll, fel penfras, eog a hadog, gan gynnwys y pysgod mewn bysedd pysgod.",
-  "El pescado incluye todo pescado con aletas, como bacalao, salmón y eglefino, incluido el de los palitos de pescado."
- ],
- "nuts": [
-  "Nuts means tree nuts such as almonds, hazelnuts, cashews and walnuts. Peanuts are a legume but are often handled in the same kitchen.",
-  "Cnau coed yw cnau, fel almonau, cnau cyll, cashiws a chnau Ffrengig. Codlys yw pysgnau ond cânt eu trin yn yr un gegin yn aml.",
-  "Los frutos de cáscara son almendras, avellanas, anacardos y nueces. El cacahuete es una legumbre, pero suele manipularse en la misma cocina."
- ],
- "egg": [
-  "Egg appears in omelettes and pancakes, and in many baked puddings such as cakes, cookies, muffins, waffles, sponge and custard, and in some batters and coatings.",
-  "Mae wy mewn omledau a chrempogau, ac mewn llawer o bwdinau wedi'u pobi fel cacennau, cwcis, myffins, wafflau, sbwng a chwstard, ac mewn rhai cytewau a haenau.",
-  "El huevo está en tortillas y tortitas, y en muchos postres horneados como bizcochos, galletas, magdalenas, gofres y natillas, además de algunos rebozados."
- ],
- "peanuts": [
-  "Peanuts are a legume and one of the most common causes of serious allergic reactions.",
-  "Codlys yw pysgnau ac un o achosion mwyaf cyffredin adweithiau alergaidd difrifol.",
-  "El cacahuete es una legumbre y una de las causas más comunes de reacciones alérgicas graves."
- ],
- "soya": [
-  "Soya comes from soya beans and appears in tofu, some breads, sauces, spreads and many processed foods.",
-  "Daw soia o ffa soia ac mae mewn tofu, rhai bara, sawsiau, taeniadau a llawer o fwydydd wedi'u prosesu.",
-  "La soja procede de la semilla de soja y está en el tofu, algunos panes, salsas, untables y muchos alimentos procesados."
- ],
- "sesame": [
-  "Sesame seeds and sesame oil turn up on burger buns, wraps, houmous and some breads.",
-  "Mae hadau sesame ac olew sesame ar fyns byrgyr, wrapiau, hwmws a rhai bara.",
-  "Las semillas y el aceite de sésamo aparecen en panes de hamburguesa, wraps, hummus y algunos panes."
- ],
- "celery": [
-  "Celery includes the stalks, leaves, seeds and celeriac, and is common in soups, stocks and stir fries.",
-  "Mae seleri yn cynnwys y coesau, dail, hadau a seleriac, ac mae'n gyffredin mewn cawl, stoc a thro-ffrio.",
-  "El apio incluye tallos, hojas, semillas y apionabo, y es común en sopas, caldos y salteados."
- ],
- "mustard": [
-  "Mustard covers the seeds, powder and made mustard, and hides in dressings, marinades and sauces.",
-  "Mae mwstard yn cynnwys yr hadau, powdr a mwstard parod, ac mae'n cuddio mewn dresins, marinadau a sawsiau.",
-  "La mostaza incluye semillas, polvo y mostaza preparada, y se esconde en aliños, marinadas y salsas."
- ],
- "crustaceans": [
-  "Crustaceans means prawns, crab, lobster, langoustine and scampi.",
-  "Cramenogion yw corgimychiaid, crancod, cimychiaid, langoustine a scampi.",
-  "Los crustáceos son gambas, cangrejo, langosta, cigala y langostinos."
- ],
- "molluscs": [
-  "Molluscs means mussels, squid, whelks, oysters, snails and scallops.",
-  "Molysgiaid yw cregyn gleision, sgwid, gwichiaid, wystrys, malwod a chregyn bylchog.",
-  "Los moluscos son mejillones, calamar, bígaros, ostras, caracoles y vieiras."
- ],
- "lupin": [
-  "Lupin is a flowering plant whose flour and seeds appear in some breads, pastries and pasta.",
-  "Planhigyn blodeuol yw bysedd y blaidd; mae ei flawd a'i hadau mewn rhai bara, crwst a phasta.",
-  "El altramuz es una planta cuya harina y semillas aparecen en algunos panes, bollería y pasta."
- ],
- "sulphites": [
-  "Sulphites, or sulphur dioxide, are preservatives used in dried fruit, some meats and soft drinks.",
-  "Cadwolion yw sylffitau, neu sylffwr deuocsid, a ddefnyddir mewn ffrwythau sych, rhai cigoedd a diodydd meddal.",
-  "Los sulfitos, o dióxido de azufre, son conservantes usados en fruta seca, algunas carnes y refrescos."
- ]
+  gluten:"Gluten is a protein found in wheat, barley and rye. It turns up in bread, pasta, batter, biscuits, pastry and many sauces.",
+  dairy:"Dairy covers cow's milk and anything made from it, such as cheese, butter, cream, custard and yoghurt.",
+  fish:"Fish covers all finned fish, like cod, salmon and haddock, including the fish used in fish fingers.",
+  nuts:"Nuts means tree nuts such as almonds, hazelnuts, cashews and walnuts. Peanuts are a legume but are often handled in the same kitchen.",
+  egg:"Egg appears in omelettes and pancakes, and in many baked puddings such as cakes, cookies, muffins, waffles, sponge and custard, and in some batters and coatings.",
+  peanuts:"Peanuts are a legume and one of the most common causes of serious allergic reactions.",
+  soya:"Soya comes from soya beans and appears in tofu, some breads, sauces, spreads and many processed foods.",
+  sesame:"Sesame seeds and sesame oil turn up on burger buns, wraps, houmous and some breads.",
+  celery:"Celery includes the stalks, leaves, seeds and celeriac, and is common in soups, stocks and stir fries.",
+  mustard:"Mustard covers the seeds, powder and made mustard, and hides in dressings, marinades and sauces.",
+  crustaceans:"Crustaceans means prawns, crab, lobster, langoustine and scampi.",
+  molluscs:"Molluscs means mussels, squid, whelks, oysters, snails and scallops.",
+  lupin:"Lupin is a flowering plant whose flour and seeds appear in some breads, pastries and pasta.",
+  sulphites:"Sulphites, or sulphur dioxide, are preservatives used in dried fruit, some meats and soft drinks."
 };
 
 function parseDateYMD(s){ const p=s.split('-').map(Number); const d=new Date(p[0],p[1]-1,p[2]); d.setHours(0,0,0,0); return d; }
 function ymdLocal(d){ const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0'); return y+'-'+m+'-'+day; }
 function mondayOf(input){ const x=(input instanceof Date)?new Date(input):parseDateYMD(input); x.setHours(0,0,0,0); x.setDate(x.getDate()-((x.getDay()+6)%7)); return x; }
-/* Some phones ship without Welsh date data and print "M09" for months.
-   Detect that once and fall back to our own names. */
-const CY_MON=['Ion','Chwe','Maw','Ebr','Mai','Meh','Gorff','Awst','Medi','Hyd','Tach','Rhag'];
-const CY_MON_LONG=['Ionawr','Chwefror','Mawrth','Ebrill','Mai','Mehefin','Gorffennaf','Awst','Medi','Hydref','Tachwedd','Rhagfyr'];
-const CY_DOW=['Sul','Llun','Maw','Mer','Iau','Gwe','Sad'];
-const CY_DOW_LONG=['Dydd Sul','Dydd Llun','Dydd Mawrth','Dydd Mercher','Dydd Iau','Dydd Gwener','Dydd Sadwrn'];
-let _cyNative=null;
-function cyNative(){
-  if(_cyNative===null){ try{ _cyNative = Intl.DateTimeFormat.supportedLocalesOf(['cy']).length>0 && !/M\d/.test(new Date(2026,8,1).toLocaleDateString('cy',{month:'short'})); }catch(e){ _cyNative=false; } }
-  return _cyNative;
-}
-function fmtDate(d,opts){
-  if(lang==='cy' && !cyNative()){
-    const parts=[];
-    if(opts.weekday) parts.push(opts.weekday==='long'?CY_DOW_LONG[d.getDay()]:CY_DOW[d.getDay()]);
-    if(opts.day) parts.push(String(d.getDate()));
-    if(opts.month) parts.push(opts.month==='long'?CY_MON_LONG[d.getMonth()]:CY_MON[d.getMonth()]);
-    if(opts.year) parts.push(String(d.getFullYear()));
-    return parts.join(' ');
-  }
-  let out=d.toLocaleDateString(dloc(),opts);
-  if(opts.weekday==='long' && !opts.day) out=out.charAt(0).toUpperCase()+out.slice(1);
-  return out;
-}
-function fmtDM(d){ return fmtDate(d,{day:'numeric',month:'short'}); }
-function sdow(d){ return fmtDate(d,{weekday:'short'}); }
+function fmtDM(d){ return d.toLocaleDateString(dloc(),{day:'numeric',month:'short'}); }
+function sdow(d){ return d.toLocaleDateString(dloc(),{weekday:'short'}); }
 
 function buildWeekMap(){
   return WEEK_STARTS.map(x=>({ week: ((x.w-1+rotaOffset)%2+2)%2+1, start:x.d }));
 }
 let weekMap=buildWeekMap();
-
-/* ----- Live data (data.json) ----- */
-let dataVersion=DATA_VERSION;
-function applyData(d){
-  if(!d||typeof d!=='object'||typeof d.version!=='number'||d.version<=dataVersion) return false;
-  if(d.menus) MENUS=d.menus;
-  if(d.details) MENU_DETAILS=d.details;
-  if(d.allergens) ALLERGENS=d.allergens;
-  if(d.overrides) MENU_OVERRIDES=d.overrides;
-  if(Array.isArray(d.weekStarts)&&d.weekStarts.length) WEEK_STARTS=d.weekStarts;
-  if(d.closures) BASE_CLOSURES=d.closures;
-  if(d.insets) KNOWN_INSETS=d.insets;
-  if(d.breaks) BREAKS=d.breaks;
-  if(d.dishes) DISH_I18N=d.dishes;
-  dataVersion=d.version;
-  weekMap=buildWeekMap();
-  return true;
-}
-(function(){ try{ applyData(JSON.parse(localStorage.getItem('dataCache')||'null')); }catch(e){} })();
-async function fetchData(){
-  try{
-    const res=await fetch('./data.json',{cache:'no-cache'}); if(!res.ok) return;
-    const d=await res.json();
-    if(applyData(d)){
-      try{ localStorage.setItem('dataCache',JSON.stringify(d)); }catch(e){}
-      currentWeekIndex=getInitialWeekIndex(); render(false); toast(t('t_data_updated'));
-    }
-  }catch(e){}
-}
 
 function weekIndexContaining(date){
   for(let i=0;i<weekMap.length;i++){
@@ -1094,7 +926,7 @@ function nextBreak(){
   while(d<=endFri){ if(isSchoolDay(d)) n++; d.setDate(d.getDate()+1); }
   if(!n) return null;
   const m=endMon.getMonth();
-  const key = BREAKS[weekMap[endIdx].start] || (m===11 ? 'brk_xmas' : m===2 ? 'brk_easter' : m===6 ? 'brk_summer' : 'brk_half');
+  let key = m===11 ? 'brk_xmas' : m===2 ? 'brk_easter' : m===6 ? 'brk_summer' : 'brk_half';
   return { n, key };
 }
 
@@ -1107,7 +939,7 @@ let remindersOn = localStorage.getItem('remindersOn')==='1';
 let reminderTime = localStorage.getItem('reminderTime') || '18:00';
 let childAllergens = (()=>{ try{return JSON.parse(localStorage.getItem('childAllergens')||'{}')}catch(e){return {}} })();
 const ALL_ALLERGENS = ['gluten','dairy','fish','nuts','egg','peanuts','soya','sesame','celery','mustard','crustaceans','molluscs','lupin','sulphites'];
-const APP_VERSION = 'v29';
+const APP_VERSION = 'v31';
 const ICON='./icon-192.png';
 
 /* ================= Language ================= */
@@ -1118,46 +950,46 @@ let lang = localStorage.getItem('lang'); if(!LANGS.includes(lang)) lang='en';
 function dloc(){ return DATE_LOCALE[lang]||'en-GB'; }
 const STR = {
   jump_today:["Jump to today","Neidio i heddiw","Ir a hoy"],
-  allergens:["Allergens","Alergenau","Alérgenos"],
+  allergens:["Allergens","Alergenau","Alergenos"],
   none_listed:["None listed","Dim wedi'u rhestru","Ninguno indicado"],
-  gluten:["Gluten","Glwten","Gluten"], dairy:["Dairy","Llaeth","Lácteos"],
-  fish:["Fish","Pysgod","Pescado"], nuts:["Tree nuts","Cnau coed","Frutos de cáscara"], egg:["Egg","Wy","Huevo"],
-  peanuts:["Peanuts","Cnau daear","Cacahuetes"], soya:["Soya","Soia","Soja"], sesame:["Sesame","Sesame","Sésamo"],
-  celery:["Celery","Seleri","Apio"], mustard:["Mustard","Mwstard","Mostaza"], crustaceans:["Crustaceans","Cramenogion","Crustáceos"],
+  gluten:["Gluten","Glwten","Gluten"], dairy:["Dairy","Llaeth","Lacteos"],
+  fish:["Fish","Pysgod","Pescado"], nuts:["Tree nuts","Cnau coed","Frutos de cascara"], egg:["Egg","Wy","Huevo"],
+  peanuts:["Peanuts","Cnau daear","Cacahuetes"], soya:["Soya","Soia","Soja"], sesame:["Sesame","Sesame","Sesamo"],
+  celery:["Celery","Seleri","Apio"], mustard:["Mustard","Mwstard","Mostaza"], crustaceans:["Crustaceans","Cramenogion","Crustaceos"],
   molluscs:["Molluscs","Molwsgiaid","Moluscos"], lupin:["Lupin","Lwpin","Altramuces"], sulphites:["Sulphites","Sylffitau","Sulfitos"],
   done:["Done","Iawn","Hecho"], cancel:["Cancel","Canslo","Cancelar"],
   confirm:["Confirm","Cadarnhau","Confirmar"], close:["Close","Cau","Cerrar"],
-  add:["Add","Ychwanegu","Añadir"], children:["Children","Plant","Hijos"],
-  add_child:["Add child","Ychwanegu plentyn","Añadir hijo"],
-  start:["Start","Dechrau","Empezar"], setup_later:["Set up later","Gosod yn nes ymlaen","Configurar más tarde"],
+  add:["Add","Ychwanegu","Anadir"], children:["Children","Plant","Hijos"],
+  add_child:["Add child","Ychwanegu plentyn","Anadir hijo"],
+  start:["Start","Dechrau","Empezar"], setup_later:["Set up later","Gosod yn nes ymlaen","Configurar mas tarde"],
   settings:["Settings","Gosodiadau","Ajustes"], school:["School","Ysgol","Colegio"],
-  which_school:["Which school?","Pa ysgol?","¿Qué colegio?"],
-  childs_name:["Child's name","Enw'r plentyn","Nombre del niño"],
-  allergies_prompt:["Any allergies for this child? Optional, used to flag risky meals.","Unrhyw alergeddau i'r plentyn hwn? Dewisol, i nodi prydau peryglus.","¿Alguna alergia de este niño? Opcional, para señalar comidas con riesgo."],
+  which_school:["Which school?","Pa ysgol?","Que colegio?"],
+  childs_name:["Child's name","Enw'r plentyn","Nombre del nino"],
+  allergies_prompt:["Any allergies for this child? Optional, used to flag risky meals.","Unrhyw alergeddau i'r plentyn hwn? Dewisol, i nodi prydau peryglus.","Alguna alergia de este nino? Opcional, para senalar comidas con riesgo."],
   welcome_title:["School dinners, sorted","Cinio ysgol, yn drefnus","Las comidas del cole, resueltas"],
-  welcome_intro:["See what's for lunch each day, and tap any day to switch a child to a packed lunch. Packed days repeat every time that week comes round. Add everyone you want to track.","Gweld beth sydd i ginio bob dydd, a thapio unrhyw ddiwrnod i newid plentyn i becyn bwyd. Mae diwrnodau pecyn yn ailadrodd bob tro y daw'r wythnos honno o gwmpas. Ychwanegwch bawb rydych am eu dilyn.","Mira qué hay para comer cada día y toca cualquier día para cambiar a un niño a fiambrera. Los días de fiambrera se repiten cada vez que vuelve esa semana. Añade a todos los que quieras seguir."],
+  welcome_intro:["See what's for lunch each day, and tap any day to switch a child to a packed lunch. Packed days repeat every time that week comes round. Add everyone you want to track.","Gweld beth sydd i ginio bob dydd, a thapio unrhyw ddiwrnod i newid plentyn i becyn bwyd. Mae diwrnodau pecyn yn ailadrodd bob tro y daw'r wythnos honno o gwmpas. Ychwanegwch bawb rydych am eu dilyn.","Mira que hay para comer cada dia y toca cualquier dia para cambiar a un nino a fiambrera. Los dias de fiambrera se repiten cada vez que vuelve esa semana. Anade a todos los que quieras seguir."],
   main:["Main","Prif gwrs","Principal"], pudding:["Pudding","Pwdin","Postre"],
-  or:["or","neu","o"], accompaniments:["Accompaniments of the day","Ategolion y dydd","Acompañamientos del día"],
+  or:["or","neu","o"], accompaniments:["Accompaniments of the day","Ategolion y dydd","Acompanamientos del dia"],
   fresh_fruit:["Fresh fruit","Ffrwyth ffres","Fruta fresca"],
-  today:["Today","Heddiw","Hoy"], tomorrow:["Tomorrow","Yfory","Mañana"],
-  menu_updated:["Menu updated","Bwydlen wedi'i diweddaru","Menú actualizado"],
-  countdown:["{n} school days until {h}","{n} diwrnod ysgol tan {h}","{n} días de cole hasta {h}"],
-  countdown_one:["Last school day before {h}","Diwrnod ysgol olaf cyn {h}","Último día de cole antes de {h}"],
-  brk_half:["half term","hanner tymor","medio trimestre"],
+  today:["Today","Heddiw","Hoy"], tomorrow:["Tomorrow","Yfory","Manana"],
+  menu_updated:["Menu updated","Bwydlen wedi'i diweddaru","Menu actualizado"],
+  countdown:["{n} school days until {h}","{n} diwrnod ysgol tan {h}","{n} dias de cole hasta {h}"],
+  countdown_one:["Last school day before {h}","Diwrnod ysgol olaf cyn {h}","Ultimo dia de cole antes de {h}"],
+  brk_half:["half term","hanner tymor","el medio trimestre"],
   brk_xmas:["Christmas","y Nadolig","Navidad"],
   brk_easter:["Easter","y Pasg","Semana Santa"],
   brk_summer:["the summer holidays","gwyliau'r haf","las vacaciones de verano"],
-  updated_note:["The school has updated this day's menu, so it differs from the usual rota. Allergens shown are our best estimate, so please confirm with the school kitchen.","Mae'r ysgol wedi diweddaru bwydlen y diwrnod hwn, felly mae'n wahanol i'r drefn arferol. Amcangyfrif yw'r alergenau, felly cadarnhewch gyda chegin yr ysgol.","El colegio ha actualizado el menú de este dia, así que difiere del habitual. Los alérgenos son una estimación, confirma con la cocina del colegio."],
+  updated_note:["The school has updated this day's menu, so it differs from the usual rota. Allergens shown are our best estimate, so please confirm with the school kitchen.","Mae'r ysgol wedi diweddaru bwydlen y diwrnod hwn, felly mae'n wahanol i'r drefn arferol. Amcangyfrif yw'r alergenau, felly cadarnhewch gyda chegin yr ysgol.","El colegio ha actualizado el menu de este dia, asi que difiere del habitual. Los alergenos son una estimacion, confirma con la cocina del colegio."],
   packed:["Packed","Pecyn","Fiambrera"], dinner:["Dinner","Cinio","Comedor"],
   no_service:["No service","Dim gwasanaeth","Sin servicio"],
-  inset_day:["Inset day","Diwrnod HMS","Día de formación"], may_day:["May Day","Gŵyl Banc Mai","Festivo de mayo"],
-  bank_holiday:["Bank holiday","Gŵyl banc","Festivo"],
-  disclaimer:["Menu items are subject to availability and may change. Allergens are a guide, so always check with the school kitchen.","Gall eitemau'r fwydlen newid yn dibynnu ar argaeledd. Canllaw yn unig yw'r alergenau, felly gwiriwch bob amser gyda chegin yr ysgol.","Los platos pueden cambiar según disponibilidad. Los alérgenos son orientativos, confirma siempre con la cocina del colegio."],
-  next_school_day:["Next school day","Diwrnod ysgol nesaf","Próximo día escolar"],
-  showing_next:["Showing the next school day, not today.","Yn dangos y diwrnod ysgol nesaf, nid heddiw.","Mostrando el próximo día escolar, no hoy."],
-  no_more_menus:["No more menus","Dim mwy o fwydlenni","No hay más menús"],
+  inset_day:["Inset day","Diwrnod HMS","Dia de formacion"], may_day:["May Day","Gwyl Banc Mai","Festivo de mayo"],
+  bank_holiday:["Bank holiday","Gwyl banc","Festivo"],
+  disclaimer:["Menu items are subject to availability and may change. Allergens are a guide, so always check with the school kitchen.","Gall eitemau'r fwydlen newid yn dibynnu ar argaeledd. Canllaw yn unig yw'r alergenau, felly gwiriwch bob amser gyda chegin yr ysgol.","Los platos pueden cambiar segun disponibilidad. Los alergenos son orientativos, confirma siempre con la cocina del colegio."],
+  next_school_day:["Next school day","Diwrnod ysgol nesaf","Proximo dia escolar"],
+  showing_next:["Showing the next school day, not today.","Yn dangos y diwrnod ysgol nesaf, nid heddiw.","Mostrando el proximo dia escolar, no hoy."],
+  no_more_menus:["No more menus","Dim mwy o fwydlenni","No hay mas menus"],
   year_finished:["The school year has finished. Enjoy the break.","Mae'r flwyddyn ysgol wedi gorffen. Mwynhewch y gwyliau.","El curso escolar ha terminado. Disfruta del descanso."],
-  allergy_alert:["Allergy alert: this menu has {e}. Affects {t}. Check before ordering.","Rhybudd alergedd: mae'r fwydlen hon yn cynnwys {e}. Yn effeithio ar {t}. Gwiriwch cyn archebu.","Alerta de alergia: este menú contiene {e}. Afecta a {t}. Comprueba antes de pedir."],
+  allergy_alert:["Allergy alert: this menu has {e}. Affects {t}. Check before ordering.","Rhybudd alergedd: mae'r fwydlen hon yn cynnwys {e}. Yn effeithio ar {t}. Gwiriwch cyn archebu.","Alerta de alergia: este menu contiene {e}. Afecta a {t}. Comprueba antes de pedir."],
   warn_title:["Allergy alert: contains {e}","Rhybudd alergedd: yn cynnwys {e}","Alerta de alergia: contiene {e}"],
   warn_affects:["Affects {t}","Yn effeithio ar {t}","Afecta a {t}"],
   warn_check:["Check before ordering","Gwiriwch cyn archebu","Comprueba antes de pedir"],
@@ -1167,115 +999,116 @@ const STR = {
   reminders_title:["Packed lunch reminders","Atgoffa am becyn bwyd","Avisos de fiambrera"],
   reminders_sub:["A nudge the evening before, so you can buy what you need.","Neges y noson cynt, fel y gallwch brynu'r hyn sydd ei angen.","Un aviso la noche antes para que compres lo necesario."],
   remind_evening:["Remind the evening before","Atgoffa'r noson cynt","Avisar la noche antes"],
-  add_to_cal:["Add reminders to my calendar","Ychwanegu atgoffwyr i'm calendr","Añadir avisos a mi calendario"],
-  cal_note:["Adds a calendar alert for every packed lunch coming up this term. Tap again after you change packed days to refresh them.","Yn ychwanegu rhybudd calendr ar gyfer pob pecyn bwyd sydd i ddod y tymor hwn. Tapiwch eto ar ôl newid diwrnodau pecyn i'w hadnewyddu.","Añade una alerta de calendario para cada fiambrera de este trimestre. Toca otra vez tras cambiar los días para actualizarlas."],
+  add_to_cal:["Add reminders to my calendar","Ychwanegu atgoffwyr i'm calendr","Anadir avisos a mi calendario"],
+  cal_note:["Adds a calendar alert for every packed lunch coming up this term. Tap again after you change packed days to refresh them.","Yn ychwanegu rhybudd calendr ar gyfer pob pecyn bwyd sydd i ddod y tymor hwn. Tapiwch eto ar ol newid diwrnodau pecyn i'w hadnewyddu.","Anade una alerta de calendario para cada fiambrera de este trimestre. Toca otra vez tras cambiar los dias para actualizarlas."],
   home_screen:["Home screen","Sgrin gartref","Pantalla de inicio"],
-  add_home:["Add to home screen","Ychwanegu at y sgrin gartref","Añadir a la pantalla de inicio"],
+  add_home:["Add to home screen","Ychwanegu at y sgrin gartref","Anadir a la pantalla de inicio"],
   share_app_title:["Share the app","Rhannu'r ap","Compartir la app"],
-  share_app_desc:["Send another parent a link to Dinner so they can use it too.","Anfonwch ddolen Dinner at riant arall fel y gallant ei ddefnyddio hefyd.","Envía a otro padre un enlace a Dinner para que también pueda usarla."],
-  send_link:["Send link","Anfon dolen","Envíar enlace"],
+  share_app_desc:["Send another parent a link to Dinner so they can use it too.","Anfonwch ddolen Dinner at riant arall fel y gallant ei ddefnyddio hefyd.","Envia a otro padre un enlace a Dinner para que tambien pueda usarla."],
+  send_link:["Send link","Anfon dolen","Enviar enlace"],
   copy_link:["Copy link","Copio dolen","Copiar enlace"],
   share_week:["Share this week as an image","Rhannu'r wythnos hon fel llun","Compartir esta semana como imagen"],
+  seasonal_title:["Seasonal theme","Thema tymhorol","Tema de temporada"],
+  xmas_auto:["Auto","Awtomatig","Auto"], xmas_off:["Off","I ffwrdd","No"],
+  season_preview:["Or preview a theme now","Neu rhagolwg o thema nawr","O prueba un tema ahora"],
+  season_note:["Auto switches themes on around each event: Halloween (20 to 31 Oct), Remembrance (9 to 11 Nov), Christmas (1 Dec to 5 Jan), St David's Day (22 Feb to 1 Mar), Easter and summer in July. Tap a theme to preview it, then choose Auto to go back.","Mae Awtomatig yn troi themau ymlaen o gwmpas pob achlysur: Calan Gaeaf (20 i 31 Hyd), Diwrnod y Cofio (9 i 11 Tach), y Nadolig (1 Rhag i 5 Ion), Dydd Gwyl Dewi (22 Chwef i 1 Maw), y Pasg a'r haf ym mis Gorffennaf. Tapiwch thema i'w gweld, yna dewiswch Awtomatig i fynd yn ol.","Auto activa cada tema en torno a su fecha: Halloween (20 al 31 oct), Recuerdo (9 al 11 nov), Navidad (1 dic al 5 ene), San David (22 feb al 1 mar), Pascua y verano en julio. Toca un tema para verlo y elige Auto para volver."],
+  se_christmas:["Christmas","Nadolig","Navidad"], se_halloween:["Halloween","Calan Gaeaf","Halloween"], se_remembrance:["Remembrance","Cofio","Recuerdo"],
+  se_stdavid:["St David's","Gwyl Dewi","San David"], se_easter:["Easter","Pasg","Pascua"], se_summer:["Summer","Haf","Verano"],
+  wx_uv:["High UV, send sun cream","UV uchel, anfonwch eli haul","UV alto, lleva crema solar"],
+  back_in:["Back at school in {n} days","Yn ol yn yr ysgol ymhen {n} diwrnod","Vuelta al cole en {n} dias"],
+  back_tomorrow:["Back at school tomorrow","Yn ol yn yr ysgol yfory","Vuelta al cole manana"],
+  ev_days:["{n} days to {e}","{n} diwrnod tan {e}","Faltan {n} dias para {e}"],
+  ev_today:["{e} is today","{e} heddiw","Hoy es {e}"],
+  ev_tomorrow:["{e} is tomorrow","{e} yfory","Manana es {e}"],
+  ev_glyndwr:["Owain Glyndwr Day","Dydd Owain Glyndwr","el Dia de Owain Glyndwr"],
+  ev_halloween:["Halloween","Calan Gaeaf","Halloween"],
+  ev_bonfire:["Bonfire Night","Noson Guto Ffowc","la Noche de Guy Fawkes"],
+  ev_remembrance:["Remembrance Day","Diwrnod y Cofio","el Dia del Recuerdo"],
+  ev_christmas:["Christmas","y Nadolig","Navidad"],
+  ev_newyear:["New Year's Day","Dydd Calan","el 1 de enero"],
+  ev_dwynwen:["St Dwynwen's Day","Dydd Santes Dwynwen","el Dia de Santa Dwynwen"],
+  ev_valentine:["Valentine's Day","Dydd San Ffolant","San Valentin"],
+  ev_stdavid:["St David's Day","Dydd Gwyl Dewi","el Dia de San David"],
+  ev_dylan:["Dylan Thomas Day","Diwrnod Dylan Thomas","el Dia de Dylan Thomas"],
+  ev_pancake:["Pancake Day","Dydd Mawrth Ynyd","el Dia de las Tortitas"],
+  ev_bookday:["World Book Day","Diwrnod y Llyfr","el Dia del Libro"],
+  ev_mothers:["Mother's Day","Sul y Mamau","el Dia de la Madre"],
+  ev_easter:["Easter","y Pasg","la Pascua"],
+  ev_fathers:["Father's Day","Sul y Tadau","el Dia del Padre"],
   share_now:["Share","Rhannu","Compartir"],
   save_image:["Save image","Cadw'r llun","Guardar imagen"],
-  share_app_text:["Dinner, the school dinner menu app for Swansea primaries:","Dinner, yr ap bwydlen cinio ysgol ar gyfer ysgolion cynradd Abertawe:","Dinner, la app del menú del comedor para las primarias de Swansea:"],
+  share_app_text:["Dinner, the school dinner menu app for Swansea primaries:","Dinner, yr ap bwydlen cinio ysgol ar gyfer ysgolion cynradd Abertawe:","Dinner, la app del menu del comedor para las primarias de Swansea:"],
   t_link_copied:["Link copied","Dolen wedi'i chopio","Enlace copiado"],
   share_title:["Share with another parent","Rhannu gyda rhiant arall","Compartir con otro padre"],
-  share_desc:["Co-parenting? Send this short code to the other parent. They paste it in here and get the exact same setup. No accounts, no files.","Yn cyd-rianta? Anfonwch y cod byr hwn at y rhiant arall. Maent yn ei ludo yma ac yn cael yr un gosodiad yn union. Dim cyfrifon, dim ffeiliau.","¿Crianza compartida? Envía este código corto al otro padre. Lo pega aquí y obtiene la misma configuración. Sin cuentas, sin archivos."],
-  copy_code:["Copy code","Copio'r cod","Copiar código"], email_it:["Email it","E-bostio","Envíar por correo"],
-  paste_prompt:["Got a code from someone? Paste it below.","Cawsoch god gan rywun? Gludwch ef isod.","¿Te han dado un código? Pégalo abajo."],
-  paste_ph:["Paste code here","Gludwch y cod yma","Pega el código aquí"], apply:["Apply","Gosod","Aplicar"],
+  share_desc:["Co-parenting? Send this short code to the other parent. They paste it in here and get the exact same setup. No accounts, no files.","Yn cyd-rianta? Anfonwch y cod byr hwn at y rhiant arall. Maent yn ei ludo yma ac yn cael yr un gosodiad yn union. Dim cyfrifon, dim ffeiliau.","Crianza compartida? Envia este codigo corto al otro padre. Lo pega aqui y obtiene la misma configuracion. Sin cuentas, sin archivos."],
+  copy_code:["Copy code","Copio'r cod","Copiar codigo"], email_it:["Email it","E-bostio","Enviar por correo"],
+  paste_prompt:["Got a code from someone? Paste it below.","Cawsoch god gan rywun? Gludwch ef isod.","Te han dado un codigo? Pegalo abajo."],
+  paste_ph:["Paste code here","Gludwch y cod yma","Pega el codigo aqui"], apply:["Apply","Gosod","Aplicar"],
   backup_file:["Backup file","Ffeil wrth gefn","Archivo de copia"],
-  backup_desc:["Prefer a file? Export a full backup, or import one on a new phone.","Well gennych ffeil? Allforiwch gopi llawn, neu fewnforio un ar ffon newydd.","¿Prefieres un archivo? Exporta una copia completa o importa una en un móvil nuevo."],
+  backup_desc:["Prefer a file? Export a full backup, or import one on a new phone.","Well gennych ffeil? Allforiwch gopi llawn, neu fewnforio un ar ffon newydd.","Prefieres un archivo? Exporta una copia completa o importa una en un movil nuevo."],
   export:["Export","Allforio","Exportar"], import:["Import","Mewnforio","Importar"],
-  school_desc:["The menu is the same across Swansea primaries. Choose your school to set the name shown at the top and its inset days.","Mae'r fwydlen yr un fath ym mhob ysgol gynradd yn Abertawe. Dewiswch eich ysgol i osod yr enw ar y brig a'i diwrnodau HMS.","El menú es el mismo en todas las primarias de Swansea. Elige tu colegio para fijar el nombre de arriba y sus días de formación."],
-  inset_days_for:["Inset days, {s}","Diwrnodau HMS, {s}","Dias de formación, {s}"],
-  inset_desc:["Training days when school is closed, so no dinner shows. These vary by school, so add or remove to match your term dates.","Diwrnodau hyfforddi pan fydd yr ysgol ar gau, felly does dim cinio. Mae'r rhain yn amrywio fesul ysgol, felly ychwanegwch neu dynnwch i gyd-fynd a'ch dyddiadau tymor.","Dias de formación en que el colegio cierra, así que no hay comedor. Varían por colegio, añade o quita para que coincidan con tu calendario."],
-  no_insets:["No inset days set for this school.","Dim diwrnodau HMS wedi'u gosod ar gyfer yr ysgol hon.","No hay días de formación para este colegio."],
+  school_desc:["The menu is the same across Swansea primaries. Choose your school to set the name shown at the top and its inset days.","Mae'r fwydlen yr un fath ym mhob ysgol gynradd yn Abertawe. Dewiswch eich ysgol i osod yr enw ar y brig a'i diwrnodau HMS.","El menu es el mismo en todas las primarias de Swansea. Elige tu colegio para fijar el nombre de arriba y sus dias de formacion."],
+  inset_days_for:["Inset days, {s}","Diwrnodau HMS, {s}","Dias de formacion, {s}"],
+  inset_desc:["Training days when school is closed, so no dinner shows. These vary by school, so add or remove to match your term dates.","Diwrnodau hyfforddi pan fydd yr ysgol ar gau, felly does dim cinio. Mae'r rhain yn amrywio fesul ysgol, felly ychwanegwch neu dynnwch i gyd-fynd a'ch dyddiadau tymor.","Dias de formacion en que el colegio cierra, asi que no hay comedor. Varian por colegio, anade o quita para que coincidan con tu calendario."],
+  no_insets:["No inset days set for this school.","Dim diwrnodau HMS wedi'u gosod ar gyfer yr ysgol hon.","No hay dias de formacion para este colegio."],
   other_school:["Other school (type name)","Ysgol arall (teipiwch enw)","Otro colegio (escribir nombre)"],
   type_school:["Type your school name","Teipiwch enw eich ysgol","Escribe el nombre de tu colegio"],
-  add_to_track:["Add a child to track packed lunches","Ychwanegu plentyn i ddilyn pecynnau bwyd","Añade un niño para seguir las fiambreras"],
-  menu_rota:["Menu rota","Rota'r fwydlen","Rotación del menu"],
-  rota_desc:["If the meals do not match the letter from school, nudge the week so it lines up. Holidays are already built in.","Os nad yw'r prydau'n cyd-fynd a'r llythyr o'r ysgol, symudwch yr wythnos fel ei bod yn cyd-fynd. Mae gwyliau wedi'u cynnwys yn barod.","Si las comidas no coinciden con la carta del colegio, ajusta la semana para que cuadre. Las vacaciones ya están incluidas."],
+  add_to_track:["Add a child to track packed lunches","Ychwanegu plentyn i ddilyn pecynnau bwyd","Anade un nino para seguir las fiambreras"],
+  menu_rota:["Menu rota","Rota'r fwydlen","Rotacion del menu"],
+  rota_desc:["If the meals do not match the letter from school, nudge the week so it lines up. Holidays are already built in.","Os nad yw'r prydau'n cyd-fynd a'r llythyr o'r ysgol, symudwch yr wythnos fel ei bod yn cyd-fynd. Mae gwyliau wedi'u cynnwys yn barod.","Si las comidas no coinciden con la carta del colegio, ajusta la semana para que cuadre. Las vacaciones ya estan incluidas."],
   remove:["Remove","Tynnu","Quitar"],
-  remove_q:["Remove {name}?","Tynnu {name}?","¿Quitar a {name}?"],
+  remove_q:["Remove {name}?","Tynnu {name}?","Quitar a {name}?"],
   remove_msg:["This clears {name} and their packed lunches.","Mae hyn yn clirio {name} a'u pecynnau bwyd.","Esto borra a {name} y sus fiambreras."],
-  remove_last_msg:["This is your only child, so removing them takes you back to the welcome screen.","Dyma eich unig blentyn, felly bydd eu tynnu yn mynd â chi yn ôl i'r sgrin groeso.","Es tu único hijo, así que al quitarlo volverás a la pantalla de bienvenida."],
-  pack_q:["Pack lunch on {d}?","Pecyn bwyd ar {d}?","¿Fiambrera el {d}?"],
-  pack_choose:["How often does {c} want a packed lunch?","Pa mor aml mae {c} eisiau pecyn bwyd?","¿Con qué frecuencia quiere {c} fiambrera?"],
-  pack_every:["Every {d}, both weeks","Bob {d}, y ddwy wythnos","Cada {d}, ambas semanas"],
-  pack_week:["Every {d} in week {w}","Bob {d} yn wythnos {w}","Cada {d} de la semana {w}"],
+  remove_last_msg:["This is your only child, so removing them takes you back to the welcome screen.","Dyma eich unig blentyn, felly bydd eu tynnu yn mynd a chi yn ol i'r sgrin groeso.","Es tu unico hijo, asi que al quitarlo volveras a la pantalla de bienvenida."],
+  pack_q:["Pack lunch on {d}?","Pecyn bwyd ar {d}?","Fiambrera el {d}?"],
+  pack_choose:["How often does {c} want a packed lunch?","Pa mor aml mae {c} eisiau pecyn bwyd?","Con que frecuencia quiere {c} fiambrera?"],
+  pack_every:["Every {d}","Bob {d}","Cada {d}"],
   pack_once:["Just this date","Y dyddiad hwn yn unig","Solo este dia"],
-  wx_hot:["Hot day, pack a water bottle and sun hat","Diwrnod poeth, paciwch botel ddŵr a het haul","Día caluroso, lleva una botella de agua y gorra"],
-  wx_rain:["Heavy rain likely, send a coat and wellies","Glaw trwm yn debygol, anfonwch got ac esgidiau glaw","Lluvia intensa probable, lleva abrigo y botas de agua"],
-  wx_cold:["Freezing, send gloves and a warm coat","Rhewi, anfonwch fenig a chot gynnes","Helada, lleva guantes y un abrigo grueso"],
-  wx_snow:["Snow forecast, check for closures","Eira ar y ffordd, gwiriwch am gau","Nieve prevista, comprueba si cierra el colegio"],
-  wx_storm:["Thunderstorms forecast, hold onto hats","Stormydd mellt ar y ffordd, daliwch eich hetiau","Tormentas previstas, atención"],
-  wx_wind:["Very windy, expect a wild playtime","Gwyntog iawn, amser chwarae gwyllt","Mucho viento, recreo movidito"],
-  wx_high:["high {n}\u00b0","uchaf {n}\u00b0","max {n}\u00b0"],
-  wx_low:["low {n}\u00b0","isaf {n}\u00b0","min {n}\u00b0"],
-  wx_rain_chance:["{n}% chance of rain","{n}% siawns o law","{n}% de lluvia"],
-  wx_gusts:["gusts {n} km/h","hyrddiau {n} km/h","rachas {n} km/h"],
-  and:["and","a","y"],
-  countdown_short:["{n} days to {h}","{n} diwrnod tan {h}","{n} días hasta {h}"],
-  countdown_one_short:["Last day before {h}","Diwrnod olaf cyn {h}","Último día antes de {h}"],
-  remove_inset:["Remove inset day","Tynnu diwrnod HMS","Quitar día de formación"],
-  notif_title:["Packed lunch tomorrow","Pecyn bwyd yfory","Fiambrera mañana"],
-  notif_body:["{who} need a packed lunch tomorrow ({d}).","Mae angen pecyn bwyd ar {who} yfory ({d}).","{who} necesita fiambrera mañana ({d})."],
-  ics_summary:["Pack lunch: {who} ({d})","Paratoi pecyn bwyd: {who} ({d})","Preparar fiambrera: {who} ({d})"],
-  email_subject:["Our school packed lunch plan","Ein cynllun pecyn bwyd ysgol","Nuestro plan de fiambreras del cole"],
-  email_intro:["Here is our packed lunch plan for the school dinner app.","Dyma ein cynllun pecyn bwyd ar gyfer yr ap cinio ysgol.","Aquí está nuestro plan de fiambreras para la app del comedor."],
-  email_how:["How to load it:","Sut i'w lwytho:","Cómo cargarlo:"],
-  email_s1:["Open the app: {url}","Agorwch yr ap: {url}","Abre la app: {url}"],
-  email_s2:["Tap the settings cog, then Share with another parent.","Tapiwch y cog gosodiadau, yna Rhannu gyda rhiant arall.","Toca la rueda de ajustes y luego Compartir con otro padre."],
-  email_s3:["Paste the code below into the box and tap Apply.","Gludwch y cod isod yn y blwch a thapio Cymhwyso.","Pega el código de abajo en la casilla y toca Aplicar."],
-  t_backup_old:["Restored children and school from an older backup. Packed lunch days were left out as they belong to last year's menu.","Adferwyd plant ac ysgol o gopi wrth gefn hŷn. Gadawyd diwrnodau pecyn bwyd allan gan eu bod yn perthyn i fwydlen y llynedd.","Se restauraron los hijos y el colegio desde una copia antigua. Los días de fiambrera se omitieron porque pertenecen al menú del curso pasado."],
-  t_data_updated:["Menu and term dates updated","Bwydlen a dyddiadau tymor wedi'u diweddaru","Menú y fechas del trimestre actualizados"],
-  t_year_reset:["New school year: packed lunch days have been cleared. Children and allergies are kept.","Blwyddyn ysgol newydd: mae diwrnodau pecyn bwyd wedi'u clirio. Cedwir plant ac alergeddau.","Nuevo curso: se han borrado los días de fiambrera. Se conservan los hijos y las alergias."],
-  update_ready:["New version ready. Tap to update.","Fersiwn newydd yn barod. Tapiwch i ddiweddaru.","Nueva versión lista. Toca para actualizar."],
+  wx_hot:["Hot day, pack a water bottle","Diwrnod poeth, paciwch botel ddwr","Dia caluroso, lleva una botella de agua"],
+  wx_rain:["Rain likely, send a coat","Glaw yn debygol, anfonwch got","Posible lluvia, lleva un abrigo"],
   refresh:["Refresh","Adnewyddu","Actualizar"],
   updated_at:["Updated {t}","Diweddarwyd {t}","Actualizado {t}"],
-  unpack_every_msg:["This stops {c}'s packed lunch every {d} in week {w}.","Mae hyn yn atal pecyn bwyd {c} bob {d} yn wythnos {w}.","Esto quita la fiambrera de {c} cada {d} de la semana {w}."],
+  unpack_every_msg:["This stops {c}'s packed lunch every {d}.","Mae hyn yn atal pecyn bwyd {c} bob {d}.","Esto quita la fiambrera de {c} cada {d}."],
   pack_msg:["{c} brings a packed lunch instead of a school dinner.","Mae {c} yn dod a phecyn bwyd yn lle cinio ysgol.","{c} lleva fiambrera en vez de comedor."],
   pack_ok:["Pack lunch","Pecyn bwyd","Llevar fiambrera"],
-  unpack_q:["Back to school dinner?","Yn ôl i ginio ysgol?","¿Volver al comedor?"],
+  unpack_q:["Back to school dinner?","Yn ol i ginio ysgol?","Volver al comedor?"],
   unpack_msg:["{c} has the school dinner on {d}.","Mae {c} yn cael cinio ysgol ar {d}.","{c} come en el comedor el {d}."],
   unpack_ok:["Use dinner","Defnyddio cinio","Usar comedor"],
-  packed_tomorrow:["Packed lunch tomorrow: {who} ({d})","Pecyn bwyd yfory: {who} ({d})","Fiambrera mañana: {who} ({d})"],
+  packed_tomorrow:["Packed lunch tomorrow: {who} ({d})","Pecyn bwyd yfory: {who} ({d})","Fiambrera manana: {who} ({d})"],
   got_it:["Got it","Iawn","Vale"],
-  detail_allergens:["Allergens: {x}","Alergenau: {x}","Alérgenos: {x}"],
-  no_desc:["No description available.","Dim disgrifiad ar gael.","No hay descripción disponible."],
-  allergen_word:["Allergen","Alergen","Alérgeno"],
+  detail_allergens:["Allergens: {x}","Alergenau: {x}","Alergenos: {x}"],
+  no_desc:["No description available.","Dim disgrifiad ar gael.","No hay descripcion disponible."],
+  allergen_word:["Allergen","Alergen","Alergeno"],
   kitchen_note:["Always check with the school kitchen if your child has an allergy.","Gwiriwch bob amser gyda chegin yr ysgol os oes gan eich plentyn alergedd.","Comprueba siempre con la cocina del colegio si tu hijo tiene alergia."],
-  install_intro:["Install Dinner so it opens full screen from your home screen, just like a normal app. It still works offline.","Gosodwch Dinner fel ei fod yn agor yn sgrin lawn o'ch sgrin gartref, fel ap arferol. Mae'n dal i weithio all-lein.","Instala Dinner para que se abra a pantalla completa desde tu inicio, como una app normal. Sigue funcionando sin conexión."],
-  already_installed:["The app is already installed on this device. You are all set.","Mae'r ap eisoes wedi'i osod ar y ddyfais hon. Rydych chi'n barod.","La app ya está instalada en este dispositivo. Todo listo."],
+  install_intro:["Install Dinner so it opens full screen from your home screen, just like a normal app. It still works offline.","Gosodwch Dinner fel ei fod yn agor yn sgrin lawn o'ch sgrin gartref, fel ap arferol. Mae'n dal i weithio all-lein.","Instala Dinner para que se abra a pantalla completa desde tu inicio, como una app normal. Sigue funcionando sin conexion."],
+  already_installed:["The app is already installed on this device. You are all set.","Mae'r ap eisoes wedi'i osod ar y ddyfais hon. Rydych chi'n barod.","La app ya esta instalada en este dispositivo. Todo listo."],
   install_now:["Install now","Gosod nawr","Instalar ahora"],
   ios_title:["On iPhone or iPad (Safari)","Ar iPhone neu iPad (Safari)","En iPhone o iPad (Safari)"],
   android_title:["On Android (Chrome)","Ar Android (Chrome)","En Android (Chrome)"],
   computer_title:["On a computer","Ar gyfrifiadur","En un ordenador"],
   ios1:["Tap the three dots to the right of the address bar, then tap Share. On older iPhones, tap the Share icon (a square with an arrow) in the toolbar instead.","Tapiwch y tri dot i'r dde o'r bar cyfeiriad, yna tapiwch Share. Ar iPhones hyn, tapiwch yr eicon Share (sgwar gyda saeth) ar y bar offer yn lle hynny.","Toca los tres puntos a la derecha de la barra de direcciones y luego toca Compartir. En iPhones antiguos, toca el icono Compartir (un cuadrado con una flecha) en la barra."],
-  ios2:["Scroll down and tap \"Add to Home Screen\".","Sgroliwch i lawr a thapio \"Add to Home Screen\".","Baja y toca \"Añadir a pantalla de inicio\"."],
-  ios3:["Keep \"Open as Web App\" on, then tap Add. The Dinner icon appears on your home screen.","Cadwch \"Open as Web App\" ymlaen, yna tapiwch Add. Mae eicon Dinner yn ymddangos ar eich sgrin gartref.","Deja activado \"Abrir como app web\" y toca Añadir. El icono de Dinner aparece en tu inicio."],
-  and1:["Tap the menu (three dots) at the top right of Chrome.","Tapiwch y ddewislen (tri dot) ar dop dde Chrome.","Toca el menú (tres puntos) arriba a la derecha en Chrome."],
-  and2:["Tap \"Add to Home screen\" or \"Install app\".","Tapiwch \"Add to Home screen\" neu \"Install app\".","Toca \"Añadir a pantalla de inicio\" o \"Instalar app\"."],
-  and3:["Tap Add, then Install.","Tapiwch Add, yna Install.","Toca Añadir y luego Instalar."],
+  ios2:["Scroll down and tap \"Add to Home Screen\".","Sgroliwch i lawr a thapio \"Add to Home Screen\".","Baja y toca \"Anadir a pantalla de inicio\"."],
+  ios3:["Keep \"Open as Web App\" on, then tap Add. The Dinner icon appears on your home screen.","Cadwch \"Open as Web App\" ymlaen, yna tapiwch Add. Mae eicon Dinner yn ymddangos ar eich sgrin gartref.","Deja activado \"Abrir como app web\" y toca Anadir. El icono de Dinner aparece en tu inicio."],
+  and1:["Tap the menu (three dots) at the top right of Chrome.","Tapiwch y ddewislen (tri dot) ar dop dde Chrome.","Toca el menu (tres puntos) arriba a la derecha en Chrome."],
+  and2:["Tap \"Add to Home screen\" or \"Install app\".","Tapiwch \"Add to Home screen\" neu \"Install app\".","Toca \"Anadir a pantalla de inicio\" o \"Instalar app\"."],
+  and3:["Tap Add, then Install.","Tapiwch Add, yna Install.","Toca Anadir y luego Instalar."],
   pc1:["Look for an install icon at the right of the address bar, or open the browser menu.","Chwiliwch am eicon gosod ar ochr dde'r bar cyfeiriad, neu agorwch ddewislen y porwr.","Busca un icono de instalar a la derecha de la barra de direcciones, o abre el menu."],
-  pc2:["Choose \"Install\" or \"Add to Home screen\".","Dewiswch \"Install\" neu \"Add to Home screen\".","Elige \"Instalar\" o \"Añadir a pantalla de inicio\"."],
+  pc2:["Choose \"Install\" or \"Add to Home screen\".","Dewiswch \"Install\" neu \"Add to Home screen\".","Elige \"Instalar\" o \"Anadir a pantalla de inicio\"."],
   theme:["Theme","Thema","Tema"], theme_system:["System","System","Sistema"],
   theme_light:["Light","Golau","Claro"], theme_dark:["Dark","Tywyll","Oscuro"],
   language:["Language","Iaith","Idioma"],
-  app_title:["Dinner menu","Bwydlen cinio","Menú del comedor"],
-  t_copied:["Code copied","Cod wedi'i gopio","Código copiado"],
-  t_select:["Select the code and copy it","Dewiswch y cod a'i gopio","Selecciona el código y cópialo"],
+  app_title:["Dinner menu","Bwydlen cinio","Menu del comedor"],
+  t_copied:["Code copied","Cod wedi'i gopio","Codigo copiado"],
+  t_select:["Select the code and copy it","Dewiswch y cod a'i gopio","Selecciona el codigo y copialo"],
   t_loaded:["Plan loaded","Cynllun wedi'i lwytho","Plan cargado"],
-  t_badcode:["That code was not recognised","Ni adnabuwyd y cod hwnnw","No se reconoció ese código"],
-  t_pastefirst:["Paste a code first","Gludwch god yn gyntaf","Pega un código primero"],
+  t_badcode:["That code was not recognised","Ni adnabuwyd y cod hwnnw","No se reconocio ese codigo"],
+  t_pastefirst:["Paste a code first","Gludwch god yn gyntaf","Pega un codigo primero"],
   t_backup_dl:["Backup downloaded","Copi wedi'i lawrlwytho","Copia descargada"],
   t_backup_rs:["Backup restored","Copi wedi'i adfer","Copia restaurada"],
   t_unreadable:["That file could not be read","Ni ellid darllen y ffeil honno","No se pudo leer ese archivo"],
   t_rem_ready:["Reminders ready to add","Atgoffwyr yn barod","Avisos listos para anadir"],
-  t_no_upcoming:["No packed lunches coming up yet","Dim pecynnau bwyd ar y gweill eto","Aún no hay fiambreras próximas"],
-  meals_note:["Dish names are translated from the council's English menu.","Cyfieithir enwau'r prydau o fwydlen Saesneg y cyngor.","Los nombres de los platos se traducen del menú en inglés del ayuntamiento."]
+  t_no_upcoming:["No packed lunches coming up yet","Dim pecynnau bwyd ar y gweill eto","Aun no hay fiambreras proximas"],
+  meals_note:["Menu items are shown in English from the council menu.","Dangosir eitemau'r fwydlen yn Saesneg o fwydlen y cyngor.","Los platos se muestran en ingles segun el menu del ayuntamiento."]
 };
 function t(k,vars){
   const row=STR[k]; let s = row ? (row[LANGS.indexOf(lang)]||row[0]) : k;
@@ -1303,12 +1136,6 @@ const save = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
 const isPacked = (child,week,day,dateKey)=> !!((dateKey && packedOnce[child] && packedOnce[child][dateKey]) || (packedLunch[child]&&packedLunch[child][week]&&packedLunch[child][week][day]));
 const isRecurring = (child,week,day)=> !!(packedLunch[child]&&packedLunch[child][week]&&packedLunch[child][week][day]);
 const anyPacked = (week,day,dateKey)=> children.some(c=>isPacked(c,week,day,dateKey));
-function setPackedWeek(child,week,day,on){
-  if(!packedLunch[child]) packedLunch[child]={};
-  if(!packedLunch[child][week]) packedLunch[child][week]={};
-  if(on) packedLunch[child][week][day]=true; else delete packedLunch[child][week][day];
-  save('packedLunch',packedLunch);
-}
 function setPackedEveryWeek(child,day,on){
   if(!packedLunch[child]) packedLunch[child]={};
   [1,2].forEach(w=>{ if(!packedLunch[child][w]) packedLunch[child][w]={}; if(on) packedLunch[child][w][day]=true; else delete packedLunch[child][w][day]; });
@@ -1327,31 +1154,8 @@ const weekLabel=$('weekLabel'), weekRange=$('weekRange'), weekStats=$('weekStats
 const prevWeek=$('prevWeek'), nextWeek=$('nextWeek'), weekPill=$('weekPill'), todayBtn=$('todayBtn');
 
 /* ================= Sheets ================= */
-const FOCUSABLE='button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
-function openSheet(scrim){
-  scrim._prevFocus=document.activeElement;
-  scrim.style.display='flex';
-  requestAnimationFrame(()=>{
-    scrim.classList.add('show');
-    const sheet=scrim.querySelector('.sheet');
-    const first=scrim.querySelector('.sheet input:not([type=checkbox]),.sheet select')||sheet;
-    if(first){ if(first===sheet) sheet.tabIndex=-1; try{ first.focus({preventScroll:true}); }catch(e){} }
-  });
-}
-function closeSheet(scrim){
-  scrim.classList.remove('show');
-  const back=scrim._prevFocus; scrim._prevFocus=null;
-  setTimeout(()=>scrim.style.display='none',260);
-  if(back&&back.focus&&document.body.contains(back)){ try{ back.focus({preventScroll:true}); }catch(e){} }
-}
-document.addEventListener('keydown',e=>{
-  if(e.key!=='Escape') return;
-  const open=[...document.querySelectorAll('.scrim')].filter(x=>x.style.display==='flex'&&x.id!=='welcomeScrim');
-  if(!open.length) return;
-  const top=open[open.length-1];
-  e.preventDefault();
-  if(top.id==='confirmScrim') cancelConfirm(); else closeSheet(top);
-});
+function openSheet(scrim){ scrim.style.display='flex'; requestAnimationFrame(()=>scrim.classList.add('show')); }
+function closeSheet(scrim){ scrim.classList.remove('show'); setTimeout(()=>scrim.style.display='none',260); }
 document.querySelectorAll('.scrim').forEach(s=> s.addEventListener('click',e=>{ if(e.target===s) closeSheet(s); }));
 
 function setConfirmButtons(btns, stack){
@@ -1382,82 +1186,18 @@ let pendingRevert=null;
 let heroFlashed=false;
 
 function openDetail(week,day,dateLabel,date){
-  $('detailTitle').textContent=date?fmtDate(date,{weekday:'long'}):day;
-  const wxd=date?weatherFor(ymdLocal(date)):null;
+  $('detailTitle').textContent=day;
   $('detailMeta').textContent=`${t('week_lbl',{n:week})}, ${dateLabel}`;
-  const wxl=$('detailWx'); wxl.textContent=wxd?wxDetailLine(wxd):''; wxl.hidden=!wxd;
   const ov=date?overrideFor(date):null;
-  const desc=ov?t('updated_note'):(localiseDesc(MENU_DETAILS[week]&&MENU_DETAILS[week][day])||t('no_desc'));
+  const desc=ov?t('updated_note'):((MENU_DETAILS[week]&&MENU_DETAILS[week][day]&&MENU_DETAILS[week][day].description)||t('no_desc'));
   const alList=ov?ov.allergens:((ALLERGENS[week]&&ALLERGENS[week][day])||[]);
-  const mealD=ov?ov.meal:((MENUS[week]&&MENUS[week][day])||'');
-  const dm=$('detailMenu'); dm.innerHTML=mealHtml(mealD)+allergensHtml(alList); dm.hidden=!mealD;
-  dm.onclick=e=>{ const chip=e.target.closest('.al-chip'); if(chip){ e.stopPropagation(); openAllergen(chip.dataset.a); } };
-  $('detailBody').textContent=desc;
+  const allerg=alList.map(a=>ALLERGEN_ICONS[a]).join(' ')||t('none_listed');
+  $('detailBody').textContent=`${desc}\n\n${t('detail_allergens',{x:allerg})}`;
   openSheet($('detailScrim'));
 }
 
 /* ================= Render ================= */
-const ICO_PLATE='<svg class="plate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/></svg>';
-const ICO_LUNCH='<svg class="lunch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="3"/><path d="M8 8V6a4 4 0 0 1 8 0v2M3 13h18"/></svg>';
-/* One tappable chip per child. Pressed = packed lunch. Toggling runs the
-   same confirm flow as before, and pendingRevert flips it back on cancel. */
-function kidChip(child,week,day,key,date,after){
-  const b=document.createElement('button'); b.type='button'; b.className='kid-toggle';
-  const packed=isPacked(child,week,day,key);
-  b.setAttribute('aria-pressed',packed?'true':'false');
-  b.setAttribute('aria-label',`${child}: ${packed?t('packed'):t('dinner')}, ${sdow(date)} ${fmtDM(date)}`);
-  b.innerHTML=`<span class="ki">${ICO_PLATE}${ICO_LUNCH}</span><span class="kn">${escapeHtml(child)}</span><span class="ks">${packed?t('packed'):t('dinner')}</span>`;
-  b.addEventListener('click',e=>{
-    e.stopPropagation();
-    const wasPacked=b.getAttribute('aria-pressed')==='true';
-    const turningOn=!wasPacked;
-    b.setAttribute('aria-pressed',turningOn?'true':'false');
-    const dl=`${sdow(date)} ${fmtDM(date)}`, wkday=sdow(date);
-    pendingRevert=()=>{ b.setAttribute('aria-pressed',wasPacked?'true':'false'); };
-    if(turningOn){
-      askChoice(t('pack_q',{d:dl}), t('pack_choose',{c:child}), [
-        {label:t('pack_every',{d:wkday}), cls:'btn btn-primary', onClick:()=>{ setPackedEveryWeek(child,day,true); after(); }},
-        {label:t('pack_week',{d:wkday,w:week}), cls:'btn btn-ghost', onClick:()=>{ setPackedWeek(child,week,day,true); after(); }},
-        {label:t('pack_once'), cls:'btn btn-ghost', onClick:()=>{ setPackedOnce(child,key,true); after(); }}
-      ]);
-    } else {
-      const recurring=isRecurring(child,week,day);
-      askConfirm(t('unpack_q'), recurring? t('unpack_every_msg',{c:child,d:wkday,w:week}) : t('unpack_msg',{c:child,d:dl}), t('unpack_ok'),
-        ()=>{ pendingRevert=null; setPackedOnce(child,key,false); if(recurring) setPackedWeek(child,week,day,false); after(); });
-    }
-  });
-  return b;
-}
-function kidRow(cls,week,day,key,date,after){
-  const row=document.createElement('div'); row.className=cls;
-  children.forEach(c=>row.appendChild(kidChip(c,week,day,key,date,after)));
-  return row;
-}
-/* Main course and alternative, pulled out of the menu string */
-function dishParts(meal){
-  const p=parseMeal(meal);
-  const mains=p.mains.map(localiseDish);
-  return { main: mains[0]||'', alt: mains.slice(1).join(' / ') };
-}
-function dishHtml(meal,cls){
-  const d=dishParts(meal);
-  return `<div class="${cls}">${escapeHtml(d.main)}</div>`+(d.alt?`<div class="${cls}-alt"><b>${t('or')}</b>${escapeHtml(d.alt)}</div>`:'');
-}
-/* Sides and pudding under the hero headline */
-function heroCoursesHtml(meal){
-  const p=parseMeal(meal);
-  let h='';
-  if(p.sides) h+=`<div class="hero-sides">${escapeHtml(localiseDish(p.sides))}</div>`;
-  if(p.pudding.length) h+=`<div class="hero-pud"><span class="course-label">${t('pudding')}</span>${p.pudding.map(localiseDish).map((o,i)=>(i?`<span class="hero-or">${t('or')}</span>`:'')+`<span class="hero-pud-opt">${escapeHtml(o)}</span>`).join('')}</div>`;
-  return h;
-}
-function renderCountdown(){
-  const el=$('countdown'); if(!el) return;
-  const brk=nextBreak();
-  el.textContent = brk ? (brk.n===1?t('countdown_one_short',{h:t(brk.key)}):t('countdown_short',{n:brk.n,h:t(brk.key)})) : '';
-}
 function render(animate){
-  renderCountdown();
   renderTide();
   renderHero();
   renderWeek(animate);
@@ -1486,16 +1226,44 @@ function renderHero(){
   const idx=weekIndexContaining(focus);
   const wk=weekMap[idx].week;
   const dayName=WEEKDAYS[(focus.getDay()+6)%7];
-  const key=ymdLocal(focus);
   const ov=overrideFor(focus);
   const meal=ov?ov.meal:((MENUS[wk]&&MENUS[wk][dayName])||'Menu not available');
   const allerg=ov?ov.allergens:((ALLERGENS[wk]&&ALLERGENS[wk][dayName])||[]);
   const warn=warnHtml(allerg);
-  const wxT = weatherFor(key);
-  const wxEy = wxT ? `<span class="mid"></span><span class="wxe">${wxT.emoji} ${wxT.t}\u00b0</span>` : '';
-  const eyebrow = (todayIsSchool ? t('today') : t('next_school_day')) + `<span class="mid"></span>${sdow(focus)} ${fmtDM(focus)}` + wxEy;
+  const updated=ov?`<span class="badge updated">${t('menu_updated')}</span>`:'';
+
+  let pills='';
+  children.forEach(c=>{
+    const packed=isPacked(c,wk,dayName,ymdLocal(focus));
+    pills+=`<span class="status-pill ${packed?'packed':''}"><span class="dot"></span>${escapeHtml(c)}<span class="mid"></span>${packed?t('packed'):t('dinner')}</span>`;
+  });
+
+  const wxT = weatherFor(ymdLocal(focus));
+  const wxEy = wxT ? `<span class="mid"></span>${wxT.emoji} ${wxT.t}°` : '';
+  let wxNote='';
+  if(wxT){
+    const nts=[];
+    if(wxT.t>=25) nts.push(['hot','\u{1F964}',t('wx_hot')]);
+    if(wxT.u>=6) nts.push(['uv','\u{1F9F4}',t('wx_uv')]);
+    if(!nts.length && wxRainy(wxT.c)) nts.push(['','\u{1F9E5}',t('wx_rain')]);
+    if(nts.length) wxNote='<div class="wx-notes">'+nts.map(n=>'<div class="wx-note '+n[0]+'">'+n[1]+' '+n[2]+'</div>').join('')+'</div>';
+  }
+  const eyebrow = (todayIsSchool
+    ? `${t('today')}<span class="mid"></span>${sdow(focus)} ${fmtDM(focus)}`
+    : `${t('next_school_day')}<span class="mid"></span>${sdow(focus)} ${fmtDM(focus)}`) + wxEy;
   const subline = todayIsSchool ? '' : `<div class="hero-sub" style="margin:6px 0 0">${t('showing_next')}</div>`;
-  const updated=ov?`<div class="hero-updated"><span class="badge updated">${t('menu_updated')}</span></div>`:'';
+  const evF=eventFor(ymdLocal(focus)); let themePill='';
+  if(evF){
+    const nm=t(evF.k), gapD=daysBetween(today,focus);
+    const lbl = gapD===0 ? capFirst(t('ev_today',{e:nm})) : gapD===1 ? capFirst(t('ev_tomorrow',{e:nm})) : capFirst(nm)+', '+sdow(focus)+' '+fmtDM(focus);
+    themePill=`<div class="hero-theme" style="--theme:${evF.c}"><span class="em">${evF.e}</span>${escapeHtml(lbl)}</div>`;
+  }
+
+  const countChip = '<div class="count-chip" id="countChip"></div>';
+  const waves = `<div class="wavewrap" aria-hidden="true">
+      <svg class="w w1" viewBox="0 0 1200 40" preserveAspectRatio="none"><path d="M0 22 Q 75 6 150 22 T 300 22 T 450 22 T 600 22 T 750 22 T 900 22 T 1050 22 T 1200 22 V40 H0 Z"/></svg>
+      <svg class="w w2" viewBox="0 0 1200 40" preserveAspectRatio="none"><path d="M0 26 Q 75 12 150 26 T 300 26 T 450 26 T 600 26 T 750 26 T 900 26 T 1050 26 T 1200 26 V40 H0 Z"/></svg>
+    </div>`;
 
   heroEl.className='hero enter'+(warn?(' alert'+(heroFlashed?'':' flash')):'');
   if(warn) heroFlashed=true;
@@ -1503,17 +1271,20 @@ function renderHero(){
     `<button class="hero-share" aria-label="${t('share_week')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
      <div class="hero-eyebrow">${eyebrow}</div>
      ${subline}
-     ${updated}
-     ${dishHtml(meal,'hero-dish')}
-     ${heroCoursesHtml(meal)}
-     ${allergensHtml(allerg)}
+     ${themePill}
+     ${updated?`<div class="hero-updated">${updated}</div>`:''}
      ${warn}
-     ${wxT?wxNoteHtml(wxT):''}`;
-  const after=()=>{ render(false); };
-  heroEl.appendChild(kidRow('hero-kids',wk,dayName,key,focus,after));
+     <div class="hero-meal">${mealHtml(meal)}</div>
+     ${allergensHtml(allerg)}
+     <div class="hero-status">${pills}</div>
+     ${wxNote}
+     ${countChip}
+     ${waves}`;
+  setupCountdown();
   heroEl.onclick=(e)=>{
     if(e.target.closest('.hero-share')){ e.stopPropagation(); shareWeekImage(); return; }
-    if(e.target.closest('.kid-toggle')) return;
+    const chip=e.target.closest('.al-chip');
+    if(chip){ e.stopPropagation(); openAllergen(chip.dataset.a); return; }
     currentWeekIndex=idx; renderWeek(true); setTimeout(()=>scrollToToday(),60);
     openDetail(wk,dayName,`${sdow(focus)} ${fmtDM(focus)}`,focus);
   };
@@ -1541,32 +1312,19 @@ function renderWeek(animate){
     card.dataset.date=key;
 
     const wx=weatherFor(key);
-    const wxHtml = wx ? `<span class="wx${wx.ex?' ex '+wx.ex.cls:''}" title="${wxDetailLine(wx)}"><span class="wxi">${wx.emoji}</span><span class="wt">${wx.t}°</span></span>` : '';
+    const wxHtml = wx ? `<span class="wx${wx.t>=25?' hot':''}"><span class="wxi">${wx.emoji}</span><span class="wt">${wx.t}°</span></span>` : '';
     const rail=`<div class="day-rail"><span class="dow">${sdow(date)}</span><span class="dom">${date.getDate()}</span>${wxHtml}</div>`;
 
     const closeWhy=closureReason(key);
     if(closeWhy){
       const reasonTxt = closeWhy==='Inset day' ? t('inset_day') : closeWhy==='May Day' ? t('may_day') : closeWhy==='Bank holiday' ? t('bank_holiday') : closeWhy;
       card.classList.add('closed');
-      if(date.getTime()<today.getTime()) card.classList.add('past');
       card.innerHTML=rail+`<div class="day-body"><p class="closed-label">${t('no_service')}<span class="mid"></span>${escapeHtml(reasonTxt)}</p></div>`;
       menuEl.appendChild(card);
       return;
     }
 
-    const ovp=overrideFor(key);
-    const mealP=ovp?ovp.meal:((MENUS[info.week]&&MENUS[info.week][day])||'Menu not available');
-
-    /* Past days collapse to one line: date, main course, packed dot */
-    if(date.getTime()<today.getTime()){
-      card.classList.add('past');
-      const packedAny=anyPacked(info.week,day,key);
-      card.innerHTML=rail+`<div class="past-dish">${escapeHtml(dishParts(mealP).main)}</div><span class="past-dot${packedAny?'':' nope'}" title="${packedAny?t('packed'):t('dinner')}"></span>`;
-      card.addEventListener('click',()=>openDetail(info.week,day,`${sdow(date)} ${fmtDM(date)}`,date));
-      menuEl.appendChild(card);
-      return;
-    }
-
+    if(date.getTime()<today.getTime()) card.classList.add('past');
     if(date.getTime()===today.getTime()) card.classList.add('today');
     if(anyPacked(info.week,day,key)) card.classList.add('packed');
 
@@ -1585,19 +1343,58 @@ function renderWeek(animate){
 
     const body=document.createElement('div');
     body.className='day-body';
-    body.innerHTML=`<div class="day-top">${badge}${updatedBadge}${packedChip}</div>${dishHtml(meal,'dish')}${allergensHtml(allerg)}${warn}${warn?'':wxNoteHtml(wx)}`;
+    body.innerHTML=`<div class="day-top">${badge}${updatedBadge}${packedChip}</div>${warn}${mealHtml(meal)}${allergensHtml(allerg)}`;
 
-    const after=()=>{ render(false); };
-    const kids=kidRow('day-kids',info.week,day,key,date,after);
+    const toggles=document.createElement('div');
+    toggles.className='day-toggles';
+    children.forEach(child=>{
+      const lab=document.createElement('label'); lab.className='switch';
+      const input=document.createElement('input'); input.type='checkbox';
+      input.checked=isPacked(child,info.week,day,key);
+      input.setAttribute('aria-label',`${t('packed')}: ${child} ${sdow(date)}`);
+      const track=document.createElement('span'); track.className='track';
+      const txt=document.createElement('span'); txt.className='swlabel'; txt.textContent=children.length>1?child:t('packed');
+      lab.appendChild(input); lab.appendChild(track); lab.appendChild(txt);
+      input.addEventListener('change',()=>{
+        const turningOn=input.checked;
+        const dl=`${sdow(date)} ${fmtDM(date)}`;
+        const wkday=sdow(date);
+        pendingRevert=()=>{ input.checked=!turningOn; };
+        const after=()=>{ card.classList.toggle('packed',anyPacked(info.week,day,key)); renderWeek(false); renderHero(); updateStats(); };
+        if(turningOn){
+          askChoice(t('pack_q',{d:dl}), t('pack_choose',{c:child}), [
+            {label:t('pack_every',{d:wkday}), cls:'btn btn-primary', onClick:()=>{ setPackedEveryWeek(child,day,true); after(); }},
+            {label:t('pack_once'), cls:'btn btn-ghost', onClick:()=>{ setPackedOnce(child,key,true); after(); }}
+          ]);
+        } else {
+          const recurring=isRecurring(child,info.week,day);
+          askConfirm(
+            t('unpack_q'),
+            recurring? t('unpack_every_msg',{c:child,d:wkday}) : t('unpack_msg',{c:child,d:dl}),
+            t('unpack_ok'),
+            ()=>{ pendingRevert=null; setPackedOnce(child,key,false); if(recurring) setPackedEveryWeek(child,day,false); after(); }
+          );
+        }
+      });
+      toggles.appendChild(lab);
+    });
 
     card.appendChild(parseRail(rail));
     card.appendChild(body);
-    card.appendChild(kids);
+    card.appendChild(toggles);
+    const evD=eventFor(key);
+    if(evD){
+      card.classList.add('themed'); card.style.setProperty('--theme', evD.c);
+      const rib=document.createElement('div'); rib.className='theme-ribbon';
+      const em=document.createElement('span'); em.className='em'; em.textContent=evD.e;
+      rib.appendChild(em); rib.appendChild(document.createTextNode(capFirst(t(evD.k))));
+      card.insertBefore(rib, card.firstChild);
+    }
     card.addEventListener('click',e=>{
-      if(e.target.closest('.kid-toggle')) return;
+      if(e.target.closest('.switch')) return;
       const chip=e.target.closest('.al-chip');
       if(chip){ e.stopPropagation(); openAllergen(chip.dataset.a); return; }
-      openDetail(info.week,day,`${sdow(date)} ${fmtDM(date)}`,date);
+      openDetail(info.week,day,`${SHORT_DOW[day]} ${fmtDM(date)}`,date);
     });
     menuEl.appendChild(card);
   });
@@ -1627,21 +1424,7 @@ function courseHtml(label,opts){
   return inner;
 }
 function localiseDish(s){
-  s=String(s);
-  if(/Accompaniments of the day/.test(s)) return s.replace('Accompaniments of the day',t('accompaniments'));
-  if(/^Fresh fruit/.test(s)) return s.replace('Fresh fruit',t('fresh_fruit'));
-  if(lang==='en') return s;
-  const key=stripEmoji(s);
-  const row=DISH_I18N[key]; if(!row) return s;
-  const tr=row[lang==='cy'?0:1]; if(!tr) return s;
-  const emoji=(s.match(/[\u{1F000}-\u{1FFFF}\u2190-\u27BF\u2B00-\u2BFF]\uFE0F?/gu)||[]).join('');
-  return emoji ? tr+' '+emoji : tr;
-}
-function localiseDesc(det){
-  if(!det) return '';
-  if(lang==='cy'&&det.cy) return det.cy;
-  if(lang==='es'&&det.es) return det.es;
-  return det.description||'';
+  return String(s).replace('Accompaniments of the day',t('accompaniments')).replace('Fresh fruit',t('fresh_fruit'));
 }
 function mealHtml(str){
   const p=parseMeal(str);
@@ -1659,9 +1442,8 @@ function allergensHtml(list){
 }
 function openAllergen(key){
   $('detailTitle').textContent=`${ALLERGEN_ICONS[key]||''} ${t(key)}`;
-  $('detailMeta').textContent=t('allergen_word'); $('detailWx').hidden=true; $('detailMenu').hidden=true;
-  const info=ALLERGEN_INFO[key]; const txt=Array.isArray(info)?(info[LANGS.indexOf(lang)]||info[0]):(info||'');
-  $('detailBody').textContent=txt+'\n\n'+t('kitchen_note');
+  $('detailMeta').textContent=t('allergen_word');
+  $('detailBody').textContent=(ALLERGEN_INFO[key]||'')+'\n\n'+t('kitchen_note');
   openSheet($('detailScrim'));
 }
 function conflictsFor(dayAll){
@@ -1826,13 +1608,13 @@ function applyThemeDOM(dark){
 }
 function setThemeMode(mode){ themeMode=mode; localStorage.setItem('themeMode',mode); applyThemeDOM(effectiveDark()); track('theme',{mode}); }
 mqDark.addEventListener('change',()=>{ if(themeMode==='system') applyThemeDOM(effectiveDark()); });
-if($('themeToggle')) $('themeToggle').addEventListener('click',()=>{ setThemeMode(effectiveDark()?'light':'dark'); });
+$('themeToggle').addEventListener('click',()=>{ setThemeMode(effectiveDark()?'light':'dark'); });
 
 function updateFooter(){
   const rb=$('refreshBtn'); if(rb) rb.textContent=t('refresh');
   const ut=$('updatedText'); if(ut){ const at = (weather&&weather.at)? new Date(weather.at): new Date(); ut.textContent=t('updated_at',{t:at.toLocaleTimeString(dloc(),{hour:'2-digit',minute:'2-digit'})}); }
 }
-$('refreshBtn').addEventListener('click',()=>{ try{ if(weather) weather.at=0; }catch(e){} if(swReg){ swReg.update().catch(()=>{}); } location.reload(); });
+$('refreshBtn').addEventListener('click',()=>{ try{ if(weather) weather.at=0; }catch(e){} location.reload(); });
 function applyLang(){
   const byId={ todayBtn:'jump_today', appTitle:'app_title', detailClose:'done',
     manageTitle:'children', manageMeta:'add_to_track', addChild:'add', rotaLabel:'menu_rota', rotaDesc:'rota_desc', manageClose:'close',
@@ -1852,19 +1634,17 @@ function applyLang(){
   render(true);
   if($('settingsScrim').classList.contains('show')) renderSettings();
 }
-if($('langBtn')) $('langBtn').addEventListener('click',()=>{
+$('langBtn').addEventListener('click',()=>{
   const i=(LANGS.indexOf(lang)+1)%LANGS.length; lang=LANGS[i]; localStorage.setItem('lang',lang); applyLang(); track('language',{lang});
 });
 
 /* ================= Reminders, settings, backup ================= */
 let toastTimer;
-function toast(msg,onTap){
-  let el=$('toast');
-  if(!el){ el=document.createElement('div'); el.id='toast'; el.className='toast'; el.setAttribute('role','status'); document.body.appendChild(el); }
-  el.textContent=msg; el.classList.add('show');
-  el.classList.toggle('tap',!!onTap);
-  el.onclick=onTap?()=>{ el.classList.remove('show'); onTap(); }:null;
-  clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),onTap?12000:2600);
+function toast(msg){
+  let t=$('toast');
+  if(!t){ t=document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
 }
 function makeSwitch(checked,aria,onChange){
   const lab=document.createElement('label'); lab.className='switch';
@@ -1882,7 +1662,7 @@ function packedTomorrow(){
   const day=WEEKDAYS[(tom.getDay()+6)%7];
   const kids=children.filter(c=>isPacked(c,weekMap[idx].week,day,ymdLocal(tom)));
   if(!kids.length) return null;
-  return {date:tom, kids, label:fmtDate(tom,{weekday:'short',day:'numeric',month:'short'})};
+  return {date:tom, kids, label:tom.toLocaleDateString(dloc(),{weekday:'short',day:'numeric',month:'short'})};
 }
 function showReminderBanner(p){
   const nav=document.querySelector('.weeknav');
@@ -1899,14 +1679,13 @@ function checkTomorrowReminder(){
   const p=packedTomorrow();
   if(!p) return;
   showReminderBanner(p);
-  const body=t('notif_body',{who:joinNames(p.kids),d:p.label});
-  const stamp=ymdLocal(new Date())+'|'+body;
-  if('Notification' in window && Notification.permission==='granted' && localStorage.getItem('lastNotified')!==stamp){
-    try{ new Notification(t('notif_title'),{body:body,icon:ICON,tag:'packed-tomorrow'}); localStorage.setItem('lastNotified',stamp); }catch(e){}
+  const guard='notified-'+ymdLocal(new Date());
+  const body=`${p.kids.join(' and ')} need a packed lunch tomorrow (${p.label}).`;
+  if('Notification' in window && Notification.permission==='granted' && localStorage.getItem(guard)!==body){
+    try{ new Notification('Packed lunch tomorrow',{body:body,icon:ICON}); localStorage.setItem(guard,body); }catch(e){}
   }
 }
 
-function joinNames(arr){ return arr.length>1 ? arr.slice(0,-1).join(', ')+' '+t('and')+' '+arr[arr.length-1] : (arr[0]||''); }
 function upcomingPackedDays(){
   const today=new Date(); today.setHours(0,0,0,0);
   const out=[];
@@ -1933,11 +1712,11 @@ function buildIcs(){
   items.forEach((it,i)=>{
     const ev=new Date(it.date); ev.setDate(ev.getDate()-1); ev.setHours(hh,mm,0,0);
     const end=new Date(ev); end.setMinutes(end.getMinutes()+15);
-    const dl=fmtDate(it.date,{weekday:'short',day:'numeric',month:'short'});
-    const sum=t('ics_summary',{who:joinNames(it.kids),d:dl});
+    const dl=it.date.toLocaleDateString(dloc(),{weekday:'short',day:'numeric',month:'short'});
+    const sum='Pack lunch: '+it.kids.join(' and ')+' ('+dl+')';
     L.push('BEGIN:VEVENT','UID:packed-'+ymdLocal(it.date)+'-'+i+'@dinner','DTSTAMP:'+stamp,
       'DTSTART:'+icsStamp(ev),'DTEND:'+icsStamp(end),'SUMMARY:'+icsEsc(sum),
-      'DESCRIPTION:'+icsEsc(t('notif_body',{who:joinNames(it.kids),d:dl})),
+      'DESCRIPTION:'+icsEsc(it.kids.join(' and ')+' need a packed lunch tomorrow ('+dl+').'),
       'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc(sum),'TRIGGER:PT0M','END:VALARM','END:VEVENT');
   });
   L.push('END:VCALENDAR');
@@ -1956,7 +1735,7 @@ function exportCalendar(){
   toast(t('t_rem_ready'));
 }
 function exportData(){
-  const data={schoolYear:SCHOOL_YEAR,exportedAt:new Date().toISOString(),children,packedLunch,packedOnce,childAllergens,school,rotaOffset,remindersOn,reminderTime,themeMode,lang};
+  const data={children,packedLunch,packedOnce,childAllergens,school,rotaOffset,remindersOn,reminderTime,themeMode,lang,seasonMode};
   downloadBlob(JSON.stringify(data,null,2),'application/json','dinner-backup.json');
   toast(t('t_backup_dl'));
 }
@@ -1965,23 +1744,20 @@ function importData(file){
   r.onload=()=>{
     try{
       const d=JSON.parse(r.result);
-      /* A backup from a previous school year carries packed days that were
-         tied to the old menu. Restore the children, allergies and school but
-         leave those days out. */
-      const sameYear = d.schoolYear===SCHOOL_YEAR;
       if(Array.isArray(d.children)&&d.children.length) children=d.children;
-      if(sameYear && d.packedLunch&&typeof d.packedLunch==='object') packedLunch=d.packedLunch;
-      if(sameYear && d.packedOnce&&typeof d.packedOnce==='object'){ packedOnce=d.packedOnce; localStorage.setItem('packedOnce',JSON.stringify(packedOnce)); }
+      if(d.packedLunch&&typeof d.packedLunch==='object') packedLunch=d.packedLunch;
+      if(d.packedOnce&&typeof d.packedOnce==='object'){ packedOnce=d.packedOnce; localStorage.setItem('packedOnce',JSON.stringify(packedOnce)); }
       if(d.childAllergens&&typeof d.childAllergens==='object'){ childAllergens=d.childAllergens; localStorage.setItem('childAllergens',JSON.stringify(childAllergens)); }
       if(d.school&&d.school.name){ school={name:d.school.name, insets:Array.isArray(d.school.insets)?d.school.insets:[]}; saveSchool(); updateSchoolHeader(); }
       if(d.themeMode){ setThemeMode(d.themeMode); } else if('darkMode' in d){ setThemeMode(d.darkMode?'dark':'light'); }
+      { const sm=d.seasonMode || (d.xmasMode==='on'?'christmas':d.xmasMode); if(sm){ seasonMode=sm; localStorage.setItem('seasonMode',seasonMode); applyFestive(); } }
       if(d.lang && ['en','cy','es'].includes(d.lang)){ lang=d.lang; localStorage.setItem('lang',lang); applyLang(); }
-      if(sameYear && typeof d.rotaOffset==='number'){ rotaOffset=d.rotaOffset; localStorage.setItem('rotaOffset',String(rotaOffset)); weekMap=buildWeekMap(); }
+      if(typeof d.rotaOffset==='number'){ rotaOffset=d.rotaOffset; localStorage.setItem('rotaOffset',String(rotaOffset)); weekMap=buildWeekMap(); }
       if('reminderTime' in d){ reminderTime=d.reminderTime; localStorage.setItem('reminderTime',reminderTime); }
       if('remindersOn' in d){ remindersOn=!!d.remindersOn; localStorage.setItem('remindersOn',remindersOn?'1':''); }
       save('children',children); save('packedLunch',packedLunch);
       currentWeekIndex=getInitialWeekIndex(); render(false); renderSettings();
-      toast(sameYear?t('t_backup_rs'):t('t_backup_old'));
+      toast(t('t_backup_rs'));
     }catch(e){ toast(t('t_unreadable')); }
   };
   r.readAsText(file);
@@ -1992,7 +1768,7 @@ function encodeShare(){
   const parts=['DIN2', String(rotaOffset)];
   children.forEach(c=>{
     let mask=0; const cw=packedLunch[c]||{};
-    [1,2].forEach(w=>{ const wd=cw[w]||{}; DAY_ORDER.forEach((d,di)=>{ if(wd[d]) mask|=(1<<((w-1)*5+di)); }); });
+    [1,2,3].forEach(w=>{ const wd=cw[w]||{}; DAY_ORDER.forEach((d,di)=>{ if(wd[d]) mask|=(1<<((w-1)*5+di)); }); });
     let abits=0; const ca=childAllergens[c]||[];
     ALL_ALLERGENS.forEach((a,ai)=>{ if(ca.includes(a)) abits|=(1<<ai); });
     const name=encodeURIComponent(c).replace(/\|/g,'%7C').replace(/:/g,'%3A');
@@ -2012,7 +1788,7 @@ function decodeShare(code){
     const mask=parseInt(f[1],36)||0; const abits=f.length>2?(parseInt(f[2],36)||0):0;
     if(!name) continue;
     kids.push(name); pl[name]={};
-    for(let b=0;b<10;b++){ if(mask&(1<<b)){ const w=Math.floor(b/5)+1, d=DAY_ORDER[b%5]; if(!pl[name][w])pl[name][w]={}; pl[name][w][d]=true; } }
+    for(let b=0;b<15;b++){ if(mask&(1<<b)){ const w=Math.floor(b/5)+1, d=DAY_ORDER[b%5]; if(!pl[name][w])pl[name][w]={}; pl[name][w][d]=true; } }
     const al=ALL_ALLERGENS.filter((a,ai)=>abits&(1<<ai));
     if(al.length) ca[name]=al;
   }
@@ -2075,7 +1851,7 @@ function shareWeekImage(){
     const allerg=ov?ov.allergens:((ALLERGENS[info.week]&&ALLERGENS[info.week][day])||[]);
     x.fillStyle='#ffffff'; roundRect(x,50,y,W-100,rowH-22,20); x.fill();
     x.fillStyle='#0b6f93'; x.font='800 30px system-ui,-apple-system,sans-serif'; x.fillText(sdow(date).toUpperCase(),82,y+58);
-    const mains=p.mains.map(localiseDish).map(stripEmoji);
+    const mains=p.mains.map(stripEmoji);
     x.fillStyle='#12303c'; x.font='600 36px system-ui,-apple-system,sans-serif'; x.fillText(mains[0]||'',82,y+112);
     if(mains[1]){ x.fillStyle='#6b8794'; x.font='500 30px system-ui,-apple-system,sans-serif'; x.fillText(t('or')+' '+mains[1],82,y+156); }
     x.textAlign='right'; x.font='36px system-ui,-apple-system,sans-serif'; x.fillStyle='#12303c';
@@ -2120,14 +1896,14 @@ function showImagePreview(dataUrl, blob){
 function emailShare(){
   const code=encodeShare();
   const url=location.origin+location.pathname;
-  const subject=t('email_subject');
+  const subject='Our school packed-lunch plan';
   const body=[
-    t('email_intro'),
+    'Here is our packed-lunch plan for the school dinner app.',
     '',
-    t('email_how'),
-    '1. '+t('email_s1',{url}),
-    '2. '+t('email_s2'),
-    '3. '+t('email_s3'),
+    'How to load it:',
+    '1. Open the app: '+url,
+    '2. Tap the settings cog, then Share with another parent.',
+    '3. Paste the code below into the box and tap Apply.',
     '',
     code
   ].join('\n');
@@ -2171,12 +1947,12 @@ $('installCloseX').addEventListener('click',()=>closeSheet($('installScrim')));
 function renderInsetList(box){
   box.innerHTML='';
   const sorted=[...school.insets].sort();
-  if(!sorted.length){ const e=document.createElement('p'); e.className='inset-empty'; e.textContent=t('no_insets'); box.appendChild(e); }
+  if(!sorted.length){ const e=document.createElement('p'); e.className='inset-empty'; e.textContent='No inset days set for this school.'; box.appendChild(e); }
   sorted.forEach(d=>{
     const row=document.createElement('div'); row.className='inset-row';
     const lbl=document.createElement('span'); lbl.className='d';
-    lbl.textContent=fmtDate(parseDateYMD(d),{weekday:'short',day:'numeric',month:'short',year:'numeric'});
-    const rm=document.createElement('button'); rm.setAttribute('aria-label',t('remove_inset'));
+    lbl.textContent=parseDateYMD(d).toLocaleDateString(dloc(),{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+    const rm=document.createElement('button'); rm.setAttribute('aria-label','Remove inset day');
     rm.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 5.7 18.3l-1.4-1.4L9.2 12 4.3 7.1l1.4-1.4 4.9 4.9 6.3-6.3z"/></svg>';
     rm.onclick=()=>{ school.insets=school.insets.filter(x=>x!==d); saveSchool(); renderInsetList(box); render(false); };
     row.appendChild(lbl); row.appendChild(rm); box.appendChild(row);
@@ -2272,10 +2048,28 @@ function renderSettings(){
   });
   box.appendChild(seg);
 
+  // Seasonal theme
+  const xsl=document.createElement('p'); xsl.className='section-label'; xsl.textContent=t('seasonal_title'); box.appendChild(xsl);
+  const xseg=document.createElement('div'); xseg.className='seg';
+  const setSeason=(m)=>{ seasonMode=m; localStorage.setItem('seasonMode',seasonMode); applyFestive(); track('seasonal',{mode:seasonMode}); renderSettings(); };
+  [['auto','xmas_auto'],['off','xmas_off']].forEach(pair=>{
+    const bb=document.createElement('button'); bb.textContent=t(pair[1]); bb.setAttribute('aria-pressed', seasonMode===pair[0]?'true':'false');
+    bb.onclick=()=>setSeason(pair[0]); xseg.appendChild(bb);
+  });
+  box.appendChild(xseg);
+  const spl=document.createElement('p'); spl.className='desc'; spl.style.margin='14px 0 8px'; spl.textContent=t('season_preview'); box.appendChild(spl);
+  const pseg=document.createElement('div'); pseg.className='seg wrap';
+  SEASON_KEYS.forEach(k=>{
+    const bb=document.createElement('button'); bb.textContent=SEASON_EMOJI[k]+' '+t('se_'+k); bb.setAttribute('aria-pressed', seasonMode===k?'true':'false');
+    bb.onclick=()=>setSeason(k); pseg.appendChild(bb);
+  });
+  box.appendChild(pseg);
+  const xn=document.createElement('p'); xn.className='desc'; xn.style.margin='10px 0 0'; xn.textContent=t('season_note'); box.appendChild(xn);
+
   // Language
   const ll=document.createElement('p'); ll.className='section-label'; ll.textContent=t('language'); box.appendChild(ll);
   const lseg=document.createElement('div'); lseg.className='seg';
-  [['en','English'],['cy','Cymraeg'],['es','Español']].forEach(pair=>{
+  [['en','English'],['cy','Cymraeg'],['es','Espanol']].forEach(pair=>{
     const bb=document.createElement('button'); bb.textContent=pair[1]; bb.setAttribute('aria-pressed', lang===pair[0]?'true':'false');
     bb.onclick=()=>{ lang=pair[0]; localStorage.setItem('lang',lang); applyLang(); track('language',{lang}); };
     lseg.appendChild(bb);
@@ -2306,7 +2100,7 @@ function renderWelcomeKids(){
     const chip=document.createElement('span'); chip.className='kid-chip';
     const em=kid.allergens.length?' '+kid.allergens.map(a=>ALLERGEN_ICONS[a]).join(''):'';
     chip.appendChild(document.createTextNode(kid.name+em));
-    const x=document.createElement('button'); x.setAttribute('aria-label',t('remove_q',{name:kid.name}));
+    const x=document.createElement('button'); x.setAttribute('aria-label','Remove '+kid.name);
     x.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 5.7 18.3l-1.4-1.4L9.2 12 4.3 7.1l1.4-1.4 4.9 4.9 6.3-6.3z"/></svg>';
     x.onclick=()=>{ welcomeList.splice(i,1); renderWelcomeKids(); };
     chip.appendChild(x); box.appendChild(chip);
@@ -2339,9 +2133,246 @@ renderWelcomeAller();
 $('welcomeSchool').appendChild(buildSchoolSelect());
 
 /* ================= Init ================= */
+
+/* ================= Themed days and the rotating countdown ================= */
+const EVENTS_FIXED = {
+  '09-16':{k:'ev_glyndwr',    e:'\u{1F409}', c:'#c8382f'},
+  '10-31':{k:'ev_halloween',  e:'\u{1F383}', c:'#e0761f'},
+  '11-05':{k:'ev_bonfire',    e:'\u{1F386}', c:'#d1493f'},
+  '11-11':{k:'ev_remembrance',e:'\u{1F33A}', c:'#b23a34'},
+  '12-25':{k:'ev_christmas',  e:'\u{1F384}', c:'#c0392b'},
+  '01-01':{k:'ev_newyear',    e:'\u{1F38A}', c:'#7a4fd0'},
+  '01-25':{k:'ev_dwynwen',    e:'\u{1F495}', c:'#c8382f'},
+  '02-14':{k:'ev_valentine',  e:'\u{1F49D}', c:'#e0518a'},
+  '03-01':{k:'ev_stdavid',    e:'\u{1F33C}', c:'#2e9e5b'},
+  '05-14':{k:'ev_dylan',      e:'\u{1F4D6}', c:'#8a5a2b'}
+};
+const EVENTS_DATED = {
+  '2027-02-09':{k:'ev_pancake', e:'\u{1F95E}', c:'#c98a2e'},
+  '2027-03-04':{k:'ev_bookday', e:'\u{1F4DA}', c:'#3f6fd0'},
+  '2027-03-07':{k:'ev_mothers', e:'\u{1F490}', c:'#d94f8a'},
+  '2027-03-28':{k:'ev_easter',  e:'\u{1F423}', c:'#d9a521'},
+  '2027-06-20':{k:'ev_fathers', e:'\u{1F381}', c:'#2f7fb0'}
+};
+function eventFor(key){ return EVENTS_DATED[key] || EVENTS_FIXED[key.slice(5)] || null; }
+function daysBetween(a,b){ return Math.round((b-a)/86400000); }
+function capFirst(s){ return s ? s.charAt(0).toUpperCase()+s.slice(1) : s; }
+function nextEvent(from){
+  const t0=new Date(from); t0.setHours(0,0,0,0);
+  const list=[];
+  [t0.getFullYear(), t0.getFullYear()+1].forEach(y=>{
+    Object.keys(EVENTS_FIXED).forEach(md=>{ const p=md.split('-').map(Number); list.push({date:new Date(y,p[0]-1,p[1]), ev:EVENTS_FIXED[md]}); });
+  });
+  Object.keys(EVENTS_DATED).forEach(k=>list.push({date:parseDateYMD(k), ev:EVENTS_DATED[k]}));
+  list.sort((a,b)=>a.date-b.date);
+  return list.find(x=>x.date>=t0) || null;
+}
+function eventText(today){
+  const x=nextEvent(today); if(!x) return null;
+  const n=daysBetween(today,x.date), name=t(x.ev.k);
+  if(n===0) return x.ev.e+' '+capFirst(t('ev_today',{e:name}));
+  if(n===1) return x.ev.e+' '+capFirst(t('ev_tomorrow',{e:name}));
+  return x.ev.e+' '+t('ev_days',{n:n,e:name});
+}
+function countdownItems(){
+  const today=new Date(); today.setHours(0,0,0,0);
+  const items=[];
+  const school=isSchoolDay(today);
+  const nd=school?null:nextSchoolDay();
+  const gap=nd?daysBetween(today,nd):0;
+  const dow=today.getDay(), weekday=dow>=1 && dow<=5;
+  let holiday=false;
+  if(!school && nd){
+    if(weekday || gap>=3) holiday=true;
+    else { const fri=new Date(today); fri.setDate(today.getDate()-(dow===6?1:2)); holiday=!isSchoolDay(fri); } // weekend after a closed Friday
+  }
+  if(holiday){
+    items.push({text:'\u{1F3EB} '+(gap<=1?t('back_tomorrow'):t('back_in',{n:gap})), cls:'break'});
+  } else {
+    const b=nextBreak();
+    if(b) items.push({text:'\u{1F389} '+(b.n===1?t('countdown_one',{h:t(b.key)}):t('countdown',{n:b.n,h:t(b.key)})), cls:'break'});
+  }
+  const ev=eventText(today); if(ev) items.push({text:ev, cls:'event'});
+  return items;
+}
+const CD={idx:0, items:[], busy:false};
+function paintCountdown(){
+  const el=document.getElementById('countChip'); if(!el) return;
+  if(!CD.items.length){ el.style.display='none'; return; }
+  el.style.display='';
+  const it=CD.items[CD.idx % CD.items.length];
+  el.textContent=it.text;
+  el.classList.toggle('event', it.cls==='event');
+}
+function setupCountdown(){
+  CD.items=countdownItems();
+  if(CD.idx>=CD.items.length) CD.idx=0;
+  paintCountdown();
+}
+function rotateCountdown(){
+  const el=document.getElementById('countChip');
+  if(!el || document.hidden || CD.items.length<2 || CD.busy) return;
+  CD.busy=true; el.classList.add('cd-out');
+  setTimeout(()=>{ CD.idx=(CD.idx+1)%CD.items.length; paintCountdown(); el.classList.remove('cd-out'); CD.busy=false; }, 450);
+}
+setInterval(rotateCountdown, 7000);
+
+/* ================= Christmas theme (Auto 1 Dec to 5 Jan, On, Off) ================= */
+const SEASON_KEYS=['christmas','halloween','remembrance','stdavid','easter','summer'];
+const SEASON_EMOJI={christmas:'\u{1F384}',halloween:'\u{1F383}',remembrance:'\u{1F33A}',stdavid:'\u{1F33C}',easter:'\u{1F423}',summer:'\u{1F31E}'};
+/* Auto windows (MM-DD, inclusive). Easter moves each year, so it is dated. */
+const SEASON_WINDOWS=[
+  {k:'halloween',   from:'10-20', to:'10-31'},
+  {k:'remembrance', from:'11-09', to:'11-11'},
+  {k:'christmas',   from:'12-01', to:'01-05'},
+  {k:'stdavid',     from:'02-22', to:'03-01'},
+  {k:'easter',      range:['2027-03-14','2027-04-05']},
+  {k:'summer',      from:'07-01', to:'07-31'}
+];
+let seasonMode=(function(){
+  let m=localStorage.getItem('seasonMode');
+  if(!m){ const o=localStorage.getItem('xmasMode'); m = o==='on' ? 'christmas' : (o==='off' ? 'off' : 'auto'); }
+  return m;
+})();
+function activeSeason(){
+  if(seasonMode==='off') return null;
+  if(seasonMode!=='auto') return SEASON_KEYS.indexOf(seasonMode)>-1 ? seasonMode : null;
+  const d=new Date(), p=n=>String(n).padStart(2,'0'), md=p(d.getMonth()+1)+'-'+p(d.getDate()), full=ymdLocal(d);
+  for(const w of SEASON_WINDOWS){
+    if(w.range){ if(full>=w.range[0] && full<=w.range[1]) return w.k; }
+    else if(w.from<=w.to ? (md>=w.from && md<=w.to) : (md>=w.from || md<=w.to)) return w.k;
+  }
+  return null;
+}
+function clearDeco(){ document.querySelectorAll('.sn-bunting,.sn-bats').forEach(n=>n.remove()); }
+function buildBunting(k){
+  const bar=document.querySelector('.appbar'); if(!bar) return;
+  const d=document.createElement('div'); d.className='sn-bunting '+k; d.setAttribute('aria-hidden','true'); bar.appendChild(d);
+}
+function buildBats(){
+  const w=document.createElement('div'); w.className='sn-bats'; w.setAttribute('aria-hidden','true');
+  [[26,15,-1,40],[64,19,-7,34],[98,22,-12,30],[46,17,-4,36]].forEach(b=>{
+    const s=document.createElement('span'); s.className='sn-bat';
+    s.style.cssText='top:'+b[0]+'px;width:'+b[3]+'px;height:'+Math.round(b[3]*0.4)+'px;animation-duration:'+b[1]+'s,'+(2+(b[1]%3)*0.4)+'s;animation-delay:'+b[2]+'s,'+b[2]+'s';
+    w.appendChild(s);
+  });
+  document.body.appendChild(w);
+}
+function xmasWanted(){ return activeSeason()==='christmas'; }
+const XM={ on:false, lightsW:0, raf:0, flakes:[], canvas:null, ctx:null, w:0, h:0, last:0 };
+function xmRng(seed){ return function(){ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function reducedMotion(){ try{ return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } }
+
+/* fairy lights: a drooping wire with small warm bulbs that twinkle out of step */
+function buildLights(){
+  const bar=document.querySelector('.appbar'); if(!bar) return;
+  let host=bar.querySelector('.xm-lights');
+  if(!host){ host=document.createElement('div'); host.className='xm-lights'; host.setAttribute('aria-hidden','true'); bar.appendChild(host); }
+  const w=Math.round(bar.clientWidth); if(!w) return;
+  XM.lightsW=w; host.innerHTML='';
+  const n=Math.max(4, Math.round(w/74)), sw=w/n, drop=11;
+  const NS='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 0 '+w+' 34'); svg.setAttribute('preserveAspectRatio','none');
+  let d='M0 0'; for(let i=0;i<n;i++){ const x0=i*sw; d+=' Q'+(x0+sw/2).toFixed(1)+' '+(drop*2)+' '+(x0+sw).toFixed(1)+' 0'; }
+  const wire=document.createElementNS(NS,'path'); wire.setAttribute('d',d); wire.setAttribute('fill','none');
+  wire.setAttribute('stroke','var(--xm-wire)'); wire.setAttribute('stroke-width','1.2'); wire.setAttribute('opacity','.85');
+  svg.appendChild(wire); host.appendChild(svg);
+  const cols=['#fff0cb','#ffd37a','#ff9a9a','#fff0cb','#ffd37a','#8fe0b0','#fff0cb','#ffd37a','#9fd0ff'];
+  const r=xmRng(2026); let k=0;
+  for(let i=0;i<n;i++){
+    for(const t of [.2,.5,.8]){
+      const x=i*sw+sw*t, y=4*drop*t*(1-t);
+      const slope=(4*drop*(1-2*t))/sw;
+      const b=document.createElement('span'); b.className='xm-bulb';
+      b.style.left=x.toFixed(1)+'px'; b.style.top=y.toFixed(1)+'px';
+      b.style.setProperty('--c', cols[k%cols.length]);
+      b.style.setProperty('--tilt', (-Math.atan(slope)*180/Math.PI*.7).toFixed(1)+'deg');
+      b.style.setProperty('--dur', (2.6+r()*2.2).toFixed(2)+'s');
+      b.style.setProperty('--delay', (-r()*4).toFixed(2)+'s');
+      host.appendChild(b); k++;
+    }
+  }
+}
+function clearLights(){ const h=document.querySelector('.xm-lights'); if(h) h.remove(); XM.lightsW=0; }
+
+/* snowfall: a light canvas layer, paused when the tab is hidden, a still scene for reduced motion */
+function sizeSnow(){
+  const c=XM.canvas; if(!c) return;
+  const dpr=Math.min(window.devicePixelRatio||1, 2);
+  XM.w=window.innerWidth; XM.h=window.innerHeight;
+  c.width=Math.round(XM.w*dpr); c.height=Math.round(XM.h*dpr);
+  XM.ctx.setTransform(dpr,0,0,dpr,0,0);
+  const count=Math.max(26, Math.min(80, Math.round(XM.w*XM.h/16000)));
+  const r=xmRng(77); XM.flakes=[];
+  for(let i=0;i<count;i++){
+    const big=r()<.18;
+    XM.flakes.push({ x:r()*XM.w, y:r()*XM.h, bx:0, r: big? 2.6+r()*1.6 : .8+r()*1.5, vy: big? 14+r()*10 : 18+r()*26,
+      amp:6+r()*14, ph:r()*6.28, fq:.4+r()*.7, a: big? .28+r()*.2 : .5+r()*.4 });
+  }
+}
+function drawSnow(t){
+  const ctx=XM.ctx; if(!ctx) return;
+  ctx.clearRect(0,0,XM.w,XM.h);
+  const dark=effectiveDark();
+  for(const f of XM.flakes){
+    const x=f.x+Math.sin(f.ph+t*f.fq)*f.amp;
+    if(!dark){ ctx.fillStyle='rgba(110,150,185,'+(f.a*.32).toFixed(3)+')'; ctx.beginPath(); ctx.arc(x,f.y,f.r+.9,0,6.2832); ctx.fill(); }
+    ctx.fillStyle='rgba(255,255,255,'+f.a.toFixed(3)+')'; ctx.beginPath(); ctx.arc(x,f.y,f.r,0,6.2832); ctx.fill();
+  }
+}
+function snowLoop(now){
+  if(!XM.on) return;
+  const t=now/1000, dt=Math.min(.05, XM.last? t-XM.last : .016); XM.last=t;
+  for(const f of XM.flakes){ f.y+=f.vy*dt; if(f.y>XM.h+6){ f.y=-6; f.x=Math.random()*XM.w; } }
+  drawSnow(t);
+  XM.raf=requestAnimationFrame(snowLoop);
+}
+function startSnow(){
+  if(XM.canvas) return;
+  const c=document.createElement('canvas'); c.id='xmSnow'; c.setAttribute('aria-hidden','true');
+  document.body.appendChild(c); XM.canvas=c; XM.ctx=c.getContext('2d');
+  if(!XM.ctx){ c.remove(); XM.canvas=null; return; }
+  sizeSnow();
+  if(reducedMotion()) drawSnow(0); else { XM.last=0; XM.raf=requestAnimationFrame(snowLoop); }
+}
+function stopSnow(){
+  if(XM.raf) cancelAnimationFrame(XM.raf); XM.raf=0;
+  if(XM.canvas){ XM.canvas.remove(); XM.canvas=null; XM.ctx=null; }
+  XM.flakes=[];
+}
+
+let curSeason=null;
+function applyFestive(){
+  const s=activeSeason(), want=(s==='christmas');
+  if(s===curSeason){
+    if(want){ const bar=document.querySelector('.appbar'); if(bar && Math.abs(bar.clientWidth-XM.lightsW)>6) buildLights(); }
+    return;
+  }
+  curSeason=s;
+  SEASON_KEYS.forEach(k=>document.body.classList.remove('season-'+k));
+  if(s) document.body.classList.add('season-'+s);
+  XM.on=want;
+  document.body.classList.toggle('xmas', want);
+  if(want){ buildLights(); startSnow(); } else { clearLights(); stopSnow(); }
+  clearDeco();
+  if(s==='stdavid' || s==='easter') buildBunting(s);
+  if(s==='halloween') buildBats();
+}
+let xmResizeTimer=0;
+window.addEventListener('resize', ()=>{
+  clearTimeout(xmResizeTimer);
+  xmResizeTimer=setTimeout(()=>{
+    if(!XM.on) return;
+    buildLights();
+    if(XM.canvas){ sizeSnow(); if(reducedMotion()) drawSnow(0); }
+  }, 150);
+});
+setInterval(applyFestive, 3600000);
+
 (function init(){
   applyThemeDOM(effectiveDark());
   applyLang();
+  applyFestive();
   if(!localStorage.getItem('insetSeed_v2')){
     if(school && school.name && KNOWN_INSETS[school.name]){
       const cur = Array.isArray(school.insets) ? school.insets : [];
@@ -2349,18 +2380,6 @@ $('welcomeSchool').appendChild(buildSchoolSelect());
       if(allStale){ school.insets = KNOWN_INSETS[school.name].slice(); saveSchool(); }
     }
     localStorage.setItem('insetSeed_v2','1');
-  }
-  /* One-off for the 2026/27 rota: last year's packed lunch days were tied to
-     the old menu order so they no longer line up. Clear them, keep everything
-     else (children, allergies, school, language, theme, reminders). */
-  if(!localStorage.getItem('yearReset_2026')){
-    const had = Object.keys(packedLunch).length>0 || Object.keys(packedOnce).length>0;
-    packedLunch={}; packedOnce={}; rotaOffset=0;
-    save('packedLunch',packedLunch); localStorage.setItem('packedOnce','{}'); localStorage.setItem('rotaOffset','0');
-    weekMap=buildWeekMap();
-    Object.keys(localStorage).filter(k=>k.indexOf('notified-')===0).forEach(k=>localStorage.removeItem(k));
-    localStorage.setItem('yearReset_2026','1');
-    if(had && localStorage.getItem('onboarded')) setTimeout(()=>toast(t('t_year_reset')),900);
   }
   updateSchoolHeader();
   currentWeekIndex=getInitialWeekIndex();
@@ -2379,7 +2398,6 @@ $('welcomeSchool').appendChild(buildSchoolSelect());
 window.addEventListener('load',()=>{
   track('app_open',{ school:schoolShort(school.name), kids:children.length, lang, theme:themeMode, standalone:isStandalone() });
   fetchWeather();
-  fetchData();
 });
 
 document.addEventListener('visibilitychange',()=>{
@@ -2389,28 +2407,11 @@ document.addEventListener('visibilitychange',()=>{
     if(i!==currentWeekIndex){ currentWeekIndex=i; renderWeek(false); }
     checkTomorrowReminder();
     fetchWeather();
-    fetchData();
-    if(swReg){ swReg.update().catch(()=>{}); }
+    applyFestive(); setupCountdown();
   }
 });
 
-/* Service worker with a proper update flow: the new worker waits until the
-   parent taps the toast, then takes over and the page reloads once. */
-let swReg=null, swReloading=false;
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('sw.js').then(reg=>{
-      swReg=reg;
-      const offer=w=>{ toast(t('update_ready'),()=>w.postMessage({type:'SKIP_WAITING'})); };
-      if(reg.waiting && navigator.serviceWorker.controller) offer(reg.waiting);
-      reg.addEventListener('updatefound',()=>{
-        const nw=reg.installing; if(!nw) return;
-        nw.addEventListener('statechange',()=>{ if(nw.state==='installed' && navigator.serviceWorker.controller) offer(nw); });
-      });
-    }).catch(()=>{});
-    navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(swReloading) return; swReloading=true; location.reload(); });
-  });
-}
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{})); }
 </script>
 </body>
 </html>
